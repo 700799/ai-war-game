@@ -113,14 +113,20 @@ button:disabled{opacity:.4}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
 .howbox{margin-top:14px;padding:14px;border:4px solid var(--line);background:#101225;box-shadow:6px 6px 0 #000;width:100%;max-width:480px;text-align:left}
-.steps10{list-style:none;margin:12px 0 6px;display:grid;grid-template-columns:1fr;gap:6px}
-.steps10 li{display:flex;align-items:center;gap:10px;font-size:20px;color:#f4f1e6;background:#1a1c3a;border:2px solid #444;padding:6px 8px}
-.steps10 li span{flex-shrink:0;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--gold);color:#000;font-family:'Press Start 2P';font-size:10px;border:2px solid #000}
-.shot{margin:18px 0 0}
-.shot figcaption{font-family:'Press Start 2P';font-size:11px;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:8px;line-height:1.5}
-.shot figcaption b{flex-shrink:0;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--blue);color:#000;border:2px solid #000;font-size:10px}
-.shot img{display:block;width:100%;height:auto;border:3px solid var(--line);box-shadow:4px 4px 0 #000}
-.shot p{font-size:19px;color:#cfcde6;margin-top:8px}
+.car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-top:10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.car::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;aspect-ratio:1;scroll-snap-align:center;background:#1a1c3a;border:3px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:14px;position:relative;text-align:center}
+.snum{position:absolute;top:10px;left:10px;font-family:'Press Start 2P';font-size:16px;color:#000;background:var(--gold);border:3px solid #000;padding:6px 8px}.snum span{font-size:8px}
+.stitle{font-family:'Press Start 2P';font-size:13px;color:var(--gold);line-height:1.6;margin-top:46px}
+.svis{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin:10px 0}
+.svis img{max-width:100%;max-height:100%;object-fit:contain;border:3px solid var(--line);box-shadow:4px 4px 0 #000}
+.bigic{width:110px;height:110px;display:block}.bigic svg{width:100%;height:100%}
+.fakeb{width:96px;height:96px;border-radius:50%;background:#6a1e1e;border:4px solid var(--red);box-shadow:4px 4px 0 #000;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P';font-size:28px;color:#fff}
+.fakebl{font-family:'Press Start 2P';font-size:10px;color:#f4f1e6}
+.ssub{font-size:21px;color:#f4f1e6;line-height:1.25}
+.carnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}
+.carnav button{padding:10px 14px;font-size:12px}
+.dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.dots i{width:10px;height:10px;background:#444;border:2px solid #000;display:block;cursor:pointer}.dots i.on{background:var(--gold)}
 .howbtn{background:#1a4a8a;border-color:#5ab0ff;color:#fff;font-size:12px;padding:16px 18px;width:100%;max-width:300px;box-shadow:4px 4px 0 #000,0 0 0 3px rgba(90,176,255,.35);animation:howglow 1.4s steps(2) infinite}
 @keyframes howglow{50%{box-shadow:4px 4px 0 #000,0 0 0 6px rgba(90,176,255,.6)}}
 .startbtn{width:100%;max-width:300px;font-size:13px;padding:16px 18px}
@@ -258,13 +264,22 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div class="px" style="font-size:8px;color:#5ab0ff">NEW HERE? START WITH HOW TO PLAY</div>
     <button style="font-size:8px;padding:8px 10px" onclick="go('s-disc')">DISCLAIMER</button>
     <div class="howbox">
-      <h2 style="text-align:center">HOW IT WORKS</h2>
-      <ol class="steps10"><li><span>1</span>Pick rival and length</li><li><span>2</span>Read the mission briefing</li><li><span>3</span>Answer the round's crisis</li><li><span>4</span>Set posture at HQ</li><li><span>5</span>Spend PC on actions</li><li><span>6</span>Check orders on the map</li><li><span>7</span>Press B to end turn</li><li><span>8</span>See the showdown</li><li><span>9</span>Repeat until 2030</li><li><span>10</span>Reach Abundance and win</li></ol>
-      <figure class="shot"><figcaption><b>1</b>TAP A BUILDING TO ACT</figcaption><img src="how-map.png" alt="Tap A Building To Act" loading="lazy"><p>Each building is a department. Blue TIP tags show the analyst's picks. Start at HQ.</p></figure>
-      <figure class="shot"><figcaption><b>2</b>CHOOSE YOUR POSTURE</figcaption><img src="how-posture.png" alt="Choose Your Posture" loading="lazy"><p>At HQ, pick Cooperate, Hedge or Escalate toward the rival. It is free and required.</p></figure>
-      <figure class="shot"><figcaption><b>3</b>BUY ACTIONS WITH PC</figcaption><img src="how-card.png" alt="Buy Actions With Pc" loading="lazy"><p>Tap a card to buy it. The threat analyst shows what it does: green helps, red hurts.</p></figure>
-      <figure class="shot"><figcaption><b>4</b>SEE WHO DID WHAT</figcaption><img src="how-clash.png" alt="See Who Did What" loading="lazy"><p>After you end the turn, you and the rival reveal your moves at the same time.</p></figure>
-      <button class="howbtn" onclick="go('s-how')" style="margin-top:6px">📖 FULL HOW TO PLAY</button>
+      <h2 style="text-align:center">WHAT YOU'LL LEARN</h2>
+      <p class="small" style="text-align:center;margin-top:4px">Swipe ← →</p>
+      <div class="car" id="car">
+        <div class="slide"><div class="snum">1<span>/10</span></div><div class="stitle">Game theory with rivals</div><div class="svis"><img src="how-clash.png" alt="" loading="lazy"></div><div class="ssub">Rivals remember your moves. Reciprocity wins long games.</div></div>
+        <div class="slide"><div class="snum">2<span>/10</span></div><div class="stitle">The security dilemma</div><div class="svis"><img src="how-posture.png" alt="" loading="lazy"></div><div class="ssub">Your defense looks like their threat.</div></div>
+        <div class="slide"><div class="snum">3<span>/10</span></div><div class="stitle">Attribution under fog</div><div class="svis"><span class="bigic" data-ic="fog"></span></div><div class="ssub">A gang's hack can look like a state's attack.</div></div>
+        <div class="slide"><div class="snum">4<span>/10</span></div><div class="stitle">Threat modeling first</div><div class="svis"><img src="how-card.png" alt="" loading="lazy"></div><div class="ssub">Weigh each option's costs before you act.</div></div>
+        <div class="slide"><div class="snum">5<span>/10</span></div><div class="stitle">Attacks on SI models</div><div class="svis"><span class="bigic" data-ic="skull"></span></div><div class="ssub">Jailbreaks, poisoned data and hijacked agents.</div></div>
+        <div class="slide"><div class="snum">6<span>/10</span></div><div class="stitle">Model theft and distillation</div><div class="svis"><span class="bigic" data-ic="lock"></span></div><div class="ssub">Weights get stolen, or copied through queries.</div></div>
+        <div class="slide"><div class="snum">7<span>/10</span></div><div class="stitle">Open-weight trade-offs</div><div class="svis"><span class="bigic" data-ic="eye"></span></div><div class="ssub">Great for research. Impossible to recall.</div></div>
+        <div class="slide"><div class="snum">8<span>/10</span></div><div class="stitle">Two fronts at once</div><div class="svis"><img src="how-map.png" alt="" loading="lazy"></div><div class="ssub">Security abroad, side effects at home.</div></div>
+        <div class="slide"><div class="snum">9<span>/10</span></div><div class="stitle">Incentives beat orders</div><div class="svis"><span class="bigic" data-ic="coin"></span></div><div class="ssub">Labs follow profit. Rules change what pays.</div></div>
+        <div class="slide"><div class="snum">10<span>/10</span></div><div class="stitle">Steer, don't stop</div><div class="svis"><span class="bigic" data-ic="brain"></span></div><div class="ssub">SI arrives anyway. Policy decides who benefits.</div></div>
+      </div>
+      <div class="carnav"><button onclick="carGo(-1)" aria-label="Previous">◀</button><div class="dots" id="dots"></div><button onclick="carGo(1)" aria-label="Next">▶</button></div>
+      <button class="howbtn" onclick="go('s-how')" style="margin:12px auto 0;display:block">📖 HOW TO PLAY</button>
     </div>
     <div class="px" style="font-size:7px;color:var(--dim)">Fictional scenario. The rival is an invented state, not any real country.<br>All actors are archetypes, not real people or organizations.</div>
   </div>
@@ -1564,6 +1579,13 @@ function endGame(skipFinale){
 // keyboard
 document.addEventListener('keydown',e=>{if(!document.getElementById('g-map').classList.contains('on'))return;const k=e.key;if(k==='ArrowUp')mv(0,-1);if(k==='ArrowDown')mv(0,1);if(k==='ArrowLeft')mv(-1,0);if(k==='ArrowRight')mv(1,0);if(k==='Enter'||k===' ')enterLoc()});
 fillIcons();
+function carGo(d){const c=document.getElementById('car');c.scrollBy({left:d*c.clientWidth,behavior:'smooth'})}
+(function(){const c=document.getElementById('car');if(!c)return;const n=c.children.length,dots=document.getElementById('dots');
+  dots.innerHTML=Array.from({length:n},(_,i)=>`<i data-i="${i}"></i>`).join('');
+  dots.querySelectorAll('i').forEach(e=>e.onclick=()=>c.scrollTo({left:+e.dataset.i*c.clientWidth+ +e.dataset.i*12,behavior:'smooth'}));
+  const upd=()=>{const k=Math.round(c.scrollLeft/(c.clientWidth+12));dots.querySelectorAll('i').forEach((e,j)=>e.classList.toggle('on',j===k))};
+  c.addEventListener('scroll',upd,{passive:true});upd();
+  const w=document.getElementById('winpose');if(w)w.innerHTML=spr(HERO_WIN.concat(LEGS_A),HERO_PAL,12,16,'width="100%" height="100%"');})();
 </script>
 </body>
 </html>

@@ -4,24 +4,24 @@ A think-tank-style, game-theoretic superintelligence wargame in a pixel/Nintendo
 
 **Play:** https://700799.github.io/ai-war-game/
 
-## How it works
+## What you'll learn
 
-1. Pick rival and length
-2. Read the mission briefing
-3. Answer the round's crisis
-4. Set posture at HQ
-5. Spend PC on actions
-6. Check orders on the map
-7. Press B to end turn
-8. See the showdown
-9. Repeat until 2030
-10. Reach Abundance and win
+1. Game theory with rivals
+2. The security dilemma
+3. Attribution under fog
+4. Threat modeling first
+5. Attacks on SI models
+6. Model theft and distillation
+7. Open-weight trade-offs
+8. Two fronts at once
+9. Incentives beat orders
+10. Steer, don't stop
 
-| Tap a building to act | Choose your posture |
+| Game theory with rivals | The security dilemma |
 |---|---|
-| ![Map](how-map.png) | ![Posture](how-posture.png) |
-| **Buy actions with PC** | **See who did what** |
-| ![Action card](how-card.png) | ![Showdown](how-clash.png) |
+| ![Showdown](how-clash.png) | ![Posture](how-posture.png) |
+| **Threat modeling first** | **Two fronts at once** |
+| ![Action card](how-card.png) | ![Map](how-map.png) |
 
 Single static file (`index.html`), served by GitHub Pages from `main`.
 

@@ -257,7 +257,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div class="box">
       <h2>THE GOAL · 2027–2030</h2>
       <p>Superintelligence (SI) can cure cancer, power humanoid robots that care for the elderly, and make society far richer. It can also help students cheat, scammers clone voices, bots spread violence, insiders steal models, and attackers plan mass harm.</p>
-      <p style="margin-top:8px">Your job: <b>capture the DIVIDEND, keep HARM down, and make sure the gains are shared (EQUITY)</b>. By mid-2030, where you land decides the future:</p>
+      <p style="margin-top:8px">Your job: <b>keep the nation secure</b> against the rival state, attacks on models, theft and cyber threats, while capturing the DIVIDEND. Society feels the side effects: HARM and EQUITY show what your security choices cost at home. By mid-2030, where you land decides the future:</p>
       <div class="goal">
         <div style="border-color:#ff5c5c"><b style="color:#ff5c5c">FRACTURE</b>Low dividend, high harm. The worst of both.</div>
         <div style="border-color:#f7c948"><b style="color:#f7c948">GILDED AGE</b>High dividend, but harmful or unequal.</div>
@@ -408,8 +408,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <p class="small" style="margin-top:8px">Instant loss: escalation 90 (cyber war), security 10 (grid collapse), or trust 10 (you're removed).</p>
     </div>
     <div class="box">
-      <h2>TWO FRONTS</h2>
-      <p>You will be pulled toward the rival state: weapons, borders, cyber operations. Meanwhile at home, preteens are hooked on SI feeds, jobs are disappearing and robots are entering homes. <b>Both fronts need attention every round.</b> Neglect either one for two rounds and it costs you.</p>
+      <h2>SIDE EFFECTS AT HOME</h2>
+      <p>Your job is national security: the rival state, attacks on models, theft and cyber defense. But every security choice has side effects at home: jobs, kids online, robots in homes. Ignore the home front for two rounds and those side effects come back as harm.</p>
     </div>
     <div class="box">
       <h2>THREAT BRIEFING</h2>
@@ -884,7 +884,7 @@ const STATS=[['good','DIVIDEND','SI benefits to society: science, health, robots
 let hudOpen=false;
 function renderHud(){
   const h=document.getElementById('hud');h.innerHTML='';
-  const KEY=['good','harm','equity','wellbeing','modelsec','sec'];
+  const KEY=['sec','esc','modelsec','rcap','good','harm'];
   STATS.filter(([k])=>hudOpen||KEY.includes(k)).forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat${k==='good'||k==='harm'?' big':''}" title="${tip}"><span class="n">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
   h.innerHTML+=`<button class="hudtog" onclick="hudOpen=!hudOpen;renderHud()">${hudOpen?'▲ FEWER METERS':'▼ ALL 18 METERS'}</button>`;
   document.getElementById('rnum').textContent=S.round;document.getElementById('rmax').textContent=S.maxRounds;document.getElementById('date').textContent=dateFor(S.round);

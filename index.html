@@ -112,8 +112,18 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
-.howbox{margin-top:10px;padding:10px;border:4px solid var(--line);background:#101225;box-shadow:6px 6px 0 #000;max-width:100%}
-.howbox img{display:block;width:100%;max-width:330px;height:auto;image-rendering:pixelated;margin:0 auto}
+.howbox{margin-top:14px;padding:14px;border:4px solid var(--line);background:#101225;box-shadow:6px 6px 0 #000;width:100%;max-width:480px;text-align:left}
+.steps10{list-style:none;margin:12px 0 6px;display:grid;grid-template-columns:1fr;gap:6px}
+.steps10 li{display:flex;align-items:center;gap:10px;font-size:20px;color:#f4f1e6;background:#1a1c3a;border:2px solid #444;padding:6px 8px}
+.steps10 li span{flex-shrink:0;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--gold);color:#000;font-family:'Press Start 2P';font-size:10px;border:2px solid #000}
+.shot{margin:18px 0 0}
+.shot figcaption{font-family:'Press Start 2P';font-size:11px;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:8px;line-height:1.5}
+.shot figcaption b{flex-shrink:0;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--blue);color:#000;border:2px solid #000;font-size:10px}
+.shot img{display:block;width:100%;height:auto;border:3px solid var(--line);box-shadow:4px 4px 0 #000}
+.shot p{font-size:19px;color:#cfcde6;margin-top:8px}
+.howbtn{background:#1a4a8a;border-color:#5ab0ff;color:#fff;font-size:12px;padding:16px 18px;width:100%;max-width:300px;box-shadow:4px 4px 0 #000,0 0 0 3px rgba(90,176,255,.35);animation:howglow 1.4s steps(2) infinite}
+@keyframes howglow{50%{box-shadow:4px 4px 0 #000,0 0 0 6px rgba(90,176,255,.6)}}
+.startbtn{width:100%;max-width:300px;font-size:13px;padding:16px 18px}
 .finale{flex:1;position:relative;overflow:hidden;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px}
 .finale .big{font-family:'Press Start 2P';font-size:34px;line-height:1.3;text-shadow:4px 4px 0 #000,0 0 18px currentColor;animation:winflash .5s steps(2) infinite}
 @keyframes winflash{50%{opacity:.55}}
@@ -243,12 +253,18 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <h1>SIGNAL / NOISE</h1>
     <div class="sub">Superintelligence is coming either way.<br>Steer it toward abundance, or watch it fracture.<br>2027 to 2030. Quick, standard or full game.<br>Export controls. Frontier models. Ransomware gangs.<br>Open weights. One rival state. And you.</div>
     <div class="px" style="font-size:8px;color:var(--gold);line-height:2">GAME THEORY · ATTRIBUTION FOG · PROFIT MOTIVE<br>GOOD INTENT, BAD OUTCOMES</div>
-    <button class="a" onclick="go('s-setup')">▶ PRESS START</button>
-    <button onclick="go('s-how')">HOW TO PLAY</button>
+    <button class="a startbtn" onclick="go('s-setup')">▶ PRESS START</button>
+    <button class="howbtn" onclick="go('s-how')">📖 HOW TO PLAY</button>
+    <div class="px" style="font-size:8px;color:#5ab0ff">NEW HERE? START WITH HOW TO PLAY</div>
     <button style="font-size:8px;padding:8px 10px" onclick="go('s-disc')">DISCLAIMER</button>
     <div class="howbox">
-      <div class="px" style="font-size:9px;color:var(--gold);margin-bottom:8px">▼ HOW IT WORKS ▼</div>
-      <img src="howto.gif" alt="How SIGNAL/NOISE works in 10 steps, from the title screen to the final ending" width="330" height="654" loading="lazy">
+      <h2 style="text-align:center">HOW IT WORKS</h2>
+      <ol class="steps10"><li><span>1</span>Pick rival and length</li><li><span>2</span>Read the mission briefing</li><li><span>3</span>Answer the round's crisis</li><li><span>4</span>Set posture at HQ</li><li><span>5</span>Spend PC on actions</li><li><span>6</span>Check orders on the map</li><li><span>7</span>Press B to end turn</li><li><span>8</span>See the showdown</li><li><span>9</span>Repeat until 2030</li><li><span>10</span>Reach Abundance and win</li></ol>
+      <figure class="shot"><figcaption><b>1</b>TAP A BUILDING TO ACT</figcaption><img src="how-map.png" alt="Tap A Building To Act" loading="lazy"><p>Each building is a department. Blue TIP tags show the analyst's picks. Start at HQ.</p></figure>
+      <figure class="shot"><figcaption><b>2</b>CHOOSE YOUR POSTURE</figcaption><img src="how-posture.png" alt="Choose Your Posture" loading="lazy"><p>At HQ, pick Cooperate, Hedge or Escalate toward the rival. It is free and required.</p></figure>
+      <figure class="shot"><figcaption><b>3</b>BUY ACTIONS WITH PC</figcaption><img src="how-card.png" alt="Buy Actions With Pc" loading="lazy"><p>Tap a card to buy it. The threat analyst shows what it does: green helps, red hurts.</p></figure>
+      <figure class="shot"><figcaption><b>4</b>SEE WHO DID WHAT</figcaption><img src="how-clash.png" alt="See Who Did What" loading="lazy"><p>After you end the turn, you and the rival reveal your moves at the same time.</p></figure>
+      <button class="howbtn" onclick="go('s-how')" style="margin-top:6px">📖 FULL HOW TO PLAY</button>
     </div>
     <div class="px" style="font-size:7px;color:var(--dim)">Fictional scenario. The rival is an invented state, not any real country.<br>All actors are archetypes, not real people or organizations.</div>
   </div>
@@ -549,7 +565,7 @@ const LOCS = [
   {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:6,y:6, icon:'🏭', name:'FABS & POWER', who:'ENERGY SECRETARY', intro:'"Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
   {id:'town',short:'TOWN',purpose:'Society: jobs, fairness, privacy, kids online, addictive feeds, public access to SI.', x:5,y:5, icon:'🏛', name:'TOWN HALL', who:'MAYOR', intro:'"My town does not care about chips or treaties. They care about jobs, their kids, and whether the machine treats them fairly."'},
   {id:'bots',short:'ROBOTS',purpose:'Humanoid robot policy: safety certification, cybersecurity, liability, home privacy, and sharing the gains with displaced workers.', x:6,y:2, icon:'🤖', name:'ROBOTICS BOARD', who:'ROBOTICS SAFETY CHIEF', intro:'"A chatbot that makes a mistake writes a bad sentence. A humanoid that makes a mistake drops a patient. We need rules before there are millions of them."'},
-  {id:'red',short:'REDTEAM',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:3,y:5, icon:'🎯', name:'RED TEAM LAB', who:'RED TEAM LEAD', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
+  {id:'red',short:'RED',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:3,y:5, icon:'🎯', name:'RED TEAM LAB', who:'RED TEAM LEAD', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
 ];
 
 // Action cards. fx = direct effects; flags set round modifiers.

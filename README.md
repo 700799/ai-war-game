@@ -7,3 +7,13 @@ A think-tank-style, game-theoretic superintelligence wargame in a pixel/Nintendo
 Single static file (`index.html`), served by GitHub Pages from `main`.
 
 Fictional scenario. Actors are archetypes, not real organizations.
+
+## Disclaimer
+
+SIGNAL / NOISE is a fictional, educational simulation about policy trade-offs around superintelligence, cybersecurity and society. It is not a prediction of real events.
+
+- **No real countries.** The rival is an invented state and does not represent any real nation, government or people.
+- **No real people or organizations.** All characters, agencies, labs and groups are fictional archetypes. The game is not affiliated with or endorsed by any government, think tank, university or company.
+- **Simplified on purpose.** All numbers, probabilities, dates and outcomes are illustrative game mechanics, not research findings or forecasts.
+- **Not advice.** Nothing here is legal, financial, security, medical or policy advice.
+- **High-level only.** Harms are described in general terms for discussion; the game contains no real techniques or instructions.

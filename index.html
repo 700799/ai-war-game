@@ -222,8 +222,27 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div class="px" style="font-size:8px;color:var(--gold);line-height:2">GAME THEORY · ATTRIBUTION FOG · PROFIT MOTIVE<br>GOOD INTENT, BAD OUTCOMES</div>
     <button class="a" onclick="go('s-setup')">▶ PRESS START</button>
     <button onclick="go('s-how')">HOW TO PLAY</button>
+    <button style="font-size:8px;padding:8px 10px" onclick="go('s-disc')">DISCLAIMER</button>
     <div class="px" style="font-size:7px;color:var(--dim)">Fictional scenario. The rival is an invented state, not any real country.<br>All actors are archetypes, not real people or organizations.</div>
   </div>
+</section>
+
+<!-- DISCLAIMER -->
+<section class="screen" id="s-disc">
+  <div class="scroll"><div class="box">
+      <h2>DISCLAIMER</h2>
+      <p style="margin-top:8px"><b>SIGNAL / NOISE is a fictional, educational simulation.</b> It is meant to help people think through policy trade-offs around superintelligence, cybersecurity and society. It is not a prediction of real events.</p>
+      <ul class="threats" style="margin-top:8px">
+        <li><span>•</span><b>No real countries.</b> The rival is an invented state. It does not represent any real nation, government or people, and no country is portrayed as an enemy.</li>
+        <li><span>•</span><b>No real people or organizations.</b> All characters, agencies, labs, companies and groups are fictional archetypes. Any resemblance is coincidental. The game is not affiliated with or endorsed by any government, think tank, university or company.</li>
+        <li><span>•</span><b>Simplified on purpose.</b> All numbers, probabilities, dates and outcomes are illustrative game mechanics, not research findings, forecasts or official estimates.</li>
+        <li><span>•</span><b>Not advice.</b> Nothing here is legal, financial, security, medical or policy advice.</li>
+        <li><span>•</span><b>High-level only.</b> Harms such as cyberattacks, scams, abuse and misuse are described in general terms for discussion. The game contains no real techniques or instructions.</li>
+        <li><span>•</span><b>Sensitive topics.</b> The game mentions crises affecting young people, scams and violence. If you or someone you know needs help, contact local emergency services or a crisis line in your area.</li>
+      </ul>
+      <p class="small" style="margin-top:8px">Characters and pixel art are original to this game.</p>
+  </div></div>
+  <div class="foot"><button onclick="go('s-title')">◀ BACK</button></div>
 </section>
 
 <!-- HOW -->
@@ -308,6 +327,19 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
         <li><b>Mind the brink.</b> Above 75 escalation the rival gets cautious, but one attribution error can end the game. Don't gamble there.</li>
       </ol>
     </div>
+    <div class="box">
+      <h2>DISCLAIMER</h2>
+      <p style="margin-top:8px"><b>SIGNAL / NOISE is a fictional, educational simulation.</b> It is meant to help people think through policy trade-offs around superintelligence, cybersecurity and society. It is not a prediction of real events.</p>
+      <ul class="threats" style="margin-top:8px">
+        <li><span>•</span><b>No real countries.</b> The rival is an invented state. It does not represent any real nation, government or people, and no country is portrayed as an enemy.</li>
+        <li><span>•</span><b>No real people or organizations.</b> All characters, agencies, labs, companies and groups are fictional archetypes. Any resemblance is coincidental. The game is not affiliated with or endorsed by any government, think tank, university or company.</li>
+        <li><span>•</span><b>Simplified on purpose.</b> All numbers, probabilities, dates and outcomes are illustrative game mechanics, not research findings, forecasts or official estimates.</li>
+        <li><span>•</span><b>Not advice.</b> Nothing here is legal, financial, security, medical or policy advice.</li>
+        <li><span>•</span><b>High-level only.</b> Harms such as cyberattacks, scams, abuse and misuse are described in general terms for discussion. The game contains no real techniques or instructions.</li>
+        <li><span>•</span><b>Sensitive topics.</b> The game mentions crises affecting young people, scams and violence. If you or someone you know needs help, contact local emergency services or a crisis line in your area.</li>
+      </ul>
+      <p class="small" style="margin-top:8px">Characters and pixel art are original to this game.</p>
+    </div>
   </div>
   <div class="foot"><button onclick="go('s-title')">◀ BACK</button></div>
 </section>
@@ -350,6 +382,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
         <div style="border-color:#5ab0ff"><b style="color:#5ab0ff">SAFE STAGNATION</b>Safe, nothing cured.</div>
         <div style="border-color:#4bd37b"><b style="color:#4bd37b">ABUNDANCE</b>The goal.</div>
       </div>
+      <p class="small" style="margin-top:8px">Fictional simulation. The rival is an invented state; all numbers are illustrative. See DISCLAIMER on the title screen.</p>
       <p class="small" style="margin-top:8px">Instant loss: escalation 90 (cyber war), security 10 (grid collapse), or trust 10 (you're removed).</p>
     </div>
     <div class="box">
@@ -1273,7 +1306,8 @@ function endGame(){
    <div class="box"><h2>POSTURE HISTORY</h2>
    <div class="matrix" style="grid-template-columns:40px repeat(${Math.max(1,n)},1fr);margin-top:8px"><div class="h"></div>${H.map((h,i)=>`<div class="h">R${i+1}</div>`).join('')}<div class="h">YOU</div>${H.map(h=>`<div>${PL[h].slice(0,3)}</div>`).join('')}<div class="h">RIVAL</div>${R.map(h=>`<div>${PL[h].slice(0,3)}</div>`).join('')}</div></div>
    <div class="box"><h2>WHAT THE GAME THEORY SAYS</h2>${L.map(l=>`<div class="lesson">${l}</div>`).join('')}</div>
-   <div class="box"><h3>DESIGN NOTES</h3><p class="small" style="margin-top:6px">Posture is a repeated prisoner's-dilemma / stag-hunt hybrid with noisy signals. Labs, the commons, criminals and Congress each play their own game with their own payoffs; none of them can be ordered, only incentivized. Rival doctrine: ${RIVALS[S.rival].name}. Difficulty: ${DIFFS[S.diff].label}.</p></div>`;
+   <div class="box"><h3>DESIGN NOTES</h3><p class="small" style="margin-top:6px">Posture is a repeated prisoner's-dilemma / stag-hunt hybrid with noisy signals. Labs, the commons, criminals and Congress each play their own game with their own payoffs; none of them can be ordered, only incentivized. Rival doctrine: ${RIVALS[S.rival].name}. Difficulty: ${DIFFS[S.diff].label}.</p></div>
+   <p class="small" style="margin:12px 4px;text-align:center">Fictional educational simulation. The rival is an invented state, not any real country. All characters are archetypes; all numbers are illustrative, not forecasts or advice.</p>`;
 }
 
 // keyboard

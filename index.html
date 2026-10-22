@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SIGNAL / NOISE — Find the signal. Survive the noise.</title>
-<meta name="description" content="A think-tank style, game-theoretic superintelligence wargame. Play the National Security Council through eight rounds of crisis.">
+<meta name="description" content="A think-tank style, game-theoretic superintelligence wargame. Chair a fictional national security cell through rounds of crisis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
@@ -345,12 +345,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     </div>
     <div class="box">
       <h2>HOW TO PLAY</h2>
-      <p>You chair the <b>National Security Council's</b> superintelligence security cell. Each round you set a <b>POSTURE</b> toward the rival state and spend <b>Political Capital (PC)</b> on actions across the map.</p>
-      <p style="margin-top:8px">Then everyone else moves <i>simultaneously</i>: the rival state, your own profit-driven frontier labs, the open-source commons, criminal syndicates, and Congress.</p>
+      <p>You chair a fictional <b>national security cell</b> focused on superintelligence. Each round you set a <b>POSTURE</b> toward the rival state and spend <b>Political Capital (PC)</b> on actions across the map.</p>
+      <p style="margin-top:8px">Then everyone else moves <i>simultaneously</i>: the rival state, your own profit-driven frontier labs, the open-source commons, criminal syndicates, and the legislature.</p>
       <h3 style="margin-top:12px">THE CORE GAME</h3>
       <p>Posture vs. the rival is a repeated game under <b>attribution fog</b>. Mutual cooperation is best for both — but each side is tempted to exploit the other, and a criminal attack can be misread as a state attack. Intel lifts the fog.</p>
       <h3 style="margin-top:12px">THE OTHER GAMES</h3>
-      <p>Labs ship fast unless incentives change, and faster still when subscription revenue falls. Open weights help everyone, including your enemies, and their safety training can be stripped. Criminals scale with whatever capability leaks. Insiders walk out with weights. Chips, memory, power and talent are all short. Congress punishes you for both overreach and weakness.</p>
+      <p>Labs ship fast unless incentives change, and faster still when subscription revenue falls. Open weights help everyone, including your enemies, and their safety training can be stripped. Criminals scale with whatever capability leaks. Insiders walk out with weights. Chips, memory, power and talent are all short. The legislature punishes you for both overreach and weakness.</p>
       <h3 style="margin-top:12px">LOSE IF</h3>
       <p>Escalation hits 90 (cyber war) · Security falls to 10 (grid collapse) · Trust falls to 10 (political collapse).</p>
     </div>
@@ -595,7 +595,7 @@ let glen='std';
 const DIFFS = {easy:{pc:9,noise:.1,label:'TABLETOP'},normal:{pc:8,noise:.2,label:'SITROOM'},hard:{pc:7,noise:.3,label:'DEFCON'}};
 
 const LOCS = [
-  {id:'wh',short:'HQ',purpose:'National security headquarters. Set your POSTURE toward the rival. Also: chip controls, cyber ops, intel.', x:1,y:1, icon:'🏛️', name:'HEADQUARTERS', who:'NSC STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
+  {id:'wh',short:'HQ',purpose:'National security headquarters. Set your POSTURE toward the rival. Also: chip controls, cyber ops, intel.', x:1,y:1, icon:'🏛️', name:'HEADQUARTERS', who:'HQ STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
   {id:'sv',short:'LABS',purpose:'Frontier labs: safety testing, liability rules, talent pipeline.', x:5,y:1, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
   {id:'cisa',short:'GRID',purpose:'Harden hospitals, water and power against attacks.',x:2,y:4, icon:'🔌', name:'GRID DEFENSE', who:'GRID DEFENSE CHIEF', intro:'"Hospitals, water, power. Every one running software older than your interns."'},
   {id:'ally',short:'ALLIES',purpose:'Coordinate with allies; open cyber-norms talks with the rival.',x:6,y:4, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
@@ -673,7 +673,7 @@ const INJECTS = [
  {id:'leak',title:'OPEN-WEIGHTS LEAK',cond:s=>true,body:'A frontier-class model with strong exploit-writing ability leaks from a lab insider and spreads on torrents within hours.',
   a:{t:'A · EMERGENCY TAKEDOWN ORDERS',fx:{trust:-6,ccap:-2},log:'Takedown orders issued. Mostly symbolic — the torrents won. Civil liberties groups sued.'},
   b:{t:'B · ACCEPT PROLIFERATION',fx:{ccap:+6,rcap:+3},log:'You accepted the new baseline and pivoted to defense. Criminal capability jumped.'}},
- {id:'lobby',title:'LAB CEOS DESCEND ON CONGRESS',cond:s=>s.flags.evals||s.flags.liab,body:'Three CEOs warn that your eval regime will hand the frontier to the rival. A senator proposes gutting it.',
+ {id:'lobby',title:'LAB CEOS LOBBY LAWMAKERS',cond:s=>s.flags.evals||s.flags.liab,body:'Three CEOs warn that your eval regime will hand the frontier to the rival. A lawmaker proposes gutting it.',
   a:{t:'A · HOLD THE LINE',fx:{econ:-3,risk:-3,trust:+1},log:'You held. Shipping slowed a quarter. Accident risk fell.'},
   b:{t:'B · GRANT WAIVERS',fx:{econ:+5,risk:+6},log:'Waivers granted. Stock prices up. Red-team findings started going unread.'}},
  {id:'summit',title:'RIVAL PROPOSES A SUMMIT',cond:s=>s.m.esc>40,body:'Through back channels the rival offers talks on keeping SI out of nuclear command-and-control and hospital networks.',
@@ -853,7 +853,7 @@ const SPR={
 };
 const sprite=k=>spr(SPR[k].rows,SPR[k].pal,16,16);
 
-/* hero: original pixel character (NSC analyst) */
+/* hero: original pixel character (HQ analyst) */
 const HERO_PAL={h:'#4a2b17',s:'#f1c27d',e:'#1b1b2f',n:'#23305e',w:'#f4f1e6',r:'#d33a3a',b:'#141420',g:'#9aa3b5',k:'#3a3a3a',m:'#b5651d'};
 const HERO_DOWN=["....hhhh....","...hhhhhh...","...hssssh...","..gsessesg..","...ssmmss...","....ssss....","..nnnwwnnn..",".nnnnwrnnnn.",".snnnnrnnns.",".s.nnnrnn.s.","...nnnnnn...","...kkkkkk..."];
 const HERO_UP=["....hhhh....","...hhhhhh...","...hhhhhh...","..ghhhhhhg..","...hhhhhh...","....ssss....","..nnnnnnnn..",".nnnnnnnnnn.",".snnnnnnnns.",".s.nnnnnn.s.","...nnnnnn...","...kkkkkk..."];
@@ -978,14 +978,14 @@ function typeInto(el,text,cb){clearInterval(typing);el.textContent='';let i=0;ty
 
 function briefText(){
   const m=S.m,r=S.round;
-  if(r===1) return `January 2027. The race to superintelligence is on, and it will arrive whether or not you act. The SI clock only moves forward; your job is to decide who it serves. The rival has begun fielding SI agents that write exploits faster than our analysts can read them. Our own labs are three months ahead and want to ship. Criminal syndicates are already using last year's open models. Congress wants two things: safety and speed. You have ${S.pc} points of political capital this round. Spend them well.`;
+  if(r===1) return `January 2027. The race to superintelligence is on, and it will arrive whether or not you act. The SI clock only moves forward; your job is to decide who it serves. The rival has begun fielding SI agents that write exploits faster than our analysts can read them. Our own labs are three months ahead and want to ship. Criminal syndicates are already using last year's open models. Lawmakers want two things: safety and speed. You have ${S.pc} points of political capital this round. Spend them well.`;
   const last=S.roundLog[S.roundLog.length-1]||{};
   const bits=[];
   if(m.esc>70) bits.push('Escalation is dangerously high. One misread incident could tip into open conflict.');
   else if(m.esc<25) bits.push('The channel with the rival is unusually calm. Hawks on both sides call it naive.');
   if(m.ccap>60) bits.push('Ransomware crews are now operating at near state-level capability.');
   if(m.risk>65) bits.push('Autonomous systems inside your own infrastructure are a bigger threat than any adversary this round.');
-  if(m.trust<35) bits.push('Your political capital is thin. Congress is circling.');
+  if(m.trust<35) bits.push('Your political capital is thin. Lawmakers are circling.');
   if(m.rcap>70) bits.push('Intelligence estimates the rival has reached capability parity.');
   if(m.ally<40) bits.push('Allies are hedging between you and the rival.');
   if(m.good>=60) bits.push('SI breakthroughs are reaching hospitals and homes. Keep the harms in check.');
@@ -1340,7 +1340,7 @@ function applyFx(fx,acc){for(const k in fx){if(!(k in S.m))continue;const before
   checkDeath()}
 function checkDeath(){if(S.dead)return;if(S.m.esc>=90)S.dead='Escalation reached 90. The exchange went kinetic-adjacent: ports, rail, and three regional grids down on both sides. Cyber war.';
   else if(S.m.sec<=10)S.dead='Security collapsed. A cascade of attacks and accidents took the eastern grid down for eleven days.';
-  else if(S.m.trust<=10)S.dead='Trust collapsed. Congress stripped the NSC cell of authority. The game continues — without you.'}
+  else if(S.m.trust<=10)S.dead='Trust collapsed. Lawmakers stripped your cell of its authority. The game continues — without you.'}
 
 function openResolveCheck(){
   if(!S.posture){toast('SET POSTURE AT HQ');SFX.bad();hero={x:1,y:1};placeHero();return}
@@ -1446,7 +1446,7 @@ function resolve(){
   const HM=[[25,'HARM: SI essay mills sweep high schools. Diplomas are losing meaning.'],[40,'HARM: voice-clone scams and deepfake abuse are now everyday crimes.'],[55,'HARM: bot-driven radicalization is fueling violence in several cities.'],[70,'HARM: a stripped model nearly enabled a mass-casualty attack.']];
   GM.forEach(([t,txt])=>{if(m.good>=t&&!S.ms['g'+t]){S.ms['g'+t]=1;log.push(txt)}});
   HM.forEach(([t,txt])=>{if(m.harm>=t&&!S.ms['h'+t]){S.ms['h'+t]=1;log.push(txt)}});
-  // ---- 9. Congress / drift ----
+  // ---- 9. the legislature / drift ----
   applyFx({esc:-2},acc);
   if(bp==='esc'&&m.trust<50){applyFx({trust:+3},acc)} // hawkish plays well when weak
   if(bp==='coop'&&m.esc<30){applyFx({trust:+2,econ:+1},acc)}
@@ -1525,7 +1525,7 @@ function finaleStory(){clearInterval(finTimer);const E=ending();const f=document
     <div class="fbtn"><button onclick="finaleCredits()">CREDITS ▶</button><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`;
   const c=document.getElementById('crawl');let i=0;const next=()=>{if(i>=lines.length)return;const [k,t]=lines[i++];const p=document.createElement('p');p.innerHTML=icon(k);const sp=document.createElement('span');p.appendChild(sp);c.appendChild(p);typeInto(sp,t,()=>setTimeout(next,250))};next()}
 function finaleCredits(){const f=document.getElementById('finale');SFX.fanfare();
-  const cast=[['THE NSC CHAIR','YOU'],['THREAT ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CISO','SOC'],['GRID DEFENSE CHIEF','GRID'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
+  const cast=[['THE CHAIR','YOU'],['THREAT ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CISO','SOC'],['GRID DEFENSE CHIEF','GRID'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
   f.style.justifyContent='center';
   f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(24):''}<div class="credits"><div style="font-size:14px;color:#f7c948">SIGNAL / NOISE</div><div>A SUPERINTELLIGENCE WARGAME</div><b>STARRING</b>${cast.map(([a,b])=>`${a}<br><span style="color:#9b9ac7">${b}</span>`).join('<br>')}<b>FINAL SCORE</b>${scoreGame()} / 100<b>SI CLOCK</b>${S.si}%<b>THANK YOU FOR PLAYING</b><br><br></div>
     <div class="fbtn"><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`}
@@ -1597,7 +1597,7 @@ function endGame(skipFinale){
    <div class="box"><h2>POSTURE HISTORY</h2>
    <div class="matrix" style="grid-template-columns:40px repeat(${Math.max(1,n)},1fr);margin-top:8px"><div class="h"></div>${H.map((h,i)=>`<div class="h">R${i+1}</div>`).join('')}<div class="h">YOU</div>${H.map(h=>`<div>${PL[h].slice(0,3)}</div>`).join('')}<div class="h">RIVAL</div>${R.map(h=>`<div>${PL[h].slice(0,3)}</div>`).join('')}</div></div>
    <div class="box"><h2>WHAT THE GAME THEORY SAYS</h2>${L.map(l=>`<div class="lesson">${l}</div>`).join('')}</div>
-   <div class="box"><h3>DESIGN NOTES</h3><p class="small" style="margin-top:6px">Posture is a repeated prisoner's-dilemma / stag-hunt hybrid with noisy signals. Labs, the commons, criminals and Congress each play their own game with their own payoffs; none of them can be ordered, only incentivized. Rival doctrine: ${RIVALS[S.rival].name}. Difficulty: ${DIFFS[S.diff].label}.</p></div>
+   <div class="box"><h3>DESIGN NOTES</h3><p class="small" style="margin-top:6px">Posture is a repeated prisoner's-dilemma / stag-hunt hybrid with noisy signals. Labs, the commons, criminals and lawmakers each play their own game with their own payoffs; none of them can be ordered, only incentivized. Rival doctrine: ${RIVALS[S.rival].name}. Difficulty: ${DIFFS[S.diff].label}.</p></div>
    <p class="small" style="margin:12px 4px;text-align:center">Fictional educational simulation. The rival is an invented state, not any real country. All characters are archetypes; all numbers are illustrative, not forecasts or advice.</p>`;
 }
 

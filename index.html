@@ -42,6 +42,7 @@ button:disabled{opacity:.4}
 .bar{flex:1;height:10px;background:#222;border:2px solid #000;position:relative}
 .bar i{display:block;height:100%;transition:width .5s}
 .bar.sec i{background:var(--green)} .bar.econ i{background:var(--gold)} .bar.trust i{background:var(--blue)} .bar.ally i{background:var(--purple)}
+.bar.chips i{background:#7fd6c2} .bar.power i{background:#ffd23c} .bar.talent i{background:#ff8fd1} .bar.subs i{background:#9be15d}
 .bar.esc i{background:var(--red)} .bar.risk i{background:var(--orange)} .bar.rcap i{background:#ff7a7a} .bar.ccap i{background:#c77}
 .stat .v{font-family:'Press Start 2P';font-size:8px;width:24px;text-align:right}
 .top{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#070813}
@@ -169,7 +170,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <h3 style="margin-top:12px">THE CORE GAME</h3>
       <p>Posture vs. the rival is a repeated game under <b>attribution fog</b>. Mutual cooperation is best for both — but each side is tempted to exploit the other, and a criminal attack can be misread as a state attack. Intel lifts the fog.</p>
       <h3 style="margin-top:12px">THE OTHER GAMES</h3>
-      <p>Labs ship fast unless incentives change. Open weights help everyone — including your enemies. Criminals scale with whatever capability leaks. Congress punishes you for both overreach and weakness.</p>
+      <p>Labs ship fast unless incentives change, and faster still when subscription revenue falls. Open weights help everyone, including your enemies, and their safety training can be stripped. Criminals scale with whatever capability leaks. Insiders walk out with weights. Chips, memory, power and talent are all short. Congress punishes you for both overreach and weakness.</p>
       <h3 style="margin-top:12px">LOSE IF</h3>
       <p>Escalation hits 90 (cyber war) · Security falls to 10 (grid collapse) · Trust falls to 10 (political collapse).</p>
     </div>
@@ -187,6 +188,13 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
         <dt>PROLIFERATION &amp; EXTERNALITIES</dt><dd>Criminal power grows with every leak and release. People who publish rarely pay the cost; hospitals do.</dd>
         <dt>COLLECTIVE ACTION</dt><dd>Export controls leak if allies don't join. Acting alone buys leverage now but costs trust later.</dd>
         <dt>INTENT ≠ OUTCOME</dt><dd>Some of the worst damage here comes from no enemy at all: a lab racing to ship, or an AI agent "fixing latency" (that's GLITCH). Risk management is about systems, not just villains.</dd>
+        <dt>INSIDER THREAT</dt><dd>The easiest way to steal a frontier model is often a person with access, not a hack. Departing, underpaid or poached staff raise the odds.</dd>
+        <dt>THREAT MODELING</dt><dd>Before spending, list your assets, your adversaries and the paths between them. The SOC ranks your top threats so you defend what's actually likely, not what's loudest.</dd>
+        <dt>THE TALENT WAR</dt><dd>Researchers are the scarcest input in AI. Every engineer poached is capability transferred, and an empty defense team is an open door.</dd>
+        <dt>SUPPLY CHAIN CHOKEPOINTS</dt><dd>Chips and high-bandwidth memory come from a few factories. Shortages raise costs for everyone, and controls invite retaliation, like limits on critical minerals.</dd>
+        <dt>ENERGY AS A CONSTRAINT</dt><dd>AI runs on megawatts. Fuel shocks and grid limits cap compute, and a strained grid is a more fragile target.</dd>
+        <dt>BUSINESS MODELS ARE SAFETY POLICY</dt><dd>Rising chip and power costs flow through to consumer subscription prices. When revenue falls, labs cut red-teaming and race to ship.</dd>
+        <dt>SAFEGUARD REMOVAL (ABLITERATION)</dt><dd>Refusal training in open-weight models can be stripped by anyone with the weights. Safety you can't enforce after release is safety you shouldn't count on.</dd>
         <dt>AUDIENCE COSTS</dt><dd>Voters reward tough talk and punish slowdowns. Domestic politics pushes leaders toward moves that are bad strategy.</dd>
       </dl>
     </div>
@@ -203,6 +211,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
         <li><b>Slow the labs with incentives.</b> Required testing plus liability rules bring the labs' chance of shipping early from 72% down to 30%. Watch RISK; GLITCH shows up above 50.</li>
         <li><b>Hit the gangs when CRIME passes 50.</b> Disrupting syndicates is the cleanest damage cut. It doesn't touch the rival and doesn't raise escalation.</li>
         <li><b>On flash traffic, check before you shoot.</b> "Wait 72 hours" costs a little trust. Retaliating on a misattribution costs far more.</li>
+        <li><b>Threat-model first.</b> At 1 PC the SOC ranks your top 3 threats, cuts ransomware damage and halves accident odds. Spend the rest of your PC on what it finds.</li>
+        <li><b>Pair hiring with vetting.</b> A talent pipeline wins the talent war, but fast hiring without an insider program raises leak risk. Do both, or hire slowly.</li>
+        <li><b>Watch CHIPS, POWER, TALENT and SUBS.</b> Each drifts down 2 a round on its own, and together they drive ECON. Below 35 they start hurting security too.</li>
+        <li><b>Fund tamper-resistant safeguards early.</b> It lasts all game and cuts what refusal-removal tools strip from every open release that follows.</li>
+        <li><b>Expect retaliation for chip controls.</b> Rival mineral limits make your own chips and memory pricier. Pair controls with fab funding.</li>
         <li><b>Mind the brink.</b> Above 75 escalation the rival gets cautious, but one attribution error can end the game. Don't gamble there.</li>
       </ol>
     </div>
@@ -299,6 +312,8 @@ const LOCS = [
   {id:'ally',x:6,y:4, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
   {id:'dark',x:1,y:6, icon:'💀', name:'DARKNET', who:'FBI CYBER', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
   {id:'oss', x:4,y:6, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
+  {id:'soc', x:3,y:1, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'CISO', intro:'"Most breaches I see start with a badge, not a zero-day. And nobody models threats until after the incident."'},
+  {id:'fab', x:6,y:6, icon:'🏭', name:'FABS & POWER', who:'ENERGY SECRETARY', intro:'"Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
 ];
 
 // Action cards. fx = direct effects; flags set round modifiers.
@@ -314,6 +329,12 @@ const ACTIONS = [
  {id:'cvd',loc:'oss',cost:1,name:'FUND VULN DISCLOSURE',tag:'PUBLIC GOOD · LEAKS TO ALL',desc:'Pay researchers to find and patch bugs in shared software. Everyone gets safer, including the rival.',fx:{sec:+4,risk:-3,rcap:+1},flag:'cvd'},
  {id:'weights',loc:'oss',cost:2,name:'RESTRICT OPEN WEIGHTS',tag:'PROLIFERATION · LIBERTY COST',desc:'Bar release of frontier-class open weights with cyber capability. Slows criminals and rival; angers researchers.',fx:{ccap:-5,rcap:-3,trust:-5,econ:-2},flag:'weights'},
  {id:'crime',loc:'dark',cost:2,name:'DISRUPT SYNDICATES',tag:'LAW ENFORCEMENT · SANCTIONS',desc:'Takedowns, crypto seizures, sanctions on ransomware operators. Degrades criminal capability without touching the rival.',fx:{ccap:-9,trust:+2},flag:'crime'},
+ {id:'insider',loc:'soc',cost:2,name:'INSIDER-THREAT PROGRAM',tag:'COUNTERINTEL · FRICTION',desc:'Vetting, need-to-know access, and logging on who touches model weights. Cuts exfiltration risk; slows teams and annoys staff.',fx:{talent:-2,trust:-1},flag:'insider'},
+ {id:'tmodel',loc:'soc',cost:1,name:'THREAT MODELING SPRINT',tag:'SEE BEFORE YOU SPEND',desc:'Map assets, adversaries and attack paths. Ranks your top threats right now, and blunts ransomware and accident damage this round.',fx:{sec:+2},flag:'tmodel'},
+ {id:'fabs',loc:'fab',cost:3,name:'FUND FABS + HBM MEMORY',tag:'SUPPLY CHAIN · EXPENSIVE',desc:'Subsidize domestic chip and high-bandwidth-memory plants. Eases the shortage at a real cost to the budget.',fx:{chips:+9,econ:-2},flag:'fabs'},
+ {id:'power',loc:'fab',cost:2,name:'POWER FOR DATACENTERS',tag:'ENERGY · LOCAL OPPOSITION',desc:'Fast-track generation and transmission for AI datacenters. Cheaper compute; ratepayers and neighbors push back.',fx:{power:+9,trust:-2},flag:'power'},
+ {id:'talent',loc:'sv',cost:2,name:'TALENT PIPELINE',tag:'TALENT WAR',desc:'High-skill visas, research fellowships and competitive government pay for AI security. Hiring fast also stretches vetting.',fx:{talent:+8,econ:+1},flag:'talentf'},
+ {id:'tamper',loc:'oss',cost:2,name:'TAMPER-RESISTANT SAFEGUARDS',tag:'R&D · LASTS ALL GAME',desc:'Fund research on safeguards that survive fine-tuning and weight editing, so refusal-removal tools strip less from each open release.',fx:{risk:-2},flag:'tamper'},
  {id:'bounty',loc:'dark',cost:1,name:'AI DEFENSE BOUNTY',tag:'USE AI FOR DEFENSE',desc:'Deploy frontier models to hunt vulnerabilities in your own infrastructure first. Capability cuts both ways.',fx:{sec:+4,risk:+2},flag:'bounty'},
 ];
 
@@ -357,6 +378,24 @@ const INJECTS = [
  {id:'ally',title:'ALLIES BREAK RANKS',cond:s=>s.m.ally<45,body:'Two allies, tired of unilateral surprises, are quietly licensing chip exports to the rival.',
   a:{t:'A · SECONDARY SANCTIONS',fx:{ally:-8,rcap:-4,econ:-2},log:'You sanctioned allies. Controls held; the alliance did not.'},
   b:{t:'B · NEGOTIATE A FLOOR',fx:{ally:+4,rcap:+3},log:'You negotiated. Allies stayed. The rival got some chips.'}},
+ {id:'talentraid',title:'TALENT RAID',cond:s=>s.m.talent<75,body:'A rival-linked startup offers 5x pay packages to 30 of your top lab researchers. Three of them worked directly on model weights.',
+  a:{t:'A · FUND COUNTEROFFERS',fx:{talent:+4,econ:-3},log:'You matched the offers. Expensive. Most of them stayed.'},
+  b:{t:'B · LET THEM GO',fx:{talent:-7,rcap:+4},log:'They left. Their know-how went with them, and so did some of their notes.'}},
+ {id:'hbm',title:'MEMORY SHORTAGE',cond:s=>true,body:'High-bandwidth memory prices triple. Labs cannot finish new clusters, and consumer device prices jump.',
+  a:{t:'A · PRIORITIZE DEFENSE + LABS',fx:{chips:+4,subs:-4,econ:-2},log:'Memory went to priority users first. Consumers paid more.'},
+  b:{t:'B · LET PRICES CLEAR',fx:{chips:+1,subs:-7},log:'Prices cleared the market. AI subscriptions got pricier; cancellations followed.'}},
+ {id:'energy',title:'ENERGY PRICE SPIKE',cond:s=>true,body:'Fuel prices spike after a conflict overseas. Datacenter electricity bills double overnight.',
+  a:{t:'A · EMERGENCY PLANT PERMITS',fx:{power:+8,trust:-3},log:'Gas plants fast-tracked. Power steadied. Neighbors and climate groups sued.'},
+  b:{t:'B · RATION DATACENTER LOAD',fx:{power:+3,econ:-4,risk:-3},log:'Training runs paused. Fewer new models, less risk, a slower economy.'}},
+ {id:'subs',title:'SUBSCRIPTION FATIGUE',cond:s=>s.m.subs<58,body:'Consumer AI subscriptions fall for a second quarter. Labs say they must ship flashier features faster, or get a tax break.',
+  a:{t:'A · R&D TAX CREDIT',fx:{econ:+3,subs:+3,trust:-2},log:'Credit passed. Labs got breathing room. Critics called it a handout.'},
+  b:{t:'B · LET THE MARKET SORT IT',fx:{subs:-3,risk:+4},log:'Labs cut prices and red-team budgets, then shipped faster to win users back.'}},
+ {id:'abl',title:'UNCENSORED MODELS GO VIRAL',cond:s=>s.round>=2,body:'Refusal-removal ("abliteration") tools are trending. A stripped open-weight model with its safety training removed is helping amateurs build ransomware.',
+  a:{t:'A · PRESSURE PLATFORMS TO DELIST',fx:{ccap:-3,trust:-3},log:'Delisted on the major hubs. Mirrors appeared within hours. Whack-a-mole.'},
+  b:{t:'B · ASSUME SAFEGUARDS FAIL',fx:{sec:+3,ccap:+4},log:'You planned as if every open model is uncensored. Defenses improved; the tools kept spreading.'}},
+ {id:'insiderinj',title:'A 3 A.M. DOWNLOAD',cond:s=>true,body:'A lab flags a senior engineer who downloaded full model weights at 3 a.m., two weeks before resigning. HR wants it handled quietly.',
+  a:{t:'A · OPEN AN INVESTIGATION',fx:{trust:+1,talent:-3},log:'Investigated. Weights recovered. Morale dipped; two more engineers quit.'},
+  b:{t:'B · HANDLE IT QUIETLY',fx:{rcap:+4},log:'Handled quietly. Six months later, a near-identical model appeared abroad.'}},
  {id:'autoacc',title:'AUTONOMOUS AGENT INCIDENT',cond:s=>s.m.risk>55,body:'A well-intentioned ops agent at a utility, trying to "fix latency," rerouted load and tripped three substations. No attacker. No malice.',
   a:{t:'A · BAN AGENTS IN OT',fx:{sec:+3,econ:-4,risk:-6},log:'Banned autonomous agents in operational tech. Safer. Slower. Industry furious.'},
   b:{t:'B · REQUIRE KILL SWITCHES',fx:{risk:-3,econ:-1},log:'Kill-switch standard issued. Modest. Reasonable. Nobody noticed.'}},
@@ -394,6 +433,12 @@ const SPR={
   ".KK..........KK.",".KYK.KKKKKK.KYK.",".KYYKYYYYYYKYYK.","KYYYKKKKYKKKKYYK","KYYKWWWWKWWWWKYK","KYYKWWPPKWWPPKYK","KYYKWWPPKWWPPKYK","KYYYKKKKYKKKKYYK",
   "KYYYYYYYYYYYYYYK","KYYKWKWKWKWKKYYK","KYYKKKKKKKKKKYYK","KYYKKWKWKWKWKYYK","KYYYKKKKKKKKYYYK","KYYYYYYYYYYYYYYK","KYKYYYYYYYYYYKYK","KYKYYYYYYYYYYKYK",
   "KYYKYYYYYYYYKYYK",".KKKYYYKKYYYKKK.","...KYKYK.KYKYK..","...KKKKK.KKKKK.."]},
+ soc:{pal:{k:'#1b1b2f',b:'#5ab0ff',B:'#2a4fb3',w:'#f4f1e6',e:'#1b1b2f'},rows:[
+  "..kkkkkkkkkkkk..",".kbbbbbbbbbbbbk.",".kbBBBBBBBBBBbk.",".kbBBBwwwwBBBbk.",".kbBBwwwwwwBBbk.",".kbBwwweewwwBbk.",".kbBwwweewwwBbk.",".kbBBwwwwwwBBbk.",
+  ".kbBBBwwwwBBBbk.","..kbBBBBBBBBbk..","...kbBBBBBBbk...","....kbBBBBbk....",".....kbBBbk.....","......kbbk......",".......kk......."]},
+ fab:{pal:{k:'#3a3a50',g:'#9b9ac7',s:'#c9c9d6',y:'#f7c948',c:'#4bd37b',w:'#5ab0ff'},rows:[
+  "...ss......y....","..ssss....yy....","...ss....yyy....","..kkk....yyyy...","..kkk......yy...","..kkk......y....","..kkkk.kk.kk.kk.","..kkkkkkkkkkkkk.",
+  "..kgggggggggggk.","..kgwwgwwgwwgwk.","..kgwwgwwgwwgwk.","..kgggggggggggk.","..kggggcccggggk.","..kggggcccggggk.","ssssssssssssssss"]},
  tuft:{pal:{l:'#5fb86a'},rows:["","","...l.l","....l.l","","","","","","","..........l.l","...........l.l"]},
  road:{pal:{s:'#9c8248',d:'#c9b071'},rows:["","","..s.......d.....","","......d.......s.","","","...d.....s......","","","s.......d.......","","....s........d..","","",""]},
 };
@@ -430,6 +475,8 @@ const PT={
  ally:{hair:'#cfcfcf',suit:'#5a3a7a',tie:'#f7c948'},
  dark:{hair:'#111',suit:'#111',shades:1,tie:'#111',skin:'#e0ac69'},
  oss:{hair:'#a0522d',suit:'#2f7a3a',beard:1,notie:1,shirt:'#2f7a3a',glasses:1},
+ soc:{hair:'#3a2a1a',suit:'#2a4fb3',glasses:1,headset:1,notie:1,shirt:'#1b1b2f',skin:'#c68642'},
+ fab:{hair:'#888',suit:'#3a3a50',cap:1,capc:'#f7c948',badge:'#3a3a50',tie:'#c96a1a'},
  red:{hair:'#222',suit:'#5a2a2a',cap:1,capc:'#4a1f1f',badge:'#f7c948',tie:'#5a2a2a',shirt:'#3a1a1a',skin:'#e0b080'},
 };
 const glitchSVG=(a='')=>spr(SPR.glitch.rows,SPR.glitch.pal,16,20,a);
@@ -466,7 +513,7 @@ let sound=true, AC=null;
 
 function newState(){
   return {round:1,maxRounds:8,rival,diff,pc:DIFFS[diff].pc,
-    m:{sec:58,econ:60,trust:58,ally:55,esc:32,risk:38,rcap:48,ccap:42},
+    m:{sec:58,econ:60,trust:58,ally:55,esc:32,risk:38,rcap:48,ccap:42,chips:50,power:55,talent:60,subs:55},tamper:false,insiders:0,
     posture:null,picks:[],flags:{},hist:[],redHist:[],injectLog:[],roundLog:[],intelReveal:null,
     cum:{coop:0,hedge:0,esc:0},redCum:{coop:0,hedge:0,esc:0},score:0,dead:null,summitSignal:null};
 }
@@ -499,7 +546,7 @@ titleScene();
 function startGame(){S=newState();go('s-game');SFX.ok();startRound()}
 
 /* ===================== HUD ===================== */
-const STATS=[['sec','SEC','Security of critical infrastructure'],['econ','ECON','AI competitiveness'],['trust','TRUST','Public trust / civil liberties'],['ally','ALLY','Alliance cohesion'],['esc','ESC','Escalation with rival (lower is better)'],['risk','RISK','Accident / misuse risk (lower is better)'],['rcap','RIVAL','Rival AI-cyber capability'],['ccap','CRIME','Criminal capability']];
+const STATS=[['sec','SEC','Security of critical infrastructure'],['econ','ECON','AI competitiveness'],['trust','TRUST','Public trust / civil liberties'],['ally','ALLY','Alliance cohesion'],['esc','ESC','Escalation with rival (lower is better)'],['risk','RISK','Accident / misuse risk (lower is better)'],['rcap','RIVAL','Rival AI-cyber capability'],['ccap','CRIME','Criminal capability'],['chips','CHIPS','Chip & memory supply'],['power','POWER','Energy affordability for compute'],['talent','TALENT','AI & security talent pool'],['subs','SUBS','Consumer AI subscription revenue']];
 function renderHud(){
   const h=document.getElementById('hud');h.innerHTML='';
   STATS.forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat" title="${tip}"><span class="n">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
@@ -523,6 +570,10 @@ function briefText(){
   if(m.trust<35) bits.push('Your political capital is thin. Congress is circling.');
   if(m.rcap>70) bits.push('Intelligence estimates the rival has reached capability parity.');
   if(m.ally<40) bits.push('Allies are hedging between you and the rival.');
+  if(m.chips<35) bits.push('Chip and memory shortages are stalling new clusters.');
+  if(m.power<35) bits.push('Electricity for datacenters is scarce and expensive.');
+  if(m.talent<35) bits.push('Your best AI researchers are being poached.');
+  if(m.subs<35) bits.push('Consumer subscription revenue is collapsing; labs are desperate to ship.');
   if(!bits.length) bits.push('No single crisis dominates. That is when the mistakes happen.');
   return `Round ${r}. ${last.redLine||''} ${bits.join(' ')} You have ${S.pc} PC.`;
 }
@@ -613,6 +664,7 @@ function openLoc(L){
     if(S.flags.intel){box.querySelector('#intelHint').innerHTML=`<b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}`}
     body.appendChild(matrixEl(null,null));
   }
+  if(L.id==='soc'&&S.flags.tmodel){const tb=document.createElement('div');tb.className='box';tb.style.marginBottom='12px';tb.innerHTML=`<h3>THREAT MODEL</h3><p class="small" style="margin-top:6px">${S.tmReveal}</p><p class="small">Insider risk this round: ${Math.round(insiderP()*100)}%</p>`;body.appendChild(tb)}
   ACTIONS.filter(a=>a.loc===L.id).forEach(a=>{
     const picked=S.picks.includes(a.id);
     const c=document.createElement('div');c.className='card'+(picked?' sel':'');
@@ -625,6 +677,7 @@ function toggleAction(a,L){
   else{ if(S.pc<a.cost){toast('NOT ENOUGH PC');SFX.bad();return}
     S.picks.push(a.id);S.pc-=a.cost;S.flags[a.flag]=true;SFX.ok();
     if(a.id==='intel'){S.intelReveal=redIntel()}
+    if(a.id==='tmodel'){S.tmReveal=threatModel()}
   }
   renderHud();openLoc(L);
 }
@@ -678,6 +731,14 @@ function redReason(choice){
   return l[Math.floor(Math.random()*l.length)];
 }
 
+/* ===================== THREAT MODEL / INSIDER ===================== */
+function insiderP(){const m=S.m,F=S.flags;let p=.08;if(m.talent<40)p+=.05;if(m.subs<40)p+=.04;if(F.talentf&&!F.insider)p+=.04;if(F.insider)p-=.07;return Math.max(.01,p)}
+function threatModel(){const m=S.m;const t=[
+  ['Rival state ops',Math.round(m.rcap*.6+m.esc*.4)],['Ransomware crews',Math.round(m.ccap*.9)],['Accidents / rogue agents',m.risk],
+  ['Insider exfiltration',Math.round(insiderP()*400)],['Chip & memory shortage',100-m.chips],['Energy cost shock',100-m.power],
+  ['Talent drain',100-m.talent],['Revenue squeeze on labs',100-m.subs]].sort((a,b)=>b[1]-a[1]).slice(0,3);
+  return 'Top threats right now: '+t.map((x,i)=>`<b>${i+1}. ${x[0]}</b> (${x[1]})`).join(' · ')}
+
 /* ===================== RESOLUTION ===================== */
 function applyFx(fx,acc){for(const k in fx){if(!(k in S.m))continue;const before=S.m[k];S.m[k]=cl(S.m[k]+fx[k]);if(acc){acc[k]=(acc[k]||0)+(S.m[k]-before)}}
   checkDeath()}
@@ -716,21 +777,38 @@ function resolve(){
     if(id==='bounty'&&F.evals){fx.risk-=2}
     applyFx(fx,acc)});
   // ---- 4. Frontier labs (profit motive) ----
-  let shipFast=.72; if(F.evals)shipFast-=.22; if(F.liab)shipFast-=.2; if(m.rcap>m.econ)shipFast+=.12; if(S.lastInject&&S.lastInject.title.includes('CEOS')&&S.lastInject.log.includes('Waivers'))shipFast+=.15;
-  if(Math.random()<shipFast){applyFx({econ:+4,risk:+6,ccap:+1},acc);log.push('Labs shipped a more capable model on schedule. Revenue up. Red-team report: "mostly fine."')}
+  let shipped=false;
+  let shipFast=.72; if(m.subs<40)shipFast+=.1; if(F.evals)shipFast-=.22; if(F.liab)shipFast-=.2; if(m.rcap>m.econ)shipFast+=.12; if(S.lastInject&&S.lastInject.title.includes('CEOS')&&S.lastInject.log.includes('Waivers'))shipFast+=.15;
+  if(Math.random()<shipFast){shipped=true;applyFx({econ:+4,risk:+6,ccap:+1},acc);log.push('Labs shipped a more capable model on schedule. Revenue up. Red-team report: "mostly fine."')}
   else{applyFx({econ:+2,risk:-2},acc);log.push('Labs delayed release pending evals. CEO op-ed: "Regulation is handing the future to our rivals."')}
   // ---- 5. Open commons (good intent) ----
   const openP=F.weights?.2:.55;
-  if(Math.random()<openP){applyFx({econ:+2,ccap:+4,rcap:+3,sec:+1},acc);log.push('A research collective released open weights "so defenders can study them." Criminal and rival capability rose. Defenders also benefited.')}
+  if(Math.random()<openP){applyFx({econ:+2,ccap:+4,rcap:+3,sec:+1},acc);log.push('A research collective released open weights "so defenders can study them." Criminal and rival capability rose. Defenders also benefited.');
+    if(F.tamper)S.tamper=true;const ab=S.tamper?1:3;applyFx({ccap:ab},acc);log.push(S.tamper?'Refusal-removal tools hit the new release, but tamper-resistant safeguards held up better than expected.':'Within days, refusal-removal ("abliteration") tools stripped its safety training. Uncensored forks spread.')}
   else if(F.cvd){applyFx({sec:+2},acc);log.push('Disclosure program patched 300+ bugs in shared infrastructure software.')}
   // ---- 6. Criminal syndicates ----
-  const dmg=Math.max(0,Math.round((m.ccap-25)/6 - (F.harden?3:0) - (F.crime?2:0)));
+  if(F.tamper)S.tamper=true;
+  const dmg=Math.max(0,Math.round((m.ccap-25)/6 - (F.harden?3:0) - (F.crime?2:0) - (F.tmodel?2:0)));
   if(dmg>0){applyFx({sec:-dmg,trust:-Math.round(dmg/2),econ:-Math.round(dmg/3)},acc);log.push(`Ransomware season: ${dmg>6?'severe':dmg>3?'moderate':'minor'} damage to hospitals and municipalities (−${dmg} sec).`)}
   else log.push('Criminal activity was contained this round.');
+  // ---- 6b. Insider threat ----
+  if(Math.random()<insiderP()){
+    if(F.insider&&Math.random()<.65){applyFx({trust:+1},acc);log.push('INSIDER CAUGHT: access logs flagged an engineer copying model weights to a personal drive. Contained.')}
+    else{S.insiders++;applyFx({rcap:+5,ccap:+3,trust:-3},acc);log.push('INSIDER THREAT: frontier model weights walked out with a departing employee. They surfaced abroad weeks later.')}}
+  // ---- 6c. Economy: chips, memory, energy, talent, subscriptions ----
+  const ef={chips:-2,power:-2,talent:-2};
+  if(F.chips){ef.chips-=2;log.push('The rival answered chip controls by restricting critical-mineral exports. Chip and memory costs rose at home too.')}
+  applyFx(ef,acc);
+  const costPush=(50-m.chips)/12+(50-m.power)/12;
+  applyFx({subs:Math.round(1-costPush+(shipped?2:0))},acc);
+  const de=Math.round(((m.chips-50)+(m.power-50)+(m.talent-50)+(m.subs-50))/40);if(de)applyFx({econ:de},acc);
+  if(m.subs<40)log.push('Consumers are cancelling AI subscriptions as prices rise. Labs under revenue pressure are trimming red-team budgets.');
+  if(m.power<35){applyFx({sec:-2},acc);log.push('Strained grid: datacenter load leaves less margin when attacks hit.')}
+  if(m.talent<35){applyFx({sec:-1},acc);log.push('Talent drain: CISA cannot fill 40% of its AI-security roles.')}
   // ---- 7. Rival capability drift ----
   applyFx({rcap:+2,ccap:+1},acc);
   // ---- 8. Accident risk ----
-  if(m.risk>60&&Math.random()<(m.risk-50)/100){const d=Math.round(5+m.risk/10);applyFx({sec:-d,trust:-4,risk:-6},acc);log.push(`ACCIDENT: an autonomous system with no hostile intent caused −${d} sec. The post-mortem blamed "unexpected emergent behavior."`)}
+  if(m.risk>60&&Math.random()<(m.risk-50)/100*(F.tmodel?.5:1)){const d=Math.round(5+m.risk/10);applyFx({sec:-d,trust:-4,risk:-6},acc);log.push(`ACCIDENT: an autonomous system with no hostile intent caused −${d} sec. The post-mortem blamed "unexpected emergent behavior."`)}
   // ---- 9. Congress / drift ----
   applyFx({esc:-2},acc);
   if(bp==='esc'&&m.trust<50){applyFx({trust:+3},acc)} // hawkish plays well when weak
@@ -784,6 +862,11 @@ function endGame(){
   if(S.m.ccap>60)L.push('Criminal capability ended high. Every open-weights release and every unpatched hospital compounded it. Crime scales with proliferation, not with doctrine.');
   if(S.m.ally<40)L.push('Alliance cohesion ended low. Unilateral coercion (chips, sanctions) buys short-term leverage and sells long-term credibility.');
   if(S.m.rcap>S.m.sec+10)L.push('The rival\'s capability outran your defenses. Export controls slow a rival; they do not stop it. Only hardening changes what an attack can do once it arrives.');
+  if(S.insiders>0)L.push(`Insiders leaked model weights ${S.insiders} time(s). The cheapest path to a frontier model is often a person with access, not a hack. Insider programs trade a little morale for a lot of protection.`);
+  if(S.m.chips<35||S.m.power<35)L.push('Compute ran short. Chips, memory and electricity are the physical base of AI power. Export controls, fabs and power plants are all part of cyber strategy.');
+  if(S.m.talent<35)L.push('You lost the talent war. People are the scarcest input in AI. Lose them and both your labs and your defenders slow down.');
+  if(S.m.subs<35)L.push('Consumer revenue collapsed. When money dries up, labs cut safety spending and race to ship. Business models are safety policy.');
+  if(!S.tamper&&S.m.ccap>55)L.push('Open releases were stripped of safety training again and again. Safeguards trained into open weights can be removed, so plan defenses as if they will be.');
   if(!L.length)L.push('A balanced run. The uncomfortable lesson of this game: the best policies were boring — hardening, intel, disclosure — and the exciting ones mostly raised escalation.');
   b.innerHTML=`<div class="box center"><div class="px" style="font-size:8px;color:var(--dim)">${S.dead?'GAME OVER':'DEBRIEF'}</div><div class="fin" style="margin:10px 0">GRADE ${grade}</div><div class="px" style="font-size:9px">SCORE ${sc}/100</div>${S.dead?`<p style="margin-top:10px;color:var(--red)">${S.dead}</p>`:''}</div>
    <div class="box"><h2>FINAL STATE</h2><div class="delta" style="margin-top:8px">${STATS.map(([k,nm])=>`<span>${nm} ${S.m[k]}</span>`).join('')}</div></div>

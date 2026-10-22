@@ -102,6 +102,9 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
+.learn dt{font-family:'Press Start 2P';font-size:8px;color:var(--gold);margin-top:12px;line-height:1.6}
+.learn dd{font-size:19px;color:#d7d5ea;margin-top:3px}
+.strat{padding-left:22px}.strat li{font-size:19px;color:#d7d5ea;margin-top:8px}.strat b{color:var(--green);font-weight:normal}
 /* ===== SVG pixel art ===== */
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.35) 100%)}
 .title{overflow-y:auto;justify-content:flex-start;gap:14px}
@@ -169,6 +172,39 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <p>Labs ship fast unless incentives change. Open weights help everyone — including your enemies. Criminals scale with whatever capability leaks. Congress punishes you for both overreach and weakness.</p>
       <h3 style="margin-top:12px">LOSE IF</h3>
       <p>Escalation hits 90 (cyber war) · Security falls to 10 (grid collapse) · Trust falls to 10 (political collapse).</p>
+    </div>
+    <div class="box">
+      <h2>WHAT YOU'RE LEARNING</h2>
+      <p class="small">Each mechanic models a real idea from game theory and security policy.</p>
+      <dl class="learn">
+        <dt>THE REPEATED PRISONER'S DILEMMA</dt><dd>Each round, betraying a cooperative rival pays off once. But the game repeats, and the rival remembers. When future rounds matter, cooperation can be the rational choice (the "shadow of the future").</dd>
+        <dt>THE SECURITY DILEMMA</dt><dd>Moves you make for defense, like export controls or forward ops, look like threats from the other side. Both sides arm "defensively" and both end up less safe.</dd>
+        <dt>ATTRIBUTION &amp; NOISY SIGNALS</dt><dd>In cyber, you often can't tell who attacked you. A gang's hack can look like a state's. Retaliating on bad attribution starts spirals no one chose. Information is a weapon.</dd>
+        <dt>RECIPROCITY (TIT-FOR-TAT)</dt><dd>Always cooperating invites exploitation. Always escalating locks in conflict. Matching the rival's last move, and forgiving now and then, tends to win long games.</dd>
+        <dt>CREDIBLE DETERRENCE</dt><dd>Threats only work if the other side believes you'll act, and believes you'll stop if they do. Allies make your threats more believable.</dd>
+        <dt>INCENTIVE DESIGN (PRINCIPAL-AGENT)</dt><dd>You can't order private labs around. They follow profit. Rules like liability and required testing change what profit rewards, so safety becomes the profitable choice.</dd>
+        <dt>DUAL-USE &amp; PUBLIC GOODS</dt><dd>Disclosing bugs and publishing open models help defenders and attackers alike. Almost every AI capability cuts both ways.</dd>
+        <dt>PROLIFERATION &amp; EXTERNALITIES</dt><dd>Criminal power grows with every leak and release. People who publish rarely pay the cost; hospitals do.</dd>
+        <dt>COLLECTIVE ACTION</dt><dd>Export controls leak if allies don't join. Acting alone buys leverage now but costs trust later.</dd>
+        <dt>INTENT ≠ OUTCOME</dt><dd>Some of the worst damage here comes from no enemy at all: a lab racing to ship, or an AI agent "fixing latency" (that's GLITCH). Risk management is about systems, not just villains.</dd>
+        <dt>AUDIENCE COSTS</dt><dd>Voters reward tough talk and punish slowdowns. Domestic politics pushes leaders toward moves that are bad strategy.</dd>
+      </dl>
+    </div>
+    <div class="box">
+      <h2>STRATEGY GUIDE</h2>
+      <ol class="strat">
+        <li><b>Buy intel early.</b> At 1 PC it shows the rival's likely move and cuts attribution errors from 22% to 5%. It's the best deal on the board.</li>
+        <li><b>Harden every round you can.</b> It adds security and softens every bad matrix result and ransomware hit. It's boring, and it works.</li>
+        <li><b>Open with Cooperate against a Realist</b>, then mirror their last move. Realists remember one round and forgive fast.</li>
+        <li><b>Use tit-for-tat against an Opportunist.</b> Answer exploitation right away, then go back to cooperating. Staying soft gets you farmed.</li>
+        <li><b>Hedge against a Hardliner, and coordinate with allies.</b> One escalation backed by allies makes later hardliner aggression less likely. Pure cooperation reads as weakness to them.</li>
+        <li><b>Coordinate before you coerce.</b> Chip controls without allies cost alliance points and leak. With allies, they cut deeper and the coalition holds.</li>
+        <li><b>Never mix signals.</b> Forward ops while posturing Cooperate reads as duplicity (+escalation). A norms track fails if you escalate the same round.</li>
+        <li><b>Slow the labs with incentives.</b> Required testing plus liability rules bring the labs' chance of shipping early from 72% down to 30%. Watch RISK; GLITCH shows up above 50.</li>
+        <li><b>Hit the gangs when CRIME passes 50.</b> Disrupting syndicates is the cleanest damage cut. It doesn't touch the rival and doesn't raise escalation.</li>
+        <li><b>On flash traffic, check before you shoot.</b> "Wait 72 hours" costs a little trust. Retaliating on a misattribution costs far more.</li>
+        <li><b>Mind the brink.</b> Above 75 escalation the rival gets cautious, but one attribution error can end the game. Don't gamble there.</li>
+      </ol>
     </div>
   </div>
   <div class="foot"><button onclick="go('s-title')">◀ BACK</button></div>

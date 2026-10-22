@@ -108,6 +108,14 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
+.plan{width:100%;margin-top:6px;border:3px solid var(--blue);background:#0e1430;padding:6px 8px}
+.plan summary{font-family:'Press Start 2P';font-size:7px;color:var(--blue);cursor:pointer;padding:6px 0 2px}
+.planrow{display:flex;align-items:center;gap:8px}.pt1{flex:1;font-size:17px;color:#fff;line-height:1.15}.lbp{display:block;font-family:'Press Start 2P';font-size:7px;color:var(--blue);margin-bottom:3px}
+.planrow button{flex-shrink:0;font-size:8px;padding:8px 10px;line-height:1.5}
+.plan .pl{font-size:17px;color:#cfe3ff;margin-top:5px}.plan .pl b{color:#fff}
+.plan button{font-size:9px;padding:10px}
+.t .tip{position:absolute;top:2px;right:2px;font-family:'Press Start 2P';font-size:6px;color:#fff;background:var(--blue);border:2px solid #000;padding:1px 2px;z-index:3}
+.card .pick{font-family:'Press Start 2P';font-size:7px;color:#5ab0ff;margin-bottom:4px}
 #g-map{overflow:hidden}
 .mapwrap{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:6px 10px 0}
 .map{width:min(100%,calc(100dvh - 330px));min-width:240px;margin:4px auto 0;flex-shrink:0}
@@ -169,8 +177,13 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 @keyframes wave{to{background-position:12px 0}}
 .t.loc{background:var(--tile1);outline:none}
 .t.loc svg{inset:4% 6% 14% 6%;width:88%;height:82%}
-.t.loc.picked{box-shadow:inset 0 0 0 2px var(--gold)}
-.t .badge{position:absolute;top:1px;right:2px;font-family:'Press Start 2P';font-size:9px;color:var(--gold);text-shadow:1px 1px 0 #000;z-index:2;animation:blink 1s steps(2) infinite}
+.t.loc.picked{box-shadow:inset 0 0 0 3px var(--green);background:#2f6a3a}
+.t.loc .lbl.done{background:var(--green);color:#000;border-color:#000}
+.orders{width:100%;margin-top:8px;font-size:16px;color:#cfcde6;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.orders b{font-family:'Press Start 2P';font-size:7px;color:var(--gold);width:100%}
+.orders i{color:#9b9ac7}
+.oc{border:2px solid var(--green);color:var(--green);padding:2px 6px;font-size:16px;cursor:pointer;background:#0e1a12}
+.t .badge{position:absolute;top:1px;right:2px;font-family:'Press Start 2P';font-size:10px;color:var(--green);text-shadow:1px 1px 0 #000;z-index:2;animation:blink 1s steps(2) infinite}
 .map::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 50%,transparent 35%,rgba(255,40,40,var(--heat,0)) 100%);z-index:3}
 .map.hot::after{animation:heat 1.2s steps(2) infinite}
 @keyframes heat{50%{opacity:.45}}
@@ -377,7 +390,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div class="guide" id="guide"></div>
     <div class="mapwrap">
       <div class="steps" id="mapSteps"></div>
+      <div id="planBox" style="width:100%"></div>
       <div class="map" id="map"></div>
+      <div class="orders" id="orders"></div>
       <div class="legend" id="legend"></div>
       <div class="hintline" id="mapHint"></div>
     </div>
@@ -400,7 +415,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <div class="dialog" id="locDlg"><span class="who" id="locWho"></span><span class="pt" id="locPt"></span><span id="locTxt"></span></div>
       <div id="locBody" style="margin-top:14px"></div>
     </div>
-    <div class="foot"><button onclick="showGame('g-map')">B · MAP</button></div>
+    <div class="foot"><button onclick="showGame('g-map');renderMap()">◀ BACK TO MAP</button><button class="gold" onclick="openResolveCheck()">END TURN ▶</button></div>
   </div>
 
   <!-- RESOLVE -->
@@ -775,7 +790,11 @@ function renderMap(){
     if(ch==='m')d.innerHTML=sprite('tree');else if(ch==='r')d.innerHTML=sprite('road');else if(ch!=='w'&&(x*7+y*13)%4===0)d.innerHTML=sprite('tuft');
     const L=LOCS.find(l=>l.x===x&&l.y===y);
     if(L){const n=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id).length+(L.id==='wh'&&S.posture?1:0);
-      d.className='t loc'+(n?' picked':'');d.innerHTML=`${sprite(L.id)}<span class="lbl">${L.short}</span>${n?`<span class="badge">★${n>1?n:''}</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':''}`}
+      const mine=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id);
+      let lbl=L.short,lst='';
+      if(L.id==='wh'&&S.posture){lbl=PL[S.posture].slice(0,4)+(mine.length?' +'+mine.length:'');lst=`style="background:${PCOL[S.posture]};color:#000;border-color:#000"`}
+      else if(mine.length){lbl='✔ '+PLATE[mine[0]]+(mine.length>1?' +'+(mine.length-1):'');lst='class="lbl done"'}
+      d.className='t loc'+(n?' picked':'');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
     d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
     map.appendChild(d);
   }
@@ -790,11 +809,50 @@ function renderMap(){
     if(!S.flags.intel)[[0,14],[71,20]].forEach(([y,d],i)=>{fx+=`<g opacity=".35">${icon('fog',`x="-24" y="${y}" width="22" height="13"`)}<animateTransform attributeName="transform" type="translate" from="0 0" to="110 0" dur="${d}s" begin="-${i*7}s" repeatCount="indefinite"/></g>`});
     const ov=document.createElement('div');ov.className='mapfx';ov.innerHTML=`<svg viewBox="0 0 80 80" preserveAspectRatio="none" shape-rendering="crispEdges">${fx}</svg>`;map.appendChild(ov);
     const ng=Math.max(0,Math.min(3,Math.floor((m.ccap-35)/12)));[[2,6],[1,5],[0,6]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*12.5+'%';g.style.top=gy*12.5+'%';g.innerHTML=icon('skull');map.appendChild(g)})}
+  document.getElementById('planBox').innerHTML=planHTML();
   if(!guideSeen){guideSeen=true;showGuide()}
   map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);
   updateHint();
 }
 function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=heroSVG();h.style.left=(hero.x*12.5)+'%';h.style.top=(hero.y*12.5)+'%';updateHint()}
+/* ===================== ANALYST PLAN ===================== */
+const SHORTN={intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure',chips:'Chip controls',offense:'Cyber ops',weights:'Limit weights',bounty:'SI bounty'};
+const PLATE={intel:'INTEL',harden:'HARDEN',tamper:'GUARDS',crime:'GANGS',evals:'TESTS',tmodel:'TMODEL',insider:'INSIDER',fabs:'FABS',power:'POWER',talent:'TALENT',coord:'ALLIES',norms:'NORMS',liab:'LIABLE',cvd:'BUGS',chips:'CHIPS',offense:'CYBEROP',weights:'WEIGHTS',bounty:'BOUNTY'};
+const PCOL={coop:'#4bd37b',hedge:'#f7c948',esc:'#ff5c5c'};
+function recommendPlan(){const m=S.m,R=RIVALS[S.rival],last=S.redHist[S.redHist.length-1];
+  let posture,why;
+  if(!last){posture=R.coop>.4?'coop':'hedge';why=R.coop>.4?'This rival tends to reciprocate. Open with cooperation.':'This rival exploits openness. Start guarded.'}
+  else if(last==='esc'){posture='hedge';why='They escalated last round. Hedge so you are not exploited, without starting a spiral.'}
+  else if(last==='coop'){posture='coop';why='They cooperated. Match it to lock in mutual restraint.'}
+  else {posture=m.esc>55?'coop':'hedge';why=m.esc>55?'Escalation is high. Offer cooperation to cool things down.':'They are probing. Match with a hedge.'}
+  const want=[];const add=(id,c,r)=>{if(c)want.push([id,r])};
+  add('intel',true,'Cheap. Reveals their move and clears attribution fog.');
+  add('harden',m.sec<75,'Security is the base of everything; cuts all damage.');
+  add('tamper',!S.tamper&&!S.flags.tamper,'Lasts all game: open releases do less harm.');
+  add('crime',m.ccap>50,'Criminal capability is high.');
+  add('evals',m.risk>45,'Accident risk is climbing.');
+  add('tmodel',m.risk>55||insiderP()>.1,'Halves accident odds this round.');
+  add('insider',insiderP()>.1,'Insider risk is elevated.');
+  add('fabs',m.chips<40,'Chip shortage is choking the dividend.');
+  add('power',m.power<40,'Power is short; the grid is fragile.');
+  add('talent',m.talent<45,'You are losing the talent war.');
+  add('coord',m.ally<50,'Allies are drifting.');
+  add('norms',m.esc>55&&posture!=='esc','Escalation is high; talks can cool it.');
+  add('liab',m.risk>40,'Pairs with testing to slow risky launches.');
+  add('cvd',true,'Cheap security boost.');
+  let pc=DIFFS[S.diff].pc;const picks=[];
+  for(const [id,r] of want){const a=ACTIONS.find(x=>x.id===id);if(a.cost<=pc&&!picks.find(p=>p[0]===id)){picks.push([id,r]);pc-=a.cost}}
+  return {posture,why,picks}}
+function applyPlan(){const P=recommendPlan();S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id);S.pc+=a.cost;delete S.flags[a.flag]});S.picks=[];
+  S.posture=P.posture;P.picks.forEach(([id])=>{const a=ACTIONS.find(x=>x.id===id);if(S.pc>=a.cost){S.picks.push(id);S.pc-=a.cost;S.flags[a.flag]=true;if(id==='intel')S.intelReveal=redIntel();if(id==='tmodel')S.tmReveal=threatModel()}});
+  SFX.ok();toast('PLAN APPLIED · PRESS B TO END TURN');renderHud();renderMap()}
+function planHTML(){const P=recommendPlan();const byLoc=id=>LOCS.find(l=>l.id===ACTIONS.find(a=>a.id===id).loc).short;
+  const SHORT=SHORTN;const _x={intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure'};
+  return `<div class="plan"><div class="planrow"><div class="pt1"><span class="lbp">🔎 ANALYST PLAN</span>${PL[P.posture]} · ${P.picks.map(([id])=>SHORT[id]).join(' · ')}</div><button class="a" onclick="applyPlan()">USE<br>PLAN</button></div>
+  <details><summary>Why? (tap)</summary><div class="pl"><b>WH:</b> Posture <b style="color:var(--gold)">${PL[P.posture]}</b>. ${P.why}</div>
+  ${P.picks.map(([id,r])=>{const a=ACTIONS.find(x=>x.id===id);return `<div class="pl"><b>${byLoc(id)}:</b> ${a.name} (${a.cost} PC). ${r}</div>`}).join('')}
+  <p class="small" style="margin-top:6px">Or tap buildings and choose yourself. Blue TIP tags mark the analyst's picks.</p></details></div>`}
+
 let guideSeen=false;
 function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div class="box"><h2>MAP GUIDE</h2>
   <p style="margin-top:6px">This map is your government. Each building is a place to act. Every round, 6 months pass:</p>
@@ -808,7 +866,7 @@ function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div 
   <div class="bk"><div class="sw" style="background:#b79c5b;display:flex;align-items:center;justify-content:center"><i style="width:12px;height:12px;background:#ff5c5c;display:block"></i></div><div><b>RED SQUARES ON THE ROAD</b>Rival cyber traffic. More appear as escalation rises; the map glows red above 70.</div></div>
   <div class="bk"><div class="sw" style="background:#101225">${icon('fog')}</div><div><b>CLOUDS</b>Attribution fog. Buy INTEL at WH to clear it.</div></div>
   <div class="bk"><div class="sw" style="background:#101225">${glitchSVG()}</div><div><b>GLITCH</b>A rogue SI agent. Shows up when RISK passes 50. Tap it to check.</div></div>
-  <div class="bk"><div class="sw" style="background:#101225;color:var(--gold);font-family:'Press Start 2P';font-size:14px;display:flex;align-items:center;justify-content:center">★</div><div><b>GOLD STAR</b>You've placed orders there this round.</div></div></div>
+  <div class="bk"><div class="sw" style="background:#101225;color:var(--gold);font-family:'Press Start 2P';font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--green)">✔</div><div><b>GREEN CHECK</b>You've placed orders there this round. The name plate shows what you ordered. Blue TIP tags mark the analyst's suggestions.</div></div></div>
   <button class="a" style="width:100%;margin-top:12px" onclick="document.getElementById('guide').classList.remove('on')">GOT IT ▶</button>`;
   g.classList.add('on');g.scrollTop=0}
 function updateHint(){
@@ -816,10 +874,14 @@ function updateHint(){
   const step=!S.posture?1:(S.pc>0?2:3);
   document.getElementById('mapSteps').innerHTML=[['1 · SET POSTURE<br>AT WHITE HOUSE',1],['2 · SPEND '+S.pc+' PC<br>AT BUILDINGS',2],['3 · END TURN<br>(B BUTTON)',3]].map(([t,i])=>`<div class="${i===step?'now':i<step?'ok':''}">${t}</div>`).join('')+`<div class="help" onclick="showGuide()">?</div>`;
   e.innerHTML=L?`<b style="color:var(--gold)">${L.name}</b> · press <b>A</b> to open`:`<b>Tap any building</b> to open it · Posture: <b style="color:var(--gold)">${S.posture?PL[S.posture]:'NOT SET'}</b>`;
+  {const o=document.getElementById('orders');const items=[];
+    if(S.posture)items.push(`<span class="oc" style="border-color:${PCOL[S.posture]};color:${PCOL[S.posture]}" onclick="openLoc(LOCS[0])">${PL[S.posture]} · WH</span>`);
+    S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id),L=LOCS.find(l=>l.id===a.loc);items.push(`<span class="oc" onclick="openLoc(LOCS.find(l=>l.id==='${L.id}'))">✔ ${SHORTN[id]} · ${L.short}</span>`)});
+    o.innerHTML=`<b>YOUR ORDERS (${S.pc} PC LEFT):</b> `+(items.length?items.join(''):'<i>none yet. Start at WH.</i>')}
   const m=S.m;let lg=`<span>${icon('skull')}Gangs (CRIME)</span><span><i style="background:#ff5c5c"></i>Rival attacks (ESC)</span>`;
   if(!S.flags.intel)lg+=`<span>${icon('fog')}Fog: buy INTEL</span>`;
   if(m.risk>50)lg+=`<span>${icon('glitch')}GLITCH (RISK)</span>`;
-  lg+=`<span style="color:var(--gold)">★ Orders placed</span>`;
+  lg+=`<span style="color:var(--green)">✔ Green = ordered</span><span style="color:#5ab0ff">TIP = analyst pick</span>`;
   document.getElementById('legend').innerHTML=lg;
 }
 function mv(dx,dy){const nx=hero.x+dx,ny=hero.y+dy;if(nx<0||ny<0||nx>7||ny>7)return;const ch=TILE[ny][nx];if(ch==='m'||ch==='w'){SFX.bad();return}facing=dy<0?'up':'down';step++;hero={x:nx,y:ny};placeHero();SFX.move()}
@@ -829,14 +891,14 @@ function openLoc(L){
   showGame('g-loc');SFX.sel();
   document.getElementById('locWho').textContent=L.who;document.getElementById('locPt').innerHTML=portrait(L.id);
   typeInto(document.getElementById('locTxt'),L.intro);
-  const body=document.getElementById('locBody');body.innerHTML='';
+  const body=document.getElementById('locBody');body.innerHTML=`<p class="small" style="margin-bottom:10px">${L.id==='wh'?'Pick a posture (required, free), then tap any card to buy it.':'Tap a card to buy it with PC. Tap again to undo.'} You have <b style="color:var(--gold)">${S.pc} PC</b> left.</p>`;
   if(L.id==='wh'){
     const box=document.createElement('div');box.className='box';
     box.innerHTML=`<h2>SET POSTURE</h2><p class="small">Simultaneous move vs. the rival. Free. Required.</p>
     <div class="post" id="post"></div><div id="intelHint" class="small" style="margin-top:8px"></div>`;
     body.appendChild(box);
     const p=box.querySelector('#post');
-    P.forEach(k=>{const b=document.createElement('button');b.textContent=PL[k];b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();openLoc(L)};p.appendChild(b)});
+    const recP=recommendPlan().posture;P.forEach(k=>{const b=document.createElement('button');b.innerHTML=PL[k]+(k===recP?'<br><span style="font-size:6px;color:#5ab0ff">ANALYST PICK</span>':'');b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();toast('POSTURE SET · NOW SPEND PC');openLoc(L)};p.appendChild(b)});
     {const last=S.redHist[S.redHist.length-1];const R=RIVALS[S.rival];box.querySelector('#intelHint').innerHTML=anaHTML('THREAT ANALYST',last?`Rival (${R.name}) last chose <b>${PL[last]}</b>. They remember ${R.memory} round${R.memory>1?'s':''} of your moves. ${last==='esc'?'Answering with HEDGE or ESCALATE avoids being farmed; COOPERATE risks the sucker\'s payoff.':last==='coop'?'COOPERATE locks in mutual restraint; ESCALATE exploits them once, and they\'ll remember.':'They\'re probing. Matching with HEDGE is safe; COOPERATE can invite reciprocity.'}`:`Opening move. A ${R.name} starts ${R.coop>.4?'inclined to cooperate':R.esc>.5?'inclined to escalate':'opportunistic'}. Buy INTEL (1 PC) to see their likely move.`)}
     if(S.flags.intel){box.querySelector('#intelHint').innerHTML+=`<div class="ana"><b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}</div>`}
     body.appendChild(matrixEl(null,null));
@@ -845,14 +907,15 @@ function openLoc(L){
   ACTIONS.filter(a=>a.loc===L.id).forEach(a=>{
     const picked=S.picks.includes(a.id);
     const c=document.createElement('div');c.className='card'+(picked?' sel':'');
-    c.innerHTML=`<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('THREAT ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}`;
+    const rec=recommendPlan().picks.find(([id])=>id===a.id);
+    c.innerHTML=`${rec?'<div class="pick">★ ANALYST PICK</div>':''}<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('THREAT ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}`;
     c.onclick=()=>toggleAction(a,L);body.appendChild(c);
   });
 }
 function toggleAction(a,L){
   if(S.picks.includes(a.id)){S.picks=S.picks.filter(x=>x!==a.id);S.pc+=a.cost;delete S.flags[a.flag];SFX.move()}
   else{ if(S.pc<a.cost){toast('NOT ENOUGH PC');SFX.bad();return}
-    S.picks.push(a.id);S.pc-=a.cost;S.flags[a.flag]=true;SFX.ok();
+    S.picks.push(a.id);S.pc-=a.cost;S.flags[a.flag]=true;SFX.ok();toast(S.pc===0?'PC SPENT · TAP END TURN':`ORDERED · ${S.pc} PC LEFT`);
     if(a.id==='intel'){S.intelReveal=redIntel()}
     if(a.id==='tmodel'){S.tmReveal=threatModel()}
   }

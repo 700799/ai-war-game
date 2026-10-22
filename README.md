@@ -4,6 +4,8 @@ A think-tank-style, game-theoretic superintelligence wargame in a pixel/Nintendo
 
 **Play:** https://700799.github.io/ai-war-game/
 
+![How it works](howto.gif)
+
 Single static file (`index.html`), served by GitHub Pages from `main`.
 
 Fictional scenario. Actors are archetypes, not real organizations.

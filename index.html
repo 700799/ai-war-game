@@ -112,6 +112,23 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
+.howbox{margin-top:10px;padding:10px;border:4px solid var(--line);background:#101225;box-shadow:6px 6px 0 #000;max-width:100%}
+.howbox img{display:block;width:100%;max-width:330px;height:auto;image-rendering:pixelated;margin:0 auto}
+.finale{flex:1;position:relative;overflow:hidden;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px}
+.finale .big{font-family:'Press Start 2P';font-size:34px;line-height:1.3;text-shadow:4px 4px 0 #000,0 0 18px currentColor;animation:winflash .5s steps(2) infinite}
+@keyframes winflash{50%{opacity:.55}}
+.finale .sub2{font-family:'Press Start 2P';font-size:10px;color:#f4f1e6;margin-top:10px;line-height:1.8}
+.finale .pose{width:150px;height:200px;margin:14px auto 0;animation:bob .6s steps(2) infinite}
+.finale .podium{width:190px;height:22px;background:#f7c948;border:3px solid #000;box-shadow:0 6px 0 #7a5f10;margin:0 auto}
+.finale .conf{position:absolute;inset:0;pointer-events:none}
+.finale .panel{width:100%;max-width:520px}
+.finale .crawl{text-align:left;font-size:20px;color:#f4f1e6;min-height:220px;margin-top:10px}
+.finale .crawl p{margin:8px 0;padding-left:26px;position:relative}.finale .crawl p .ic{position:absolute;left:0;top:2px;width:20px;height:20px}
+.finale .credits{position:absolute;left:0;right:0;top:100%;animation:roll 16s linear forwards;font-family:'Press Start 2P';font-size:9px;line-height:2.4;color:#f4f1e6}
+.finale .credits b{color:#f7c948;display:block;margin-top:18px;font-size:10px}
+@keyframes roll{to{transform:translateY(-260%)}}
+.finale .fbtn{position:absolute;bottom:14px;left:14px;right:14px;display:flex;gap:8px;z-index:5}.finale .fbtn button{flex:1}
+.finale .count{font-family:'Press Start 2P';font-size:48px;color:#f4f1e6;margin-top:16px}
 .plan{width:100%;margin-top:6px;border:3px solid var(--blue);background:#0e1430;padding:6px 8px}
 .plan summary{font-family:'Press Start 2P';font-size:7px;color:var(--blue);cursor:pointer;padding:6px 0 2px}
 .planrow{display:flex;align-items:center;gap:8px}.pt1{flex:1;font-size:17px;color:#fff;line-height:1.15}.lbp{display:block;font-family:'Press Start 2P';font-size:7px;color:var(--blue);margin-bottom:3px}
@@ -229,6 +246,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <button class="a" onclick="go('s-setup')">▶ PRESS START</button>
     <button onclick="go('s-how')">HOW TO PLAY</button>
     <button style="font-size:8px;padding:8px 10px" onclick="go('s-disc')">DISCLAIMER</button>
+    <div class="howbox">
+      <div class="px" style="font-size:9px;color:var(--gold);margin-bottom:8px">▼ HOW IT WORKS ▼</div>
+      <img src="howto.gif" alt="How SIGNAL/NOISE works in 10 steps, from the title screen to the final ending" width="330" height="654" loading="lazy">
+    </div>
     <div class="px" style="font-size:7px;color:var(--dim)">Fictional scenario. The rival is an invented state, not any real country.<br>All actors are archetypes, not real people or organizations.</div>
   </div>
 </section>
@@ -392,7 +413,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     </div>
     <div class="box">
       <h2>DESIRED OUTCOME</h2>
-      <p>Reach <b style="color:#4bd37b">ABUNDANCE</b>: <b>DIVIDEND 60+</b>, <b>HARM under 40</b> and <b>EQUITY 45+</b> by July 2030.</p>
+      <p>Reach <b style="color:#4bd37b">ABUNDANCE</b>: <b>DIVIDEND 60+</b>, <b>HARM under 40</b> and <b>EQUITY 45+</b> by mid-2030.</p>
       <ul class="threats" style="margin-top:6px">
         <li><span data-ic="dna"></span>SI-discovered cancer drugs and treatments</li>
         <li><span data-ic="robot"></span>Humanoid robots for elder care and disaster response</li>
@@ -496,6 +517,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div class="foot"><button class="a" id="resNext">A · CONTINUE</button></div>
   </div>
 </section>
+
+<!-- FINALE -->
+<section class="screen" id="s-finale"><div id="finale" class="finale"></div></section>
 
 <!-- DEBRIEF -->
 <section class="screen" id="s-end">
@@ -1397,6 +1421,59 @@ function renderResolve(bp,red,cell,log,acc,fog){
 
 /* ===================== DEBRIEF ===================== */
 function scoreGame(){const m=S.m;return cl(m.sec*.3+m.econ*.2+m.trust*.2+m.ally*.1+(100-m.esc)*.2 - m.risk*.1 - Math.max(0,m.rcap-m.sec)*.2 + (m.good-40)*.25 - (m.harm-30)*.25 + (S.dead?-40:0),0,100)}
+const HERO_WIN=["....hhhh..s.","...hhhhhh.s.","...hssssh.n.","..gsessesgn..","...ssmmssn...","....ssssn....","..nnnwwnnn..",".nnnnwrnnn..",".snnnnrnnn..",".s.nnnrnn...","...nnnnnn...","...kkkkkk..."];
+function confetti(n=46){let o='';const C=['#f7c948','#4bd37b','#5ab0ff','#ff5c5c','#b28bff','#ff8fd1'];for(let i=0;i<n;i++){const x=Math.random()*100,d=(2+Math.random()*3).toFixed(1),b=(-Math.random()*4).toFixed(1);o+=`<rect x="${x}" y="-5" width="1.6" height="2.4" fill="${C[i%C.length]}"><animate attributeName="y" from="-5" to="105" dur="${d}s" begin="${b}s" repeatCount="indefinite"/></rect>`}return `<svg class="conf" viewBox="0 0 100 100" preserveAspectRatio="none">${o}</svg>`}
+let finTimer=null;
+function finale(){const E=ending(),win=E.k==='ABUNDANCE',m=S.m;const f=document.getElementById('finale');go('s-finale');clearInterval(finTimer);
+  const perfect=win&&m.harm<20&&m.equity>=55&&!S.insiders&&!S.thefts;
+  if(win){SFX.fanfare();setTimeout(SFX.fanfare,700);
+    f.innerHTML=`${confetti()}<div class="big" style="color:#f7c948">YOU WIN</div>${perfect?'<div class="sub2" style="color:#4bd37b">★ PERFECT ★</div>':''}<div class="sub2">THE FUTURE: <span style="color:#4bd37b">ABUNDANCE</span></div>
+      <div class="pose">${spr(HERO_WIN.concat(LEGS_A),HERO_PAL,12,16,'width="100%" height="100%"')}</div><div class="podium"></div>
+      <div class="fbtn"><button class="a" onclick="finaleStories()">A · CONTINUE</button></div>`}
+  else{const dead=!!S.dead;SFX.bad();
+    const title=dead||E.k==='FRACTURE'?'GAME OVER':E.k==='GILDED AGE'?'YOU SURVIVED':'STALEMATE';const col=dead||E.k==='FRACTURE'?'#ff5c5c':E.k==='GILDED AGE'?'#f7c948':'#5ab0ff';
+    f.innerHTML=`<div class="big" style="color:${col}">${title}</div><div class="sub2">THE FUTURE: <span style="color:${E.c}">${E.k}</span></div>
+      ${title==='GAME OVER'?`<div class="sub2" style="margin-top:22px">CONTINUE?</div><div class="count" id="cnt">9</div>`:`<div style="width:120px;height:150px;margin:16px auto 0">${E.k==='FRACTURE'?glitchSVG('width="100%" height="100%"'):heroSVG('width="100%" height="100%"')}</div>`}
+      <div class="fbtn"><button class="gold" onclick="clearInterval(finTimer);location.reload()">PLAY AGAIN</button><button class="a" onclick="finaleStories()">A · ENDING</button></div>`;
+    if(title==='GAME OVER'){let c=9;finTimer=setInterval(()=>{c--;const e=document.getElementById('cnt');if(!e){clearInterval(finTimer);return}e.textContent=c;SFX.tick();if(c<=0){clearInterval(finTimer);finaleStories()}},1000)}}}
+const STORYPT={
+ maria:{hair:'#3b2a1a',suit:'#c96a1a',skin:'#c68642',long:1,notie:1,shirt:'#f4f1e6'},
+ okafor:{hair:'#dddddd',suit:'#5a3a7a',skin:'#5a3a22',glasses:1,tie:'#f7c948'},
+ jae:{hair:'#111',suit:'#2f7a3a',skin:'#f1c27d',notie:1,shirt:'#2f7a3a'},
+ dana:{hair:'#a0522d',suit:'#3a3a50',cap:1,capc:'#f7c948',badge:'#3a3a50',notie:1,shirt:'#f7c948',skin:'#e0ac69'},
+ nurse:{hair:'#222',suit:'#5ab0ff',skin:'#8d5524',notie:1,shirt:'#5ab0ff',long:1},
+ teen:{hair:'#e8c860',suit:'#ff8fd1',skin:'#f1c27d',notie:1,shirt:'#ff8fd1',long:1},
+ owner:{hair:'#5a3a2a',suit:'#9be15d',skin:'#c68642',beard:1,notie:1,shirt:'#9be15d'}};
+function storyFace(k){const o=STORYPT[k];return spr(face(o),{H:o.hair,S:o.skin,E:'#1b1b2f',M:'#a0522d',C:o.suit,w:o.shirt||'#f4f1e6',T:o.tie||'#d33a3a',G:'#9aa3b5',K:'#111',P:o.capc,y:o.badge||'#f7c948',B:o.hair},16,16)}
+function stories(){const m=S.m,st=[];
+  if(m.good>=60)st.push(['maria','dna','MARIA, 54 · CANCER SURVIVOR','An SI-designed drug, fast-tracked into trials, sent her pancreatic cancer into remission. Her doctors call it a decade of progress in two years.']);
+  if(m.good>=55&&m.botsafe>=50)st.push(['okafor','robot','MR. OKAFOR, 81 · RETIRED TEACHER','He still lives in his own home. A certified humanoid aide helps him cook, lifts him safely and calls his daughter when something is off.']);
+  if(m.equity>=45)st.push(['dana','person','DANA, 38 · ROBOT TECHNICIAN','Her claims-processing job was automated. The transition fund paid her while she retrained, and now she maintains the robots that replaced it, at higher pay.']);
+  if(m.equity>=45||m.wellbeing>=50)st.push(['jae','school','JAE, 12 · STUDENT','His rural school got a free public SI tutor. He went from failing math to helping classmates. His school days are phone-free.']);
+  if(m.wellbeing>=50)st.push(['teen','phone','PRIYA, 15 · FRESHMAN','Her feeds stop at bedtime and do not chase her attention. She sleeps eight hours, plays soccer and talks to her friends in person.']);
+  if(m.sec>=60||m.modelsec>=55)st.push(['nurse','hospital','NURSE ADAEZE · RIVERSIDE HOSPITAL','An SI-powered ransomware attack hit her hospital at 3 a.m. Hardened systems isolated it in minutes. No surgery was cancelled.']);
+  if(m.econ>=65)st.push(['owner','coin','LUIS, 45 · SMALL-BUSINESS OWNER','SI handles his bookkeeping, translation and marketing. He hired four new people this year.']);
+  if(m.esc<40)st.push(['ally','shake','THE FOREIGN MINISTER','Rival and ally diplomats signed the first agreement keeping SI out of nuclear command systems and hospitals. Neither side cheated.']);
+  return st.slice(0,6)}
+let storyI=0;
+function finaleStories(){storyI=0;const st=stories();if(!st.length)return finaleStory();showStory()}
+function showStory(){const st=stories();if(storyI>=st.length)return finaleStory();const [pk,ic,name,txt]=st[storyI];const f=document.getElementById('finale');f.style.justifyContent='center';SFX.ok();
+  f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(14):''}<div class="panel"><div class="px" style="font-size:8px;color:#4bd37b">SUCCESS STORY ${storyI+1} / ${st.length}</div>
+    <div style="display:flex;gap:12px;align-items:center;margin-top:12px"><div class="pt big" style="width:110px;height:110px">${PT[pk]?portrait(pk):storyFace(pk)}</div><div style="width:46px;height:46px">${icon(ic,'width="100%" height="100%"')}</div></div>
+    <div class="px" style="font-size:9px;color:#f7c948;margin-top:14px;text-align:left;line-height:1.7">${name}</div><div class="crawl" style="min-height:140px"><span id="stxt"></span></div></div>
+    <div class="fbtn"><button onclick="finaleStory()">SKIP</button><button class="a" onclick="storyI++;showStory()">NEXT ▶</button></div>`;
+  typeInto(document.getElementById('stxt'),txt)}
+function finaleStory(){clearInterval(finTimer);const E=ending();const f=document.getElementById('finale');SFX.sel();
+  const lines=epilogue();f.style.justifyContent='flex-start';
+  f.innerHTML=`<div class="panel"><div class="px" style="font-size:8px;color:#9b9ac7">${dateFor(S.maxRounds)} · THE WORLD YOU BUILT</div><div class="px" style="font-size:16px;color:${E.c};margin:8px 0">${E.k}</div>${endScene(E.k)}<div class="crawl" id="crawl"></div></div>
+    <div class="fbtn"><button onclick="finaleCredits()">CREDITS ▶</button><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`;
+  const c=document.getElementById('crawl');let i=0;const next=()=>{if(i>=lines.length)return;const [k,t]=lines[i++];const p=document.createElement('p');p.innerHTML=icon(k);const sp=document.createElement('span');p.appendChild(sp);c.appendChild(p);typeInto(sp,t,()=>setTimeout(next,250))};next()}
+function finaleCredits(){const f=document.getElementById('finale');SFX.fanfare();
+  const cast=[['THE NSC CHAIR','YOU'],['THREAT ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CISO','SOC'],['GRID DEFENSE CHIEF','GRID'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
+  f.style.justifyContent='center';
+  f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(24):''}<div class="credits"><div style="font-size:14px;color:#f7c948">SIGNAL / NOISE</div><div>A SUPERINTELLIGENCE WARGAME</div><b>STARRING</b>${cast.map(([a,b])=>`${a}<br><span style="color:#9b9ac7">${b}</span>`).join('<br>')}<b>FINAL SCORE</b>${scoreGame()} / 100<b>SI CLOCK</b>${S.si}%<b>THANK YOU FOR PLAYING</b><br><br></div>
+    <div class="fbtn"><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`}
+function f2debrief(){clearInterval(finTimer);endGame(true)}
 function ending(){const m=S.m;const G=m.good>=60,Hh=m.harm>=40||!!S.dead,E=m.equity>=45;
   if(G&&!Hh&&E)return{k:'ABUNDANCE',c:'#4bd37b',t:'You steered superintelligence into a golden age. Science moved at machine speed, robots took on the hardest care work, and the gains were broadly shared, because you contained the harms and protected the people automation displaced.'};
   if(G)return{k:'GILDED AGE',c:'#f7c948',t:Hh?'Rich and fractured. SI cured diseases and grew the economy, but scams, abuse, stolen models and violence came with it. Wealth rose; trust did not.':'Rich, but for whom? SI made fortunes and cured diseases, while jobs vanished and the gains flowed to a few. Many people never saw the abundance.'};
@@ -1422,7 +1499,8 @@ function quadSVG(){const m=S.m,x=10+m.good*1.6,y=170-m.harm*1.6;
   <text x="50" y="164" text-anchor="middle" font-family="Press Start 2P" font-size="6" fill="#5ab0ff">STAGNANT</text><text x="130" y="164" text-anchor="middle" font-family="Press Start 2P" font-size="6" fill="#4bd37b">ABUNDANCE</text>
   <text x="90" y="179" text-anchor="middle" font-family="Press Start 2P" font-size="5" fill="#9b9ac7">DIVIDEND →</text><text x="5" y="90" font-family="Press Start 2P" font-size="5" fill="#9b9ac7" transform="rotate(-90 5 90)" text-anchor="middle">HARM →</text>
   <rect x="${Math.max(12,Math.min(162,x))-4}" y="${Math.max(12,Math.min(162,y))-4}" width="8" height="8" fill="#fff"><animate attributeName="opacity" values="1;.2;1" dur=".8s" repeatCount="indefinite"/></rect></svg>`}
-function endGame(){
+function endGame(skipFinale){
+  if(!skipFinale&&document.getElementById('s-finale')){return finale()}
   go('s-end');const b=document.getElementById('endBody');const sc=scoreGame();const E=ending();
   const grade=S.dead?'F':sc>=80?'S':sc>=68?'A':sc>=55?'B':sc>=42?'C':'D';
   if(!S.dead)SFX.fanfare();else SFX.bad();

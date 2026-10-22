@@ -224,7 +224,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div id="scene" class="scene"></div>
     <div class="px" style="font-size:8px;color:var(--dim)">THINK-TANK STYLE WARGAME · PIXEL EDITION</div>
     <h1>SIGNAL / NOISE</h1>
-    <div class="sub">Superintelligence is coming either way.<br>Steer it toward abundance, or watch it fracture.<br>Eight rounds. 2027 to 2030.<br>Export controls. Frontier models. Ransomware gangs.<br>Open weights. One rival state. And you.</div>
+    <div class="sub">Superintelligence is coming either way.<br>Steer it toward abundance, or watch it fracture.<br>2027 to 2030. Quick, standard or full game.<br>Export controls. Frontier models. Ransomware gangs.<br>Open weights. One rival state. And you.</div>
     <div class="px" style="font-size:8px;color:var(--gold);line-height:2">GAME THEORY · ATTRIBUTION FOG · PROFIT MOTIVE<br>GOOD INTENT, BAD OUTCOMES</div>
     <button class="a" onclick="go('s-setup')">▶ PRESS START</button>
     <button onclick="go('s-how')">HOW TO PLAY</button>
@@ -257,7 +257,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div class="box">
       <h2>THE GOAL · 2027–2030</h2>
       <p>Superintelligence (SI) can cure cancer, power humanoid robots that care for the elderly, and make society far richer. It can also help students cheat, scammers clone voices, bots spread violence, insiders steal models, and attackers plan mass harm.</p>
-      <p style="margin-top:8px">Your job: <b>capture the DIVIDEND, keep HARM down, and make sure the gains are shared (EQUITY)</b>. After 8 rounds, where you land decides the future:</p>
+      <p style="margin-top:8px">Your job: <b>capture the DIVIDEND, keep HARM down, and make sure the gains are shared (EQUITY)</b>. By mid-2030, where you land decides the future:</p>
       <div class="goal">
         <div style="border-color:#ff5c5c"><b style="color:#ff5c5c">FRACTURE</b>Low dividend, high harm. The worst of both.</div>
         <div style="border-color:#f7c948"><b style="color:#f7c948">GILDED AGE</b>High dividend, but harmful or unequal.</div>
@@ -373,6 +373,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <h2>DIFFICULTY</h2>
       <div class="row" id="diffs"></div>
     </div>
+    <div class="box">
+      <h2>GAME LENGTH</h2>
+      <p class="small">Same 2027–2030 story. Shorter games move faster. Quick fits a class period.</p>
+      <div class="row" id="lens" style="margin-top:6px"></div>
+    </div>
   </div>
   <div class="foot"><button onclick="go('s-title')">◀</button><button class="a" onclick="go('s-mission');document.getElementById('misPt').innerHTML=portrait('sit')">BEGIN ▶</button></div>
 </section>
@@ -383,7 +388,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div class="dialog"><span class="who">THREAT ANALYST</span><span class="pt" id="misPt"></span>Welcome to the cell. It's January 2027. Superintelligence will arrive by the end of this decade whether we act or not. We don't get to stop it. We get to decide what it does to us. I'll brief you on threats every round and score every option before you choose.</div>
     <div class="box" style="margin-top:14px">
       <h2>TIMELINE</h2>
-      <p>8 rounds, 6 months each: <b>Jan 2027 → Jul 2030</b>. The <b style="color:#b28bff">SI CLOCK</b> climbs every round on its own. Labs shipping and a strong rival speed it up; safety tests slow it slightly. As it rises, everything gets amplified: the dividend <i>and</i> the harm.</p>
+      <p>Choose <b>4, 6 or 8 rounds</b> covering <b>Jan 2027 → mid-2030</b>; shorter games take bigger time steps. The <b style="color:#b28bff">SI CLOCK</b> climbs every round on its own. Labs shipping and a strong rival speed it up; safety tests slow it slightly. As it rises, everything gets amplified: the dividend <i>and</i> the harm.</p>
     </div>
     <div class="box">
       <h2>DESIRED OUTCOME</h2>
@@ -431,7 +436,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 
 <!-- GAME SHELL -->
 <section class="screen" id="s-game">
-  <div class="top"><span class="px">R<span id="rnum">1</span>/8 · <span id="date" class="pc">JAN 2027</span></span><span class="px pc">PC <span id="pcv">8</span></span><span class="px" id="phase">BRIEF</span><button style="padding:6px 8px;font-size:9px" onclick="toggleSound()" id="snd">🔊</button></div>
+  <div class="top"><span class="px">R<span id="rnum">1</span>/<span id="rmax">6</span> · <span id="date" class="pc">JAN 2027</span></span><span class="px pc">PC <span id="pcv">8</span></span><span class="px" id="phase">BRIEF</span><button style="padding:6px 8px;font-size:9px" onclick="toggleSound()" id="snd">🔊</button></div>
   <div class="siclock" id="siclock"></div>
   <div class="hud" id="hud"></div>
 
@@ -505,6 +510,8 @@ const RIVALS = {
   opportunist:{name:'OPPORTUNIST',desc:'Probes for weakness. Exploits cooperation when it can get away with it. Backs off when you hit back.',coop:.3,esc:.45,memory:2,grudge:.3},
   hardliner:{name:'HARDLINER',desc:'Believes conflict is inevitable. Reads cooperation as weakness. Only credible deterrence changes its math.',coop:.15,esc:.65,memory:3,grudge:.8},
 };
+const LENGTHS={quick:{r:4,label:'QUICK · 4'},std:{r:6,label:'STANDARD · 6'},full:{r:8,label:'FULL · 8'}};
+let glen='std';
 const DIFFS = {easy:{pc:9,noise:.1,label:'TABLETOP'},normal:{pc:8,noise:.2,label:'SITROOM'},hard:{pc:7,noise:.3,label:'DEFCON'}};
 
 const LOCS = [
@@ -837,7 +844,7 @@ let hero={x:3,y:3};
 let sound=true, AC=null;
 
 function newState(){
-  return {round:1,maxRounds:8,rival,diff,pc:DIFFS[diff].pc,
+  return {round:1,maxRounds:LENGTHS[glen].r,rival,diff,pc:DIFFS[diff].pc+(8-LENGTHS[glen].r)/2,
     m:{sec:58,econ:60,trust:58,ally:55,esc:32,risk:38,rcap:48,ccap:42,chips:50,power:55,talent:60,subs:55,good:20,harm:15,equity:50,wellbeing:55,botsafe:45,modelsec:45},ms:{},tamper:false,insiders:0,thefts:0,distills:0,si:20,focus:[],
     posture:null,picks:[],flags:{},hist:[],redHist:[],injectLog:[],roundLog:[],intelReveal:null,
     cum:{coop:0,hedge:0,esc:0},redCum:{coop:0,hedge:0,esc:0},score:0,dead:null,summitSignal:null};
@@ -863,6 +870,8 @@ function renderSetup(){
   const r=document.getElementById('rivals');r.innerHTML='';
   for(const k in RIVALS){const b=document.createElement('button');b.className=k===rival?'sel':'';b.innerHTML=`<span style="color:var(--gold)">${RIVALS[k].name}</span><br><span style="font-family:VT323;font-size:19px;color:#cfcde6">${RIVALS[k].desc}</span>`;b.onclick=()=>{rival=k;renderSetup();SFX.sel()};r.appendChild(b)}
   const d=document.getElementById('diffs');d.innerHTML='';
+  const ln=document.getElementById('lens');ln.innerHTML='';
+  for(const k in LENGTHS){const b=document.createElement('button');b.className=k===glen?'sel gold':'';b.textContent=LENGTHS[k].label;b.style.fontSize='8px';b.onclick=()=>{glen=k;renderSetup();SFX.sel()};ln.appendChild(b)}
   for(const k in DIFFS){const b=document.createElement('button');b.className=k===diff?'sel gold':'';b.textContent=DIFFS[k].label;b.onclick=()=>{diff=k;renderSetup();SFX.sel()};d.appendChild(b)}
 }
 renderSetup();
@@ -878,7 +887,7 @@ function renderHud(){
   const KEY=['good','harm','equity','wellbeing','modelsec','sec'];
   STATS.filter(([k])=>hudOpen||KEY.includes(k)).forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat${k==='good'||k==='harm'?' big':''}" title="${tip}"><span class="n">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
   h.innerHTML+=`<button class="hudtog" onclick="hudOpen=!hudOpen;renderHud()">${hudOpen?'▲ FEWER METERS':'▼ ALL 18 METERS'}</button>`;
-  document.getElementById('rnum').textContent=S.round;document.getElementById('date').textContent=dateFor(S.round);
+  document.getElementById('rnum').textContent=S.round;document.getElementById('rmax').textContent=S.maxRounds;document.getElementById('date').textContent=dateFor(S.round);
   document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;document.getElementById('pcv').textContent=S.pc;
 }
 
@@ -911,7 +920,7 @@ function briefText(){
 
 let currentInject=null, briefStage=0;
 function startRound(){
-  S.posture=null;S.picks=[];S.flags={};S.intelReveal=null;S.pc=DIFFS[S.diff].pc;
+  S.posture=null;S.picks=[];S.flags={};S.intelReveal=null;S.pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2;
   LOCS.forEach(l=>l.done=false);
   renderHud();showGame('g-brief');briefStage=0;
   document.getElementById('injectBox').style.display='none';
@@ -1031,7 +1040,7 @@ function recommendPlan(){const m=S.m,R=RIVALS[S.rival],last=S.redHist[S.redHist.
   add('liab',m.risk>40,'Pairs with testing to slow risky launches.');
   add('cvd',true,'Cheap security boost.');
   const lf=S.focus[S.focus.length-1];if(lf&&lf.HOME===0)want.unshift(['phonefree','You skipped the home front last round. Skip it twice and it costs you.']);
-  let pc=DIFFS[S.diff].pc;const picks=[];
+  let pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2;const picks=[];
   for(const [id,r] of want){const a=ACTIONS.find(x=>x.id===id);if(a.cost<=pc&&!picks.find(p=>p[0]===id)){picks.push([id,r]);pc-=a.cost}}
   return {posture,why,picks}}
 function applyPlan(){const P=recommendPlan();S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id);S.pc+=a.cost;delete S.flags[a.flag]});S.picks=[];
@@ -1233,7 +1242,9 @@ const INOTE={openrel:{a:'Big DIVIDEND and EQUITY, some misuse. Irreversible.',b:
 function anaHTML(label,body){return `<div class="ana"><span class="lb">🔎 ${label}</span>${body}</div>`}
 
 /* ===================== TIMELINE ===================== */
-const dateFor=r=>['JAN','JUL'][(r-1)%2]+' '+(2027+Math.floor((r-1)/2));
+const KS=()=>8/(S?S.maxRounds:8);const KD=()=>Math.sqrt(KS());
+const MON=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const dateFor=r=>{const step=Math.round(42/((S?S.maxRounds:8)-1));const mo=(r-1)*step;return MON[mo%12]+' '+(2027+Math.floor(mo/12))};
 const SIM=[[30,'SI CLOCK: systems now match top human experts at coding and hacking.'],[50,'SI CLOCK: systems run autonomous research labs around the clock.'],[70,'SI CLOCK: systems outperform humans at most cognitive work.'],[90,'SI CLOCK: the superintelligence threshold is in sight. Whatever you built, it now runs at machine speed.']];
 
 /* ===================== THREAT MODEL / INSIDER ===================== */
@@ -1301,7 +1312,7 @@ function resolve(){
     if(F.insider&&Math.random()<.65){applyFx({trust:+1},acc);log.push('INSIDER CAUGHT: access logs flagged an engineer copying model weights to a personal drive. Contained.')}
     else{S.insiders++;applyFx({rcap:+5,ccap:+3,trust:-3},acc);log.push('INSIDER THREAT: frontier model weights walked out with a departing employee. They surfaced abroad weeks later.')}}
   // ---- 6b1. Attacks on models ----
-  applyFx({modelsec:Math.round(-1-S.si/40)},acc);
+  applyFx({modelsec:Math.round((-1-S.si/40)*KD())},acc);
   if(S.si>=25&&!S.ms.ms25){S.ms.ms25=1;log.push('MODEL ATTACKS: every deployed model is now a target. Attackers trick, poison, jailbreak and hijack them.')}
   if(Math.random()<Math.max(0,(62-m.modelsec)/100)*(.5+S.si/100)){const A=[
     ['MODEL ATTACK: hidden instructions on a web page hijacked an SI agent with access to customer accounts.',{trust:-3,econ:-2,harm:+2}],
@@ -1315,15 +1326,15 @@ function resolve(){
   if(Math.random()<dp){S.distills++;applyFx({rcap:+3,econ:-1},acc);log.push('DISTILLATION: a rival-linked lab trained a cheap copy of your best model by querying it millions of times.')}
   else if(F.apiguard&&S.si>=30)log.push('API checks flagged and blocked a large-scale distillation attempt.');
   // ---- 6c. Economy: chips, memory, energy, talent, subscriptions ----
-  const ef={chips:-2,power:-2,talent:-2};
+  const ef={chips:Math.round(-2*KD()),power:Math.round(-2*KD()),talent:Math.round(-2*KD())};
   if(F.chips){ef.chips-=2;log.push('The rival answered chip controls by restricting critical-mineral exports. Chip and memory costs rose at home too.')}
   applyFx(ef,acc);
-  const eqd=Math.round(-1-S.si/40);applyFx({equity:eqd},acc);
+  const eqd=Math.round((-1-S.si/40)*KD());applyFx({equity:eqd},acc);
   if(S.si>=40&&!S.ms.eq40){S.ms.eq40=1;log.push('INEQUALITY: SI is automating office work faster than new jobs appear.')}
-  const wbd=Math.round(-1-S.si/35-(m.subs>60?1:0));applyFx({wellbeing:wbd},acc);
+  const wbd=Math.round((-1-S.si/35-(m.subs>60?1:0))*KD());applyFx({wellbeing:wbd},acc);
   if(S.si>=30&&!S.ms.wb30){S.ms.wb30=1;log.push('WELLBEING: SI-tuned feeds now learn what keeps each person scrolling. Teens and preteens are hit hardest.')}
   if(m.wellbeing<40){applyFx({harm:m.wellbeing<25?3:2,talent:-1},acc);log.push('WELLBEING: sleep loss, anxiety and shrinking attention spans are spreading, especially among kids.')}
-  applyFx({botsafe:Math.round(-1-S.si/45)},acc);
+  applyFx({botsafe:Math.round((-1-S.si/45)*KD())},acc);
   if(S.si>=35&&!S.ms.bot35){S.ms.bot35=1;log.push('ROBOTS: SI-powered humanoids are leaving the lab for homes, hospitals and warehouses.')}
   if(S.si>=50&&!F.botdividend){applyFx({equity:-1},acc)}
   if(S.si>=40&&Math.random()<Math.max(0,(58-m.botsafe)/100)*(S.si/80)){const I=[['ROBOT INCIDENT: a hijacked home robot was used to spy on a family for weeks.',{harm:+3,trust:-3,sec:-1}],['ROBOT INCIDENT: a delivery humanoid knocked down a pedestrian after a bad software update.',{harm:+3,trust:-3}],['ROBOT INCIDENT: attackers took over a fleet of warehouse robots and shut down a port for two days.',{harm:+2,sec:-3,econ:-2}]][Math.floor(Math.random()*3)];applyFx(I[1],acc);log.push(I[0])}
@@ -1348,8 +1359,8 @@ function resolve(){
   const dg=Math.round(1+(m.econ-50)/12+(m.talent-50)/20+(m.chips-50)/25+(m.power-50)/25+(m.trust-50)/25+(shipped?(F.evals||F.liab?3:2):0)+(m.esc<40?1:0)-(m.esc>70?2:0));
   const dh=Math.max(-3,Math.round((m.ccap-48)/12+(m.risk-48)/14+(m.esc-45)/18+(m.trust<40?1:0)+leaksNow*3+(S.tamper?0:1)-(F.harden?1:0)));
   const amp=1+S.si/120;
-  applyFx({good:Math.round(dg*amp),harm:dh>0?Math.round(dh*(1+S.si/250)):dh},acc);
-  const siBefore=S.si;S.si=Math.min(100,S.si+8+(shipped?3:0)+(m.rcap>60?2:0)-(F.evals?2:0));
+  applyFx({good:Math.round(dg*amp*KS()),harm:dh>0?Math.round(dh*(1+S.si/250)*KS()):dh},acc);
+  const siBefore=S.si;S.si=Math.min(100,S.si+Math.round((8+(shipped?3:0)+(m.rcap>60?2:0)-(F.evals?2:0))*KS()));
   SIM.forEach(([t,txt])=>{if(S.si>=t&&!S.ms['s'+t]){S.ms['s'+t]=1;log.push(txt)}});
   const GM=[[30,'BREAKTHROUGH: an SI-designed drug for pancreatic cancer enters human trials.'],[45,'BREAKTHROUGH: SI lab robots cut drug discovery from years to months.'],[60,'BREAKTHROUGH: household humanoid robots start helping in elder care and disaster response.'],[75,'BREAKTHROUGH: SI-discovered materials make fusion and cheap batteries practical. Prosperity is spreading.']];
   const HM=[[25,'HARM: SI essay mills sweep high schools. Diplomas are losing meaning.'],[40,'HARM: voice-clone scams and deepfake abuse are now everyday crimes.'],[55,'HARM: bot-driven radicalization is fueling violence in several cities.'],[70,'HARM: a stripped model nearly enabled a mass-casualty attack.']];

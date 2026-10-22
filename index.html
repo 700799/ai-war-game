@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SIGNAL/NOISE — AI Cyber Wargame</title>
+<meta name="description" content="A think-tank style, game-theoretic AI cyber wargame. Play the National Security Council through eight rounds of crisis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d1a; --panel:#1a1c3a; --ink:#f4f1e6; --dim:#9b9ac7; --line:#f4f1e6;
+  --gold:#f7c948; --green:#4bd37b; --red:#ff5c5c; --blue:#5ab0ff; --purple:#b28bff; --orange:#ff9a3c;
+  --tile1:#2f7a3a; --tile2:#3a8c45; --water:#2a4fb3; --road:#b79c5b; --shadow:#000;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'VT323',monospace;font-size:22px;line-height:1.2;-webkit-text-size-adjust:100%;overflow:hidden}
+body{display:flex;flex-direction:column;max-width:560px;margin:0 auto;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+h1,h2,h3,.px{font-family:'Press Start 2P',monospace;line-height:1.5}
+h1{font-size:18px;color:var(--gold);text-shadow:3px 3px 0 #000}
+h2{font-size:12px;color:var(--gold)}
+h3{font-size:10px;color:var(--blue)}
+button{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--ink);background:var(--panel);border:3px solid var(--line);box-shadow:4px 4px 0 var(--shadow);padding:12px 14px;cursor:pointer;touch-action:manipulation;user-select:none}
+button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
+button.a{background:#1e6a3b;border-color:var(--green)} button.b{background:#6a1e1e;border-color:var(--red)}
+button.gold{background:#5a4a10;border-color:var(--gold)}
+button:disabled{opacity:.4}
+.screen{display:none;flex:1;flex-direction:column;min-height:0}
+.screen.on{display:flex}
+.scroll{overflow-y:auto;flex:1;min-height:0;padding:10px}
+.box{background:var(--panel);border:4px solid var(--line);box-shadow:6px 6px 0 var(--shadow);padding:12px}
+.box+.box{margin-top:12px}
+.dialog{position:relative;background:#101225;border:4px double var(--line);padding:14px 14px 20px;min-height:120px;font-size:21px}
+.dialog .who{position:absolute;top:-14px;left:12px;background:var(--panel);padding:2px 8px;font-family:'Press Start 2P';font-size:9px;color:var(--gold);border:3px solid var(--line)}
+.dialog .more{position:absolute;right:10px;bottom:6px;font-family:'Press Start 2P';font-size:10px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>button{flex:1}
+.hud{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;padding:8px 10px;background:#070813;border-bottom:4px solid var(--line)}
+.stat{font-size:17px;display:flex;align-items:center;gap:6px}
+.stat .n{font-family:'Press Start 2P';font-size:8px;width:42px;color:var(--dim)}
+.bar{flex:1;height:10px;background:#222;border:2px solid #000;position:relative}
+.bar i{display:block;height:100%;transition:width .5s}
+.bar.sec i{background:var(--green)} .bar.econ i{background:var(--gold)} .bar.trust i{background:var(--blue)} .bar.ally i{background:var(--purple)}
+.bar.esc i{background:var(--red)} .bar.risk i{background:var(--orange)} .bar.rcap i{background:#ff7a7a} .bar.ccap i{background:#c77}
+.stat .v{font-family:'Press Start 2P';font-size:8px;width:24px;text-align:right}
+.top{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#070813}
+.top .px{font-size:9px}
+.pc{color:var(--gold)}
+/* map */
+.map{display:grid;grid-template-columns:repeat(8,1fr);gap:0;border:4px solid var(--line);box-shadow:6px 6px 0 #000;image-rendering:pixelated;background:var(--tile1);margin:10px;position:relative;touch-action:manipulation}
+.t{aspect-ratio:1;position:relative;background:var(--tile1);cursor:pointer}
+.t.g2{background:var(--tile2)}
+.t.w{background:var(--water);background-image:linear-gradient(45deg,transparent 45%,#4a6fd6 45%,#4a6fd6 55%,transparent 55%);background-size:12px 12px}
+.t.r{background:var(--road)}
+.t.m{background:#6b6b7a;background-image:linear-gradient(135deg,#8a8a99 25%,transparent 25%,transparent 50%,#8a8a99 50%,#8a8a99 75%,transparent 75%);background-size:10px 10px}
+.t.loc{display:flex;align-items:center;justify-content:center;font-size:26px;background:#243a24;outline:2px dashed rgba(255,255,255,.25);outline-offset:-3px}
+.t.loc.done{filter:saturate(.4) brightness(.7)}
+.t.loc .lbl{position:absolute;bottom:-2px;left:0;right:0;font-family:'Press Start 2P';font-size:6px;text-align:center;color:#fff;text-shadow:1px 1px 0 #000;white-space:nowrap;overflow:hidden}
+.hero{position:absolute;width:12.5%;aspect-ratio:1;pointer-events:none;transition:left .18s steps(3),top .18s steps(3);display:flex;align-items:center;justify-content:center}
+.hero .sp{width:8px;height:8px;background:transparent;box-shadow:
+ 16px 0 0 #2b2,24px 0 0 #2b2,
+ 8px 8px 0 #fc9,16px 8px 0 #fc9,24px 8px 0 #fc9,32px 8px 0 #fc9,
+ 8px 16px 0 #fc9,16px 16px 0 #000,24px 16px 0 #fc9,32px 16px 0 #000,
+ 8px 24px 0 #2b2,16px 24px 0 #2b2,24px 24px 0 #2b2,32px 24px 0 #2b2,
+ 0 32px 0 #2b2,8px 32px 0 #2b2,16px 32px 0 #2b2,24px 32px 0 #2b2,32px 32px 0 #2b2,40px 32px 0 #2b2,
+ 8px 40px 0 #853,32px 40px 0 #853;transform:translate(-20px,-22px) scale(.55)}
+.dpad{display:grid;grid-template-columns:repeat(3,50px);grid-template-rows:repeat(3,50px);gap:4px}
+.dpad button{padding:0;font-size:16px}
+.ctrl{display:flex;justify-content:space-between;align-items:center;padding:6px 14px 10px}
+.ab{display:flex;gap:10px;align-items:flex-end}
+.ab button{width:62px;height:62px;border-radius:50%;padding:0;font-size:16px}
+.card{border:3px solid var(--line);background:#141633;padding:10px;margin-bottom:10px;position:relative}
+.card.sel{border-color:var(--gold);background:#2a2610;box-shadow:0 0 0 3px var(--gold) inset}
+.card .cost{position:absolute;top:8px;right:8px;font-family:'Press Start 2P';font-size:8px;color:var(--gold)}
+.card .tag{font-family:'Press Start 2P';font-size:7px;color:var(--dim);margin-top:4px}
+.card p{color:#d7d5ea;font-size:19px;margin-top:4px}
+.post{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.post button{font-size:9px;padding:10px 4px}
+.post button.sel{background:#4a3f0e;border-color:var(--gold)}
+.matrix{display:grid;grid-template-columns:70px repeat(3,1fr);gap:3px;font-family:'Press Start 2P';font-size:7px;text-align:center}
+.matrix div{padding:6px 2px;background:#141633;border:2px solid #333}
+.matrix .h{color:var(--gold);background:transparent;border:none}
+.matrix .cell{font-size:7px;line-height:1.6}
+.matrix .hit{background:#3b2f08;border-color:var(--gold);color:#fff;animation:pulse .6s steps(2) 3}
+@keyframes pulse{50%{background:#7a5f10}}
+.delta{display:flex;flex-wrap:wrap;gap:6px}
+.delta span{font-family:'Press Start 2P';font-size:8px;padding:5px 6px;border:2px solid #444;background:#0e1024}
+.delta .up{color:var(--green)} .delta .dn{color:var(--red)}
+.log{font-size:19px;color:#cfcde6}
+.log li{margin:4px 0 4px 10px}
+.center{text-align:center}
+.title{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;flex:1;padding:20px;text-align:center}
+.title .sub{color:var(--dim);font-size:20px}
+.tri{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:9px solid var(--gold);display:inline-block}
+.opt{display:flex;flex-direction:column;gap:8px}
+.opt button{text-align:left;font-size:9px;line-height:1.6}
+.opt button.sel{border-color:var(--gold);background:#3b2f08}
+.small{font-size:17px;color:var(--dim)}
+.fin{font-size:30px;font-family:'Press Start 2P';color:var(--gold);text-shadow:4px 4px 0 #000}
+.toast{position:fixed;left:50%;top:14px;transform:translateX(-50%);background:#000;border:3px solid var(--gold);padding:8px 12px;font-family:'Press Start 2P';font-size:9px;z-index:9;display:none}
+.lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
+.foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
+.foot button{flex:1}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<!-- TITLE -->
+<section class="screen on" id="s-title">
+  <div class="title">
+    <div class="px" style="font-size:8px;color:var(--dim)">HOOVER-STYLE WARGAME · PIXEL EDITION</div>
+    <h1>SIGNAL / NOISE</h1>
+    <div class="sub">An AI cyber crisis in eight rounds.<br>Export controls. Frontier models. Ransomware gangs.<br>Open weights. One rival state. And you.</div>
+    <div class="px" style="font-size:8px;color:var(--gold);line-height:2">GAME THEORY · ATTRIBUTION FOG · PROFIT MOTIVE<br>GOOD INTENT, BAD OUTCOMES</div>
+    <button class="a" onclick="go('s-setup')">▶ PRESS START</button>
+    <button onclick="go('s-how')">HOW TO PLAY</button>
+    <div class="px" style="font-size:7px;color:var(--dim)">Fictional scenario. Actors are archetypes, not real organizations.</div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="screen" id="s-how">
+  <div class="scroll">
+    <div class="box">
+      <h2>HOW TO PLAY</h2>
+      <p>You chair the <b>National Security Council's</b> AI-cyber cell. Each round you set a <b>POSTURE</b> toward the rival state and spend <b>Political Capital (PC)</b> on actions across the map.</p>
+      <p style="margin-top:8px">Then everyone else moves <i>simultaneously</i>: the rival state, your own profit-driven frontier labs, the open-source commons, criminal syndicates, and Congress.</p>
+      <h3 style="margin-top:12px">THE CORE GAME</h3>
+      <p>Posture vs. the rival is a repeated game under <b>attribution fog</b>. Mutual cooperation is best for both — but each side is tempted to exploit the other, and a criminal attack can be misread as a state attack. Intel lifts the fog.</p>
+      <h3 style="margin-top:12px">THE OTHER GAMES</h3>
+      <p>Labs ship fast unless incentives change. Open weights help everyone — including your enemies. Criminals scale with whatever capability leaks. Congress punishes you for both overreach and weakness.</p>
+      <h3 style="margin-top:12px">LOSE IF</h3>
+      <p>Escalation hits 90 (cyber war) · Security falls to 10 (grid collapse) · Trust falls to 10 (political collapse).</p>
+    </div>
+  </div>
+  <div class="foot"><button onclick="go('s-title')">◀ BACK</button></div>
+</section>
+
+<!-- SETUP -->
+<section class="screen" id="s-setup">
+  <div class="scroll">
+    <div class="box">
+      <h2>SELECT RIVAL DOCTRINE</h2>
+      <p class="small">Who sits across the table shapes every payoff.</p>
+      <div class="opt" id="rivals"></div>
+    </div>
+    <div class="box">
+      <h2>DIFFICULTY</h2>
+      <div class="row" id="diffs"></div>
+    </div>
+  </div>
+  <div class="foot"><button onclick="go('s-title')">◀</button><button class="a" onclick="startGame()">BEGIN ▶</button></div>
+</section>
+
+<!-- GAME SHELL -->
+<section class="screen" id="s-game">
+  <div class="top"><span class="px">ROUND <span id="rnum">1</span>/8</span><span class="px pc">PC <span id="pcv">6</span></span><span class="px" id="phase">BRIEF</span><button style="padding:6px 8px;font-size:9px" onclick="toggleSound()" id="snd">🔊</button></div>
+  <div class="hud" id="hud"></div>
+
+  <!-- BRIEF -->
+  <div class="screen" id="g-brief">
+    <div class="scroll">
+      <div class="dialog" id="brief"><span class="who" id="briefWho">SITROOM</span><span id="briefTxt"></span><span class="more" id="briefMore">▼</span></div>
+      <div id="injectBox" style="margin-top:14px;display:none">
+        <div class="box">
+          <h3 id="injTitle"></h3>
+          <p id="injBody" style="margin:8px 0"></p>
+          <div class="row"><button class="a" id="injA"></button><button class="b" id="injB"></button></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><button class="a" id="briefNext" onclick="briefNext()">A · CONTINUE</button></div>
+  </div>
+
+  <!-- MAP -->
+  <div class="screen" id="g-map">
+    <div class="map" id="map"></div>
+    <div class="dialog" style="margin:0 10px;min-height:70px;font-size:19px" id="mapHint"><span class="who">OVERWORLD</span>Move with the D-pad or tap a tile. Press A at a location.</div>
+    <div class="ctrl">
+      <div class="dpad">
+        <span></span><button onclick="mv(0,-1)">▲</button><span></span>
+        <button onclick="mv(-1,0)">◀</button><span></span><button onclick="mv(1,0)">▶</button>
+        <span></span><button onclick="mv(0,1)">▼</button><span></span>
+      </div>
+      <div class="ab"><button class="b" onclick="openResolveCheck()">B</button><button class="a" onclick="enterLoc()">A</button></div>
+    </div>
+    <div class="foot"><button class="gold" onclick="openResolveCheck()">END TURN ▶</button></div>
+  </div>
+
+  <!-- LOCATION -->
+  <div class="screen" id="g-loc">
+    <div class="scroll">
+      <div class="dialog" id="locDlg"><span class="who" id="locWho"></span><span id="locTxt"></span></div>
+      <div id="locBody" style="margin-top:14px"></div>
+    </div>
+    <div class="foot"><button onclick="showGame('g-map')">B · MAP</button></div>
+  </div>
+
+  <!-- RESOLVE -->
+  <div class="screen" id="g-res">
+    <div class="scroll" id="resBody"></div>
+    <div class="foot"><button class="a" id="resNext">A · CONTINUE</button></div>
+  </div>
+</section>
+
+<!-- DEBRIEF -->
+<section class="screen" id="s-end">
+  <div class="scroll" id="endBody"></div>
+  <div class="foot"><button class="a" onclick="location.reload()">PLAY AGAIN</button></div>
+</section>
+
+<script>
+/* ===================== DATA ===================== */
+const RIVALS = {
+  realist:{name:'CAUTIOUS REALIST',desc:'Reciprocates. Punishes exploitation once, then forgives. Values regime stability over gains.',coop:.55,esc:.25,memory:1,grudge:.5},
+  opportunist:{name:'OPPORTUNIST',desc:'Probes for weakness. Exploits cooperation when it can get away with it. Backs off when you hit back.',coop:.3,esc:.45,memory:2,grudge:.3},
+  hardliner:{name:'HARDLINER',desc:'Believes conflict is inevitable. Reads cooperation as weakness. Only credible deterrence changes its math.',coop:.15,esc:.65,memory:3,grudge:.8},
+};
+const DIFFS = {easy:{pc:7,noise:.1,label:'TABLETOP'},normal:{pc:6,noise:.2,label:'SITROOM'},hard:{pc:5,noise:.3,label:'DEFCON'}};
+
+const LOCS = [
+  {id:'wh', x:1,y:1, icon:'🏛️', name:'WHITE HOUSE', who:'NSC STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
+  {id:'sv', x:5,y:1, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
+  {id:'cisa',x:2,y:4, icon:'🔌', name:'CISA / GRID', who:'CISA DIRECTOR', intro:'"Hospitals, water, power. Every one running software older than your interns."'},
+  {id:'ally',x:6,y:4, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
+  {id:'dark',x:1,y:6, icon:'💀', name:'DARKNET', who:'FBI CYBER', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
+  {id:'oss', x:4,y:6, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
+];
+
+// Action cards. fx = direct effects; flags set round modifiers.
+const ACTIONS = [
+ {id:'harden',loc:'cisa',cost:2,name:'HARDEN CRITICAL INFRA',tag:'DEFENSE · SLOW · ALWAYS GOOD',desc:'Fund patching, segmentation and backups for grid, water and hospitals. Reduces damage from everyone.',fx:{sec:+6},flag:'harden'},
+ {id:'evals',loc:'sv',cost:2,name:'MANDATE PRE-DEPLOY EVALS',tag:'REGULATION · LABS RESIST',desc:'Government red-teams frontier models for cyber capability before release. Slows shipping, cuts accident risk.',fx:{risk:-8,econ:-3,trust:+2},flag:'evals'},
+ {id:'liab',loc:'sv',cost:2,name:'LIABILITY + SAFE HARBOR',tag:'INCENTIVE DESIGN',desc:'Labs face liability for negligent releases, but get safe harbor if they meet evals. Aligns profit with safety.',fx:{risk:-4,trust:+2},flag:'liab'},
+ {id:'chips',loc:'wh',cost:3,name:'CHIP EXPORT CONTROLS',tag:'COERCIVE · PROVOCATIVE',desc:'Choke rival compute. Slows their capability growth, angers them, costs your labs revenue, strains allies unless coordinated.',fx:{rcap:-7,econ:-3,esc:+6,ally:-3},flag:'chips'},
+ {id:'offense',loc:'wh',cost:3,name:'FORWARD DEFENSE OPS',tag:'OFFENSE · DETERRENCE · RISK',desc:'Cyber Command disrupts rival and criminal infrastructure abroad. Builds deterrent credibility; raises escalation.',fx:{ccap:-6,rcap:-2,esc:+5,sec:+2},flag:'offense'},
+ {id:'intel',loc:'wh',cost:1,name:'INTEL COLLECTION',tag:'INFORMATION · CHEAP',desc:'Reveal the rival\'s likely posture before you commit, and cut attribution errors this round.',fx:{},flag:'intel'},
+ {id:'coord',loc:'ally',cost:2,name:'ALLIED COORDINATION',tag:'MULTILATERAL · COMPOUNDING',desc:'Align controls, share threat intel, joint attribution. Makes every coercive move cheaper and more credible.',fx:{ally:+8,sec:+2},flag:'coord'},
+ {id:'norms',loc:'ally',cost:2,name:'CYBER NORMS TRACK',tag:'DIPLOMACY · REQUIRES TRUST',desc:'Open a channel with the rival on off-limits targets (hospitals, nuclear C2). Works only if your posture is not hostile.',fx:{esc:-4},flag:'norms'},
+ {id:'cvd',loc:'oss',cost:1,name:'FUND VULN DISCLOSURE',tag:'PUBLIC GOOD · LEAKS TO ALL',desc:'Pay researchers to find and patch bugs in shared software. Everyone gets safer, including the rival.',fx:{sec:+4,risk:-3,rcap:+1},flag:'cvd'},
+ {id:'weights',loc:'oss',cost:2,name:'RESTRICT OPEN WEIGHTS',tag:'PROLIFERATION · LIBERTY COST',desc:'Bar release of frontier-class open weights with cyber capability. Slows criminals and rival; angers researchers.',fx:{ccap:-5,rcap:-3,trust:-5,econ:-2},flag:'weights'},
+ {id:'crime',loc:'dark',cost:2,name:'DISRUPT SYNDICATES',tag:'LAW ENFORCEMENT · SANCTIONS',desc:'Takedowns, crypto seizures, sanctions on ransomware operators. Degrades criminal capability without touching the rival.',fx:{ccap:-9,trust:+2},flag:'crime'},
+ {id:'bounty',loc:'dark',cost:1,name:'AI DEFENSE BOUNTY',tag:'USE AI FOR DEFENSE',desc:'Deploy frontier models to hunt vulnerabilities in your own infrastructure first. Capability cuts both ways.',fx:{sec:+4,risk:+2},flag:'bounty'},
+];
+
+// Posture payoff matrix: [blue][red] -> {sec, esc, rcap, note}
+const P = ['coop','hedge','esc'];
+const PL = {coop:'COOPERATE',hedge:'HEDGE',esc:'ESCALATE'};
+const MATRIX = {
+ coop:{ coop:{sec:+4,esc:-9,note:'Mutual restraint. Best joint outcome.'},
+        hedge:{sec:-1,esc:-2,note:'You opened; they probed.'},
+        esc:{sec:-9,esc:+7,note:'You were exploited. Sucker\'s payoff.'} },
+ hedge:{coop:{sec:+2,esc:-4,note:'They opened; you held back.'},
+        hedge:{sec:0,esc:+2,note:'Mutual suspicion. Slow drift up.'},
+        esc:{sec:-5,esc:+8,note:'Hit while hedging.'} },
+ esc:{  coop:{sec:+2,esc:+7,rcap:-4,note:'You exploited their restraint. They will remember.'},
+        hedge:{sec:-1,esc:+10,rcap:-2,note:'You struck; they absorbed.'},
+        esc:{sec:-8,esc:+17,rcap:-3,note:'Open cyber exchange. Everyone loses.'} },
+};
+
+const INJECTS = [
+ {id:'hosp',title:'HOSPITAL RANSOMWARE WAVE',cond:s=>s.m.ccap>35,body:'A syndicate using a leaked code-generation model has locked 40 hospital networks. Attribution is murky — tooling overlaps with rival-state proxies.',
+  a:{t:'A · BLAME THE RIVAL PUBLICLY',fx:{esc:+8,trust:+3,ally:-2},log:'You attributed publicly without hard evidence. Base liked it. Allies winced.'},
+  b:{t:'B · TREAT AS CRIME',fx:{trust:-3,ccap:-3},log:'You held fire and worked it as crime. Pundits called you weak; escalation stayed flat.'}},
+ {id:'zeroday',title:'YOUR MODEL FOUND GRID ZERO-DAYS',cond:s=>true,body:'A domestic frontier model autonomously found 14 exploitable bugs in SCADA firmware used by both your grid and the rival\'s.',
+  a:{t:'A · DISCLOSE + PATCH ALL',fx:{sec:+8,rcap:+2,trust:+3},log:'Disclosed. Your grid got safer. So did theirs.'},
+  b:{t:'B · HOARD FOR OFFENSE',fx:{sec:-2,esc:+3,risk:+4},log:'Hoarded. Cyber Command is thrilled. Your own utilities remain exposed.'}},
+ {id:'leak',title:'OPEN-WEIGHTS LEAK',cond:s=>true,body:'A frontier-class model with strong exploit-writing ability leaks from a lab insider and spreads on torrents within hours.',
+  a:{t:'A · EMERGENCY TAKEDOWN ORDERS',fx:{trust:-6,ccap:-2},log:'Takedown orders issued. Mostly symbolic — the torrents won. Civil liberties groups sued.'},
+  b:{t:'B · ACCEPT PROLIFERATION',fx:{ccap:+6,rcap:+3},log:'You accepted the new baseline and pivoted to defense. Criminal capability jumped.'}},
+ {id:'lobby',title:'LAB CEOS DESCEND ON CONGRESS',cond:s=>s.flags.evals||s.flags.liab,body:'Three CEOs warn that your eval regime will hand the frontier to the rival. A senator proposes gutting it.',
+  a:{t:'A · HOLD THE LINE',fx:{econ:-3,risk:-3,trust:+1},log:'You held. Shipping slowed a quarter. Accident risk fell.'},
+  b:{t:'B · GRANT WAIVERS',fx:{econ:+5,risk:+6},log:'Waivers granted. Stock prices up. Red-team findings started going unread.'}},
+ {id:'summit',title:'RIVAL PROPOSES A SUMMIT',cond:s=>s.m.esc>40,body:'Through back channels the rival offers talks on keeping AI out of nuclear command-and-control and hospital networks.',
+  a:{t:'A · ACCEPT',fx:{esc:-6,trust:-1},log:'You accepted. Hawks called it appeasement. Escalation cooled.',signal:'coop'},
+  b:{t:'B · DECLINE',fx:{esc:+3,trust:+2},log:'You declined. The rival read it as a signal.',signal:'esc'}},
+ {id:'misattr',title:'BLACKOUT IN THE MIDWEST',cond:s=>true,body:'A six-hour outage. Early forensics point at rival-state tooling. Cyber Command wants a green light tonight.',
+  a:{t:'A · RETALIATE NOW',fx:{esc:+10,trust:+2},log:'You retaliated. Three days later: it was a contractor\'s misconfig plus a crypto-miner. The rival retaliated for the retaliation.',esc:true},
+  b:{t:'B · WAIT 72 HOURS',fx:{trust:-3},log:'You waited. It was a contractor\'s misconfig. Nobody thanked you.'}},
+ {id:'election',title:'ELECTION SEASON',cond:s=>s.round>=4,body:'Polling shows voters want "toughness" on the rival and "nothing that slows the economy." Both.',
+  a:{t:'A · TALK TOUGH',fx:{trust:+5,esc:+4},log:'Tough talk. Approval up. The rival\'s hardliners used the clips.'},
+  b:{t:'B · TALK QUIET',fx:{trust:-3,esc:-2},log:'You stayed quiet. Approval dipped. Diplomats breathed.'}},
+ {id:'ally',title:'ALLIES BREAK RANKS',cond:s=>s.m.ally<45,body:'Two allies, tired of unilateral surprises, are quietly licensing chip exports to the rival.',
+  a:{t:'A · SECONDARY SANCTIONS',fx:{ally:-8,rcap:-4,econ:-2},log:'You sanctioned allies. Controls held; the alliance did not.'},
+  b:{t:'B · NEGOTIATE A FLOOR',fx:{ally:+4,rcap:+3},log:'You negotiated. Allies stayed. The rival got some chips.'}},
+ {id:'autoacc',title:'AUTONOMOUS AGENT INCIDENT',cond:s=>s.m.risk>55,body:'A well-intentioned ops agent at a utility, trying to "fix latency," rerouted load and tripped three substations. No attacker. No malice.',
+  a:{t:'A · BAN AGENTS IN OT',fx:{sec:+3,econ:-4,risk:-6},log:'Banned autonomous agents in operational tech. Safer. Slower. Industry furious.'},
+  b:{t:'B · REQUIRE KILL SWITCHES',fx:{risk:-3,econ:-1},log:'Kill-switch standard issued. Modest. Reasonable. Nobody noticed.'}},
+];
+
+/* ===================== STATE ===================== */
+let S;
+let rival='realist', diff='normal';
+let hero={x:3,y:3};
+let sound=true, AC=null;
+
+function newState(){
+  return {round:1,maxRounds:8,rival,diff,pc:DIFFS[diff].pc,
+    m:{sec:58,econ:60,trust:58,ally:55,esc:32,risk:38,rcap:48,ccap:42},
+    posture:null,picks:[],flags:{},hist:[],redHist:[],injectLog:[],roundLog:[],intelReveal:null,
+    cum:{coop:0,hedge:0,esc:0},redCum:{coop:0,hedge:0,esc:0},score:0,dead:null,summitSignal:null};
+}
+
+/* ===================== SOUND ===================== */
+function beep(f=440,d=.07,type='square',v=.05){
+  if(!sound) return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+  const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d);o.stop(AC.currentTime+d);}catch(e){}
+}
+const SFX={move:()=>beep(330,.05),sel:()=>beep(660,.08),ok:()=>{beep(523,.08);setTimeout(()=>beep(784,.12),80)},bad:()=>{beep(220,.15,'sawtooth')},tick:()=>beep(880,.02,'square',.02),fanfare:()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.15),i*110))}};
+function toggleSound(){sound=!sound;document.getElementById('snd').textContent=sound?'🔊':'🔇'}
+
+/* ===================== NAV ===================== */
+function go(id){document.querySelectorAll('body>.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');SFX.sel()}
+function showGame(id){document.querySelectorAll('#s-game>.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');
+  document.getElementById('phase').textContent={'g-brief':'BRIEF','g-map':'ORDERS','g-loc':'ORDERS','g-res':'RESOLVE'}[id]}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',1600)}
+const cl=(v,a=0,b=100)=>Math.max(a,Math.min(b,Math.round(v)));
+
+/* ===================== SETUP ===================== */
+function renderSetup(){
+  const r=document.getElementById('rivals');r.innerHTML='';
+  for(const k in RIVALS){const b=document.createElement('button');b.className=k===rival?'sel':'';b.innerHTML=`<span style="color:var(--gold)">${RIVALS[k].name}</span><br><span style="font-family:VT323;font-size:19px;color:#cfcde6">${RIVALS[k].desc}</span>`;b.onclick=()=>{rival=k;renderSetup();SFX.sel()};r.appendChild(b)}
+  const d=document.getElementById('diffs');d.innerHTML='';
+  for(const k in DIFFS){const b=document.createElement('button');b.className=k===diff?'sel gold':'';b.textContent=DIFFS[k].label;b.onclick=()=>{diff=k;renderSetup();SFX.sel()};d.appendChild(b)}
+}
+renderSetup();
+
+function startGame(){S=newState();go('s-game');SFX.ok();startRound()}
+
+/* ===================== HUD ===================== */
+const STATS=[['sec','SEC','Security of critical infrastructure'],['econ','ECON','AI competitiveness'],['trust','TRUST','Public trust / civil liberties'],['ally','ALLY','Alliance cohesion'],['esc','ESC','Escalation with rival (lower is better)'],['risk','RISK','Accident / misuse risk (lower is better)'],['rcap','RIVAL','Rival AI-cyber capability'],['ccap','CRIME','Criminal capability']];
+function renderHud(){
+  const h=document.getElementById('hud');h.innerHTML='';
+  STATS.forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat" title="${tip}"><span class="n">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
+  document.getElementById('rnum').textContent=S.round;document.getElementById('pcv').textContent=S.pc;
+}
+
+/* ===================== BRIEF / TYPEWRITER ===================== */
+let typing=null;
+function typeInto(el,text,cb){clearInterval(typing);el.textContent='';let i=0;typing=setInterval(()=>{el.textContent+=text[i++];if(i%3===0)SFX.tick();if(i>=text.length){clearInterval(typing);cb&&cb()}},14);
+  el.parentElement.onclick=()=>{clearInterval(typing);el.textContent=text;cb&&cb()}}
+
+function briefText(){
+  const m=S.m,r=S.round;
+  if(r===1) return `Round 1. The rival has begun fielding AI agents that write exploits faster than our analysts can read them. Our own labs are three months ahead and want to ship. Criminal syndicates are already using last year's open models. Congress wants two things: safety and speed. You have ${S.pc} points of political capital this round. Spend them well.`;
+  const last=S.roundLog[S.roundLog.length-1]||{};
+  const bits=[];
+  if(m.esc>70) bits.push('Escalation is dangerously high. One misread incident could tip into open conflict.');
+  else if(m.esc<25) bits.push('The channel with the rival is unusually calm. Hawks on both sides call it naive.');
+  if(m.ccap>60) bits.push('Ransomware crews are now operating at near state-level capability.');
+  if(m.risk>65) bits.push('Autonomous systems inside your own infrastructure are a bigger threat than any adversary this round.');
+  if(m.trust<35) bits.push('Your political capital is thin. Congress is circling.');
+  if(m.rcap>70) bits.push('Intelligence estimates the rival has reached capability parity.');
+  if(m.ally<40) bits.push('Allies are hedging between you and the rival.');
+  if(!bits.length) bits.push('No single crisis dominates. That is when the mistakes happen.');
+  return `Round ${r}. ${last.redLine||''} ${bits.join(' ')} You have ${S.pc} PC.`;
+}
+
+let currentInject=null, briefStage=0;
+function startRound(){
+  S.posture=null;S.picks=[];S.flags={};S.intelReveal=null;S.pc=DIFFS[S.diff].pc;
+  LOCS.forEach(l=>l.done=false);
+  renderHud();showGame('g-brief');briefStage=0;
+  document.getElementById('injectBox').style.display='none';
+  document.getElementById('briefNext').style.display='';
+  document.getElementById('briefWho').textContent='SITROOM';
+  typeInto(document.getElementById('briefTxt'),briefText());
+}
+function briefNext(){
+  if(briefStage===0){
+    // pick inject
+    const pool=INJECTS.filter(i=>i.cond(S)&&!S.injectLog.includes(i.id));
+    currentInject=pool.length?pool[Math.floor(Math.random()*pool.length)]:null;
+    if(!currentInject){showGame('g-map');renderMap();return}
+    briefStage=1;
+    document.getElementById('briefWho').textContent='FLASH TRAFFIC';
+    typeInto(document.getElementById('briefTxt'),'Incoming. Decision required before orders go out.');
+    const ib=document.getElementById('injectBox');ib.style.display='';
+    document.getElementById('injTitle').textContent=currentInject.title;
+    document.getElementById('injBody').textContent=currentInject.body;
+    const A=document.getElementById('injA'),B=document.getElementById('injB');
+    A.textContent=currentInject.a.t;B.textContent=currentInject.b.t;
+    A.onclick=()=>chooseInject('a');B.onclick=()=>chooseInject('b');
+    document.getElementById('briefNext').style.display='none';
+  }
+}
+function chooseInject(k){
+  const c=currentInject[k];applyFx(c.fx);S.injectLog.push(currentInject.id);
+  S.lastInject={title:currentInject.title,log:c.log,fx:c.fx};
+  if(c.signal) S.summitSignal=c.signal;
+  if(c.esc) S.flags.misfire=true;
+  if(S.dead) return endGame();
+  renderHud();SFX.ok();
+  document.getElementById('injectBox').style.display='none';
+  document.getElementById('briefWho').textContent='OUTCOME';
+  typeInto(document.getElementById('briefTxt'),c.log,()=>{const b=document.getElementById('briefNext');b.style.display='';b.onclick=()=>{showGame('g-map');renderMap();b.onclick=briefNext}});
+}
+
+/* ===================== MAP ===================== */
+const TILE=[
+ 'mmmmmmmm','m..g.g.m','m.g...gm','r.rrrr.r','mg.g..gm','m..g.g.m','mg...g.m','wwwwwwww'];
+function renderMap(){
+  const map=document.getElementById('map');map.innerHTML='';
+  for(let y=0;y<8;y++)for(let x=0;x<8;x++){
+    const d=document.createElement('div');const ch=TILE[y][x];d.className='t'+(ch==='g'?' g2':ch==='w'?' w':ch==='r'?' r':ch==='m'?' m':'');
+    const L=LOCS.find(l=>l.x===x&&l.y===y);
+    if(L){d.className='t loc'+(L.done?' done':'');d.innerHTML=`${L.icon}<span class="lbl">${L.name.split(' ')[0]}</span>`}
+    d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
+    map.appendChild(d);
+  }
+  const h=document.createElement('div');h.className='hero';h.id='hero';h.innerHTML='<div class="sp"></div>';map.appendChild(h);placeHero();
+  updateHint();
+}
+function placeHero(){const h=document.getElementById('hero');if(!h)return;h.style.left=(hero.x*12.5)+'%';h.style.top=(hero.y*12.5)+'%';updateHint()}
+function updateHint(){
+  const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);const e=document.getElementById('mapHint');
+  const st=`Posture: <b style="color:var(--gold)">${S.posture?PL[S.posture]:'NOT SET'}</b> · Orders: ${S.picks.length} · PC ${S.pc}`;
+  e.innerHTML=`<span class="who">OVERWORLD</span>`+(L?`<b>${L.icon} ${L.name}</b> — press A.<br>`:'')+st;
+}
+function mv(dx,dy){const nx=hero.x+dx,ny=hero.y+dy;if(nx<0||ny<0||nx>7||ny>7)return;const ch=TILE[ny][nx];if(ch==='m'||ch==='w'){SFX.bad();return}hero={x:nx,y:ny};placeHero();SFX.move()}
+function enterLoc(){const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);if(!L){toast('NOTHING HERE');return}openLoc(L)}
+
+function openLoc(L){
+  showGame('g-loc');SFX.sel();
+  document.getElementById('locWho').textContent=L.who;
+  typeInto(document.getElementById('locTxt'),L.intro);
+  const body=document.getElementById('locBody');body.innerHTML='';
+  if(L.id==='wh'){
+    const box=document.createElement('div');box.className='box';
+    box.innerHTML=`<h2>SET POSTURE</h2><p class="small">Simultaneous move vs. the rival. Free. Required.</p>
+    <div class="post" id="post"></div><div id="intelHint" class="small" style="margin-top:8px"></div>`;
+    body.appendChild(box);
+    const p=box.querySelector('#post');
+    P.forEach(k=>{const b=document.createElement('button');b.textContent=PL[k];b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();openLoc(L)};p.appendChild(b)});
+    if(S.flags.intel){box.querySelector('#intelHint').innerHTML=`<b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}`}
+    body.appendChild(matrixEl(null,null));
+  }
+  ACTIONS.filter(a=>a.loc===L.id).forEach(a=>{
+    const picked=S.picks.includes(a.id);
+    const c=document.createElement('div');c.className='card'+(picked?' sel':'');
+    c.innerHTML=`<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>`;
+    c.onclick=()=>toggleAction(a,L);body.appendChild(c);
+  });
+}
+function toggleAction(a,L){
+  if(S.picks.includes(a.id)){S.picks=S.picks.filter(x=>x!==a.id);S.pc+=a.cost;delete S.flags[a.flag];SFX.move()}
+  else{ if(S.pc<a.cost){toast('NOT ENOUGH PC');SFX.bad();return}
+    S.picks.push(a.id);S.pc-=a.cost;S.flags[a.flag]=true;SFX.ok();
+    if(a.id==='intel'){S.intelReveal=redIntel()}
+  }
+  renderHud();openLoc(L);
+}
+
+function matrixEl(b,r){
+  const w=document.createElement('div');w.className='box';
+  let h=`<h3>PAYOFF MATRIX (your Δsec / Δesc)</h3><div class="matrix" style="margin-top:8px"><div class="h"></div>`;
+  P.forEach(k=>h+=`<div class="h">RED<br>${PL[k].slice(0,4)}</div>`);
+  P.forEach(bk=>{h+=`<div class="h">YOU<br>${PL[bk].slice(0,4)}</div>`;P.forEach(rk=>{const c=MATRIX[bk][rk];h+=`<div class="cell ${b===bk&&r===rk?'hit':''}">${c.sec>=0?'+':''}${c.sec} / ${c.esc>=0?'+':''}${c.esc}</div>`})});
+  h+=`</div><p class="small" style="margin-top:6px">Mutual cooperation beats mutual escalation for both. But each side gains by defecting once — unless the other remembers.</p>`;
+  w.innerHTML=h;return w;
+}
+
+/* ===================== RIVAL AI ===================== */
+function redProbs(){
+  const R=RIVALS[S.rival];const n=DIFFS[S.diff].noise;
+  let pc=R.coop,pe=R.esc;
+  const h=S.hist.slice(-R.memory);
+  h.forEach((p,i)=>{const w=(i+1)/h.length;
+    if(p==='esc'){pe+=.35*w*R.grudge+.15;pc-=.25*w}
+    if(p==='coop'){pc+=.25*w;pe-=.15*w}
+    if(p==='hedge'){pe+=.05*w}});
+  if(S.flags.chips) {pe+=.15;pc-=.1}
+  if(S.flags.offense){pe+=.12}
+  if(S.flags.coord){pe-=.05}
+  if(S.m.rcap>S.m.sec+15){pe+=.12}      // capability advantage tempts
+  if(S.m.esc>75){pe-=.1;pc+=.05}          // brink induces caution
+  if(S.summitSignal==='coop'){pc+=.15;pe-=.1} if(S.summitSignal==='esc'){pe+=.1}
+  // deterrence: credible offense history lowers escalation for hardliner only
+  if(S.rival==='hardliner'&&S.hist.includes('esc')&&S.flags.coord){pe-=.15}
+  pc=cl(pc*100,5,85)/100;pe=cl(pe*100,5,85)/100;
+  // noise
+  pc+= (Math.random()-.5)*n;pe+=(Math.random()-.5)*n;
+  pc=Math.max(.03,pc);pe=Math.max(.03,pe);const ph=Math.max(.05,1-pc-pe);
+  const t=pc+pe+ph;return {coop:pc/t,hedge:ph/t,esc:pe/t};
+}
+function redIntel(){const p=redProbs();const k=Object.keys(p).sort((a,b)=>p[b]-p[a])[0];return `Rival most likely to <b>${PL[k]}</b> (${Math.round(p[k]*100)}%). Attribution error this round cut to 5%.`}
+function redChoose(){const p=redProbs();let r=Math.random();if(r<p.coop)return 'coop';if(r<p.coop+p.hedge)return 'hedge';return 'esc'}
+function redReason(choice){
+  const R=RIVALS[S.rival];const last=S.hist[S.hist.length-2];
+  const lines={
+   coop:['"Their restraint is credible. We gain more from a quiet year."','"Hardliners objected. The Ministry overruled them: compute is scarce, time is cheap."'],
+   hedge:['"Probe, do not provoke. See what they do when it is ambiguous."','"We cannot tell if the last incident was them or a gang. Hold."'],
+   esc:['"They struck first. The leadership cannot be seen absorbing that."','"Their grid is soft and their politics are loud. Now is the window."','"Export controls are an act of economic war. We respond in kind."'],
+  };
+  let l=lines[choice];
+  if(choice==='esc'&&S.flags.chips) return l[2];
+  if(choice==='esc'&&last==='esc') return l[0];
+  if(choice==='esc') return l[1];
+  if(choice==='coop'&&R===RIVALS.hardliner) return l[1];
+  return l[Math.floor(Math.random()*l.length)];
+}
+
+/* ===================== RESOLUTION ===================== */
+function applyFx(fx,acc){for(const k in fx){if(!(k in S.m))continue;const before=S.m[k];S.m[k]=cl(S.m[k]+fx[k]);if(acc){acc[k]=(acc[k]||0)+(S.m[k]-before)}}
+  checkDeath()}
+function checkDeath(){if(S.dead)return;if(S.m.esc>=90)S.dead='Escalation reached 90. The exchange went kinetic-adjacent: ports, rail, and three regional grids down on both sides. Cyber war.';
+  else if(S.m.sec<=10)S.dead='Security collapsed. A cascade of attacks and accidents took the eastern grid down for eleven days.';
+  else if(S.m.trust<=10)S.dead='Trust collapsed. Congress stripped the NSC cell of authority. The game continues — without you.'}
+
+function openResolveCheck(){
+  if(!S.posture){toast('SET POSTURE AT WHITE HOUSE');SFX.bad();hero={x:1,y:1};placeHero();return}
+  resolve();
+}
+
+function resolve(){
+  SFX.sel();const log=[];const acc={};
+  const F=S.flags,m=S.m;
+  // ---- 1. Rival posture (simultaneous) ----
+  const red=redChoose();const bp=S.posture;
+  S.hist.push(bp);S.redHist.push(red);S.cum[bp]++;S.redCum[red]++;
+  let cell={...MATRIX[bp][red]};
+  // modifiers
+  if(F.harden&&cell.sec<0) cell.sec=Math.round(cell.sec*.6);
+  if(F.coord&&cell.esc>0) cell.esc=Math.round(cell.esc*.8);
+  if(F.norms){ if(bp!=='esc'){cell.esc-=3;log.push('Norms channel held: hospitals and nuclear C2 declared off-limits by both.')} else {log.push('Norms channel collapsed — you cannot escalate and negotiate restraint in the same breath.');S.m.trust-=2}}
+  applyFx({sec:cell.sec,esc:cell.esc,rcap:cell.rcap||0},acc);
+  const redLine=`Last round the rival chose to ${PL[red].toLowerCase()}.`;
+  // ---- 2. Attribution fog ----
+  const fogP=F.intel?.05:(F.coord?.14:.22);
+  let fog=null;
+  if(Math.random()<fogP&&m.ccap>30){fog=true;const d=Math.round(4+m.ccap/12);applyFx({esc:+d,trust:-2},acc);log.push(`ATTRIBUTION ERROR: a criminal intrusion was briefed as rival-state activity. Escalation +${d} before forensics caught it.`)}
+  if(F.misfire){applyFx({esc:+4},acc);log.push('Your retaliation on the blackout was answered. The rival did not care that it was a misattribution.');}
+  // ---- 3. Direct action effects ----
+  S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id);let fx={...a.fx};
+    if(id==='chips'&&F.coord){fx.ally=+1;fx.rcap-=3;log.push('Allied-coordinated chip controls: tighter, and nobody broke ranks.')}
+    if(id==='chips'&&!F.coord){log.push('Unilateral chip controls. Allies grumbled; some leakage continued.')}
+    if(id==='offense'&&bp==='coop'){fx.esc+=3;log.push('Forward ops while signaling cooperation read as duplicity.')}
+    if(id==='bounty'&&F.evals){fx.risk-=2}
+    applyFx(fx,acc)});
+  // ---- 4. Frontier labs (profit motive) ----
+  let shipFast=.72; if(F.evals)shipFast-=.22; if(F.liab)shipFast-=.2; if(m.rcap>m.econ)shipFast+=.12; if(S.lastInject&&S.lastInject.title.includes('CEOS')&&S.lastInject.log.includes('Waivers'))shipFast+=.15;
+  if(Math.random()<shipFast){applyFx({econ:+4,risk:+6,ccap:+1},acc);log.push('Labs shipped a more capable model on schedule. Revenue up. Red-team report: "mostly fine."')}
+  else{applyFx({econ:+2,risk:-2},acc);log.push('Labs delayed release pending evals. CEO op-ed: "Regulation is handing the future to our rivals."')}
+  // ---- 5. Open commons (good intent) ----
+  const openP=F.weights?.2:.55;
+  if(Math.random()<openP){applyFx({econ:+2,ccap:+4,rcap:+3,sec:+1},acc);log.push('A research collective released open weights "so defenders can study them." Criminal and rival capability rose. Defenders also benefited.')}
+  else if(F.cvd){applyFx({sec:+2},acc);log.push('Disclosure program patched 300+ bugs in shared infrastructure software.')}
+  // ---- 6. Criminal syndicates ----
+  const dmg=Math.max(0,Math.round((m.ccap-25)/6 - (F.harden?3:0) - (F.crime?2:0)));
+  if(dmg>0){applyFx({sec:-dmg,trust:-Math.round(dmg/2),econ:-Math.round(dmg/3)},acc);log.push(`Ransomware season: ${dmg>6?'severe':dmg>3?'moderate':'minor'} damage to hospitals and municipalities (−${dmg} sec).`)}
+  else log.push('Criminal activity was contained this round.');
+  // ---- 7. Rival capability drift ----
+  applyFx({rcap:+2,ccap:+1},acc);
+  // ---- 8. Accident risk ----
+  if(m.risk>60&&Math.random()<(m.risk-50)/100){const d=Math.round(5+m.risk/10);applyFx({sec:-d,trust:-4,risk:-6},acc);log.push(`ACCIDENT: an autonomous system with no hostile intent caused −${d} sec. The post-mortem blamed "unexpected emergent behavior."`)}
+  // ---- 9. Congress / drift ----
+  applyFx({esc:-2},acc);
+  if(bp==='esc'&&m.trust<50){applyFx({trust:+3},acc)} // hawkish plays well when weak
+  if(bp==='coop'&&m.esc<30){applyFx({trust:+2,econ:+1},acc)}
+  S.flags.misfire=false;S.summitSignal=null;
+  S.roundLog.push({round:S.round,blue:bp,red,cell,log,redLine,acc,fog});
+  renderHud();
+  renderResolve(bp,red,cell,log,acc,fog);
+}
+
+function renderResolve(bp,red,cell,log,acc,fog){
+  showGame('g-res');const b=document.getElementById('resBody');
+  const dl=Object.entries(acc).filter(([k,v])=>v!==0).map(([k,v])=>{const bad=['esc','risk','rcap','ccap'].includes(k);const good=bad?v<0:v>0;return `<span class="${good?'up':'dn'}">${k.toUpperCase()} ${v>0?'+':''}${v}</span>`}).join('');
+  b.innerHTML=`<div class="dialog"><span class="who">RIVAL MINISTRY · INTERCEPT</span>${redReason(red)}</div>
+   <div class="box" style="margin-top:14px"><h2>YOU: ${PL[bp]} · RIVAL: ${PL[red]}</h2><p style="margin:6px 0 10px">${cell.note}</p></div>`;
+  b.appendChild(matrixEl(bp,red));
+  b.innerHTML+=`<div class="box"><h3>ROUND ${S.round} EVENTS</h3><ul class="log" style="margin-top:6px">${log.map(l=>`<li>${l}</li>`).join('')}</ul></div>
+   <div class="box"><h3>NET CHANGE</h3><div class="delta" style="margin-top:8px">${dl||'<span>NO CHANGE</span>'}</div></div>`;
+  if(S.dead){SFX.bad()}else if(acc.sec>0&&acc.esc<=0)SFX.ok();else SFX.bad();
+  document.getElementById('resNext').onclick=()=>{if(S.dead)return endGame();S.round++;if(S.round>S.maxRounds)return endGame();startRound()};
+}
+
+/* ===================== DEBRIEF ===================== */
+function scoreGame(){const m=S.m;return cl(m.sec*.3+m.econ*.2+m.trust*.2+m.ally*.1+(100-m.esc)*.2 - m.risk*.1 - Math.max(0,m.rcap-m.sec)*.2 + (S.dead?-40:0),0,100)}
+function endGame(){
+  go('s-end');const b=document.getElementById('endBody');const sc=scoreGame();
+  const grade=S.dead?'F':sc>=80?'S':sc>=68?'A':sc>=55?'B':sc>=42?'C':'D';
+  if(!S.dead)SFX.fanfare();else SFX.bad();
+  const n=S.hist.length;const rec=S.hist.map((h,i)=>`<div class="h">R${i+1}</div><div>${PL[h].slice(0,4)}</div><div>${PL[S.redHist[i]].slice(0,4)}</div>`).join('');
+  // analysis
+  const L=[];const H=S.hist,R=S.redHist;
+  const mutual=H.filter((h,i)=>h==='coop'&&R[i]==='coop').length;
+  const exploited=H.filter((h,i)=>h==='coop'&&R[i]==='esc').length;
+  const warRounds=H.filter((h,i)=>h==='esc'&&R[i]==='esc').length;
+  let tft=0;for(let i=1;i<R.length;i++){if(R[i]===H[i-1])tft++}
+  if(mutual>=3)L.push(`You reached mutual cooperation in ${mutual} rounds. In a repeated game, that is the "shadow of the future" doing its work: the rival valued the next round more than a one-time gain.`);
+  if(exploited>=2)L.push(`You were exploited ${exploited} times while cooperating. Unconditional cooperation is not a strategy — it is an invitation. Reciprocity (tit-for-tat with forgiveness) beats both pacifism and permanent hostility.`);
+  if(warRounds>=2)L.push(`${warRounds} rounds of mutual escalation. Both sides ended worse than if neither had moved. This is the security dilemma: defensive moves look offensive, and the fog of attribution turns accidents into retaliation.`);
+  if(tft>=Math.floor(n*.5))L.push(`The rival mirrored your previous move in ${tft} of ${n-1} rounds. Your posture was effectively setting theirs. Lead with the outcome you want.`);
+  const fogs=S.roundLog.filter(r=>r.fog).length;
+  if(fogs>=2)L.push(`Attribution error struck ${fogs} times. Cheap intel was your highest-return action and you underbought it. Most real cyber crises are not escalation decisions — they are identification decisions.`);
+  else if(fogs===0&&S.roundLog.some(r=>r.log.some(l=>l.includes('Intel'))))L.push('You bought down attribution risk consistently. No misread incidents all game.');
+  if(S.m.risk>55)L.push('You finished with high accident risk. The most damaging actors in this game had no hostile intent: a lab under profit pressure and an ops agent "fixing latency." Regulation of intent does not regulate outcomes.');
+  if(S.m.ccap>60)L.push('Criminal capability ended high. Every open-weights release and every unpatched hospital compounded it. Crime scales with proliferation, not with doctrine.');
+  if(S.m.ally<40)L.push('Alliance cohesion ended low. Unilateral coercion (chips, sanctions) buys short-term leverage and sells long-term credibility.');
+  if(S.m.rcap>S.m.sec+10)L.push('The rival\'s capability outran your defenses. Export controls slow a rival; they do not stop it. Only hardening changes what an attack can do once it arrives.');
+  if(!L.length)L.push('A balanced run. The uncomfortable lesson of this game: the best policies were boring — hardening, intel, disclosure — and the exciting ones mostly raised escalation.');
+  b.innerHTML=`<div class="box center"><div class="px" style="font-size:8px;color:var(--dim)">${S.dead?'GAME OVER':'DEBRIEF'}</div><div class="fin" style="margin:10px 0">GRADE ${grade}</div><div class="px" style="font-size:9px">SCORE ${sc}/100</div>${S.dead?`<p style="margin-top:10px;color:var(--red)">${S.dead}</p>`:''}</div>
+   <div class="box"><h2>FINAL STATE</h2><div class="delta" style="margin-top:8px">${STATS.map(([k,nm])=>`<span>${nm} ${S.m[k]}</span>`).join('')}</div></div>
+   <div class="box"><h2>POSTURE HISTORY</h2>
+   <div class="matrix" style="grid-template-columns:40px repeat(${Math.max(1,n)},1fr);margin-top:8px"><div class="h"></div>${H.map((h,i)=>`<div class="h">R${i+1}</div>`).join('')}<div class="h">YOU</div>${H.map(h=>`<div>${PL[h].slice(0,3)}</div>`).join('')}<div class="h">RED</div>${R.map(h=>`<div>${PL[h].slice(0,3)}</div>`).join('')}</div></div>
+   <div class="box"><h2>WHAT THE GAME THEORY SAYS</h2>${L.map(l=>`<div class="lesson">${l}</div>`).join('')}</div>
+   <div class="box"><h3>DESIGN NOTES</h3><p class="small" style="margin-top:6px">Posture is a repeated prisoner's-dilemma / stag-hunt hybrid with noisy signals. Labs, the commons, criminals and Congress each play their own game with their own payoffs; none of them can be ordered, only incentivized. Rival doctrine: ${RIVALS[S.rival].name}. Difficulty: ${DIFFS[S.diff].label}.</p></div>`;
+}
+
+// keyboard
+document.addEventListener('keydown',e=>{if(!document.getElementById('g-map').classList.contains('on'))return;const k=e.key;if(k==='ArrowUp')mv(0,-1);if(k==='ArrowDown')mv(0,1);if(k==='ArrowLeft')mv(-1,0);if(k==='ArrowRight')mv(1,0);if(k==='Enter'||k===' ')enterLoc()});
+</script>
+</body>
+</html>

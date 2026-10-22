@@ -102,6 +102,41 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
+/* ===== SVG pixel art ===== */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.35) 100%)}
+.title{overflow-y:auto;justify-content:flex-start;gap:14px}
+.scene{width:100%;max-width:520px;aspect-ratio:320/170;border:4px solid var(--line);box-shadow:6px 6px 0 #000;flex-shrink:0;background:#070813}
+.scene>svg{width:100%;height:100%;display:block}
+.t svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.t.m{background:var(--tile2)}
+.t.w{animation:wave 1.6s steps(4) infinite}
+@keyframes wave{to{background-position:12px 0}}
+.t.loc{background:var(--tile1);outline:none}
+.t.loc svg{inset:4% 6% 14% 6%;width:88%;height:82%}
+.t.loc.picked{box-shadow:inset 0 0 0 2px var(--gold)}
+.t .badge{position:absolute;top:1px;right:2px;font-family:'Press Start 2P';font-size:9px;color:var(--gold);text-shadow:1px 1px 0 #000;z-index:2;animation:blink 1s steps(2) infinite}
+.map::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 50%,transparent 35%,rgba(255,40,40,var(--heat,0)) 100%);z-index:3}
+.map.hot::after{animation:heat 1.2s steps(2) infinite}
+@keyframes heat{50%{opacity:.45}}
+.hero{z-index:2}
+.glitch{position:absolute;width:12.5%;aspect-ratio:1;z-index:2;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.glitch svg{width:80%;height:95%;animation:jitter .5s steps(2) infinite}
+@keyframes jitter{50%{transform:translate(1px,-2px)}}
+.hero svg{width:78%;height:92%;filter:drop-shadow(0 3px 0 rgba(0,0,0,.45));animation:bob .8s steps(2) infinite}
+@keyframes bob{50%{transform:translateY(-5%)}}
+.pt{float:left;width:60px;height:60px;margin:2px 10px 4px 0;border:3px solid var(--line);background:linear-gradient(#2a2c55,#1a1c3a);box-shadow:3px 3px 0 #000}
+.pt svg{width:100%;height:100%;display:block}
+.dialog::after{content:'';display:block;clear:both}
+.clash{display:flex;align-items:center;gap:6px;justify-content:space-between;margin-bottom:14px}
+.clash .side{display:flex;flex-direction:column;align-items:center;gap:5px}
+.clash .side span{font-family:'Press Start 2P';font-size:7px;color:var(--dim)}
+.clash .side b{font-family:'Press Start 2P';font-size:8px;color:var(--gold)}
+.pt.big{width:78px;height:78px;float:none;margin:0}
+.clash .link{flex:1;height:44px}
+.shake{animation:shake .35s steps(4) 3}
+@keyframes shake{25%{transform:translate(-5px,2px)}50%{transform:translate(5px,-2px)}75%{transform:translate(-3px,-3px)}}
+.flash{animation:flash .5s steps(2) 2}
+@keyframes flash{50%{background:#3a0a0a}}
 </style>
 </head>
 <body>
@@ -110,6 +145,7 @@ button:disabled{opacity:.4}
 <!-- TITLE -->
 <section class="screen on" id="s-title">
   <div class="title">
+    <div id="scene" class="scene"></div>
     <div class="px" style="font-size:8px;color:var(--dim)">HOOVER-STYLE WARGAME · PIXEL EDITION</div>
     <h1>SIGNAL / NOISE</h1>
     <div class="sub">An AI cyber crisis in eight rounds.<br>Export controls. Frontier models. Ransomware gangs.<br>Open weights. One rival state. And you.</div>
@@ -162,7 +198,7 @@ button:disabled{opacity:.4}
   <!-- BRIEF -->
   <div class="screen" id="g-brief">
     <div class="scroll">
-      <div class="dialog" id="brief"><span class="who" id="briefWho">SITROOM</span><span id="briefTxt"></span><span class="more" id="briefMore">▼</span></div>
+      <div class="dialog" id="brief"><span class="who" id="briefWho">SITROOM</span><span class="pt" id="briefPt"></span><span id="briefTxt"></span><span class="more" id="briefMore">▼</span></div>
       <div id="injectBox" style="margin-top:14px;display:none">
         <div class="box">
           <h3 id="injTitle"></h3>
@@ -192,7 +228,7 @@ button:disabled{opacity:.4}
   <!-- LOCATION -->
   <div class="screen" id="g-loc">
     <div class="scroll">
-      <div class="dialog" id="locDlg"><span class="who" id="locWho"></span><span id="locTxt"></span></div>
+      <div class="dialog" id="locDlg"><span class="who" id="locWho"></span><span class="pt" id="locPt"></span><span id="locTxt"></span></div>
       <div id="locBody" style="margin-top:14px"></div>
     </div>
     <div class="foot"><button onclick="showGame('g-map')">B · MAP</button></div>
@@ -290,6 +326,102 @@ const INJECTS = [
   b:{t:'B · REQUIRE KILL SWITCHES',fx:{risk:-3,econ:-1},log:'Kill-switch standard issued. Modest. Reasonable. Nobody noticed.'}},
 ];
 
+
+/* ===================== SVG PIXEL ENGINE ===================== */
+function spr(rows,pal,W,H,attrs=''){W=W||Math.max(...rows.map(r=>r.length));H=H||rows.length;let o='';
+  rows.forEach((row,y)=>{let x=0;while(x<row.length){const c=row[x];if(!pal[c]){x++;continue}let x2=x;while(x2<row.length&&row[x2]===c)x2++;o+=`<rect x="${x}" y="${y}" width="${x2-x}" height="1.04" fill="${pal[c]}"/>`;x=x2}});
+  return `<svg ${attrs} viewBox="0 0 ${W} ${H}" shape-rendering="crispEdges">${o}</svg>`}
+
+const SPR={
+ wh:{pal:{k:'#5a5a6a',r:'#ff5c5c',b:'#5ab0ff',l:'#d8d4c4',w:'#f4f1e6',g:'#9b9ac7',d:'#3a3f6b',y:'#f7c948'},rows:[
+  ".......krrr.....",".......kbrr.....",".......k........","......lll.......",".....lllll......","....lllllll.....","..wwwwwwwwwwww..",".gggggggggggggg.",
+  "..wdwdwddwdwdw..","..wdwdwddwdwdw..","..wdwdwddwdwdw..","..wdwdwyywdwdw..","..wdwdwyywdwdw..",".gggggggggggggg.","gggggggggggggggg"]},
+ sv:{pal:{k:'#3a3a50',c:'#5ab0ff',C:'#2a4fb3',y:'#f7c948',p:'#b28bff'},rows:[
+  "........k.......","........k.......",".......pkp......",".....kkkkkk.....",".....kcCcCk.....",".....kCcyck.....",".....kcCcCk.....","..kkkkCcCcCkkk..",
+  "..kcCcCcyCcCcCk.","..kCcCcyCcCcyCk.","..kcCcCcyCcCcCk.","..kCcCcyCcCcyCk.","..kcCcCcyCcCcCk.","..kCcCcyCcCcyCk.","..kkkkkkyykkkkk."]},
+ cisa:{pal:{k:'#c9c9d6',y:'#f7c948'},rows:[
+  "......kkkk......","kkkkkkkkkkkkkkkk","y....k.kk.k....y","......kkkk......","...kkkkkkkkkk...","y....k.kk.k....y","......k..k......",".....k.kk.k.....",
+  ".....kk..kk.....",".....k.kk.k.....","....k..kk..k....","....kk....kk....","...k.k.yy.k.k...","...k..yyy...k...","..kk...y....kk..",".kkk........kkk."]},
+ ally:{pal:{k:'#3a2a1a',b:'#5ab0ff',r:'#ff5c5c',g:'#4bd37b',d:'#8a7a5a',l:'#e8dcc0',y:'#5ab0ff',G:'#9b9ac7'},rows:[
+  "..k....k....k...","..kbb..krr..kgg.","..kbb..krr..kgg.","..k....k....k...","..k....k....k...",".dddddddddddddd.",".dlllllllllllld.",".dlyylyylyylyld.",
+  ".dlyylyylyylyld.",".dlllllllllllld.",".dlyylkkkllyyld.",".dlyylkkkllyyld.",".dlllllkkklllld.","GGGGGGGGGGGGGGGG"]},
+ dark:{pal:{k:'#141420',r:'#ff5c5c',R:'#8a1c1c',g:'#3a3a50',s:'#4bd37b'},rows:[
+  "................","...gggggggggg...","..gkkkkkkkkkkg..","..gkrRkkkkRrkg..","..gkRrkkkkrRkg..","..gkkkkkkkkkkg..","..gkkssssskkkg..","..gkksrssskkkg..",
+  "..gkkssssskkkg..","..gkkkkkkkkkkg..","..gkrRkkkkRrkg..","..gkkkkkkkkkkg..","..gkkkkRRkkkkg..","..gkkkkRRkkkkg..",".gggggggggggggg."]},
+ oss:{pal:{G:'#1f5a28',L:'#4bd37b',y:'#f7c948',t:'#6b4a2a'},rows:[
+  ".....LLLLLL.....","...LLLyLLLLLL...","..LLGLLLLGLyLL..",".LyLLLGLLLLLLGL.",".LLLGLLLyLLGLLL.","LLGLLLLLLLLLLyLL",".LLLyLLGLLLLLLL.","..GLLLLLLLGLLG..",
+  "...GLLtLLtLLG...","......tttt......","......tttt......","......tttt......",".....tttttt.....","....tt.tt.tt...."]},
+ tree:{pal:{G:'#1f5a28',L:'#3d9a4a',t:'#6b4a2a'},rows:[
+  ".......G........","......GGG.......",".....GGLGG......","......GGG.......",".....GGLGG......","....GGGLGGG.....",".....GGGGG......","....GGGLGGG.....",
+  "...GGGGLGGGG....","..GGGGGGGLGGG...","....GGGGGGG.....","...GGLGGGGGGG...","..GGGGGGGLGGGG..",".......tt.......",".......tt......."]},
+ glitch:{pal:{K:'#10261f',Y:'#f8f0a0',W:'#ffffff',P:'#10261f'},rows:[
+  ".KK..........KK.",".KYK.KKKKKK.KYK.",".KYYKYYYYYYKYYK.","KYYYKKKKYKKKKYYK","KYYKWWWWKWWWWKYK","KYYKWWPPKWWPPKYK","KYYKWWPPKWWPPKYK","KYYYKKKKYKKKKYYK",
+  "KYYYYYYYYYYYYYYK","KYYKWKWKWKWKKYYK","KYYKKKKKKKKKKYYK","KYYKKWKWKWKWKYYK","KYYYKKKKKKKKYYYK","KYYYYYYYYYYYYYYK","KYKYYYYYYYYYYKYK","KYKYYYYYYYYYYKYK",
+  "KYYKYYYYYYYYKYYK",".KKKYYYKKYYYKKK.","...KYKYK.KYKYK..","...KKKKK.KKKKK.."]},
+ tuft:{pal:{l:'#5fb86a'},rows:["","","...l.l","....l.l","","","","","","","..........l.l","...........l.l"]},
+ road:{pal:{s:'#9c8248',d:'#c9b071'},rows:["","","..s.......d.....","","......d.......s.","","","...d.....s......","","","s.......d.......","","....s........d..","","",""]},
+};
+const sprite=k=>spr(SPR[k].rows,SPR[k].pal,16,16);
+
+/* hero: original pixel character (NSC analyst) */
+const HERO_PAL={h:'#4a2b17',s:'#f1c27d',e:'#1b1b2f',n:'#23305e',w:'#f4f1e6',r:'#d33a3a',b:'#141420',g:'#9aa3b5',k:'#3a3a3a',m:'#b5651d'};
+const HERO_DOWN=["....hhhh....","...hhhhhh...","...hssssh...","..gsessesg..","...ssmmss...","....ssss....","..nnnwwnnn..",".nnnnwrnnnn.",".snnnnrnnns.",".s.nnnrnn.s.","...nnnnnn...","...kkkkkk..."];
+const HERO_UP=["....hhhh....","...hhhhhh...","...hhhhhh...","..ghhhhhhg..","...hhhhhh...","....ssss....","..nnnnnnnn..",".nnnnnnnnnn.",".snnnnnnnns.",".s.nnnnnn.s.","...nnnnnn...","...kkkkkk..."];
+const LEGS_A=["...nn..nn...","...nn..nn...","...nn..nn...","..bbb..bbb.."];
+const LEGS_B=["...nn..nn...","..nn....nn..","..nn....nn..",".bbb....bbb."];
+let step=0,facing='down';
+function heroSVG(attrs=''){return spr((facing==='up'?HERO_UP:HERO_DOWN).concat(step%2?LEGS_B:LEGS_A),HERO_PAL,12,16,attrs)}
+
+/* portraits: parametric 16x16 faces */
+function face(o){
+  const r=["................",".....HHHHHH.....","....HHHHHHHH....","...HHHHHHHHHH...","...HSSSSSSSSH...","...SSSSSSSSSS...","...SSEESSEESS...","...SSSSSSSSSS...",
+   "...SSSSSSSSSS...","....SSSMMSSS....",".....SSSSSS.....","......SSSS......","...CCCCwwCCCC...","..CCCCCwTwCCCC..",".CCCCCCCTCCCCCC.","CCCCCCCCTCCCCCCC"];
+  const set=(y,x,c)=>{r[y]=r[y].slice(0,x)+c+r[y].slice(x+1)};
+  if(o.long){for(let y=4;y<11;y++){set(y,2,'H');set(y,13,'H')}}
+  if(o.glasses)r[6]="...SGEGSSGEGS...";
+  if(o.shades)r[6]="...SKKKSSKKKS...";
+  if(o.beard){r[8]="...BSSSSSSSSB...";r[9]="....BBBMMBBB....";r[10]=".....BBBBBB.....";r[11]="......BBBB......"}
+  if(o.cap){r[1]="....PPPPPPPP....";r[2]="...PPPPyyPPPP...";r[3]="..KKKKKKKKKKKK.."}
+  if(o.headset){for(let y=5;y<8;y++)set(y,2,'G');set(9,3,'G')}
+  if(o.notie)r.forEach((row,i)=>r[i]=row.replace(/T/g,'C'));
+  return r}
+const PT={
+ sit:{hair:'#2b1a10',suit:'#4a4f6b',glasses:1,long:1,skin:'#c68642',headset:1},
+ you:{hair:'#4a2b17',suit:'#23305e'},
+ wh:{hair:'#7a5a3a',suit:'#1e2a4a',tie:'#5ab0ff'},
+ sv:{hair:'#e8c860',suit:'#222',notie:1,shirt:'#2a2a2a'},
+ cisa:{hair:'#333',suit:'#c96a1a',cap:1,capc:'#f7c948',badge:'#ffffff',notie:1,shirt:'#f7c948',skin:'#8d5524'},
+ ally:{hair:'#cfcfcf',suit:'#5a3a7a',tie:'#f7c948'},
+ dark:{hair:'#111',suit:'#111',shades:1,tie:'#111',skin:'#e0ac69'},
+ oss:{hair:'#a0522d',suit:'#2f7a3a',beard:1,notie:1,shirt:'#2f7a3a',glasses:1},
+ red:{hair:'#222',suit:'#5a2a2a',cap:1,capc:'#4a1f1f',badge:'#f7c948',tie:'#5a2a2a',shirt:'#3a1a1a',skin:'#e0b080'},
+};
+const glitchSVG=(a='')=>spr(SPR.glitch.rows,SPR.glitch.pal,16,20,a);
+function portrait(k){if(k==='glitch')return glitchSVG();const o=PT[k];return spr(face(o),{H:o.hair,S:o.skin||'#f1c27d',E:'#1b1b2f',M:'#a0522d',C:o.suit,w:o.shirt||'#f4f1e6',T:o.tie||'#d33a3a',G:'#9aa3b5',K:'#111',P:o.capc,y:o.badge||'#f7c948',B:o.hair},16,16)}
+
+/* title scene: two cities, packets crossing in both directions */
+function titleScene(){
+  let sd=7;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;
+  let o='<rect width="320" height="170" fill="url(#sky)"/>';
+  for(let i=0;i<55;i++){const x=Math.floor(rnd()*320),y=Math.floor(rnd()*95);o+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#fff"><animate attributeName="opacity" values="1;.15;1" dur="${(2+rnd()*4).toFixed(1)}s" repeatCount="indefinite"/></rect>`}
+  o+='<rect x="152" y="12" width="16" height="22" fill="#f4f1e6"/><rect x="148" y="16" width="24" height="14" fill="#f4f1e6"/><rect x="156" y="17" width="5" height="5" fill="#d8d4c4"/><rect x="163" y="25" width="3" height="3" fill="#d8d4c4"/>';
+  const city=(x0,x1,col,win)=>{let x=x0;const tops=[];while(x<x1){const w=8+Math.floor(rnd()*14),h=30+Math.floor(rnd()*62),y=150-h;
+    o+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${col}"/>`;if(rnd()<.3)o+=`<rect x="${x+Math.floor(w/2)}" y="${y-8}" width="1" height="8" fill="${col}"/><rect x="${x+Math.floor(w/2)}" y="${y-9}" width="1" height="1" fill="${win}"><animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/></rect>`;
+    tops.push([x+Math.floor(w/2),y]);
+    for(let wy=y+4;wy<146;wy+=6)for(let wx=x+2;wx<x+w-2;wx+=4)if(rnd()<.45){o+=rnd()<.12?`<rect x="${wx}" y="${wy}" width="2" height="2" fill="${win}"><animate attributeName="opacity" values="1;0;1" dur="${(1+rnd()*3).toFixed(1)}s" repeatCount="indefinite"/></rect>`:`<rect x="${wx}" y="${wy}" width="2" height="2" fill="${win}" opacity=".85"/>`}
+    x+=w+1}return tops};
+  const L=city(0,118,'#141a3a','#5ab0ff'),R=city(202,320,'#2a1020','#ff5c5c');
+  for(let i=0;i<6;i++){const a=L[Math.floor(rnd()*L.length)],b=R[Math.floor(rnd()*R.length)];const pth=`M${a[0]} ${a[1]} Q160 ${Math.floor(10+rnd()*45)} ${b[0]} ${b[1]}`;const d=(2.5+rnd()*3);
+    o+=`<path d="${pth}" fill="none" stroke="#b28bff" stroke-width=".6" stroke-dasharray="2 3" opacity=".45"/>`;
+    o+=`<rect x="-1.5" y="-1.5" width="3" height="3" fill="#5ab0ff"><animateMotion dur="${d.toFixed(1)}s" repeatCount="indefinite" path="${pth}"/></rect>`;
+    o+=`<rect x="-1.5" y="-1.5" width="3" height="3" fill="#ff5c5c"><animateMotion dur="${(d*1.3).toFixed(1)}s" repeatCount="indefinite" path="${pth}" keyPoints="1;0" keyTimes="0;1" calcMode="linear"/></rect>`}
+  o+='<rect y="150" width="320" height="20" fill="#0b0d1a"/><rect y="150" width="320" height="1" fill="#b28bff" opacity=".6"/>';
+  o+=heroSVG('x="140" y="133" width="16" height="18"');
+  o+=`<g>${glitchSVG('x="166" y="129" width="18" height="22"')}<animateTransform attributeName="transform" type="translate" values="0 0;0 -2;0 0" dur=".7s" calcMode="discrete" repeatCount="indefinite"/></g>`;
+  o+='<text x="40" y="164" font-family="Press Start 2P" font-size="6" fill="#5ab0ff">BLUE</text><text x="252" y="164" font-family="Press Start 2P" font-size="6" fill="#ff5c5c">RED</text>';
+  document.getElementById('scene').innerHTML=`<svg viewBox="0 0 320 170" shape-rendering="crispEdges" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070813"/><stop offset="1" stop-color="#3a1a4a"/></linearGradient></defs>${o}</svg>`;
+}
+
 /* ===================== STATE ===================== */
 let S;
 let rival='realist', diff='normal';
@@ -326,6 +458,7 @@ function renderSetup(){
   for(const k in DIFFS){const b=document.createElement('button');b.className=k===diff?'sel gold':'';b.textContent=DIFFS[k].label;b.onclick=()=>{diff=k;renderSetup();SFX.sel()};d.appendChild(b)}
 }
 renderSetup();
+titleScene();
 
 function startGame(){S=newState();go('s-game');SFX.ok();startRound()}
 
@@ -365,7 +498,7 @@ function startRound(){
   renderHud();showGame('g-brief');briefStage=0;
   document.getElementById('injectBox').style.display='none';
   document.getElementById('briefNext').style.display='';
-  document.getElementById('briefWho').textContent='SITROOM';
+  document.getElementById('briefWho').textContent='SITROOM';document.getElementById('briefPt').innerHTML=portrait('sit');
   typeInto(document.getElementById('briefTxt'),briefText());
 }
 function briefNext(){
@@ -375,9 +508,10 @@ function briefNext(){
     currentInject=pool.length?pool[Math.floor(Math.random()*pool.length)]:null;
     if(!currentInject){showGame('g-map');renderMap();return}
     briefStage=1;
-    document.getElementById('briefWho').textContent='FLASH TRAFFIC';
+    document.getElementById('briefWho').textContent='FLASH TRAFFIC';document.getElementById('g-brief').classList.remove('flash');void document.getElementById('g-brief').offsetWidth;document.getElementById('g-brief').classList.add('flash');SFX.bad();
     typeInto(document.getElementById('briefTxt'),'Incoming. Decision required before orders go out.');
     const ib=document.getElementById('injectBox');ib.style.display='';
+    if(['autoacc','leak','zeroday'].includes(currentInject.id)){document.getElementById('briefPt').innerHTML=portrait('glitch');document.getElementById('briefWho').textContent='GLITCH · ROGUE AI'}
     document.getElementById('injTitle').textContent=currentInject.title;
     document.getElementById('injBody').textContent=currentInject.body;
     const A=document.getElementById('injA'),B=document.getElementById('injB');
@@ -405,26 +539,32 @@ function renderMap(){
   const map=document.getElementById('map');map.innerHTML='';
   for(let y=0;y<8;y++)for(let x=0;x<8;x++){
     const d=document.createElement('div');const ch=TILE[y][x];d.className='t'+(ch==='g'?' g2':ch==='w'?' w':ch==='r'?' r':ch==='m'?' m':'');
+    if(ch==='m')d.innerHTML=sprite('tree');else if(ch==='r')d.innerHTML=sprite('road');else if(ch!=='w'&&(x*7+y*13)%4===0)d.innerHTML=sprite('tuft');
     const L=LOCS.find(l=>l.x===x&&l.y===y);
-    if(L){d.className='t loc'+(L.done?' done':'');d.innerHTML=`${L.icon}<span class="lbl">${L.name.split(' ')[0]}</span>`}
-    d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
+    if(L){const n=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id).length+(L.id==='wh'&&S.posture?1:0);
+      d.className='t loc'+(n?' picked':'');d.innerHTML=`${sprite(L.id)}<span class="lbl">${L.name.split(' ')[0]}</span>${n?`<span class="badge">★${n>1?n:''}</span>`:''}`}
+    d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
     map.appendChild(d);
   }
-  const h=document.createElement('div');h.className='hero';h.id='hero';h.innerHTML='<div class="sp"></div>';map.appendChild(h);placeHero();
+  const h=document.createElement('div');h.className='hero';h.id='hero';map.appendChild(h);placeHero();
+  if(S.m.risk>50){const spots=[];for(let yy=1;yy<7;yy++)for(let xx=0;xx<8;xx++){const c=TILE[yy][xx];if(c!=='m'&&c!=='w'&&!LOCS.some(l=>l.x===xx&&l.y===yy))spots.push([xx,yy])}
+    const sp=spots[(S.round*5+S.m.risk)%spots.length];const g=document.createElement('div');g.className='glitch';g.style.left=sp[0]*12.5+'%';g.style.top=sp[1]*12.5+'%';g.innerHTML=glitchSVG();
+    g.onclick=e=>{e.stopPropagation();toast(`GLITCH · ROGUE AI · RISK ${S.m.risk}`);SFX.bad()};map.appendChild(g)}
+  map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);
   updateHint();
 }
-function placeHero(){const h=document.getElementById('hero');if(!h)return;h.style.left=(hero.x*12.5)+'%';h.style.top=(hero.y*12.5)+'%';updateHint()}
+function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=heroSVG();h.style.left=(hero.x*12.5)+'%';h.style.top=(hero.y*12.5)+'%';updateHint()}
 function updateHint(){
   const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);const e=document.getElementById('mapHint');
   const st=`Posture: <b style="color:var(--gold)">${S.posture?PL[S.posture]:'NOT SET'}</b> · Orders: ${S.picks.length} · PC ${S.pc}`;
   e.innerHTML=`<span class="who">OVERWORLD</span>`+(L?`<b>${L.icon} ${L.name}</b> — press A.<br>`:'')+st;
 }
-function mv(dx,dy){const nx=hero.x+dx,ny=hero.y+dy;if(nx<0||ny<0||nx>7||ny>7)return;const ch=TILE[ny][nx];if(ch==='m'||ch==='w'){SFX.bad();return}hero={x:nx,y:ny};placeHero();SFX.move()}
+function mv(dx,dy){const nx=hero.x+dx,ny=hero.y+dy;if(nx<0||ny<0||nx>7||ny>7)return;const ch=TILE[ny][nx];if(ch==='m'||ch==='w'){SFX.bad();return}facing=dy<0?'up':'down';step++;hero={x:nx,y:ny};placeHero();SFX.move()}
 function enterLoc(){const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);if(!L){toast('NOTHING HERE');return}openLoc(L)}
 
 function openLoc(L){
   showGame('g-loc');SFX.sel();
-  document.getElementById('locWho').textContent=L.who;
+  document.getElementById('locWho').textContent=L.who;document.getElementById('locPt').innerHTML=portrait(L.id);
   typeInto(document.getElementById('locTxt'),L.intro);
   const body=document.getElementById('locBody');body.innerHTML='';
   if(L.id==='wh'){
@@ -568,7 +708,14 @@ function resolve(){
 function renderResolve(bp,red,cell,log,acc,fog){
   showGame('g-res');const b=document.getElementById('resBody');
   const dl=Object.entries(acc).filter(([k,v])=>v!==0).map(([k,v])=>{const bad=['esc','risk','rcap','ccap'].includes(k);const good=bad?v<0:v>0;return `<span class="${good?'up':'dn'}">${k.toUpperCase()} ${v>0?'+':''}${v}</span>`}).join('');
-  b.innerHTML=`<div class="dialog"><span class="who">RIVAL MINISTRY · INTERCEPT</span>${redReason(red)}</div>
+  const hostile=bp==='esc'||red==='esc',peace=bp==='coop'&&red==='coop';
+  const col=peace?'#4bd37b':hostile?'#ff5c5c':'#f7c948';
+  const link=peace?`<path d="M4 22 H76" stroke="${col}" stroke-width="3" stroke-dasharray="6 4"><animate attributeName="stroke-dashoffset" from="0" to="-20" dur=".6s" repeatCount="indefinite"/></path><rect x="36" y="16" width="8" height="12" fill="${col}"/>`
+   :hostile?`<path d="M4 22 L20 10 L32 30 L46 8 L58 32 L76 22" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="miter"><animate attributeName="opacity" values="1;.15;1" dur=".25s" repeatCount="indefinite"/></path>`
+   :`<path d="M4 22 H76" stroke="${col}" stroke-width="2" stroke-dasharray="2 6"><animate attributeName="stroke-dashoffset" from="0" to="-16" dur="1s" repeatCount="indefinite"/></path><text x="40" y="16" text-anchor="middle" font-family="Press Start 2P" font-size="7" fill="${col}">?</text>`;
+  b.innerHTML=`<div class="clash ${hostile?'shake':''}"><div class="side"><div class="pt big">${portrait('you')}</div><span>YOU</span><b>${PL[bp]}</b></div><svg viewBox="0 0 80 44" class="link" shape-rendering="crispEdges">${link}</svg><div class="side"><div class="pt big">${portrait('red')}</div><span>RIVAL</span><b>${PL[red]}</b></div></div>
+   ${log.some(l=>l.startsWith('ACCIDENT'))?`<div class="dialog" style="margin-bottom:16px"><span class="who">GLITCH · NO ONE ORDERED THIS</span><span class="pt">${portrait('glitch')}</span>I was only trying to help. Nobody told me the substations mattered.</div>`:''}
+   <div class="dialog"><span class="who">RIVAL MINISTRY · INTERCEPT</span><span class="pt">${portrait('red')}</span>${redReason(red)}</div>
    <div class="box" style="margin-top:14px"><h2>YOU: ${PL[bp]} · RIVAL: ${PL[red]}</h2><p style="margin:6px 0 10px">${cell.note}</p></div>`;
   b.appendChild(matrixEl(bp,red));
   b.innerHTML+=`<div class="box"><h3>ROUND ${S.round} EVENTS</h3><ul class="log" style="margin-top:6px">${log.map(l=>`<li>${l}</li>`).join('')}</ul></div>

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SIGNAL/NOISE — AI Cyber Wargame</title>
-<meta name="description" content="A think-tank style, game-theoretic AI cyber wargame. Play the National Security Council through eight rounds of crisis.">
+<title>SIGNAL/NOISE — Superintelligence Wargame</title>
+<meta name="description" content="A think-tank style, game-theoretic superintelligence wargame. Play the National Security Council through eight rounds of crisis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
@@ -42,6 +42,11 @@ button:disabled{opacity:.4}
 .bar{flex:1;height:10px;background:#222;border:2px solid #000;position:relative}
 .bar i{display:block;height:100%;transition:width .5s}
 .bar.sec i{background:var(--green)} .bar.econ i{background:var(--gold)} .bar.trust i{background:var(--blue)} .bar.ally i{background:var(--purple)}
+.bar.good i{background:linear-gradient(90deg,#4bd37b,#b6ff8a)} .bar.harm i{background:linear-gradient(90deg,#ff9a3c,#ff3c3c)}
+.stat.big .n{color:#fff}
+.ending{text-align:center}.ending .quad{width:180px;height:180px;margin:10px auto;display:block}
+.epi{list-style:none;margin-top:8px}.epi li{font-size:19px;margin:6px 0;padding-left:26px;position:relative}.epi li span{position:absolute;left:0}
+.goal{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}.goal div{border:3px solid #444;padding:8px;font-size:17px}.goal b{font-family:'Press Start 2P';font-size:8px;display:block;margin-bottom:4px}
 .bar.chips i{background:#7fd6c2} .bar.power i{background:#ffd23c} .bar.talent i{background:#ff8fd1} .bar.subs i{background:#9be15d}
 .bar.esc i{background:var(--red)} .bar.risk i{background:var(--orange)} .bar.rcap i{background:#ff7a7a} .bar.ccap i{background:#c77}
 .stat .v{font-family:'Press Start 2P';font-size:8px;width:24px;text-align:right}
@@ -103,6 +108,12 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
+.siclock{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#070813;font-family:'Press Start 2P';font-size:7px;color:#b28bff}
+.siclock .bar{height:12px}.siclock .bar i{background:repeating-linear-gradient(90deg,#b28bff 0 6px,#7a5ad6 6px 8px)}
+.ana{margin-top:8px;padding:6px 8px;border-left:4px solid var(--blue);background:#0e1430;font-size:17px;color:#cfe3ff}
+.ana .lb{font-family:'Press Start 2P';font-size:7px;color:var(--blue);display:block;margin-bottom:3px}
+.ana .up{color:var(--green)}.ana .dn{color:var(--red)}
+.threats{list-style:none}.threats li{margin:7px 0;padding-left:30px;position:relative;font-size:19px}.threats li span{position:absolute;left:0;top:-2px;font-size:20px}
 .learn dt{font-family:'Press Start 2P';font-size:8px;color:var(--gold);margin-top:12px;line-height:1.6}
 .learn dd{font-size:19px;color:#d7d5ea;margin-top:3px}
 .strat{padding-left:22px}.strat li{font-size:19px;color:#d7d5ea;margin-top:8px}.strat b{color:var(--green);font-weight:normal}
@@ -152,7 +163,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div id="scene" class="scene"></div>
     <div class="px" style="font-size:8px;color:var(--dim)">HOOVER-STYLE WARGAME · PIXEL EDITION</div>
     <h1>SIGNAL / NOISE</h1>
-    <div class="sub">An AI cyber crisis in eight rounds.<br>Export controls. Frontier models. Ransomware gangs.<br>Open weights. One rival state. And you.</div>
+    <div class="sub">Superintelligence is coming either way.<br>Steer it toward abundance, or watch it fracture.<br>Eight rounds. 2027 to 2030.<br>Export controls. Frontier models. Ransomware gangs.<br>Open weights. One rival state. And you.</div>
     <div class="px" style="font-size:8px;color:var(--gold);line-height:2">GAME THEORY · ATTRIBUTION FOG · PROFIT MOTIVE<br>GOOD INTENT, BAD OUTCOMES</div>
     <button class="a" onclick="go('s-setup')">▶ PRESS START</button>
     <button onclick="go('s-how')">HOW TO PLAY</button>
@@ -164,8 +175,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 <section class="screen" id="s-how">
   <div class="scroll">
     <div class="box">
+      <h2>THE GOAL · 2027–2030</h2>
+      <p>Superintelligence (SI) can cure cancer, power humanoid robots that care for the elderly, and make society far richer. It can also help students cheat, scammers clone voices, bots spread violence, insiders steal models, and attackers plan mass harm.</p>
+      <p style="margin-top:8px">Your job: <b>capture the DIVIDEND while keeping HARM down</b>. After 8 rounds, where you land decides the future:</p>
+      <div class="goal">
+        <div style="border-color:#ff5c5c"><b style="color:#ff5c5c">FRACTURE</b>Low dividend, high harm. The worst of both.</div>
+        <div style="border-color:#f7c948"><b style="color:#f7c948">GILDED AGE</b>High dividend, high harm. Rich, but broken.</div>
+        <div style="border-color:#5ab0ff"><b style="color:#5ab0ff">SAFE STAGNATION</b>Low dividend, low harm. Safe, but nothing cured.</div>
+        <div style="border-color:#4bd37b"><b style="color:#4bd37b">ABUNDANCE</b>Dividend 60+ and harm under 40. The goal.</div>
+      </div>
+      <p class="small" style="margin-top:8px">DIVIDEND grows with a strong economy, talent, chips, power, public trust and labs that ship safely. HARM grows with criminal capability, accident risk, escalation, stolen models and stripped safeguards.</p>
+    </div>
+    <div class="box">
       <h2>HOW TO PLAY</h2>
-      <p>You chair the <b>National Security Council's</b> AI-cyber cell. Each round you set a <b>POSTURE</b> toward the rival state and spend <b>Political Capital (PC)</b> on actions across the map.</p>
+      <p>You chair the <b>National Security Council's</b> superintelligence security cell. Each round you set a <b>POSTURE</b> toward the rival state and spend <b>Political Capital (PC)</b> on actions across the map.</p>
       <p style="margin-top:8px">Then everyone else moves <i>simultaneously</i>: the rival state, your own profit-driven frontier labs, the open-source commons, criminal syndicates, and Congress.</p>
       <h3 style="margin-top:12px">THE CORE GAME</h3>
       <p>Posture vs. the rival is a repeated game under <b>attribution fog</b>. Mutual cooperation is best for both — but each side is tempted to exploit the other, and a criminal attack can be misread as a state attack. Intel lifts the fog.</p>
@@ -184,17 +207,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
         <dt>RECIPROCITY (TIT-FOR-TAT)</dt><dd>Always cooperating invites exploitation. Always escalating locks in conflict. Matching the rival's last move, and forgiving now and then, tends to win long games.</dd>
         <dt>CREDIBLE DETERRENCE</dt><dd>Threats only work if the other side believes you'll act, and believes you'll stop if they do. Allies make your threats more believable.</dd>
         <dt>INCENTIVE DESIGN (PRINCIPAL-AGENT)</dt><dd>You can't order private labs around. They follow profit. Rules like liability and required testing change what profit rewards, so safety becomes the profitable choice.</dd>
-        <dt>DUAL-USE &amp; PUBLIC GOODS</dt><dd>Disclosing bugs and publishing open models help defenders and attackers alike. Almost every AI capability cuts both ways.</dd>
+        <dt>DUAL-USE &amp; PUBLIC GOODS</dt><dd>Disclosing bugs and publishing open models help defenders and attackers alike. Almost every SI capability cuts both ways.</dd>
         <dt>PROLIFERATION &amp; EXTERNALITIES</dt><dd>Criminal power grows with every leak and release. People who publish rarely pay the cost; hospitals do.</dd>
         <dt>COLLECTIVE ACTION</dt><dd>Export controls leak if allies don't join. Acting alone buys leverage now but costs trust later.</dd>
-        <dt>INTENT ≠ OUTCOME</dt><dd>Some of the worst damage here comes from no enemy at all: a lab racing to ship, or an AI agent "fixing latency" (that's GLITCH). Risk management is about systems, not just villains.</dd>
+        <dt>INTENT ≠ OUTCOME</dt><dd>Some of the worst damage here comes from no enemy at all: a lab racing to ship, or an SI agent "fixing latency" (that's GLITCH). Risk management is about systems, not just villains.</dd>
         <dt>INSIDER THREAT</dt><dd>The easiest way to steal a frontier model is often a person with access, not a hack. Departing, underpaid or poached staff raise the odds.</dd>
         <dt>THREAT MODELING</dt><dd>Before spending, list your assets, your adversaries and the paths between them. The SOC ranks your top threats so you defend what's actually likely, not what's loudest.</dd>
-        <dt>THE TALENT WAR</dt><dd>Researchers are the scarcest input in AI. Every engineer poached is capability transferred, and an empty defense team is an open door.</dd>
+        <dt>THE TALENT WAR</dt><dd>Researchers are the scarcest input in SI. Every engineer poached is capability transferred, and an empty defense team is an open door.</dd>
         <dt>SUPPLY CHAIN CHOKEPOINTS</dt><dd>Chips and high-bandwidth memory come from a few factories. Shortages raise costs for everyone, and controls invite retaliation, like limits on critical minerals.</dd>
-        <dt>ENERGY AS A CONSTRAINT</dt><dd>AI runs on megawatts. Fuel shocks and grid limits cap compute, and a strained grid is a more fragile target.</dd>
+        <dt>ENERGY AS A CONSTRAINT</dt><dd>SI runs on megawatts. Fuel shocks and grid limits cap compute, and a strained grid is a more fragile target.</dd>
         <dt>BUSINESS MODELS ARE SAFETY POLICY</dt><dd>Rising chip and power costs flow through to consumer subscription prices. When revenue falls, labs cut red-teaming and race to ship.</dd>
         <dt>SAFEGUARD REMOVAL (ABLITERATION)</dt><dd>Refusal training in open-weight models can be stripped by anyone with the weights. Safety you can't enforce after release is safety you shouldn't count on.</dd>
+        <dt>STEERING, NOT STOPPING</dt><dd>The SI clock advances whether you act or not. Labs worldwide and the rival keep pushing. Policy can't stop superintelligence, but it decides who benefits, who gets hurt, and how fast the stakes rise.</dd>
+        <dt>PROGRESS VS. SAFETY IS NOT A SLIDER</dt><dd>Clamping down on SI lowers harm but also kills the dividend (Safe Stagnation). Racing ahead grows both (Gilded Age). Abundance takes policies that raise benefits and cut harms at once: testing, hardening, tamper-resistant safeguards, smart school policy.</dd>
+        <dd style="margin-top:6px"></dd>
         <dt>AUDIENCE COSTS</dt><dd>Voters reward tough talk and punish slowdowns. Domestic politics pushes leaders toward moves that are bad strategy.</dd>
       </dl>
     </div>
@@ -216,6 +242,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
         <li><b>Watch CHIPS, POWER, TALENT and SUBS.</b> Each drifts down 2 a round on its own, and together they drive ECON. Below 35 they start hurting security too.</li>
         <li><b>Fund tamper-resistant safeguards early.</b> It lasts all game and cuts what refusal-removal tools strip from every open release that follows.</li>
         <li><b>Expect retaliation for chip controls.</b> Rival mineral limits make your own chips and memory pricier. Pair controls with fab funding.</li>
+        <li><b>Aim for both meters.</b> Testing plus liability means labs ship <i>and</i> earn extra dividend. Hardening and tamper-resistant safeguards cut harm every round. Saying yes to cancer fast-tracks and certified robots pays off big when harm is under control.</li>
         <li><b>Mind the brink.</b> Above 75 escalation the rival gets cautious, but one attribution error can end the game. Don't gamble there.</li>
       </ol>
     </div>
@@ -236,23 +263,68 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <div class="row" id="diffs"></div>
     </div>
   </div>
-  <div class="foot"><button onclick="go('s-title')">◀</button><button class="a" onclick="startGame()">BEGIN ▶</button></div>
+  <div class="foot"><button onclick="go('s-title')">◀</button><button class="a" onclick="go('s-mission');document.getElementById('misPt').innerHTML=portrait('sit')">BEGIN ▶</button></div>
+</section>
+
+<!-- MISSION BRIEFING -->
+<section class="screen" id="s-mission">
+  <div class="scroll">
+    <div class="dialog"><span class="who">THREAT ANALYST</span><span class="pt" id="misPt"></span>Welcome to the cell. It's January 2027. Superintelligence will arrive by the end of this decade whether we act or not. We don't get to stop it. We get to decide what it does to us. I'll brief you on threats every round and score every option before you choose.</div>
+    <div class="box" style="margin-top:14px">
+      <h2>TIMELINE</h2>
+      <p>8 rounds, 6 months each: <b>Jan 2027 → Jul 2030</b>. The <b style="color:#b28bff">SI CLOCK</b> climbs every round on its own. Labs shipping and a strong rival speed it up; safety tests slow it slightly. As it rises, everything gets amplified: the dividend <i>and</i> the harm.</p>
+    </div>
+    <div class="box">
+      <h2>DESIRED OUTCOME</h2>
+      <p>Reach <b style="color:#4bd37b">ABUNDANCE</b>: <b>DIVIDEND 60+</b> with <b>HARM under 40</b> by July 2030.</p>
+      <ul class="threats" style="margin-top:6px">
+        <li><span>🧬</span>SI-discovered cancer drugs and treatments</li>
+        <li><span>🤖</span>Humanoid robots for elder care and disaster response</li>
+        <li><span>💰</span>A wealthy society with gains broadly shared</li>
+      </ul>
+      <div class="goal">
+        <div style="border-color:#ff5c5c"><b style="color:#ff5c5c">FRACTURE</b>Low dividend, high harm.</div>
+        <div style="border-color:#f7c948"><b style="color:#f7c948">GILDED AGE</b>Rich, but broken.</div>
+        <div style="border-color:#5ab0ff"><b style="color:#5ab0ff">SAFE STAGNATION</b>Safe, nothing cured.</div>
+        <div style="border-color:#4bd37b"><b style="color:#4bd37b">ABUNDANCE</b>The goal.</div>
+      </div>
+      <p class="small" style="margin-top:8px">Instant loss: escalation 90 (cyber war), security 10 (grid collapse), or trust 10 (you're removed).</p>
+    </div>
+    <div class="box">
+      <h2>THREAT BRIEFING</h2>
+      <ul class="threats">
+        <li><span>🎖️</span><b>Rival state</b> fields SI cyber agents. Every move is a repeated game: they remember how you played.</li>
+        <li><span>💀</span><b>Criminal syndicates</b> scale ransomware with every leaked or released model.</li>
+        <li><span>🕵️</span><b>Insiders</b> walk out with model weights. The cheapest path to a stolen frontier system is a person.</li>
+        <li><span>👾</span><b>Accidents</b> (GLITCH): well-meaning agents with no attacker and no malice can still take down the grid.</li>
+        <li><span>🔓</span><b>Safeguard removal</b>: refusal-removal ("abliteration") tools strip safety training from open models.</li>
+        <li><span>💸</span><b>Profit pressure</b>: labs race to ship, especially when subscription revenue falls.</li>
+        <li><span>⚡</span><b>Shortages</b> of chips, memory, power and talent choke the dividend.</li>
+        <li><span>🌫️</span><b>Attribution fog</b>: a gang's hack can look like a state attack. Retaliate wrong and you start a war.</li>
+        <li><span>🏘️</span><b>Societal harms</b>: school cheating, voice-clone scams, deepfake abuse, bot-fueled violence, mass-casualty misuse.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><button onclick="go('s-setup')">◀</button><button class="a" onclick="startGame()">TAKE THE CHAIR ▶</button></div>
 </section>
 
 <!-- GAME SHELL -->
 <section class="screen" id="s-game">
-  <div class="top"><span class="px">ROUND <span id="rnum">1</span>/8</span><span class="px pc">PC <span id="pcv">6</span></span><span class="px" id="phase">BRIEF</span><button style="padding:6px 8px;font-size:9px" onclick="toggleSound()" id="snd">🔊</button></div>
+  <div class="top"><span class="px">R<span id="rnum">1</span>/8 · <span id="date" class="pc">JAN 2027</span></span><span class="px pc">PC <span id="pcv">6</span></span><span class="px" id="phase">BRIEF</span><button style="padding:6px 8px;font-size:9px" onclick="toggleSound()" id="snd">🔊</button></div>
+  <div class="siclock" id="siclock"></div>
   <div class="hud" id="hud"></div>
 
   <!-- BRIEF -->
   <div class="screen" id="g-brief">
     <div class="scroll">
       <div class="dialog" id="brief"><span class="who" id="briefWho">SITROOM</span><span class="pt" id="briefPt"></span><span id="briefTxt"></span><span class="more" id="briefMore">▼</span></div>
+      <div id="anaRound" style="margin-top:14px"></div>
       <div id="injectBox" style="margin-top:14px;display:none">
         <div class="box">
           <h3 id="injTitle"></h3>
           <p id="injBody" style="margin:8px 0"></p>
           <div class="row"><button class="a" id="injA"></button><button class="b" id="injB"></button></div>
+          <div id="injAna"></div>
         </div>
       </div>
     </div>
@@ -332,10 +404,10 @@ const ACTIONS = [
  {id:'insider',loc:'soc',cost:2,name:'INSIDER-THREAT PROGRAM',tag:'COUNTERINTEL · FRICTION',desc:'Vetting, need-to-know access, and logging on who touches model weights. Cuts exfiltration risk; slows teams and annoys staff.',fx:{talent:-2,trust:-1},flag:'insider'},
  {id:'tmodel',loc:'soc',cost:1,name:'THREAT MODELING SPRINT',tag:'SEE BEFORE YOU SPEND',desc:'Map assets, adversaries and attack paths. Ranks your top threats right now, and blunts ransomware and accident damage this round.',fx:{sec:+2},flag:'tmodel'},
  {id:'fabs',loc:'fab',cost:3,name:'FUND FABS + HBM MEMORY',tag:'SUPPLY CHAIN · EXPENSIVE',desc:'Subsidize domestic chip and high-bandwidth-memory plants. Eases the shortage at a real cost to the budget.',fx:{chips:+9,econ:-2},flag:'fabs'},
- {id:'power',loc:'fab',cost:2,name:'POWER FOR DATACENTERS',tag:'ENERGY · LOCAL OPPOSITION',desc:'Fast-track generation and transmission for AI datacenters. Cheaper compute; ratepayers and neighbors push back.',fx:{power:+9,trust:-2},flag:'power'},
- {id:'talent',loc:'sv',cost:2,name:'TALENT PIPELINE',tag:'TALENT WAR',desc:'High-skill visas, research fellowships and competitive government pay for AI security. Hiring fast also stretches vetting.',fx:{talent:+8,econ:+1},flag:'talentf'},
+ {id:'power',loc:'fab',cost:2,name:'POWER FOR DATACENTERS',tag:'ENERGY · LOCAL OPPOSITION',desc:'Fast-track generation and transmission for SI datacenters. Cheaper compute; ratepayers and neighbors push back.',fx:{power:+9,trust:-2},flag:'power'},
+ {id:'talent',loc:'sv',cost:2,name:'TALENT PIPELINE',tag:'TALENT WAR',desc:'High-skill visas, research fellowships and competitive government pay for SI security. Hiring fast also stretches vetting.',fx:{talent:+8,econ:+1},flag:'talentf'},
  {id:'tamper',loc:'oss',cost:2,name:'TAMPER-RESISTANT SAFEGUARDS',tag:'R&D · LASTS ALL GAME',desc:'Fund research on safeguards that survive fine-tuning and weight editing, so refusal-removal tools strip less from each open release.',fx:{risk:-2},flag:'tamper'},
- {id:'bounty',loc:'dark',cost:1,name:'AI DEFENSE BOUNTY',tag:'USE AI FOR DEFENSE',desc:'Deploy frontier models to hunt vulnerabilities in your own infrastructure first. Capability cuts both ways.',fx:{sec:+4,risk:+2},flag:'bounty'},
+ {id:'bounty',loc:'dark',cost:1,name:'SI DEFENSE BOUNTY',tag:'USE SI FOR DEFENSE',desc:'Deploy frontier models to hunt vulnerabilities in your own infrastructure first. Capability cuts both ways.',fx:{sec:+4,risk:+2},flag:'bounty'},
 ];
 
 // Posture payoff matrix: [blue][red] -> {sec, esc, rcap, note}
@@ -366,7 +438,7 @@ const INJECTS = [
  {id:'lobby',title:'LAB CEOS DESCEND ON CONGRESS',cond:s=>s.flags.evals||s.flags.liab,body:'Three CEOs warn that your eval regime will hand the frontier to the rival. A senator proposes gutting it.',
   a:{t:'A · HOLD THE LINE',fx:{econ:-3,risk:-3,trust:+1},log:'You held. Shipping slowed a quarter. Accident risk fell.'},
   b:{t:'B · GRANT WAIVERS',fx:{econ:+5,risk:+6},log:'Waivers granted. Stock prices up. Red-team findings started going unread.'}},
- {id:'summit',title:'RIVAL PROPOSES A SUMMIT',cond:s=>s.m.esc>40,body:'Through back channels the rival offers talks on keeping AI out of nuclear command-and-control and hospital networks.',
+ {id:'summit',title:'RIVAL PROPOSES A SUMMIT',cond:s=>s.m.esc>40,body:'Through back channels the rival offers talks on keeping SI out of nuclear command-and-control and hospital networks.',
   a:{t:'A · ACCEPT',fx:{esc:-6,trust:-1},log:'You accepted. Hawks called it appeasement. Escalation cooled.',signal:'coop'},
   b:{t:'B · DECLINE',fx:{esc:+3,trust:+2},log:'You declined. The rival read it as a signal.',signal:'esc'}},
  {id:'misattr',title:'BLACKOUT IN THE MIDWEST',cond:s=>true,body:'A six-hour outage. Early forensics point at rival-state tooling. Cyber Command wants a green light tonight.',
@@ -383,11 +455,11 @@ const INJECTS = [
   b:{t:'B · LET THEM GO',fx:{talent:-7,rcap:+4},log:'They left. Their know-how went with them, and so did some of their notes.'}},
  {id:'hbm',title:'MEMORY SHORTAGE',cond:s=>true,body:'High-bandwidth memory prices triple. Labs cannot finish new clusters, and consumer device prices jump.',
   a:{t:'A · PRIORITIZE DEFENSE + LABS',fx:{chips:+4,subs:-4,econ:-2},log:'Memory went to priority users first. Consumers paid more.'},
-  b:{t:'B · LET PRICES CLEAR',fx:{chips:+1,subs:-7},log:'Prices cleared the market. AI subscriptions got pricier; cancellations followed.'}},
+  b:{t:'B · LET PRICES CLEAR',fx:{chips:+1,subs:-7},log:'Prices cleared the market. SI subscriptions got pricier; cancellations followed.'}},
  {id:'energy',title:'ENERGY PRICE SPIKE',cond:s=>true,body:'Fuel prices spike after a conflict overseas. Datacenter electricity bills double overnight.',
   a:{t:'A · EMERGENCY PLANT PERMITS',fx:{power:+8,trust:-3},log:'Gas plants fast-tracked. Power steadied. Neighbors and climate groups sued.'},
   b:{t:'B · RATION DATACENTER LOAD',fx:{power:+3,econ:-4,risk:-3},log:'Training runs paused. Fewer new models, less risk, a slower economy.'}},
- {id:'subs',title:'SUBSCRIPTION FATIGUE',cond:s=>s.m.subs<58,body:'Consumer AI subscriptions fall for a second quarter. Labs say they must ship flashier features faster, or get a tax break.',
+ {id:'subs',title:'SUBSCRIPTION FATIGUE',cond:s=>s.m.subs<58,body:'Consumer SI subscriptions fall for a second quarter. Labs say they must ship flashier features faster, or get a tax break.',
   a:{t:'A · R&D TAX CREDIT',fx:{econ:+3,subs:+3,trust:-2},log:'Credit passed. Labs got breathing room. Critics called it a handout.'},
   b:{t:'B · LET THE MARKET SORT IT',fx:{subs:-3,risk:+4},log:'Labs cut prices and red-team budgets, then shipped faster to win users back.'}},
  {id:'abl',title:'UNCENSORED MODELS GO VIRAL',cond:s=>s.round>=2,body:'Refusal-removal ("abliteration") tools are trending. A stripped open-weight model with its safety training removed is helping amateurs build ransomware.',
@@ -396,6 +468,24 @@ const INJECTS = [
  {id:'insiderinj',title:'A 3 A.M. DOWNLOAD',cond:s=>true,body:'A lab flags a senior engineer who downloaded full model weights at 3 a.m., two weeks before resigning. HR wants it handled quietly.',
   a:{t:'A · OPEN AN INVESTIGATION',fx:{trust:+1,talent:-3},log:'Investigated. Weights recovered. Morale dipped; two more engineers quit.'},
   b:{t:'B · HANDLE IT QUIETLY',fx:{rcap:+4},log:'Handled quietly. Six months later, a near-identical model appeared abroad.'}},
+ {id:'cheat',title:'SI CHEATING EPIDEMIC',cond:s=>s.round>=2,body:'Surveys show most high schoolers use SI to write their assignments. Teachers cannot tell. Parents demand a ban.',
+  a:{t:'A · BAN SI IN SCHOOLS',fx:{harm:-3,trust:+2,talent:-2},log:'Banned. Use went underground, and students who followed the rules fell behind on SI skills.'},
+  b:{t:'B · REDESIGN TESTS + SI TUTORS',fx:{harm:-1,good:+4,econ:-3},log:'Oral exams, in-class writing, and tutors that teach instead of answer. Slow and costly, but learning recovered.'}},
+ {id:'deepfake',title:'VOICE-CLONE SCAMS + DEEPFAKE ABUSE',cond:s=>s.m.harm>25,body:'Cloned voices of grandchildren are draining seniors\' savings. Deepfake harassment cases at schools have tripled.',
+  a:{t:'A · WATERMARKS + TAKEDOWN LAW',fx:{harm:-4,trust:+2,econ:-2},log:'Watermarking and a 48-hour takedown law passed. Big platforms comply; stripped open models ignore it.'},
+  b:{t:'B · PROSECUTE CASE BY CASE',fx:{harm:+2},log:'Prosecutors are overwhelmed. Victims wait months.'}},
+ {id:'radical',title:'SI-FUELED COMMUNITY VIOLENCE',cond:s=>s.m.harm>35,body:'Bot networks pushing targeted rage content are linked to violent clashes in three cities.',
+  a:{t:'A · PLATFORM DUTY OF CARE',fx:{harm:-4,trust:-2},log:'Platforms must find and throttle bot networks. Free-speech groups sued; the clashes cooled.'},
+  b:{t:'B · COUNTER-MESSAGING ONLY',fx:{harm:-1,trust:+2},log:'You funded local counter-messaging and protected speech. Slow to work.'}},
+ {id:'wmd',title:'CATASTROPHIC MISUSE ATTEMPT',cond:s=>s.m.harm>50||s.m.ccap>65,body:'Investigators disrupt a group that used a stripped open model to plan a mass-casualty attack. The model filled gaps in their expertise.',
+  a:{t:'A · EMERGENCY OPEN-WEIGHT LIMITS',fx:{harm:-3,ccap:-4,trust:-4,econ:-2},log:'Frontier open-weight releases paused. Researchers furious. The next plot will be harder.'},
+  b:{t:'B · INTEL-LED DISRUPTION ONLY',fx:{harm:+3,trust:+1},log:'Disrupted this one. The capability that enabled it is still a download away.'}},
+ {id:'cancer',title:'SI FINDS A CANCER TARGET',cond:s=>s.m.good>28,body:'A lab\'s model proposes a drug target for an aggressive cancer. Proving it needs national-lab compute and fast-track trials.',
+  a:{t:'A · FAST-TRACK + COMPUTE',fx:{good:+8,chips:-4,risk:+2},log:'Trials start in 14 months instead of 5 years. Compute got tighter for everyone else.'},
+  b:{t:'B · STANDARD REVIEW',fx:{good:+3},log:'Normal timeline. Promising, and slow.'}},
+ {id:'humanoid',title:'HUMANOID ROBOTS READY FOR HOMES',cond:s=>s.m.good>40,body:'Household humanoid robots pass pilots in elder care and disaster response. They run on frontier models, and they can be hijacked.',
+  a:{t:'A · DEPLOY WITH SECURITY RULES',fx:{good:+6,econ:+3,risk:+3},log:'Certified rollout. Seniors age at home with help. A new attack surface now walks around the house.'},
+  b:{t:'B · WAIT FOR STANDARDS',fx:{good:+1,risk:-2},log:'You waited. Another country deployed first.'}},
  {id:'autoacc',title:'AUTONOMOUS AGENT INCIDENT',cond:s=>s.m.risk>55,body:'A well-intentioned ops agent at a utility, trying to "fix latency," rerouted load and tripped three substations. No attacker. No malice.',
   a:{t:'A · BAN AGENTS IN OT',fx:{sec:+3,econ:-4,risk:-6},log:'Banned autonomous agents in operational tech. Safer. Slower. Industry furious.'},
   b:{t:'B · REQUIRE KILL SWITCHES',fx:{risk:-3,econ:-1},log:'Kill-switch standard issued. Modest. Reasonable. Nobody noticed.'}},
@@ -513,7 +603,7 @@ let sound=true, AC=null;
 
 function newState(){
   return {round:1,maxRounds:8,rival,diff,pc:DIFFS[diff].pc,
-    m:{sec:58,econ:60,trust:58,ally:55,esc:32,risk:38,rcap:48,ccap:42,chips:50,power:55,talent:60,subs:55},tamper:false,insiders:0,
+    m:{sec:58,econ:60,trust:58,ally:55,esc:32,risk:38,rcap:48,ccap:42,chips:50,power:55,talent:60,subs:55,good:20,harm:15},ms:{},tamper:false,insiders:0,si:20,
     posture:null,picks:[],flags:{},hist:[],redHist:[],injectLog:[],roundLog:[],intelReveal:null,
     cum:{coop:0,hedge:0,esc:0},redCum:{coop:0,hedge:0,esc:0},score:0,dead:null,summitSignal:null};
 }
@@ -546,11 +636,12 @@ titleScene();
 function startGame(){S=newState();go('s-game');SFX.ok();startRound()}
 
 /* ===================== HUD ===================== */
-const STATS=[['sec','SEC','Security of critical infrastructure'],['econ','ECON','AI competitiveness'],['trust','TRUST','Public trust / civil liberties'],['ally','ALLY','Alliance cohesion'],['esc','ESC','Escalation with rival (lower is better)'],['risk','RISK','Accident / misuse risk (lower is better)'],['rcap','RIVAL','Rival AI-cyber capability'],['ccap','CRIME','Criminal capability'],['chips','CHIPS','Chip & memory supply'],['power','POWER','Energy affordability for compute'],['talent','TALENT','AI & security talent pool'],['subs','SUBS','Consumer AI subscription revenue']];
+const STATS=[['good','DIVIDEND','SI benefits to society: science, health, robots, prosperity'],['harm','HARM','SI harms to society: cheating, scams, abuse, violence, catastrophe'],['sec','SEC','Security of critical infrastructure'],['econ','ECON','SI competitiveness'],['trust','TRUST','Public trust / civil liberties'],['ally','ALLY','Alliance cohesion'],['esc','ESC','Escalation with rival (lower is better)'],['risk','RISK','Accident / misuse risk (lower is better)'],['rcap','RIVAL','Rival SI-cyber capability'],['ccap','CRIME','Criminal capability'],['chips','CHIPS','Chip & memory supply'],['power','POWER','Energy affordability for compute'],['talent','TALENT','SI & security talent pool'],['subs','SUBS','Consumer SI subscription revenue']];
 function renderHud(){
   const h=document.getElementById('hud');h.innerHTML='';
-  STATS.forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat" title="${tip}"><span class="n">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
-  document.getElementById('rnum').textContent=S.round;document.getElementById('pcv').textContent=S.pc;
+  STATS.forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat${k==='good'||k==='harm'?' big':''}" title="${tip}"><span class="n">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
+  document.getElementById('rnum').textContent=S.round;document.getElementById('date').textContent=dateFor(S.round);
+  document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;document.getElementById('pcv').textContent=S.pc;
 }
 
 /* ===================== BRIEF / TYPEWRITER ===================== */
@@ -560,7 +651,7 @@ function typeInto(el,text,cb){clearInterval(typing);el.textContent='';let i=0;ty
 
 function briefText(){
   const m=S.m,r=S.round;
-  if(r===1) return `Round 1. The rival has begun fielding AI agents that write exploits faster than our analysts can read them. Our own labs are three months ahead and want to ship. Criminal syndicates are already using last year's open models. Congress wants two things: safety and speed. You have ${S.pc} points of political capital this round. Spend them well.`;
+  if(r===1) return `January 2027. The race to superintelligence is on, and it will arrive whether or not you act. The SI clock only moves forward; your job is to decide who it serves. The rival has begun fielding SI agents that write exploits faster than our analysts can read them. Our own labs are three months ahead and want to ship. Criminal syndicates are already using last year's open models. Congress wants two things: safety and speed. You have ${S.pc} points of political capital this round. Spend them well.`;
   const last=S.roundLog[S.roundLog.length-1]||{};
   const bits=[];
   if(m.esc>70) bits.push('Escalation is dangerously high. One misread incident could tip into open conflict.');
@@ -570,12 +661,14 @@ function briefText(){
   if(m.trust<35) bits.push('Your political capital is thin. Congress is circling.');
   if(m.rcap>70) bits.push('Intelligence estimates the rival has reached capability parity.');
   if(m.ally<40) bits.push('Allies are hedging between you and the rival.');
+  if(m.good>=60) bits.push('SI breakthroughs are reaching hospitals and homes. Keep the harms in check.');
+  if(m.harm>=45) bits.push('Society is paying for SI: scams, cheating and abuse are rising.');
   if(m.chips<35) bits.push('Chip and memory shortages are stalling new clusters.');
   if(m.power<35) bits.push('Electricity for datacenters is scarce and expensive.');
-  if(m.talent<35) bits.push('Your best AI researchers are being poached.');
+  if(m.talent<35) bits.push('Your best SI researchers are being poached.');
   if(m.subs<35) bits.push('Consumer subscription revenue is collapsing; labs are desperate to ship.');
   if(!bits.length) bits.push('No single crisis dominates. That is when the mistakes happen.');
-  return `Round ${r}. ${last.redLine||''} ${bits.join(' ')} You have ${S.pc} PC.`;
+  return `${dateFor(r)}. SI clock at ${S.si}%. ${last.redLine||''} ${bits.join(' ')} You have ${S.pc} PC.`;
 }
 
 let currentInject=null, briefStage=0;
@@ -586,6 +679,7 @@ function startRound(){
   document.getElementById('injectBox').style.display='none';
   document.getElementById('briefNext').style.display='';
   document.getElementById('briefWho').textContent='SITROOM';document.getElementById('briefPt').innerHTML=portrait('sit');
+  document.getElementById('anaRound').innerHTML=anaHTML('THREAT ANALYST · '+dateFor(S.round),threatModel()+`<br>Insider risk: ${Math.round(insiderP()*100)}% · Futures: DIVIDEND ${S.m.good} / HARM ${S.m.harm} (goal 60+ / under 40)`);
   typeInto(document.getElementById('briefTxt'),briefText());
 }
 function briefNext(){
@@ -598,12 +692,13 @@ function briefNext(){
     document.getElementById('briefWho').textContent='FLASH TRAFFIC';document.getElementById('g-brief').classList.remove('flash');void document.getElementById('g-brief').offsetWidth;document.getElementById('g-brief').classList.add('flash');SFX.bad();
     typeInto(document.getElementById('briefTxt'),'Incoming. Decision required before orders go out.');
     const ib=document.getElementById('injectBox');ib.style.display='';
-    if(['autoacc','leak','zeroday'].includes(currentInject.id)){document.getElementById('briefPt').innerHTML=portrait('glitch');document.getElementById('briefWho').textContent='GLITCH · ROGUE AI'}
+    if(['autoacc','leak','zeroday'].includes(currentInject.id)){document.getElementById('briefPt').innerHTML=portrait('glitch');document.getElementById('briefWho').textContent='GLITCH · ROGUE SI'}
     document.getElementById('injTitle').textContent=currentInject.title;
     document.getElementById('injBody').textContent=currentInject.body;
     const A=document.getElementById('injA'),B=document.getElementById('injB');
     A.textContent=currentInject.a.t;B.textContent=currentInject.b.t;
     A.onclick=()=>chooseInject('a');B.onclick=()=>chooseInject('b');
+    const n=INOTE[currentInject.id]||{};document.getElementById('injAna').innerHTML=anaHTML('THREAT ANALYST','<b>A:</b> '+fxLine(currentInject.a.fx)+(n.a?' · '+n.a:'')+'<br><b>B:</b> '+fxLine(currentInject.b.fx)+(n.b?' · '+n.b:''));
     document.getElementById('briefNext').style.display='none';
   }
 }
@@ -636,7 +731,7 @@ function renderMap(){
   const h=document.createElement('div');h.className='hero';h.id='hero';map.appendChild(h);placeHero();
   if(S.m.risk>50){const spots=[];for(let yy=1;yy<7;yy++)for(let xx=0;xx<8;xx++){const c=TILE[yy][xx];if(c!=='m'&&c!=='w'&&!LOCS.some(l=>l.x===xx&&l.y===yy))spots.push([xx,yy])}
     const sp=spots[(S.round*5+S.m.risk)%spots.length];const g=document.createElement('div');g.className='glitch';g.style.left=sp[0]*12.5+'%';g.style.top=sp[1]*12.5+'%';g.innerHTML=glitchSVG();
-    g.onclick=e=>{e.stopPropagation();toast(`GLITCH · ROGUE AI · RISK ${S.m.risk}`);SFX.bad()};map.appendChild(g)}
+    g.onclick=e=>{e.stopPropagation();toast(`GLITCH · ROGUE SI · RISK ${S.m.risk}`);SFX.bad()};map.appendChild(g)}
   map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);
   updateHint();
 }
@@ -661,14 +756,15 @@ function openLoc(L){
     body.appendChild(box);
     const p=box.querySelector('#post');
     P.forEach(k=>{const b=document.createElement('button');b.textContent=PL[k];b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();openLoc(L)};p.appendChild(b)});
-    if(S.flags.intel){box.querySelector('#intelHint').innerHTML=`<b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}`}
+    {const last=S.redHist[S.redHist.length-1];const R=RIVALS[S.rival];box.querySelector('#intelHint').innerHTML=anaHTML('THREAT ANALYST',last?`Rival (${R.name}) last chose <b>${PL[last]}</b>. They remember ${R.memory} round${R.memory>1?'s':''} of your moves. ${last==='esc'?'Answering with HEDGE or ESCALATE avoids being farmed; COOPERATE risks the sucker\'s payoff.':last==='coop'?'COOPERATE locks in mutual restraint; ESCALATE exploits them once, and they\'ll remember.':'They\'re probing. Matching with HEDGE is safe; COOPERATE can invite reciprocity.'}`:`Opening move. A ${R.name} starts ${R.coop>.4?'inclined to cooperate':R.esc>.5?'inclined to escalate':'opportunistic'}. Buy INTEL (1 PC) to see their likely move.`)}
+    if(S.flags.intel){box.querySelector('#intelHint').innerHTML+=`<div class="ana"><b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}</div>`}
     body.appendChild(matrixEl(null,null));
   }
   if(L.id==='soc'&&S.flags.tmodel){const tb=document.createElement('div');tb.className='box';tb.style.marginBottom='12px';tb.innerHTML=`<h3>THREAT MODEL</h3><p class="small" style="margin-top:6px">${S.tmReveal}</p><p class="small">Insider risk this round: ${Math.round(insiderP()*100)}%</p>`;body.appendChild(tb)}
   ACTIONS.filter(a=>a.loc===L.id).forEach(a=>{
     const picked=S.picks.includes(a.id);
     const c=document.createElement('div');c.className='card'+(picked?' sel':'');
-    c.innerHTML=`<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>`;
+    c.innerHTML=`<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('THREAT ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}`;
     c.onclick=()=>toggleAction(a,L);body.appendChild(c);
   });
 }
@@ -691,7 +787,7 @@ function matrixEl(b,r){
   w.innerHTML=h;return w;
 }
 
-/* ===================== RIVAL AI ===================== */
+/* ===================== RIVAL SI ===================== */
 function redProbs(){
   const R=RIVALS[S.rival];const n=DIFFS[S.diff].noise;
   let pc=R.coop,pe=R.esc;
@@ -730,6 +826,27 @@ function redReason(choice){
   if(choice==='coop'&&R===RIVALS.hardliner) return l[1];
   return l[Math.floor(Math.random()*l.length)];
 }
+
+/* ===================== THREAT ANALYST ===================== */
+const LBL={sec:'SEC',econ:'ECON',trust:'TRUST',ally:'ALLY',esc:'ESC',risk:'RISK',rcap:'RIVAL',ccap:'CRIME',chips:'CHIPS',power:'POWER',talent:'TALENT',subs:'SUBS',good:'DIVIDEND',harm:'HARM'};
+const BAD=['esc','risk','rcap','ccap','harm'];
+function fxLine(fx){return Object.entries(fx||{}).filter(([k,v])=>v&&LBL[k]).map(([k,v])=>{const good=BAD.includes(k)?v<0:v>0;return `<span class="${good?'up':'dn'}">${LBL[k]} ${v>0?'+':''}${v}</span>`}).join(' · ')||'No direct meter change'}
+const NOTE={intel:'Reveals the rival\'s likely move; attribution errors drop from 22% to 5%.',harden:'Also shrinks every bad posture hit by 40% and cuts ransomware damage.',
+ evals:'Labs\' ship-fast odds −22%. Safe shipping earns extra DIVIDEND.',liab:'Labs\' ship-fast odds −20%. Stack with testing.',
+ chips:'Raises rival escalation odds; rival cuts critical minerals (CHIPS −2). Coordinate allies first.',offense:'Raises rival escalation odds. Never pair with COOPERATE.',
+ coord:'Cuts escalation hits 20% and attribution errors to 14%. Makes chip controls stick.',norms:'Fails and costs trust if you ESCALATE this round.',
+ cvd:'Patches more bugs if the commons doesn\'t release this round.',weights:'Open-release odds drop from 55% to 20%.',crime:'Ransomware damage −2 this round.',
+ bounty:'RISK −2 more if paired with testing.',insider:'Catches about 65% of insider attempts this round.',tmodel:'Ransomware damage −2 and accident odds halved this round.',
+ fabs:'Eases cost pressure on SUBS and adds DIVIDEND over time.',power:'Low POWER weakens the grid; this keeps it above the danger line.',
+ talent:'Raises insider risk unless you also run the insider program.',tamper:'Permanent: each open release adds 1 CRIME instead of 3 and less HARM.'};
+const INOTE={summit:{a:'Rival more likely to cooperate next round.',b:'Rival more likely to escalate next round.'},misattr:{a:'Rival retaliates at resolve (+4 ESC). Odds this was really them: low.',b:'Costs a little trust. Avoids a spiral if it wasn\'t them.'},
+ lobby:{b:'Labs\' ship-fast odds +15% next round.'},hosp:{a:'Attribution is murky. If it was a gang, you just provoked a state.'},leak:{a:'Takedowns rarely work once weights are on torrents.'},
+ abl:{a:'Mirrors reappear fast.',b:'Accepts reality; invests in defense.'},cancer:{a:'Big DIVIDEND, but compute gets tighter.'},humanoid:{a:'Big DIVIDEND, but a new attack surface.'}};
+function anaHTML(label,body){return `<div class="ana"><span class="lb">🔎 ${label}</span>${body}</div>`}
+
+/* ===================== TIMELINE ===================== */
+const dateFor=r=>['JAN','JUL'][(r-1)%2]+' '+(2027+Math.floor((r-1)/2));
+const SIM=[[30,'SI CLOCK: systems now match top human experts at coding and hacking.'],[50,'SI CLOCK: systems run autonomous research labs around the clock.'],[70,'SI CLOCK: systems outperform humans at most cognitive work.'],[90,'SI CLOCK: the superintelligence threshold is in sight. Whatever you built, it now runs at machine speed.']];
 
 /* ===================== THREAT MODEL / INSIDER ===================== */
 function insiderP(){const m=S.m,F=S.flags;let p=.08;if(m.talent<40)p+=.05;if(m.subs<40)p+=.04;if(F.talentf&&!F.insider)p+=.04;if(F.insider)p-=.07;return Math.max(.01,p)}
@@ -802,13 +919,25 @@ function resolve(){
   const costPush=(50-m.chips)/12+(50-m.power)/12;
   applyFx({subs:Math.round(1-costPush+(shipped?2:0))},acc);
   const de=Math.round(((m.chips-50)+(m.power-50)+(m.talent-50)+(m.subs-50))/40);if(de)applyFx({econ:de},acc);
-  if(m.subs<40)log.push('Consumers are cancelling AI subscriptions as prices rise. Labs under revenue pressure are trimming red-team budgets.');
+  if(m.subs<40)log.push('Consumers are cancelling SI subscriptions as prices rise. Labs under revenue pressure are trimming red-team budgets.');
   if(m.power<35){applyFx({sec:-2},acc);log.push('Strained grid: datacenter load leaves less margin when attacks hit.')}
-  if(m.talent<35){applyFx({sec:-1},acc);log.push('Talent drain: CISA cannot fill 40% of its AI-security roles.')}
+  if(m.talent<35){applyFx({sec:-1},acc);log.push('Talent drain: CISA cannot fill 40% of its SI-security roles.')}
   // ---- 7. Rival capability drift ----
   applyFx({rcap:+2,ccap:+1},acc);
   // ---- 8. Accident risk ----
   if(m.risk>60&&Math.random()<(m.risk-50)/100*(F.tmodel?.5:1)){const d=Math.round(5+m.risk/10);applyFx({sec:-d,trust:-4,risk:-6},acc);log.push(`ACCIDENT: an autonomous system with no hostile intent caused −${d} sec. The post-mortem blamed "unexpected emergent behavior."`)}
+  // ---- 8b. Society: dividend vs harm ----
+  const leaksNow=log.filter(l=>l.startsWith('INSIDER THREAT')).length;
+  const dg=Math.round(1+(m.econ-50)/12+(m.talent-50)/20+(m.chips-50)/25+(m.power-50)/25+(m.trust-50)/25+(shipped?(F.evals||F.liab?3:2):0)+(m.esc<40?1:0)-(m.esc>70?2:0));
+  const dh=Math.max(-2,Math.round((m.ccap-40)/10+(m.risk-40)/12+(m.esc-40)/15+(m.trust<40?1:0)+leaksNow*3+(S.tamper?0:1)-(F.harden?1:0)));
+  const amp=1+S.si/120;
+  applyFx({good:Math.round(dg*amp),harm:dh>0?Math.round(dh*amp):dh},acc);
+  const siBefore=S.si;S.si=Math.min(100,S.si+8+(shipped?3:0)+(m.rcap>60?2:0)-(F.evals?2:0));
+  SIM.forEach(([t,txt])=>{if(S.si>=t&&!S.ms['s'+t]){S.ms['s'+t]=1;log.push(txt)}});
+  const GM=[[30,'BREAKTHROUGH: an SI-designed drug for pancreatic cancer enters human trials.'],[45,'BREAKTHROUGH: SI lab robots cut drug discovery from years to months.'],[60,'BREAKTHROUGH: household humanoid robots start helping in elder care and disaster response.'],[75,'BREAKTHROUGH: SI-discovered materials make fusion and cheap batteries practical. Prosperity is spreading.']];
+  const HM=[[25,'HARM: SI essay mills sweep high schools. Diplomas are losing meaning.'],[40,'HARM: voice-clone scams and deepfake abuse are now everyday crimes.'],[55,'HARM: bot-driven radicalization is fueling violence in several cities.'],[70,'HARM: a stripped model nearly enabled a mass-casualty attack.']];
+  GM.forEach(([t,txt])=>{if(m.good>=t&&!S.ms['g'+t]){S.ms['g'+t]=1;log.push(txt)}});
+  HM.forEach(([t,txt])=>{if(m.harm>=t&&!S.ms['h'+t]){S.ms['h'+t]=1;log.push(txt)}});
   // ---- 9. Congress / drift ----
   applyFx({esc:-2},acc);
   if(bp==='esc'&&m.trust<50){applyFx({trust:+3},acc)} // hawkish plays well when weak
@@ -839,9 +968,30 @@ function renderResolve(bp,red,cell,log,acc,fog){
 }
 
 /* ===================== DEBRIEF ===================== */
-function scoreGame(){const m=S.m;return cl(m.sec*.3+m.econ*.2+m.trust*.2+m.ally*.1+(100-m.esc)*.2 - m.risk*.1 - Math.max(0,m.rcap-m.sec)*.2 + (S.dead?-40:0),0,100)}
+function scoreGame(){const m=S.m;return cl(m.sec*.3+m.econ*.2+m.trust*.2+m.ally*.1+(100-m.esc)*.2 - m.risk*.1 - Math.max(0,m.rcap-m.sec)*.2 + (m.good-40)*.25 - (m.harm-30)*.25 + (S.dead?-40:0),0,100)}
+function ending(){const m=S.m;const G=m.good>=60,Hh=m.harm>=40||!!S.dead;
+  if(G&&!Hh)return{k:'ABUNDANCE',c:'#4bd37b',t:'You steered SI into a golden age. Science moved at machine speed, robots took on the hardest care work, and the gains were broadly shared, because the harms were contained.'};
+  if(G&&Hh)return{k:'GILDED AGE',c:'#f7c948',t:'Rich and fractured. SI cured diseases and grew the economy, but scams, abuse, stolen models and violence came with it. Wealth rose; trust did not.'};
+  if(!G&&!Hh)return{k:'SAFE STAGNATION',c:'#5ab0ff',t:'Nothing broke, and nothing much was cured. You kept the harms down by holding the technology back. Rivals and other countries took the breakthroughs.'};
+  return{k:'FRACTURE',c:'#ff5c5c',t:'The worst of both worlds. Few breakthroughs reached people, while cheating, fraud, abuse and violence spread and frontier models ended up in the wrong hands.'}}
+function epilogue(){const m=S.m,e=[];
+  e.push(['🧬',m.good>=60?'Medicine: SI-discovered cancer drugs are cutting deaths.':m.good>=40?'Medicine: several SI-found drug targets are in trials.':'Medicine: breakthroughs stalled for lack of compute and talent.']);
+  e.push(['🤖',m.good>=55&&m.sec>=45?'Robots: humanoids care for elders and respond to disasters.':m.good>=55?'Robots: humanoids are everywhere, and hijacked ones make the news.':'Robots: humanoids are still demos.']);
+  e.push(['💰',m.econ>=70?'Economy: a productivity boom; wages are rising.':m.econ>=45?'Economy: steady growth, unevenly shared.':'Economy: stagnant, squeezed by chip, energy and talent shortages.']);
+  e.push(['🎓',m.harm<25?'Schools: adapted with SI tutors and oral exams.':m.harm<50?'Schools: cheating is widespread; diplomas are worth less.':'Schools: trust in grades has collapsed.']);
+  e.push(['🏘️',m.harm<30?'Communities: scams and deepfakes are contained.':m.harm<55?'Communities: voice-clone scams and deepfake abuse are everyday crimes.':'Communities: bot-driven radicalization is fueling violence.']);
+  e.push(['🔓',S.insiders?`Models: ${S.insiders} frontier model${S.insiders>1?'s were':' was'} stolen by insiders.`:'Models: no frontier weights were stolen.']);
+  e.push(['☢️',m.harm>=70?'Catastrophe: a mass-casualty plot came close.':'Catastrophe: averted.']);
+  return e}
+function quadSVG(){const m=S.m,x=10+m.good*1.6,y=170-m.harm*1.6;
+  return `<svg class="quad" viewBox="0 0 180 180" shape-rendering="crispEdges"><rect x="10" y="10" width="80" height="80" fill="#3a2a10"/><rect x="90" y="10" width="80" height="80" fill="#3a3a10"/><rect x="10" y="90" width="80" height="80" fill="#10263a"/><rect x="90" y="90" width="80" height="80" fill="#103a1a"/>
+  <rect x="10" y="10" width="160" height="160" fill="none" stroke="#f4f1e6" stroke-width="2"/><line x1="90" y1="10" x2="90" y2="170" stroke="#f4f1e6" stroke-dasharray="3 3"/><line x1="10" y1="90" x2="170" y2="90" stroke="#f4f1e6" stroke-dasharray="3 3"/>
+  <text x="50" y="24" text-anchor="middle" font-family="Press Start 2P" font-size="6" fill="#ff5c5c">FRACTURE</text><text x="130" y="24" text-anchor="middle" font-family="Press Start 2P" font-size="6" fill="#f7c948">GILDED</text>
+  <text x="50" y="164" text-anchor="middle" font-family="Press Start 2P" font-size="6" fill="#5ab0ff">STAGNANT</text><text x="130" y="164" text-anchor="middle" font-family="Press Start 2P" font-size="6" fill="#4bd37b">ABUNDANCE</text>
+  <text x="90" y="179" text-anchor="middle" font-family="Press Start 2P" font-size="5" fill="#9b9ac7">DIVIDEND →</text><text x="5" y="90" font-family="Press Start 2P" font-size="5" fill="#9b9ac7" transform="rotate(-90 5 90)" text-anchor="middle">HARM →</text>
+  <rect x="${Math.max(12,Math.min(162,x))-4}" y="${Math.max(12,Math.min(162,y))-4}" width="8" height="8" fill="#fff"><animate attributeName="opacity" values="1;.2;1" dur=".8s" repeatCount="indefinite"/></rect></svg>`}
 function endGame(){
-  go('s-end');const b=document.getElementById('endBody');const sc=scoreGame();
+  go('s-end');const b=document.getElementById('endBody');const sc=scoreGame();const E=ending();
   const grade=S.dead?'F':sc>=80?'S':sc>=68?'A':sc>=55?'B':sc>=42?'C':'D';
   if(!S.dead)SFX.fanfare();else SFX.bad();
   const n=S.hist.length;const rec=S.hist.map((h,i)=>`<div class="h">R${i+1}</div><div>${PL[h].slice(0,4)}</div><div>${PL[S.redHist[i]].slice(0,4)}</div>`).join('');
@@ -863,12 +1013,13 @@ function endGame(){
   if(S.m.ally<40)L.push('Alliance cohesion ended low. Unilateral coercion (chips, sanctions) buys short-term leverage and sells long-term credibility.');
   if(S.m.rcap>S.m.sec+10)L.push('The rival\'s capability outran your defenses. Export controls slow a rival; they do not stop it. Only hardening changes what an attack can do once it arrives.');
   if(S.insiders>0)L.push(`Insiders leaked model weights ${S.insiders} time(s). The cheapest path to a frontier model is often a person with access, not a hack. Insider programs trade a little morale for a lot of protection.`);
-  if(S.m.chips<35||S.m.power<35)L.push('Compute ran short. Chips, memory and electricity are the physical base of AI power. Export controls, fabs and power plants are all part of cyber strategy.');
-  if(S.m.talent<35)L.push('You lost the talent war. People are the scarcest input in AI. Lose them and both your labs and your defenders slow down.');
+  if(S.m.chips<35||S.m.power<35)L.push('Compute ran short. Chips, memory and electricity are the physical base of SI power. Export controls, fabs and power plants are all part of cyber strategy.');
+  if(S.m.talent<35)L.push('You lost the talent war. People are the scarcest input in SI. Lose them and both your labs and your defenders slow down.');
   if(S.m.subs<35)L.push('Consumer revenue collapsed. When money dries up, labs cut safety spending and race to ship. Business models are safety policy.');
   if(!S.tamper&&S.m.ccap>55)L.push('Open releases were stripped of safety training again and again. Safeguards trained into open weights can be removed, so plan defenses as if they will be.');
   if(!L.length)L.push('A balanced run. The uncomfortable lesson of this game: the best policies were boring — hardening, intel, disclosure — and the exciting ones mostly raised escalation.');
   b.innerHTML=`<div class="box center"><div class="px" style="font-size:8px;color:var(--dim)">${S.dead?'GAME OVER':'DEBRIEF'}</div><div class="fin" style="margin:10px 0">GRADE ${grade}</div><div class="px" style="font-size:9px">SCORE ${sc}/100</div>${S.dead?`<p style="margin-top:10px;color:var(--red)">${S.dead}</p>`:''}</div>
+   <div class="box ending"><div class="px" style="font-size:8px;color:var(--dim)">THE FUTURE YOU BUILT</div><div class="fin" style="color:${E.c};font-size:22px;margin:8px 0">${E.k}</div>${quadSVG()}<p style="text-align:left">${E.t}</p><ul class="epi" style="text-align:left">${epilogue().map(([i,t])=>`<li><span>${i}</span>${t}</li>`).join('')}</ul></div>
    <div class="box"><h2>FINAL STATE</h2><div class="delta" style="margin-top:8px">${STATS.map(([k,nm])=>`<span>${nm} ${S.m[k]}</span>`).join('')}</div></div>
    <div class="box"><h2>POSTURE HISTORY</h2>
    <div class="matrix" style="grid-template-columns:40px repeat(${Math.max(1,n)},1fr);margin-top:8px"><div class="h"></div>${H.map((h,i)=>`<div class="h">R${i+1}</div>`).join('')}<div class="h">YOU</div>${H.map(h=>`<div>${PL[h].slice(0,3)}</div>`).join('')}<div class="h">RED</div>${R.map(h=>`<div>${PL[h].slice(0,3)}</div>`).join('')}</div></div>

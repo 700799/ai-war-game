@@ -194,6 +194,7 @@ button:disabled{opacity:.4}
 .legend span{display:flex;align-items:center;gap:4px}.legend .ic{width:16px;height:16px}
 .legend i{display:inline-block;width:8px;height:8px}
 .hintline{width:100%;text-align:center;font-size:18px;color:#f4f1e6;margin:6px 0;flex-shrink:0}
+.endbtn{width:100%;font-size:13px;padding:16px;background:#6a1e1e;border-color:var(--red);color:#fff}
 .ctrl{flex-shrink:0;background:#070813;border-top:4px solid var(--line);padding:8px 14px calc(8px + env(safe-area-inset-bottom))}
 .dpad{grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px)}
 .ab{gap:14px;align-items:center}
@@ -545,17 +546,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <div class="legend" id="legend"></div>
       <div class="hintline" id="mapHint"></div>
     </div>
-    <div class="ctrl">
-      <div class="dpad">
-        <span></span><button onclick="mv(0,-1)">▲</button><span></span>
-        <button onclick="mv(-1,0)">◀</button><span></span><button onclick="mv(1,0)">▶</button>
-        <span></span><button onclick="mv(0,1)">▼</button><span></span>
-      </div>
-      <div class="ab">
-        <div class="abw"><button class="b" onclick="openResolveCheck()">B</button><span>END TURN</span></div>
-        <div class="abw"><button class="a" onclick="enterLoc()">A</button><span>OPEN</span></div>
-      </div>
-    </div>
+    <div class="ctrl"><button class="endbtn" onclick="openResolveCheck()">END TURN ▶</button></div>
   </div>
 
   <!-- LOCATION -->
@@ -1125,7 +1116,7 @@ function recommendPlan(){const m=S.m,R=RIVALS[S.rival],last=S.redHist[S.redHist.
   return {posture,why,picks}}
 function applyPlan(){const P=recommendPlan();S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id);S.pc+=a.cost;delete S.flags[a.flag]});S.picks=[];
   S.posture=P.posture;P.picks.forEach(([id])=>{const a=ACTIONS.find(x=>x.id===id);if(S.pc>=a.cost){S.picks.push(id);S.pc-=a.cost;S.flags[a.flag]=true;if(id==='intel')S.intelReveal=redIntel();if(id==='tmodel')S.tmReveal=threatModel()}});
-  SFX.ok();toast('PLAN APPLIED · PRESS B TO END TURN');renderHud();renderMap()}
+  SFX.ok();toast('PLAN APPLIED · TAP END TURN');renderHud();renderMap()}
 function planHTML(){const P=recommendPlan();const byLoc=id=>LOCS.find(l=>l.id===ACTIONS.find(a=>a.id===id).loc).short;
   const SHORT=SHORTN;const _x={intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure'};
   return `<div class="plan"><div class="planrow"><div class="pt1"><span class="lbp">🔎 ANALYST PLAN</span>${PL[P.posture]} · ${P.picks.map(([id])=>SHORT[id]).join(' · ')}</div><button class="a" onclick="applyPlan()">USE<br>PLAN</button></div>
@@ -1138,8 +1129,7 @@ function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div 
   <p style="margin-top:6px">This map is your government. Each building is a place to act. Every round, 6 months pass:</p>
   <ol class="strat"><li><b>Tap HQ</b> (the building marked START) and choose your <b>posture</b> toward the rival: Cooperate, Hedge or Escalate.</li>
   <li><b>Tap other buildings</b> to spend <b>Political Capital (PC)</b> on actions. Each card shows the threat analyst's read on what it does.</li>
-  <li>Press <b>B · END TURN</b>. Everyone moves at once and you see the results.</li></ol>
-  <p class="small" style="margin-top:6px">You can tap buildings directly, or walk with the arrows and press <b>A · OPEN</b>.</p></div>
+  <li>Press the red <b>END TURN</b> button. Everyone moves at once and you see the results.</li></ol></div>
   <div class="box"><h2>BUILDINGS</h2><p class="small">Buildings belong to three fronts. Every PC spent on one front is PC not spent on another.</p>${LOCS.map(L=>`<div class="bk"><div class="sw">${sprite(L.id)}</div><div><b>${L.short} · ${L.name} · ${FRONTN[FRONT[L.id]]}</b>${L.purpose}</div></div>`).join('')}</div>
   <div class="box"><h2>MAP SIGNS</h2>
   <div class="bk"><div class="sw" style="background:#101225">${icon('skull')}</div><div><b>SKULLS</b>Ransomware gangs. More appear as CRIME rises.</div></div>
@@ -1152,8 +1142,8 @@ function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div 
 function updateHint(){
   const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);const e=document.getElementById('mapHint');
   const step=!S.posture?1:(S.pc>0?2:3);
-  document.getElementById('mapSteps').innerHTML=[['1 · SET POSTURE<br>AT HQ',1],['2 · SPEND '+S.pc+' PC<br>AT BUILDINGS',2],['3 · END TURN<br>(B BUTTON)',3]].map(([t,i])=>`<div class="${i===step?'now':i<step?'ok':''}">${t}</div>`).join('')+`<div class="help" onclick="showGuide()">?</div>`;
-  e.innerHTML=L?`<b style="color:var(--gold)">${L.name}</b> · press <b>A</b> to open`:`<b>Tap any building</b> to open it · Posture: <b style="color:var(--gold)">${S.posture?PL[S.posture]:'NOT SET'}</b>`;
+  document.getElementById('mapSteps').innerHTML=[['1 · SET POSTURE<br>AT HQ',1],['2 · SPEND '+S.pc+' PC<br>AT BUILDINGS',2],['3 · END TURN<br>(RED BUTTON)',3]].map(([t,i])=>`<div class="${i===step?'now':i<step?'ok':''}">${t}</div>`).join('')+`<div class="help" onclick="showGuide()">?</div>`;
+  e.innerHTML=L?`<b style="color:var(--gold)">${L.name}</b> · tap it to open`:`<b>Tap any building</b> to open it · Posture: <b style="color:var(--gold)">${S.posture?PL[S.posture]:'NOT SET'}</b>`;
   {const o=document.getElementById('orders');const items=[];
     if(S.posture)items.push(`<span class="oc" style="border-color:${PCOL[S.posture]};color:${PCOL[S.posture]}" onclick="openLoc(LOCS[0])">${PL[S.posture]} · HQ</span>`);
     S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id),L=LOCS.find(l=>l.id===a.loc);items.push(`<span class="oc" onclick="openLoc(LOCS.find(l=>l.id==='${L.id}'))">✔ ${SHORTN[id]} · ${L.short}</span>`)});

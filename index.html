@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SIGNAL/NOISE — Superintelligence Wargame</title>
+<title>SIGNAL / NOISE — Find the signal. Survive the noise.</title>
 <meta name="description" content="A think-tank style, game-theoretic superintelligence wargame. Play the National Security Council through eight rounds of crisis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
@@ -112,6 +112,13 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
+.kicker{font-family:'Press Start 2P';font-size:9px;color:var(--dim);letter-spacing:2px;white-space:nowrap}
+.slogan{display:flex;flex-direction:column;gap:10px;font-family:'Press Start 2P';font-size:13px;line-height:1.4;white-space:nowrap}
+.slogan span:first-child{color:#39ff14;text-shadow:0 0 10px rgba(57,255,20,.6),2px 2px 0 #000}
+.slogan span:last-child{color:#ff5c5c;text-shadow:0 0 10px rgba(255,92,92,.5),2px 2px 0 #000}
+.premise{font-size:23px;color:#cfcde6;line-height:1.35;text-wrap:balance;max-width:340px}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:360px}
+.chips span{white-space:nowrap;font-family:'Press Start 2P';font-size:8px;color:var(--gold);border:2px solid var(--gold);padding:7px 9px;background:#1a1606}
 .howbox{margin-top:6px;padding:22px 16px;border:4px solid var(--line);background:#101225;box-shadow:6px 6px 0 #000;width:100%;max-width:480px;text-align:left}
 .car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-top:10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .car::-webkit-scrollbar{display:none}
@@ -266,10 +273,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 <section class="screen on" id="s-title">
   <div class="title">
     <div id="scene" class="scene"></div>
-    <div class="px" style="font-size:8px;color:var(--dim)">THINK-TANK STYLE WARGAME · PIXEL EDITION</div>
+    <div class="kicker">A THINK-TANK WARGAME</div>
     <h1>SIGNAL / NOISE</h1>
-    <div class="sub">Superintelligence is coming either way.<br>Steer it toward abundance, or watch it fracture.<br>2027 to 2030. Quick, standard or full game.<br>Export controls. Frontier models. Ransomware gangs.<br>Open weights. One rival state. And you.</div>
-    <div class="px" style="font-size:8px;color:var(--gold);line-height:2">GAME THEORY · ATTRIBUTION FOG · PROFIT MOTIVE<br>GOOD INTENT, BAD OUTCOMES</div>
+    <div class="slogan"><span>FIND THE SIGNAL.</span><span>SURVIVE THE NOISE.</span></div>
+    <p class="premise">Superintelligence arrives by 2030.<br>You run national security.</p>
+    <div class="chips"><span>GAME THEORY</span><span>CYBER DEFENSE</span><span>2027–2030</span></div>
     <button class="a startbtn" onclick="go('s-setup')">▶ PRESS START</button>
     <button class="howbtn" onclick="go('s-how')">📖 HOW TO PLAY</button>
     <div class="px" style="font-size:8px;color:#5ab0ff">NEW HERE? START WITH HOW TO PLAY</div>

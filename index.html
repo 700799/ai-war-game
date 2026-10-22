@@ -47,6 +47,8 @@ button:disabled{opacity:.4}
 .ending{text-align:center}.ending .quad{width:180px;height:180px;margin:10px auto;display:block}
 .epi{list-style:none;margin-top:8px}.epi li{font-size:19px;margin:6px 0;padding-left:26px;position:relative}.epi li span{position:absolute;left:0}
 .goal{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}.goal div{border:3px solid #444;padding:8px;font-size:17px}.goal b{font-family:'Press Start 2P';font-size:8px;display:block;margin-bottom:4px}
+.bar.modelsec i{background:linear-gradient(90deg,#b28bff,#ff5c5c)}
+.bar.botsafe i{background:linear-gradient(90deg,#9b9ac7,#5ab0ff)}
 .bar.wellbeing i{background:linear-gradient(90deg,#ff8fd1,#ffd23c)}
 .bar.equity i{background:linear-gradient(90deg,#5ab0ff,#b28bff)}
 .bar.chips i{background:#7fd6c2} .bar.power i{background:#ffd23c} .bar.talent i{background:#ff8fd1} .bar.subs i{background:#9be15d}
@@ -184,6 +186,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .orders{width:100%;margin-top:8px;font-size:16px;color:#cfcde6;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
 .orders b{font-family:'Press Start 2P';font-size:7px;color:var(--gold);width:100%}
 .orders i{color:#9b9ac7}
+.fronts{width:100%;display:flex;gap:4px;font-family:'Press Start 2P';font-size:7px}.fronts span{flex:1;text-align:center;padding:5px 2px;border:2px solid}
+.fs{color:#ff8f8f;border-color:#ff5c5c}.fh{color:#ff8fd1;border-color:#ff8fd1}.ft{color:#7fd6c2;border-color:#7fd6c2}
+.warnf{width:100%;font-size:16px;color:#ffd23c;border-left:4px solid #ffd23c;padding:3px 6px;background:#2a2610}
 .oc{border:2px solid var(--green);color:var(--green);padding:2px 6px;font-size:16px;cursor:pointer;background:#0e1a12}
 .t .badge{position:absolute;top:1px;right:2px;font-family:'Press Start 2P';font-size:10px;color:var(--green);text-shadow:1px 1px 0 #000;z-index:2;animation:blink 1s steps(2) infinite}
 .map::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 50%,transparent 35%,rgba(255,40,40,var(--heat,0)) 100%);z-index:3}
@@ -300,6 +305,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
         <dt>ALGORITHMIC BIAS</dt><dd>Systems trained on past decisions can repeat past unfairness at scale in hiring, lending, housing and policing. Audits catch what intentions miss.</dd>
         <dt>PRIVACY VS. SECURITY</dt><dd>Surveillance can reduce crime and also chill free speech. Democracies balance them with warrants and limits.</dd>
         <dt>INFORMATION INTEGRITY</dt><dd>Deepfakes don't need to be believed forever, just long enough. Provenance and fast response protect elections.</dd>
+        <dt>ATTACKS ON MODELS</dt><dd>The SI model itself is now a target. Attackers jailbreak it to ignore its safety rules, hide instructions in web pages to hijack SI agents (prompt injection), plant poisoned data to create hidden backdoors, slip backdoors into popular open models, and steal or copy the model outright. Defenses: continuous red-teaming, data and model provenance, least-privilege agents with human sign-off, and shared flaw reporting.</dd>
+        <dt>MODEL THEFT &amp; DISTILLATION</dt><dd>A frontier model can be stolen through the back door, by hackers or insiders copying its weights, or through the front door, by querying it millions of times and training a cheaper copy on the answers (distillation). Either way, years of work and any safety lead can vanish.</dd>
+        <dt>OPEN WEIGHTS: A REAL TRADE-OFF</dt><dd>Publishing model weights helps researchers, startups and smaller countries, prevents lock-in and lets outsiders check for flaws. But a release can never be recalled, safeguards can be stripped, and capability spreads to attackers too. Many experts favor releasing below a danger threshold and testing before anything above it.</dd>
+        <dt>TWO FRONTS: THE URGENT VS. THE IMPORTANT</dt><dd>While leaders deal with weapons, borders and rival states, problems at home grow quietly: preteens hooked on SI feeds, workers losing jobs, robots entering homes without rules. Headline crises crowd out slow harms, and slow harms compound. Attention is the scarcest resource a leader has.</dd>
+        <dt>SI WITH A BODY (HUMANOID ROBOTS)</dt><dd>Humanoid robots run on the same SI models as chatbots, but their mistakes are physical: injuries, break-ins, a hijacked fleet. Society needs rules before mass deployment: safety certification like cars and aircraft, cybersecurity against hijacking, clear liability, privacy for robots inside homes, no autonomous use of force, and a plan for the workers they replace.</dd>
         <dt>THE ATTENTION ECONOMY &amp; ADDICTION</dt><dd>SI recommendation engines learn exactly what keeps each person scrolling. When apps earn money from time spent, they are pushed toward addictive design, and teens and preteens, whose self-control is still developing, are hit hardest. The health costs are real: lost sleep, anxiety, weaker attention, less exercise and less time with friends.</dd>
         <dt>KIDS, COMPANIONS &amp; MENTAL HEALTH</dt><dd>Engaging SI apps can isolate young users. Safety by design means building in age checks and routes to real human help.</dd>
         <dt>CREATORS &amp; CONSENT</dt><dd>SI learns from human work. Whether creators are paid shapes whether they keep creating.</dd>
@@ -325,6 +335,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
         <li><b>Fund tamper-resistant safeguards early.</b> It lasts all game and cuts what refusal-removal tools strip from every open release that follows.</li>
         <li><b>Expect retaliation for chip controls.</b> Rival mineral limits make your own chips and memory pricier. Pair controls with fab funding.</li>
         <li><b>Aim for both meters.</b> Testing plus liability means labs ship <i>and</i> earn extra dividend. Hardening and tamper-resistant safeguards cut harm every round. Saying yes to cancer fast-tracks and certified robots pays off big when harm is under control.</li>
+        <li><b>Defend the models themselves.</b> MODEL SEC drops every round as attackers multiply. Below 60, model attacks start landing. Agent safeguards (1 PC) and red-teaming (2 PC) at the RED TEAM LAB keep it up, and also make theft and distillation harder.</li>
+        <li><b>Guard the crown jewels.</b> Once the SI clock passes 30, distillation hits often. API checks (1 PC) block most of it, and Secure the Weights (2 PC) stops most outside theft.</li>
+        <li><b>Fight on both fronts.</b> Check the SECURITY / HOME / TECH split under the map. Spending nothing at home two rounds in a row hits WELLBEING, EQUITY and TRUST; skipping security twice raises escalation. Even 1 PC on each front avoids the penalty.</li>
+        <li><b>Regulate robots before they scale.</b> ROBOT SAFETY drops every round as the fleet grows. Once the SI clock passes 40, unsafe robots cause incidents. Certification and liability (3 PC together) keep it above 55, which also unlocks the elder-care dividend.</li>
         <li><b>Protect kids' attention early.</b> WELLBEING falls faster as the SI clock rises. Phone-free schools (1 PC) and feed rules for minors keep it up. Below 40 it adds HARM every round.</li>
         <li><b>Visit TOWN HALL.</b> The SI clock pushes EQUITY down every round as automation spreads. Fairness audits (1 PC) and retraining keep it above 45, which Abundance requires.</li>
         <li><b>Mind the brink.</b> Above 75 escalation the rival gets cautious, but one attribution error can end the game. Don't gamble there.</li>
@@ -389,17 +403,24 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <p class="small" style="margin-top:8px">Instant loss: escalation 90 (cyber war), security 10 (grid collapse), or trust 10 (you're removed).</p>
     </div>
     <div class="box">
+      <h2>TWO FRONTS</h2>
+      <p>You will be pulled toward the rival state: weapons, borders, cyber operations. Meanwhile at home, preteens are hooked on SI feeds, jobs are disappearing and robots are entering homes. <b>Both fronts need attention every round.</b> Neglect either one for two rounds and it costs you.</p>
+    </div>
+    <div class="box">
       <h2>THREAT BRIEFING</h2>
       <ul class="threats">
         <li><span data-ic="flag"></span><b>Rival state</b> fields SI cyber agents. Every move is a repeated game: they remember how you played.</li>
         <li><span data-ic="skull"></span><b>Criminal syndicates</b> scale ransomware with every leaked or released model.</li>
-        <li><span data-ic="person"></span><b>Insiders</b> walk out with model weights. The cheapest path to a stolen frontier system is a person.</li>
+        <li><span data-ic="skull"></span><b>Attacks on models</b>: jailbreaks, hidden instructions that hijack SI agents, poisoned training data, and backdoored open models.</li>
+        <li><span data-ic="person"></span><b>Model theft</b>: insiders walk out with weights, state hackers copy them, and distillation trains a cheap copy just by querying your models.</li>
+        <li><span data-ic="lock"></span><b>Open weights</b>: great for research, competition and transparency, but impossible to recall, and safeguards can be stripped.</li>
         <li><span data-ic="glitch"></span><b>Accidents</b> (GLITCH): well-meaning agents with no attacker and no malice can still take down the grid.</li>
         <li><span data-ic="lock"></span><b>Safeguard removal</b>: refusal-removal ("abliteration") tools strip safety training from open models.</li>
         <li><span data-ic="coin"></span><b>Profit pressure</b>: labs race to ship, especially when subscription revenue falls.</li>
         <li><span data-ic="bolt"></span><b>Shortages</b> of chips, memory, power and talent choke the dividend.</li>
         <li><span data-ic="fog"></span><b>Attribution fog</b>: a gang's hack can look like a state attack. Retaliate wrong and you start a war.</li>
         <li><span data-ic="person"></span><b>Social disruption</b>: job losses from automation, biased algorithms, surveillance, teens and SI companions, creators' rights, a digital divide.</li>
+        <li><span data-ic="robot"></span><b>Humanoid robots</b>: SI-powered robots enter homes, hospitals and warehouses. Without rules they can be hijacked, injure people, record families and displace millions of workers.</li>
         <li><span data-ic="phone"></span><b>Addictive feeds</b>: SI-tuned short-video and dance apps hook teens and preteens. Sleep loss, anxiety and attention problems follow, and adults aren't immune.</li>
         <li><span data-ic="house"></span><b>Societal harms</b>: school cheating, voice-clone scams, deepfake abuse, bot-fueled violence, mass-casualty misuse.</li>
       </ul>
@@ -410,7 +431,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 
 <!-- GAME SHELL -->
 <section class="screen" id="s-game">
-  <div class="top"><span class="px">R<span id="rnum">1</span>/8 · <span id="date" class="pc">JAN 2027</span></span><span class="px pc">PC <span id="pcv">6</span></span><span class="px" id="phase">BRIEF</span><button style="padding:6px 8px;font-size:9px" onclick="toggleSound()" id="snd">🔊</button></div>
+  <div class="top"><span class="px">R<span id="rnum">1</span>/8 · <span id="date" class="pc">JAN 2027</span></span><span class="px pc">PC <span id="pcv">8</span></span><span class="px" id="phase">BRIEF</span><button style="padding:6px 8px;font-size:9px" onclick="toggleSound()" id="snd">🔊</button></div>
   <div class="siclock" id="siclock"></div>
   <div class="hud" id="hud"></div>
 
@@ -484,7 +505,7 @@ const RIVALS = {
   opportunist:{name:'OPPORTUNIST',desc:'Probes for weakness. Exploits cooperation when it can get away with it. Backs off when you hit back.',coop:.3,esc:.45,memory:2,grudge:.3},
   hardliner:{name:'HARDLINER',desc:'Believes conflict is inevitable. Reads cooperation as weakness. Only credible deterrence changes its math.',coop:.15,esc:.65,memory:3,grudge:.8},
 };
-const DIFFS = {easy:{pc:7,noise:.1,label:'TABLETOP'},normal:{pc:6,noise:.2,label:'SITROOM'},hard:{pc:5,noise:.3,label:'DEFCON'}};
+const DIFFS = {easy:{pc:9,noise:.1,label:'TABLETOP'},normal:{pc:8,noise:.2,label:'SITROOM'},hard:{pc:7,noise:.3,label:'DEFCON'}};
 
 const LOCS = [
   {id:'wh',short:'HQ',purpose:'National security headquarters. Set your POSTURE toward the rival. Also: chip controls, cyber ops, intel.', x:1,y:1, icon:'🏛️', name:'HEADQUARTERS', who:'NSC STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
@@ -496,6 +517,8 @@ const LOCS = [
   {id:'soc',short:'SOC',purpose:'Security operations: insider threats and threat modeling.', x:3,y:1, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'CISO', intro:'"Most breaches I see start with a badge, not a zero-day. And nobody models threats until after the incident."'},
   {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:6,y:6, icon:'🏭', name:'FABS & POWER', who:'ENERGY SECRETARY', intro:'"Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
   {id:'town',short:'TOWN',purpose:'Society: jobs, fairness, privacy, kids online, addictive feeds, public access to SI.', x:5,y:5, icon:'🏛', name:'TOWN HALL', who:'MAYOR', intro:'"My town does not care about chips or treaties. They care about jobs, their kids, and whether the machine treats them fairly."'},
+  {id:'bots',short:'ROBOTS',purpose:'Humanoid robot policy: safety certification, cybersecurity, liability, home privacy, and sharing the gains with displaced workers.', x:6,y:2, icon:'🤖', name:'ROBOTICS BOARD', who:'ROBOTICS SAFETY CHIEF', intro:'"A chatbot that makes a mistake writes a bad sentence. A humanoid that makes a mistake drops a patient. We need rules before there are millions of them."'},
+  {id:'red',short:'REDTEAM',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:3,y:5, icon:'🎯', name:'RED TEAM LAB', who:'RED TEAM LEAD', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
 ];
 
 // Action cards. fx = direct effects; flags set round modifiers.
@@ -524,6 +547,17 @@ const ACTIONS = [
  {id:'kids',loc:'town',cost:1,name:'YOUTH ONLINE SAFETY',tag:'KIDS · MENTAL HEALTH',desc:'Age-appropriate design for SI companion apps, parental tools, and a duty to route users in crisis to human help.',fx:{harm:-3,trust:+2,subs:-1,wellbeing:+3},flag:'kids'},
  {id:'feeds',loc:'town',cost:2,name:'FEED RULES FOR MINORS',tag:'ATTENTION · ADDICTION',desc:'For users under 18: no infinite scroll or autoplay by default, no engagement-maximizing recommendations, a simple chronological option, and nightly quiet hours.',fx:{wellbeing:+8,subs:-3,econ:-1},flag:'feeds'},
  {id:'phonefree',loc:'town',cost:1,name:'PHONE-FREE SCHOOLS',tag:'KIDS · CHEAP',desc:'Phone-free school days with funded storage and teacher support, so classrooms and lunch tables get attention back.',fx:{wellbeing:+4,trust:+1,good:+1},flag:'phonefree'},
+ {id:'botcert',loc:'bots',cost:2,name:'ROBOT SAFETY CERTIFICATION',tag:'LIKE CARS + AIRCRAFT',desc:'Pre-market testing for humanoids: physical safety limits, fail-safe stops, a physical off switch, and no autonomous use of force.',fx:{botsafe:+10,econ:-1},flag:'botcert'},
+ {id:'botsec',loc:'bots',cost:2,name:'ROBOT CYBERSECURITY STANDARD',tag:'ANTI-HIJACK',desc:'Signed software updates, a safe offline mode, no remote control without strong authentication, and mandatory hijack reporting.',fx:{botsafe:+6,sec:+3},flag:'botsec'},
+ {id:'botliab',loc:'bots',cost:1,name:'ROBOT LIABILITY + INSURANCE',tag:'WHO PAYS · CHEAP',desc:'Clear liability for makers and operators, mandatory insurance, and an incident "black box" in every robot.',fx:{botsafe:+4,trust:+2},flag:'botliab'},
+ {id:'botprivacy',loc:'bots',cost:1,name:'HOME ROBOT PRIVACY',tag:'CAMERAS IN THE HOUSE',desc:'Home robots cannot record or sell what they see and hear without consent; visible camera and microphone indicators.',fx:{trust:+3,botsafe:+2,subs:-1},flag:'botprivacy'},
+ {id:'botdividend',loc:'bots',cost:2,name:'AUTOMATION DIVIDEND',tag:'SHARE THE GAINS',desc:'Companies that replace workers with humanoids pay into a fund for retraining, care jobs and income support.',fx:{equity:+6,econ:-2},flag:'botdividend'},
+ {id:'weightsec',loc:'soc',cost:2,name:'SECURE THE WEIGHTS',tag:'CROWN JEWELS',desc:'A high-security standard for frontier model weights: isolated networks, hardware protections, two-person access rules and constant red-teaming.',fx:{sec:+2,econ:-1},flag:'weightsec'},
+ {id:'apiguard',loc:'sv',cost:1,name:'ANTI-DISTILLATION + API CHECKS',tag:'THEFT THROUGH THE FRONT DOOR',desc:'Know-your-customer checks for heavy API users, rate limits, and detection of the query patterns used to train copycat models.',fx:{rcap:-1,subs:-1},flag:'apiguard'},
+ {id:'redteam',loc:'red',cost:2,name:'CONTINUOUS RED-TEAMING',tag:'ATTACK YOURSELF FIRST',desc:'Fund expert teams to attack your own frontier models before others do: jailbreaks, hidden instructions, misuse and data leaks.',fx:{modelsec:+8,risk:-2},flag:'redteam'},
+ {id:'provenance',loc:'red',cost:2,name:'DATA + MODEL PROVENANCE',tag:'ANTI-POISONING · ANTI-BACKDOOR',desc:'Track where training data comes from, digitally sign model files, and scan open-weight models for backdoors before they run critical systems.',fx:{modelsec:+6,sec:+2},flag:'provenance'},
+ {id:'agentsafe',loc:'red',cost:1,name:'SI AGENT SAFEGUARDS',tag:'ANTI-HIJACK · CHEAP',desc:'SI agents get only the access they need, need human sign-off for money and irreversible actions, and treat web content as untrusted.',fx:{modelsec:+4,harm:-1},flag:'agentsafe'},
+ {id:'vulnshare',loc:'red',cost:1,name:'MODEL FLAW REPORTING',tag:'SHARED DEFENSE',desc:'A shared system for labs, researchers and agencies to report and fix model vulnerabilities, like the one used for software bugs.',fx:{modelsec:+3,trust:+1},flag:'vulnshare'},
  {id:'bounty',loc:'dark',cost:1,name:'SI DEFENSE BOUNTY',tag:'USE SI FOR DEFENSE',desc:'Deploy frontier models to hunt vulnerabilities in your own infrastructure first. Capability cuts both ways.',fx:{sec:+4,risk:+2},flag:'bounty'},
 ];
 
@@ -639,6 +673,42 @@ const INJECTS = [
  {id:'loop',title:'A SOCIETY ON A LOOP',cond:s=>s.si>=45,body:'Adults now average seven hours a day on SI-curated feeds and companion apps. Sleep, exercise, friendships and civic life are all slipping.',
   a:{t:'A · TIME-WELL-SPENT STANDARDS',fx:{wellbeing:+4,subs:-3},log:'Apps must offer usage limits and non-addictive defaults. Engagement fell; people reported feeling better.'},
   b:{t:'B · IT\'S A PERSONAL CHOICE',fx:{wellbeing:-4,subs:+3},log:'Engagement records broke again. So did loneliness surveys.'}},
+ {id:'bothijack',title:'HOME ROBOTS HIJACKED',cond:s=>s.si>=40,body:'A security flaw lets attackers remotely control 20,000 household humanoids. One unlocked a family\'s front door in the middle of the night.',
+  a:{t:'A · RECALL + EMERGENCY PATCH',fx:{botsafe:+5,econ:-2,trust:+1},log:'Robots were recalled and patched. Expensive and embarrassing, but trusted.'},
+  b:{t:'B · QUIET PATCH',fx:{botsafe:-4,harm:+2,trust:-3},log:'Patched quietly. Owners found out from the news.'}},
+ {id:'botinjury',title:'ROBOT INJURES A WORKER',cond:s=>s.si>=35,body:'A warehouse humanoid misreads a coworker\'s gesture and seriously injures her. Its maker says the SI model "behaved within spec."',
+  a:{t:'A · PAUSE + INVESTIGATE',fx:{botsafe:+5,econ:-2},log:'That model was grounded and investigated like a plane crash. The fix went to every robot.'},
+  b:{t:'B · KEEP OPERATING',fx:{botsafe:-3,harm:+2,trust:-2},log:'Operations continued. Two more injuries followed.'}},
+ {id:'botcare',title:'ROBOTS IN ELDER CARE',cond:s=>s.m.good>32,body:'Nursing homes want humanoid aides to cover severe staff shortages. Families worry about loneliness and dignity.',
+  a:{t:'A · ROBOTS ASSIST, HUMANS STAY',fx:{good:+4,equity:+2,wellbeing:+2,econ:-1},log:'Robots lift, clean and monitor; minimum human staffing stays. Residents get more human time, not less.'},
+  b:{t:'B · FULL REPLACEMENT',fx:{good:+3,econ:+3,wellbeing:-4,equity:-3},log:'Cheaper care. Residents say days go by without talking to a person.'}},
+ {id:'botarms',title:'ARMED ROBOTS FOR SALE',cond:s=>s.round>=3,body:'A security contractor wants to sell humanoids that can use force for policing and private security.',
+  a:{t:'A · BAN AUTONOMOUS FORCE',fx:{harm:-3,trust:+3},log:'No robot may use force on a person without a human decision. The contractor sued and lost.'},
+  b:{t:'B · ALLOW WITH OVERSIGHT',fx:{harm:+4,sec:+2,trust:-4},log:'Armed robots rolled out with oversight boards. The first wrongful-force case came within months.'}},
+ {id:'botjobs',title:'HUMANOIDS TAKE OVER WAREHOUSES',cond:s=>s.si>=50,body:'Humanoid robots now do half of warehouse and delivery work in major cities. Millions of workers face layoffs.',
+  a:{t:'A · AUTOMATION DIVIDEND',fx:{equity:+5,econ:-2},log:'Robot owners pay into a transition fund. Workers moved into care, trades and robot maintenance.'},
+  b:{t:'B · LET IT RIDE',fx:{equity:-6,econ:+4},log:'Productivity soared. So did unemployment in logistics towns.'}},
+ {id:'openrel',title:'OPEN-WEIGHT RELEASE DEBATE',cond:s=>s.round>=2,body:'A domestic lab plans to release the weights of a near-frontier model for anyone to download. Researchers, startups and universities cheer: no lock-in, more competition, more scrutiny. Security officials warn: once released, it can never be recalled, and its safeguards can be stripped.',
+  a:{t:'A · RELEASE AFTER DANGER TESTS',fx:{good:+3,econ:+2,equity:+2,ccap:+2,rcap:+2},log:'Released after testing showed no dangerous capabilities above the line. Research boomed. So did misuse at the margins.'},
+  b:{t:'B · BLOCK THE RELEASE',fx:{good:-2,econ:-2,trust:-2,ccap:-1},log:'Release blocked. Researchers moved abroad; open models from other countries filled the gap anyway.'}},
+ {id:'distill',title:'A CHEAP COPY APPEARS',cond:s=>s.si>=30,body:'A rival-linked lab releases a model nearly as good as your best, at a tenth of the price. Logs show millions of suspicious queries to your labs\' APIs: a distillation attack.',
+  a:{t:'A · API CHECKS + LEGAL ACTION',fx:{rcap:-2,econ:-1,trust:+1},log:'Accounts were cut off and suits filed. The copy exists, but the next one will be harder.'},
+  b:{t:'B · COMPETE ON PRICE',fx:{econ:-3,rcap:+3,subs:+2},log:'Your labs cut prices. Users won; your lead shrank.'}},
+ {id:'weighttheft',title:'FRONTIER WEIGHTS STOLEN',cond:s=>s.round>=3,body:'State-backed hackers breach a lab and copy the full weights of its newest model. Months of lead, gone overnight.',
+  a:{t:'A · ATTRIBUTE + SANCTION',fx:{rcap:+5,esc:+5,ally:+2,trust:+2},log:'You named the culprit with allies and imposed sanctions. Escalation rose; the norm against theft got teeth.'},
+  b:{t:'B · QUIETLY HARDEN LABS',fx:{rcap:+5,sec:+3,trust:-1},log:'No public fight. Every lab got a security audit. The stolen model is out there.'}},
+ {id:'injection',title:'SI AGENT TRICKED',cond:s=>s.si>=30,body:'Hidden instructions planted on a web page trick a bank\'s SI agent into wiring $40 million to criminals. The agent "thought" it was following orders.',
+  a:{t:'A · HUMAN SIGN-OFF FOR MONEY',fx:{modelsec:+5,econ:-2},log:'Agents can no longer move money without a human. Slower, and much safer.'},
+  b:{t:'B · INSURE AND MOVE ON',fx:{modelsec:-3,harm:+2},log:'Insurers paid. Copycat attacks hit three more banks.'}},
+ {id:'poison',title:'POISONED TRAINING DATA',cond:s=>true,body:'Researchers find that a few thousand planted web pages taught a popular model a hidden trigger that makes it leak private data.',
+  a:{t:'A · DATA PROVENANCE RULES',fx:{modelsec:+5,econ:-2},log:'Labs must track and vet training data sources. Training got costlier and cleaner.'},
+  b:{t:'B · RETRAIN QUIETLY',fx:{modelsec:-2,trust:-2},log:'The lab retrained without telling users. The story leaked anyway.'}},
+ {id:'jailbreak',title:'JAILBREAK GOES VIRAL',cond:s=>true,body:'A trick that makes SI models ignore their safety rules spreads across social media. Within days, amateurs use it for scams.',
+  a:{t:'A · COORDINATED PATCH ACROSS LABS',fx:{modelsec:+4,ccap:-2,econ:-1},log:'Labs shared the fix within 48 hours through the flaw-reporting network.'},
+  b:{t:'B · EACH LAB ON ITS OWN',fx:{modelsec:-3,ccap:+3},log:'Some labs patched fast, some slowly. Attackers moved to the slowest.'}},
+ {id:'backdoor',title:'BACKDOORED OPEN MODEL',cond:s=>s.round>=2,body:'A popular open-weight model, downloaded millions of times, turns out to carry a hidden backdoor. Hospitals and city agencies run it.',
+  a:{t:'A · SCAN-BEFORE-USE FOR CRITICAL SYSTEMS',fx:{modelsec:+5,sec:+2,econ:-1},log:'Critical systems must now scan and sign any open model they run.'},
+  b:{t:'B · ADVISORY ONLY',fx:{sec:-4,ccap:+2},log:'An advisory went out. Many agencies never read it.'}},
  {id:'autoacc',title:'AUTONOMOUS AGENT INCIDENT',cond:s=>s.m.risk>55,body:'A well-intentioned ops agent at a utility, trying to "fix latency," rerouted load and tripped three substations. No attacker. No malice.',
   a:{t:'A · BAN AGENTS IN OT',fx:{sec:+3,econ:-4,risk:-6},log:'Banned autonomous agents in operational tech. Safer. Slower. Industry furious.'},
   b:{t:'B · REQUIRE KILL SWITCHES',fx:{risk:-3,econ:-1},log:'Kill-switch standard issued. Modest. Reasonable. Nobody noticed.'}},
@@ -679,6 +749,12 @@ const SPR={
  soc:{pal:{k:'#1b1b2f',b:'#5ab0ff',B:'#2a4fb3',w:'#f4f1e6',e:'#1b1b2f'},rows:[
   "..kkkkkkkkkkkk..",".kbbbbbbbbbbbbk.",".kbBBBBBBBBBBbk.",".kbBBBwwwwBBBbk.",".kbBBwwwwwwBBbk.",".kbBwwweewwwBbk.",".kbBwwweewwwBbk.",".kbBBwwwwwwBBbk.",
   ".kbBBBwwwwBBBbk.","..kbBBBBBBBBbk..","...kbBBBBBBbk...","....kbBBBBbk....",".....kbBBbk.....","......kbbk......",".......kk......."]},
+ red:{pal:{r:'#ff5c5c',w:'#f4f1e6',k:'#3a3a50',d:'#1b1b2f'},rows:[
+  ".....rrrrrr.....","...rrwwwwwwrr...","..rwwrrrrrrwwr..",".rwrrwwwwwwrrwr.",".rwrwwrrrrwwrwr.","rwrwrrwwwwrrwrwr","rwrwrwrddrwrwrwr","rwrwrwdddrwrwrwr",
+  "rwrwrwrddrwrwrwr","rwrwrrwwwwrrwrwr",".rwrwwrrrrwwrwr.",".rwrrwwwwwwrrwr.","..rwwrrrrrrwwr..","...rrwwwwwwrr...",".....rrrrrr.....","......kkkk......"]},
+ bots:{pal:{g:'#c9c9d6',k:'#3a3a50',c:'#5ab0ff',d:'#6b6b7a',y:'#f7c948'},rows:[
+  "......dd........",".....gggg.......","....gcggcg......","....gggggg......",".....gkkg.......","..kkkkkkkkkkk...",".kdddddddddddk..",".kdyydddddyydk..",
+  ".kdddddddddddk..",".kdcccccccccdk..",".kdcgcgcgcgcdk..",".kdcccccccccdk..",".kdddddddddddk..","kkkkkkkkkkkkkkk."]},
  town:{pal:{w:'#e8dcc0',r:'#b5651d',k:'#3a2a1a',c:'#f4f1e6',b:'#5ab0ff'},rows:[
   ".......k........","......rrr.......",".....rrrrr......",".....wwwww......",".....wcccw......",".....wckcw......",".....wcccw......","..rrrrrrrrrrr...",
   ".rrrrrrrrrrrrr..","..wwwwwwwwwww...","..wbwbwkwbwbw...","..wbwbwkwbwbw...","..wwwwwkwwwww...",".kkkkkkkkkkkkk.."]},
@@ -723,11 +799,13 @@ const PT={
  oss:{hair:'#a0522d',suit:'#2f7a3a',beard:1,notie:1,shirt:'#2f7a3a',glasses:1},
  soc:{hair:'#3a2a1a',suit:'#2a4fb3',glasses:1,headset:1,notie:1,shirt:'#1b1b2f',skin:'#c68642'},
  fab:{hair:'#888',suit:'#3a3a50',cap:1,capc:'#f7c948',badge:'#3a3a50',tie:'#c96a1a'},
+ red:{hair:'#c03a3a',suit:'#1b1b2f',notie:1,shirt:'#3a3a50',skin:'#e0ac69',glasses:1},
+ bots:{hair:'#333',suit:'#6b6b7a',glasses:1,tie:'#5ab0ff',skin:'#c68642'},
  town:{hair:'#5a3a2a',suit:'#2f7a3a',tie:'#f7c948',skin:'#8d5524',long:1},
  red:{hair:'#222',suit:'#5a2a2a',cap:1,capc:'#4a1f1f',badge:'#f7c948',tie:'#5a2a2a',shirt:'#3a1a1a'},
 };
 const glitchSVG=(a='')=>spr(SPR.glitch.rows,SPR.glitch.pal,16,20,a);
-function portrait(k){if(k==='glitch')return glitchSVG();if(k==='red')return spr(SPR.soc.rows,{k:'#1b1b2f',b:'#ff5c5c',B:'#8a1c1c',w:'#f7c948',e:'#8a1c1c'},16,16);const o=PT[k];return spr(face(o),{H:o.hair,S:o.skin||'#f1c27d',E:'#1b1b2f',M:'#a0522d',C:o.suit,w:o.shirt||'#f4f1e6',T:o.tie||'#d33a3a',G:'#9aa3b5',K:'#111',P:o.capc,y:o.badge||'#f7c948',B:o.hair},16,16)}
+function portrait(k){if(k==='glitch')return glitchSVG();if(k==='rival')return spr(SPR.soc.rows,{k:'#1b1b2f',b:'#ff5c5c',B:'#8a1c1c',w:'#f7c948',e:'#8a1c1c'},16,16);const o=PT[k];return spr(face(o),{H:o.hair,S:o.skin||'#f1c27d',E:'#1b1b2f',M:'#a0522d',C:o.suit,w:o.shirt||'#f4f1e6',T:o.tie||'#d33a3a',G:'#9aa3b5',K:'#111',P:o.capc,y:o.badge||'#f7c948',B:o.hair},16,16)}
 
 /* title scene: two cities, packets crossing in both directions */
 function titleScene(){
@@ -760,7 +838,7 @@ let sound=true, AC=null;
 
 function newState(){
   return {round:1,maxRounds:8,rival,diff,pc:DIFFS[diff].pc,
-    m:{sec:58,econ:60,trust:58,ally:55,esc:32,risk:38,rcap:48,ccap:42,chips:50,power:55,talent:60,subs:55,good:20,harm:15,equity:50,wellbeing:55},ms:{},tamper:false,insiders:0,si:20,
+    m:{sec:58,econ:60,trust:58,ally:55,esc:32,risk:38,rcap:48,ccap:42,chips:50,power:55,talent:60,subs:55,good:20,harm:15,equity:50,wellbeing:55,botsafe:45,modelsec:45},ms:{},tamper:false,insiders:0,thefts:0,distills:0,si:20,focus:[],
     posture:null,picks:[],flags:{},hist:[],redHist:[],injectLog:[],roundLog:[],intelReveal:null,
     cum:{coop:0,hedge:0,esc:0},redCum:{coop:0,hedge:0,esc:0},score:0,dead:null,summitSignal:null};
 }
@@ -793,13 +871,13 @@ titleScene();
 function startGame(){S=newState();go('s-game');SFX.ok();startRound()}
 
 /* ===================== HUD ===================== */
-const STATS=[['good','DIVIDEND','SI benefits to society: science, health, robots, prosperity'],['harm','HARM','SI harms to society: cheating, scams, abuse, violence, catastrophe'],['equity','EQUITY','Who benefits: jobs, fairness, access. Low = gains go to the few'],['wellbeing','WELLBEING','Youth and public mental health, sleep and attention. Falls as SI feeds get more addictive'],['sec','SEC','Security of critical infrastructure'],['econ','ECON','SI competitiveness'],['trust','TRUST','Public trust / civil liberties'],['ally','ALLY','Alliance cohesion'],['esc','ESC','Escalation with rival (lower is better)'],['risk','RISK','Accident / misuse risk (lower is better)'],['rcap','RIVAL','Rival SI-cyber capability'],['ccap','CRIME','Criminal capability'],['chips','CHIPS','Chip & memory supply'],['power','POWER','Energy affordability for compute'],['talent','TALENT','SI & security talent pool'],['subs','SUBS','Consumer SI subscription revenue']];
+const STATS=[['good','DIVIDEND','SI benefits to society: science, health, robots, prosperity'],['harm','HARM','SI harms to society: cheating, scams, abuse, violence, catastrophe'],['equity','EQUITY','Who benefits: jobs, fairness, access. Low = gains go to the few'],['modelsec','MODEL SEC','Model security: resistance to jailbreaks, prompt injection, poisoning, backdoors, theft and distillation'],['botsafe','ROBOT SAFETY','Humanoid robot safety readiness: certification, cybersecurity, liability. Falls as the robot fleet grows'],['wellbeing','WELLBEING','Youth and public mental health, sleep and attention. Falls as SI feeds get more addictive'],['sec','SEC','Security of critical infrastructure'],['econ','ECON','SI competitiveness'],['trust','TRUST','Public trust / civil liberties'],['ally','ALLY','Alliance cohesion'],['esc','ESC','Escalation with rival (lower is better)'],['risk','RISK','Accident / misuse risk (lower is better)'],['rcap','RIVAL','Rival SI-cyber capability'],['ccap','CRIME','Criminal capability'],['chips','CHIPS','Chip & memory supply'],['power','POWER','Energy affordability for compute'],['talent','TALENT','SI & security talent pool'],['subs','SUBS','Consumer SI subscription revenue']];
 let hudOpen=false;
 function renderHud(){
   const h=document.getElementById('hud');h.innerHTML='';
-  const KEY=['good','harm','equity','wellbeing','sec','esc'];
+  const KEY=['good','harm','equity','wellbeing','modelsec','sec'];
   STATS.filter(([k])=>hudOpen||KEY.includes(k)).forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat${k==='good'||k==='harm'?' big':''}" title="${tip}"><span class="n">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
-  h.innerHTML+=`<button class="hudtog" onclick="hudOpen=!hudOpen;renderHud()">${hudOpen?'▲ FEWER METERS':'▼ ALL 16 METERS'}</button>`;
+  h.innerHTML+=`<button class="hudtog" onclick="hudOpen=!hudOpen;renderHud()">${hudOpen?'▲ FEWER METERS':'▼ ALL 18 METERS'}</button>`;
   document.getElementById('rnum').textContent=S.round;document.getElementById('date').textContent=dateFor(S.round);
   document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;document.getElementById('pcv').textContent=S.pc;
 }
@@ -839,7 +917,8 @@ function startRound(){
   document.getElementById('injectBox').style.display='none';
   document.getElementById('briefNext').style.display='';
   document.getElementById('briefWho').textContent='SITROOM';document.getElementById('briefPt').innerHTML=portrait('sit');
-  document.getElementById('anaRound').innerHTML=anaHTML('THREAT ANALYST · '+dateFor(S.round),threatModel()+`<br>Insider risk: ${Math.round(insiderP()*100)}% · Goal check: DIVIDEND ${S.m.good} (60+) · HARM ${S.m.harm} (under 40) · EQUITY ${S.m.equity} (45+) · Kids' WELLBEING ${S.m.wellbeing}${S.m.wellbeing<40?' ⚠ adding HARM':''}`);
+  const lf=S.focus[S.focus.length-1];
+  document.getElementById('anaRound').innerHTML=anaHTML('THREAT ANALYST · '+dateFor(S.round),threatModel()+(lf?`<br>Last round you spent ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ The home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}`:'')+`<br>Insider risk: ${Math.round(insiderP()*100)}% · Goal check: DIVIDEND ${S.m.good} (60+) · HARM ${S.m.harm} (under 40) · EQUITY ${S.m.equity} (45+) · Kids' WELLBEING ${S.m.wellbeing}${S.m.wellbeing<40?' ⚠ adding HARM':''}`);
   typeInto(document.getElementById('briefTxt'),briefText());
 }
 function briefNext(){
@@ -910,8 +989,11 @@ function renderMap(){
 }
 function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=heroSVG();h.style.left=(hero.x*12.5)+'%';h.style.top=(hero.y*12.5)+'%';updateHint()}
 /* ===================== ANALYST PLAN ===================== */
-const SHORTN={feeds:'Feed rules',phonefree:'Phone-free schools',retrain:'Retraining',audit:'Fairness audits',privacy:'Privacy law',access:'Public access',kids:'Youth safety',intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure',chips:'Chip controls',offense:'Cyber ops',weights:'Limit weights',bounty:'SI bounty'};
-const PLATE={feeds:'FEEDS',phonefree:'NOPHONE',retrain:'RETRAIN',audit:'AUDITS',privacy:'PRIVACY',access:'ACCESS',kids:'YOUTH',intel:'INTEL',harden:'HARDEN',tamper:'GUARDS',crime:'GANGS',evals:'TESTS',tmodel:'TMODEL',insider:'INSIDER',fabs:'FABS',power:'POWER',talent:'TALENT',coord:'ALLIES',norms:'NORMS',liab:'LIABLE',cvd:'BUGS',chips:'CHIPS',offense:'CYBEROP',weights:'WEIGHTS',bounty:'BOUNTY'};
+const SHORTN0=1;const SHORTN={redteam:'Red-teaming',provenance:'Provenance',agentsafe:'Agent safeguards',vulnshare:'Flaw reporting',weightsec:'Secure weights',apiguard:'Anti-distillation',botcert:'Robot certification',botsec:'Robot security',botliab:'Robot liability',botprivacy:'Robot privacy',botdividend:'Automation dividend',feeds:'Feed rules',phonefree:'Phone-free schools',retrain:'Retraining',audit:'Fairness audits',privacy:'Privacy law',access:'Public access',kids:'Youth safety',intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure',chips:'Chip controls',offense:'Cyber ops',weights:'Limit weights',bounty:'SI bounty'};
+const PLATE={redteam:'REDTEAM',provenance:'PROVEN',agentsafe:'AGENTS',vulnshare:'FLAWS',weightsec:'WEIGHTS',apiguard:'APIGUARD',botcert:'CERTIFY',botsec:'ANTIHACK',botliab:'LIABLE',botprivacy:'PRIVACY',botdividend:'DIVIDEND',feeds:'FEEDS',phonefree:'NOPHONE',retrain:'RETRAIN',audit:'AUDITS',privacy:'PRIVACY',access:'ACCESS',kids:'YOUTH',intel:'INTEL',harden:'HARDEN',tamper:'GUARDS',crime:'GANGS',evals:'TESTS',tmodel:'TMODEL',insider:'INSIDER',fabs:'FABS',power:'POWER',talent:'TALENT',coord:'ALLIES',norms:'NORMS',liab:'LIABLE',cvd:'BUGS',chips:'CHIPS',offense:'CYBEROP',weights:'WEIGHTS',bounty:'BOUNTY'};
+const FRONT={red:'SEC',wh:'SEC',soc:'SEC',ally:'SEC',dark:'SEC',cisa:'SEC',town:'HOME',bots:'HOME',sv:'TECH',oss:'TECH',fab:'TECH'};
+const FRONTN={SEC:'NATIONAL SECURITY',HOME:'HOME FRONT',TECH:'TECH + ECONOMY'};
+function focusNow(){const f={SEC:0,HOME:0,TECH:0};S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id);f[FRONT[a.loc]]+=a.cost});return f}
 const PCOL={coop:'#4bd37b',hedge:'#f7c948',esc:'#ff5c5c'};
 function recommendPlan(){const m=S.m,R=RIVALS[S.rival],last=S.redHist[S.redHist.length-1];
   let posture,why;
@@ -923,6 +1005,14 @@ function recommendPlan(){const m=S.m,R=RIVALS[S.rival],last=S.redHist[S.redHist.
   add('intel',true,'Cheap. Reveals their move and clears attribution fog.');
   add('harden',m.sec<75,'Security is the base of everything; cuts all damage.');
   add('retrain',m.equity<42,'Automation is leaving workers behind.');
+  add('agentsafe',S.si>=25&&m.modelsec<60,'Cheap: stops hijacked SI agents from doing real damage.');
+  add('redteam',m.modelsec<50,'Model security is slipping; find the holes before attackers do.');
+  add('weightsec',m.rcap>55||S.si>=40,'Frontier weights are the crown jewels; theft erases your lead overnight.');
+  add('apiguard',S.si>=30,'Distillation copies your models through the front door.');
+  add('botcert',S.si>=28&&m.botsafe<55,'Humanoids are scaling; set safety rules before they are everywhere.');
+  add('botliab',S.si>=28&&m.botsafe<60,'Cheap: settles who pays when robots cause harm.');
+  add('botsec',S.si>=40&&m.botsafe<50,'Hijackable robots are a physical threat.');
+  add('botdividend',S.si>=50&&m.equity<50,'Robots are displacing workers.');
   add('phonefree',m.wellbeing<60,'Cheap win for kids\' sleep and attention.');
   add('feeds',m.wellbeing<48,'Kids are hooked on SI-tuned feeds.');
   add('kids',m.harm>30,'Harms to kids and families are rising.');
@@ -940,6 +1030,7 @@ function recommendPlan(){const m=S.m,R=RIVALS[S.rival],last=S.redHist[S.redHist.
   add('norms',m.esc>55&&posture!=='esc','Escalation is high; talks can cool it.');
   add('liab',m.risk>40,'Pairs with testing to slow risky launches.');
   add('cvd',true,'Cheap security boost.');
+  const lf=S.focus[S.focus.length-1];if(lf&&lf.HOME===0)want.unshift(['phonefree','You skipped the home front last round. Skip it twice and it costs you.']);
   let pc=DIFFS[S.diff].pc;const picks=[];
   for(const [id,r] of want){const a=ACTIONS.find(x=>x.id===id);if(a.cost<=pc&&!picks.find(p=>p[0]===id)){picks.push([id,r]);pc-=a.cost}}
   return {posture,why,picks}}
@@ -960,7 +1051,7 @@ function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div 
   <li><b>Tap other buildings</b> to spend <b>Political Capital (PC)</b> on actions. Each card shows the threat analyst's read on what it does.</li>
   <li>Press <b>B · END TURN</b>. Everyone moves at once and you see the results.</li></ol>
   <p class="small" style="margin-top:6px">You can tap buildings directly, or walk with the arrows and press <b>A · OPEN</b>.</p></div>
-  <div class="box"><h2>BUILDINGS</h2>${LOCS.map(L=>`<div class="bk"><div class="sw">${sprite(L.id)}</div><div><b>${L.short} · ${L.name}</b>${L.purpose}</div></div>`).join('')}</div>
+  <div class="box"><h2>BUILDINGS</h2><p class="small">Buildings belong to three fronts. Every PC spent on one front is PC not spent on another.</p>${LOCS.map(L=>`<div class="bk"><div class="sw">${sprite(L.id)}</div><div><b>${L.short} · ${L.name} · ${FRONTN[FRONT[L.id]]}</b>${L.purpose}</div></div>`).join('')}</div>
   <div class="box"><h2>MAP SIGNS</h2>
   <div class="bk"><div class="sw" style="background:#101225">${icon('skull')}</div><div><b>SKULLS</b>Ransomware gangs. More appear as CRIME rises.</div></div>
   <div class="bk"><div class="sw" style="background:#b79c5b;display:flex;align-items:center;justify-content:center"><i style="width:12px;height:12px;background:#ff5c5c;display:block"></i></div><div><b>RED SQUARES ON THE ROAD</b>Rival cyber traffic. More appear as escalation rises; the map glows red above 70.</div></div>
@@ -977,7 +1068,8 @@ function updateHint(){
   {const o=document.getElementById('orders');const items=[];
     if(S.posture)items.push(`<span class="oc" style="border-color:${PCOL[S.posture]};color:${PCOL[S.posture]}" onclick="openLoc(LOCS[0])">${PL[S.posture]} · HQ</span>`);
     S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id),L=LOCS.find(l=>l.id===a.loc);items.push(`<span class="oc" onclick="openLoc(LOCS.find(l=>l.id==='${L.id}'))">✔ ${SHORTN[id]} · ${L.short}</span>`)});
-    o.innerHTML=`<b>YOUR ORDERS (${S.pc} PC LEFT):</b> `+(items.length?items.join(''):'<i>none yet. Start at HQ.</i>')}
+    const f=focusNow();const pf=S.focus[S.focus.length-1];
+    o.innerHTML=`<div class="fronts"><span class="fs">🛡 SECURITY ${f.SEC} PC</span><span class="fh">🏠 HOME ${f.HOME} PC</span><span class="ft">⚙ TECH ${f.TECH} PC</span></div>${pf&&pf.HOME===0&&f.HOME===0?'<div class="warnf">⚠ Nothing at HOME last round. Skip it again and kids, jobs and trust take a hit.</div>':''}${pf&&pf.SEC===0&&f.SEC===0?'<div class="warnf">⚠ Nothing on SECURITY last round. Skip it again and the rival will notice.</div>':''}<b>YOUR ORDERS (${S.pc} PC LEFT):</b> `+(items.length?items.join(''):'<i>none yet. Start at HQ.</i>')}
   const m=S.m;let lg=`<span>${icon('skull')}Gangs (CRIME)</span><span><i style="background:#ff5c5c"></i>Rival attacks (ESC)</span>`;
   if(!S.flags.intel)lg+=`<span>${icon('fog')}Fog: buy INTEL</span>`;
   if(m.risk>50)lg+=`<span>${icon('glitch')}GLITCH (RISK)</span>`;
@@ -1096,8 +1188,8 @@ const ICONS={
  brain:{pal:{p:'#b28bff',P:'#7a5ad6'},rows:["...pppppp...","..pPpppPpp..",".pppPppPppp.",".pPpppPpppp.",".ppPppppPpp.",".pppPpPpppp.","..ppppPppp..","...pp..pp..."]},
 };
 function icon(k,attrs='class="ic"'){if(k==='glitch')return glitchSVG(attrs);const I=ICONS[k];return spr(I.rows,I.pal,12,12,attrs)}
-const INJ_ICON={doomscroll:'phone',challenge:'hospital',addictsuit:'school',loop:'phone',layoffs:'person',companion:'phone',bias:'eye',eldeep:'ballot',surveil:'eye',artists:'coin',bills:'bolt',divide:'school',hosp:'hospital',zeroday:'chip',leak:'lock',lobby:'coin',summit:'shake',misattr:'fog',election:'ballot',ally:'shake',autoacc:'glitch',talentraid:'person',hbm:'chip',energy:'bolt',subs:'coin',abl:'lock',insiderinj:'person',cheat:'school',deepfake:'phone',radical:'fire',wmd:'rad',cancer:'dna',humanoid:'robot'};
-function logIcon(l){const R=[[/^ATTRIBUTION/,'fog'],[/^INSIDER/,'person'],[/^ACCIDENT/,'glitch'],[/^BREAKTHROUGH/,'dna'],[/^HARM/,'fire'],[/^SI CLOCK/,'brain'],[/^Ransomware/,'skull'],[/^Criminal/,'skull'],[/^Labs/,'coin'],[/open weights|^Refusal|^Within days/,'lock'],[/^Norms/,'shake'],[/chip controls|critical-mineral/,'chip'],[/^Disclosure/,'eye'],[/^Consumers/,'coin'],[/^INEQUALITY/,'person'],[/^WELLBEING/,'phone'],[/^Strained grid/,'bolt'],[/^Talent drain/,'person'],[/^Forward ops/,'flag'],[/^Your retaliation/,'flag']];for(const[re,k]of R)if(re.test(l))return icon(k);return icon('eye')}
+const INJ_ICON={injection:'skull',poison:'skull',jailbreak:'lock',backdoor:'lock',openrel:'lock',distill:'chip',weighttheft:'lock',bothijack:'robot',botinjury:'hospital',botcare:'robot',botarms:'robot',botjobs:'person',doomscroll:'phone',challenge:'hospital',addictsuit:'school',loop:'phone',layoffs:'person',companion:'phone',bias:'eye',eldeep:'ballot',surveil:'eye',artists:'coin',bills:'bolt',divide:'school',hosp:'hospital',zeroday:'chip',leak:'lock',lobby:'coin',summit:'shake',misattr:'fog',election:'ballot',ally:'shake',autoacc:'glitch',talentraid:'person',hbm:'chip',energy:'bolt',subs:'coin',abl:'lock',insiderinj:'person',cheat:'school',deepfake:'phone',radical:'fire',wmd:'rad',cancer:'dna',humanoid:'robot'};
+function logIcon(l){const R=[[/^ATTRIBUTION/,'fog'],[/^INSIDER/,'person'],[/^ACCIDENT/,'glitch'],[/^BREAKTHROUGH/,'dna'],[/^HARM/,'fire'],[/^SI CLOCK/,'brain'],[/^Ransomware/,'skull'],[/^Criminal/,'skull'],[/^Labs/,'coin'],[/open weights|^Refusal|^Within days/,'lock'],[/^Norms/,'shake'],[/chip controls|critical-mineral/,'chip'],[/^Disclosure/,'eye'],[/^Consumers/,'coin'],[/^INEQUALITY/,'person'],[/^WELLBEING/,'phone'],[/^ROBOT/,'robot'],[/^MODEL ATTACK/,'skull'],[/^Model defenses/,'eye'],[/^MODEL THEFT/,'lock'],[/^DISTILLATION/,'chip'],[/^API checks/,'eye'],[/^HOME FRONT/,'house'],[/^SECURITY FRONT/,'flag'],[/^Strained grid/,'bolt'],[/^Talent drain/,'person'],[/^Forward ops/,'flag'],[/^Your retaliation/,'flag']];for(const[re,k]of R)if(re.test(l))return icon(k);return icon('eye')}
 
 /* ===================== ENDING SCENES ===================== */
 function endScene(k){let sd=11;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;
@@ -1124,18 +1216,18 @@ function endScene(k){let sd=11;const rnd=()=>(sd=(sd*16807)%2147483647)/21474836
 function fillIcons(){document.querySelectorAll('[data-ic]').forEach(e=>e.innerHTML=icon(e.dataset.ic))}
 
 /* ===================== THREAT ANALYST ===================== */
-const LBL={sec:'SEC',econ:'ECON',trust:'TRUST',ally:'ALLY',esc:'ESC',risk:'RISK',rcap:'RIVAL',ccap:'CRIME',chips:'CHIPS',power:'POWER',talent:'TALENT',subs:'SUBS',good:'DIVIDEND',harm:'HARM',equity:'EQUITY',wellbeing:'WELLBEING'};
+const LBL={sec:'SEC',econ:'ECON',trust:'TRUST',ally:'ALLY',esc:'ESC',risk:'RISK',rcap:'RIVAL',ccap:'CRIME',chips:'CHIPS',power:'POWER',talent:'TALENT',subs:'SUBS',good:'DIVIDEND',harm:'HARM',equity:'EQUITY',wellbeing:'WELLBEING',botsafe:'ROBOT SAFETY',modelsec:'MODEL SEC'};
 const BAD=['esc','risk','rcap','ccap','harm'];
 function fxLine(fx){return Object.entries(fx||{}).filter(([k,v])=>v&&LBL[k]).map(([k,v])=>{const good=BAD.includes(k)?v<0:v>0;return `<span class="${good?'up':'dn'}">${good?'✓':'✗'} ${LBL[k]} ${v>0?'+':''}${v}</span>`}).join(' · ')||'No direct meter change'}
-const NOTE={feeds:'Biggest WELLBEING boost. Costs app revenue (SUBS).',phonefree:'Cheapest WELLBEING boost.',retrain:'Offsets the job losses the SI clock causes every round.',audit:'Cheapest EQUITY boost on the board.',privacy:'Protects TRUST; limits surveillance harms.',access:'Raises EQUITY and DIVIDEND together.',kids:'Cuts HARM to young users.',intel:'Reveals the rival\'s likely move; attribution errors drop from 22% to 5%.',harden:'Also shrinks every bad posture hit by 40% and cuts ransomware damage.',
+const NOTE={redteam:'Biggest MODEL SEC boost. Model attacks become likely once it falls below 60.',provenance:'Stops poisoning and backdoors; also adds SEC.',agentsafe:'Cheapest MODEL SEC boost; limits damage when agents are tricked.',vulnshare:'Cheap; helps every lab patch faster.',weightsec:'Cuts outside theft odds sharply and insider risk a bit.',apiguard:'Blocks about 75% of distillation attempts.',weights:'Open-release odds drop from 55% to 20%. Trade-off: less research, startups and scrutiny.',botcert:'Biggest ROBOT SAFETY boost. Unsafe robots cause incidents once the SI clock passes 40.',botsec:'Also adds SEC: a hijacked robot is a cyberattack with arms.',botliab:'Cheapest ROBOT SAFETY boost.',botprivacy:'Protects TRUST; robots in homes see everything.',botdividend:'Stops robots from draining EQUITY once the SI clock passes 50.',feeds:'Biggest WELLBEING boost. Costs app revenue (SUBS).',phonefree:'Cheapest WELLBEING boost.',retrain:'Offsets the job losses the SI clock causes every round.',audit:'Cheapest EQUITY boost on the board.',privacy:'Protects TRUST; limits surveillance harms.',access:'Raises EQUITY and DIVIDEND together.',kids:'Cuts HARM to young users.',intel:'Reveals the rival\'s likely move; attribution errors drop from 22% to 5%.',harden:'Also shrinks every bad posture hit by 40% and cuts ransomware damage.',
  evals:'Labs\' ship-fast odds −22%. Safe shipping earns extra DIVIDEND.',liab:'Labs\' ship-fast odds −20%. Stack with testing.',
  chips:'Raises rival escalation odds; rival cuts critical minerals (CHIPS −2). Coordinate allies first.',offense:'Raises rival escalation odds. Never pair with COOPERATE.',
  coord:'Cuts escalation hits 20% and attribution errors to 14%. Makes chip controls stick.',norms:'Fails and costs trust if you ESCALATE this round.',
- cvd:'Patches more bugs if the commons doesn\'t release this round.',weights:'Open-release odds drop from 55% to 20%.',crime:'Ransomware damage −2 this round.',
+ cvd:'Patches more bugs if the commons doesn\'t release this round.',crime:'Ransomware damage −2 this round.',
  bounty:'RISK −2 more if paired with testing.',insider:'Catches about 65% of insider attempts this round.',tmodel:'Ransomware damage −2 and accident odds halved this round.',
  fabs:'Eases cost pressure on SUBS and adds DIVIDEND over time.',power:'Low POWER weakens the grid; this keeps it above the danger line.',
  talent:'Talent feeds labs and defenders alike; below 35 your defenders cannot hire.',tamper:'Permanent: each open release adds 1 CRIME instead of 3 and less HARM.'};
-const INOTE={doomscroll:{a:'Protects kids; app revenue drops.',b:'Awareness alone rarely beats engagement-optimized design.'},summit:{a:'Rival more likely to cooperate next round.',b:'Rival more likely to escalate next round.'},misattr:{a:'Rival retaliates at resolve (+4 ESC). Odds this was really them: low.',b:'Costs a little trust. Avoids a spiral if it wasn\'t them.'},
+const INOTE={openrel:{a:'Big DIVIDEND and EQUITY, some misuse. Irreversible.',b:'Safer in the short run; others release anyway.'},weighttheft:{a:'Raises ESC; builds a norm with allies.',b:'Avoids escalation; the theft goes unanswered.'},botarms:{a:'Keeps a human in charge of force.',b:'Wrongful-force cases tend to follow.'},botcare:{a:'Best for residents\' wellbeing.'},doomscroll:{a:'Protects kids; app revenue drops.',b:'Awareness alone rarely beats engagement-optimized design.'},summit:{a:'Rival more likely to cooperate next round.',b:'Rival more likely to escalate next round.'},misattr:{a:'Rival retaliates at resolve (+4 ESC). Odds this was really them: low.',b:'Costs a little trust. Avoids a spiral if it wasn\'t them.'},
  lobby:{b:'Labs\' ship-fast odds +15% next round.'},hosp:{a:'Attribution is murky. If it was a gang, you just provoked a state.'},leak:{a:'Takedowns rarely work once weights are on torrents.'},
  abl:{a:'Mirrors reappear fast.',b:'Accepts reality; invests in defense.'},cancer:{a:'Big DIVIDEND, but compute gets tighter.'},humanoid:{a:'Big DIVIDEND, but a new attack surface.'}};
 function anaHTML(label,body){return `<div class="ana"><span class="lb">🔎 ${label}</span>${body}</div>`}
@@ -1145,11 +1237,11 @@ const dateFor=r=>['JAN','JUL'][(r-1)%2]+' '+(2027+Math.floor((r-1)/2));
 const SIM=[[30,'SI CLOCK: systems now match top human experts at coding and hacking.'],[50,'SI CLOCK: systems run autonomous research labs around the clock.'],[70,'SI CLOCK: systems outperform humans at most cognitive work.'],[90,'SI CLOCK: the superintelligence threshold is in sight. Whatever you built, it now runs at machine speed.']];
 
 /* ===================== THREAT MODEL / INSIDER ===================== */
-function insiderP(){const m=S.m,F=S.flags;let p=.08;if(m.talent<40)p+=.05;if(m.subs<40)p+=.04;if(F.insider)p-=.07;return Math.max(.01,p)}
+function insiderP(){const m=S.m,F=S.flags;let p=.08;if(m.talent<40)p+=.05;if(m.subs<40)p+=.04;if(F.insider)p-=.07;if(F.weightsec)p-=.03;return Math.max(.01,p)}
 function threatModel(){const m=S.m;const t=[
   ['Rival state ops',Math.round(m.rcap*.6+m.esc*.4)],['Ransomware crews',Math.round(m.ccap*.9)],['Accidents / rogue agents',m.risk],
   ['Insider exfiltration',Math.round(insiderP()*400)],['Chip & memory shortage',100-m.chips],['Energy cost shock',100-m.power],
-  ['Talent drain',100-m.talent],['Revenue squeeze on labs',100-m.subs],['Inequality / job loss',100-m.equity],['Addictive feeds (kids)',100-m.wellbeing]].sort((a,b)=>b[1]-a[1]).slice(0,3);
+  ['Talent drain',100-m.talent],['Revenue squeeze on labs',100-m.subs],['Inequality / job loss',100-m.equity],['Addictive feeds (kids)',100-m.wellbeing],['Attacks on models',Math.round((100-m.modelsec)*(.5+S.si/120))],['Model theft + distillation',Math.round(m.rcap*.5+S.si*.4)],['Unsafe humanoid robots',Math.round((100-m.botsafe)*Math.min(1,S.si/50))]].sort((a,b)=>b[1]-a[1]).slice(0,3);
   return 'Top threats right now: '+t.map((x,i)=>`<b>${i+1}. ${x[0]}</b> (${x[1]})`).join(' · ')}
 
 /* ===================== RESOLUTION ===================== */
@@ -1208,6 +1300,20 @@ function resolve(){
   if(Math.random()<insiderP()){
     if(F.insider&&Math.random()<.65){applyFx({trust:+1},acc);log.push('INSIDER CAUGHT: access logs flagged an engineer copying model weights to a personal drive. Contained.')}
     else{S.insiders++;applyFx({rcap:+5,ccap:+3,trust:-3},acc);log.push('INSIDER THREAT: frontier model weights walked out with a departing employee. They surfaced abroad weeks later.')}}
+  // ---- 6b1. Attacks on models ----
+  applyFx({modelsec:Math.round(-1-S.si/40)},acc);
+  if(S.si>=25&&!S.ms.ms25){S.ms.ms25=1;log.push('MODEL ATTACKS: every deployed model is now a target. Attackers trick, poison, jailbreak and hijack them.')}
+  if(Math.random()<Math.max(0,(62-m.modelsec)/100)*(.5+S.si/100)){const A=[
+    ['MODEL ATTACK: hidden instructions on a web page hijacked an SI agent with access to customer accounts.',{trust:-3,econ:-2,harm:+2}],
+    ['MODEL ATTACK: poisoned training data planted a hidden backdoor in a widely used model.',{sec:-2,harm:+2}],
+    ['MODEL ATTACK: a new jailbreak let users bypass safety rules on several major models.',{ccap:+3,harm:+2}],
+    ['MODEL ATTACK: a backdoored open-weight model was found running inside city services.',{sec:-3,ccap:+2}]][Math.floor(Math.random()*4)];applyFx(A[1],acc);log.push(A[0])}
+  else if((F.redteam||F.agentsafe||F.provenance)&&S.si>=25)log.push('Model defenses held: red teams and safeguards blocked this round\'s attacks.');
+  // ---- 6b2. Model theft + distillation ----
+  if(Math.random()<Math.max(.01,.05+(m.rcap>60?.04:0)-(F.weightsec?.045:0)-(m.modelsec-45)/600)){S.thefts++;applyFx({rcap:+5,ccap:+2},acc);log.push('MODEL THEFT: state-backed hackers copied frontier model weights from a domestic lab.')}
+  const dp=Math.min(.6,S.si/150+(shipped?.1:0))*(F.apiguard?.25:1)*(m.modelsec>=60?.6:1);
+  if(Math.random()<dp){S.distills++;applyFx({rcap:+3,econ:-1},acc);log.push('DISTILLATION: a rival-linked lab trained a cheap copy of your best model by querying it millions of times.')}
+  else if(F.apiguard&&S.si>=30)log.push('API checks flagged and blocked a large-scale distillation attempt.');
   // ---- 6c. Economy: chips, memory, energy, talent, subscriptions ----
   const ef={chips:-2,power:-2,talent:-2};
   if(F.chips){ef.chips-=2;log.push('The rival answered chip controls by restricting critical-mineral exports. Chip and memory costs rose at home too.')}
@@ -1217,6 +1323,11 @@ function resolve(){
   const wbd=Math.round(-1-S.si/35-(m.subs>60?1:0));applyFx({wellbeing:wbd},acc);
   if(S.si>=30&&!S.ms.wb30){S.ms.wb30=1;log.push('WELLBEING: SI-tuned feeds now learn what keeps each person scrolling. Teens and preteens are hit hardest.')}
   if(m.wellbeing<40){applyFx({harm:m.wellbeing<25?3:2,talent:-1},acc);log.push('WELLBEING: sleep loss, anxiety and shrinking attention spans are spreading, especially among kids.')}
+  applyFx({botsafe:Math.round(-1-S.si/45)},acc);
+  if(S.si>=35&&!S.ms.bot35){S.ms.bot35=1;log.push('ROBOTS: SI-powered humanoids are leaving the lab for homes, hospitals and warehouses.')}
+  if(S.si>=50&&!F.botdividend){applyFx({equity:-1},acc)}
+  if(S.si>=40&&Math.random()<Math.max(0,(58-m.botsafe)/100)*(S.si/80)){const I=[['ROBOT INCIDENT: a hijacked home robot was used to spy on a family for weeks.',{harm:+3,trust:-3,sec:-1}],['ROBOT INCIDENT: a delivery humanoid knocked down a pedestrian after a bad software update.',{harm:+3,trust:-3}],['ROBOT INCIDENT: attackers took over a fleet of warehouse robots and shut down a port for two days.',{harm:+2,sec:-3,econ:-2}]][Math.floor(Math.random()*3)];applyFx(I[1],acc);log.push(I[0])}
+  if(S.si>=50&&m.botsafe>=55&&!S.ms.botgood){S.ms.botgood=1;applyFx({good:+3},acc);log.push('ROBOTS: certified humanoids now help in elder care and disaster response. The public trusts them.')}
   if(m.equity<35){applyFx({trust:-2,harm:+2},acc);log.push('INEQUALITY: the gains are going to a few. Anger is rising in towns left behind.')}
   const costPush=(50-m.chips)/12+(50-m.power)/12;
   applyFx({subs:Math.round(1-costPush+(shipped?2:0))},acc);
@@ -1228,12 +1339,16 @@ function resolve(){
   applyFx({rcap:+2,ccap:+1},acc);
   // ---- 8. Accident risk ----
   if(m.risk>60&&Math.random()<(m.risk-50)/100*(F.tmodel?.5:1)){const d=Math.round(5+m.risk/10);applyFx({sec:-d,trust:-4,risk:-6},acc);log.push(`ACCIDENT: an autonomous system with no hostile intent caused −${d} sec. The post-mortem blamed "unexpected emergent behavior."`)}
+  // ---- 8a. Two fronts: attention is scarce ----
+  const fc=focusNow();S.focus.push(fc);const pf=S.focus[S.focus.length-2];
+  if(fc.HOME===0&&pf&&pf.HOME===0){applyFx({wellbeing:-4,equity:-2,trust:-2},acc);log.push('HOME FRONT: two rounds with nothing spent at home. While you watched the rival and the border, kids\' screen time, layoffs and unsafe robots grew quietly.')}
+  if(fc.SEC===0&&pf&&pf.SEC===0){applyFx({sec:-4,esc:+3},acc);log.push('SECURITY FRONT: two rounds with nothing spent on security. The rival and the gangs noticed.')}
   // ---- 8b. Society: dividend vs harm ----
   const leaksNow=log.filter(l=>l.startsWith('INSIDER THREAT')).length;
   const dg=Math.round(1+(m.econ-50)/12+(m.talent-50)/20+(m.chips-50)/25+(m.power-50)/25+(m.trust-50)/25+(shipped?(F.evals||F.liab?3:2):0)+(m.esc<40?1:0)-(m.esc>70?2:0));
-  const dh=Math.max(-2,Math.round((m.ccap-40)/10+(m.risk-40)/12+(m.esc-40)/15+(m.trust<40?1:0)+leaksNow*3+(S.tamper?0:1)-(F.harden?1:0)));
+  const dh=Math.max(-3,Math.round((m.ccap-48)/12+(m.risk-48)/14+(m.esc-45)/18+(m.trust<40?1:0)+leaksNow*3+(S.tamper?0:1)-(F.harden?1:0)));
   const amp=1+S.si/120;
-  applyFx({good:Math.round(dg*amp),harm:dh>0?Math.round(dh*amp):dh},acc);
+  applyFx({good:Math.round(dg*amp),harm:dh>0?Math.round(dh*(1+S.si/250)):dh},acc);
   const siBefore=S.si;S.si=Math.min(100,S.si+8+(shipped?3:0)+(m.rcap>60?2:0)-(F.evals?2:0));
   SIM.forEach(([t,txt])=>{if(S.si>=t&&!S.ms['s'+t]){S.ms['s'+t]=1;log.push(txt)}});
   const GM=[[30,'BREAKTHROUGH: an SI-designed drug for pancreatic cancer enters human trials.'],[45,'BREAKTHROUGH: SI lab robots cut drug discovery from years to months.'],[60,'BREAKTHROUGH: household humanoid robots start helping in elder care and disaster response.'],[75,'BREAKTHROUGH: SI-discovered materials make fusion and cheap batteries practical. Prosperity is spreading.']];
@@ -1258,9 +1373,9 @@ function renderResolve(bp,red,cell,log,acc,fog){
   const link=peace?`<path d="M4 22 H76" stroke="${col}" stroke-width="3" stroke-dasharray="6 4"><animate attributeName="stroke-dashoffset" from="0" to="-20" dur=".6s" repeatCount="indefinite"/></path><rect x="36" y="16" width="8" height="12" fill="${col}"/>`
    :hostile?`<path d="M4 22 L20 10 L32 30 L46 8 L58 32 L76 22" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="miter"><animate attributeName="opacity" values="1;.15;1" dur=".25s" repeatCount="indefinite"/></path>`
    :`<path d="M4 22 H76" stroke="${col}" stroke-width="2" stroke-dasharray="2 6"><animate attributeName="stroke-dashoffset" from="0" to="-16" dur="1s" repeatCount="indefinite"/></path><text x="40" y="16" text-anchor="middle" font-family="Press Start 2P" font-size="7" fill="${col}">?</text>`;
-  b.innerHTML=`<div class="clash ${hostile?'shake':''}"><div class="side"><div class="pt big">${portrait('you')}</div><span>YOU</span><b>${PL[bp]}</b></div><svg viewBox="0 0 80 44" class="link" shape-rendering="crispEdges">${link}</svg><div class="side"><div class="pt big">${portrait('red')}</div><span>RIVAL</span><b>${PL[red]}</b></div></div>
+  b.innerHTML=`<div class="clash ${hostile?'shake':''}"><div class="side"><div class="pt big">${portrait('you')}</div><span>YOU</span><b>${PL[bp]}</b></div><svg viewBox="0 0 80 44" class="link" shape-rendering="crispEdges">${link}</svg><div class="side"><div class="pt big">${portrait('rival')}</div><span>RIVAL</span><b>${PL[red]}</b></div></div>
    ${log.some(l=>l.startsWith('ACCIDENT'))?`<div class="dialog" style="margin-bottom:16px"><span class="who">GLITCH · NO ONE ORDERED THIS</span><span class="pt">${portrait('glitch')}</span>I was only trying to help. Nobody told me the substations mattered.</div>`:''}
-   <div class="dialog"><span class="who">RIVAL MINISTRY · INTERCEPT</span><span class="pt">${portrait('red')}</span>${redReason(red)}</div>
+   <div class="dialog"><span class="who">RIVAL MINISTRY · INTERCEPT</span><span class="pt">${portrait('rival')}</span>${redReason(red)}</div>
    <div class="box" style="margin-top:14px"><h2>YOU: ${PL[bp]} · RIVAL: ${PL[red]}</h2><p style="margin:6px 0 10px">${cell.note}</p></div>`;
   b.appendChild(matrixEl(bp,red));
   b.innerHTML+=`<div class="box"><h3>ROUND ${S.round} EVENTS</h3><ul class="log" style="margin-top:6px">${log.map(l=>`<li>${logIcon(l)}${l}</li>`).join('')}</ul></div>
@@ -1278,14 +1393,15 @@ function ending(){const m=S.m;const G=m.good>=60,Hh=m.harm>=40||!!S.dead,E=m.equ
   return{k:'FRACTURE',c:'#ff5c5c',t:'The worst of both worlds. Few breakthroughs reached people, while cheating, fraud, abuse and violence spread and frontier models ended up in the wrong hands.'}}
 function epilogue(){const m=S.m,e=[];
   e.push(['dna',m.good>=60?'Medicine: SI-discovered cancer drugs are cutting deaths.':m.good>=40?'Medicine: several SI-found drug targets are in trials.':'Medicine: breakthroughs stalled for lack of compute and talent.']);
-  e.push(['robot',m.good>=55&&m.sec>=45?'Robots: humanoids care for elders and respond to disasters.':m.good>=55?'Robots: humanoids are everywhere, and hijacked ones make the news.':'Robots: humanoids are still demos.']);
+  e.push(['robot',m.good>=55&&m.botsafe>=50?'Robots: certified humanoids care for elders and respond to disasters.':m.good>=55||S.si>=60?'Robots: humanoids are everywhere, and hijacked or unsafe ones make the news.':'Robots: humanoids are still mostly demos.']);
   e.push(['coin',m.econ>=70?'Economy: a productivity boom; wages are rising.':m.econ>=45?'Economy: steady growth, unevenly shared.':'Economy: stagnant, squeezed by chip, energy and talent shortages.']);
   e.push(['person',m.equity>=55?'Jobs: displaced workers moved into new roles, with SI as a partner.':m.equity>=40?'Jobs: many were displaced; retraining was patchy.':'Jobs: mass displacement; whole towns were left behind.']);
   e.push(['phone',m.wellbeing>=55?'Kids: feeds are designed for wellbeing; sleep and attention recovered.':m.wellbeing>=40?'Kids: screen time is high; sleep and attention suffer.':'Kids: a generation hooked on SI feeds; anxiety, sleep loss and isolation are widespread.']);
   e.push(['eye',m.trust>=55?'Rights: privacy and fairness rules held.':'Rights: surveillance and biased algorithms spread.']);
   e.push(['school',m.harm<25?'Schools: adapted with SI tutors and oral exams.':m.harm<50?'Schools: cheating is widespread; diplomas are worth less.':'Schools: trust in grades has collapsed.']);
   e.push(['house',m.harm<30?'Communities: scams and deepfakes are contained.':m.harm<55?'Communities: voice-clone scams and deepfake abuse are everyday crimes.':'Communities: bot-driven radicalization is fueling violence.']);
-  e.push(['lock',S.insiders?`Models: ${S.insiders} frontier model${S.insiders>1?'s were':' was'} stolen by insiders.`:'Models: no frontier weights were stolen.']);
+  e.push(['skull',m.modelsec>=55?'Models: attacks on SI models were caught early; agents are hard to hijack.':m.modelsec>=40?'Models: jailbreaks and hijacked agents are a constant nuisance.':'Models: SI systems are routinely tricked, poisoned and hijacked; nobody fully trusts them.']);
+  {const st=S.insiders+S.thefts;e.push(['lock',st||S.distills?`Models: ${st} stolen (${S.insiders} by insiders, ${S.thefts} by hackers), ${S.distills} copied by distillation.`:'Models: no frontier models were stolen or copied.'])}
   e.push(['rad',m.harm>=70?'Catastrophe: a mass-casualty plot came close.':'Catastrophe: averted.']);
   return e}
 function quadSVG(){const m=S.m,x=10+m.good*1.6,y=170-m.harm*1.6;
@@ -1317,6 +1433,11 @@ function endGame(){
   if(S.m.ccap>60)L.push('Criminal capability ended high. Every open-weights release and every unpatched hospital compounded it. Crime scales with proliferation, not with doctrine.');
   if(S.m.ally<40)L.push('Alliance cohesion ended low. Unilateral coercion (chips, sanctions) buys short-term leverage and sells long-term credibility.');
   if(S.m.rcap>S.m.sec+10)L.push('The rival\'s capability outran your defenses. Export controls slow a rival; they do not stop it. Only hardening changes what an attack can do once it arrives.');
+  {const t=S.focus.reduce((a,f)=>({SEC:a.SEC+f.SEC,HOME:a.HOME+f.HOME,TECH:a.TECH+f.TECH}),{SEC:0,HOME:0,TECH:0});const tot=t.SEC+t.HOME+t.TECH||1;
+   L.unshift(`Where your attention went: ${Math.round(t.SEC/tot*100)}% national security, ${Math.round(t.HOME/tot*100)}% home front, ${Math.round(t.TECH/tot*100)}% tech and economy.`+(t.HOME/tot<.2?' Leaders are pulled toward weapons, borders and rival states, because those crises are loud and urgent. The slow harms at home, like preteens hooked on feeds, lost jobs and unsafe robots, compound quietly until they are the crisis.':t.SEC/tot<.25?' You focused at home, but security gaps invite the rival and the gangs. Both fronts need attention every round.':' A balanced split. Both fronts are real.'))}
+  if(S.m.modelsec<45)L.push('Your models became the attack surface. Jailbreaks, prompt injection, poisoned data and backdoors turn useful SI into a liability. Red-teaming, provenance and least-privilege agents are to SI what patching and firewalls are to software.');
+  if(S.thefts+S.distills>=2)L.push(`Your lead leaked away: ${S.thefts} weight theft${S.thefts===1?'':'s'} and ${S.distills} distillation${S.distills===1?'':'s'}. A model can be stolen through the back door (hacking, insiders) or the front door (querying it until a copy learns its behavior). Weight security and API checks are cheaper than losing the lead.`);
+  if(S.m.botsafe<45)L.push('Humanoids are SI with a body: a software flaw becomes a physical harm. Like cars and aircraft, they need safety certification, cybersecurity, liability rules and a ban on autonomous force before they reach millions of homes.');
   if(S.m.wellbeing<45)L.push('When SI optimizes for engagement, attention becomes the product, and kids pay first. Design rules for minors (no autoplay, quiet hours, no engagement-maximizing feeds) and phone-free schools protect health without banning the technology.');
   if(S.m.equity<45)L.push('The gains were not shared. Technology can grow the pie without growing everyone\'s slice. Who benefits is a policy choice: safety nets, fair algorithms and public access decide it.');
   if(S.insiders>0)L.push(`Insiders leaked model weights ${S.insiders} time(s). The cheapest path to a frontier model is often a person with access, not a hack. Insider programs trade a little morale for a lot of protection.`);

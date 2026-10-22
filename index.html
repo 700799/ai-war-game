@@ -108,6 +108,47 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
+#g-map{overflow:hidden}
+.mapwrap{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:6px 10px 0}
+.map{width:min(100%,calc(100dvh - 330px));min-width:240px;margin:4px auto 0;flex-shrink:0}
+.map::after{display:none}
+.map.hot{box-shadow:6px 6px 0 #000,0 0 0 3px #ff5c5c,0 0 18px #ff5c5c}
+.t.loc .lbl{bottom:1px;left:4%;right:4%;font-size:7px;background:rgba(7,8,19,.85);border:1px solid #f4f1e6;padding:1px 0;text-shadow:none}
+.t.loc{cursor:pointer}
+.t.loc:hover{filter:brightness(1.2)}
+.t .alert{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-family:'Press Start 2P';font-size:7px;color:#000;background:var(--gold);border:2px solid #000;padding:2px 3px;z-index:4;animation:bounce .8s steps(2) infinite;white-space:nowrap}
+@keyframes bounce{50%{transform:translate(-50%,-4px)}}
+#g-map{position:relative}
+.guide{position:absolute;inset:0;background:rgba(7,8,19,.95);z-index:30;overflow-y:auto;padding:12px;display:none}
+.guide.on{display:block}
+.bk{display:flex;gap:10px;align-items:center;margin:8px 0;font-size:18px}.bk .sw{width:40px;height:40px;flex-shrink:0;background:var(--tile1);border:2px solid #f4f1e6}.bk .sw svg{width:100%;height:100%;display:block}.bk b{color:var(--gold);font-family:'Press Start 2P';font-size:8px;display:block;margin-bottom:2px}
+.steps .help{flex:0 0 38px;color:#000;background:var(--gold);border-color:#000;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center}
+.steps{width:100%;display:flex;gap:4px;font-family:'Press Start 2P';font-size:7px;flex-shrink:0}
+.steps div{flex:1;padding:6px 4px;border:2px solid #444;color:#9b9ac7;text-align:center;line-height:1.5}
+.steps div.now{border-color:var(--gold);color:var(--gold);background:#2a2610}
+.steps div.ok{border-color:var(--green);color:var(--green)}
+.legend{width:100%;display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:center;margin-top:8px;font-size:16px;color:#cfcde6;flex-shrink:0}
+.legend span{display:flex;align-items:center;gap:4px}.legend .ic{width:16px;height:16px}
+.legend i{display:inline-block;width:8px;height:8px}
+.hintline{width:100%;text-align:center;font-size:18px;color:#f4f1e6;margin:6px 0;flex-shrink:0}
+.ctrl{flex-shrink:0;background:#070813;border-top:4px solid var(--line);padding:8px 14px calc(8px + env(safe-area-inset-bottom))}
+.dpad{grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px)}
+.ab{gap:14px;align-items:center}
+.abw{display:flex;flex-direction:column;align-items:center;gap:5px}
+.abw span{font-family:'Press Start 2P';font-size:7px;color:#f4f1e6}
+.ab button{width:64px;height:64px}
+.hudtog{grid-column:1/-1;font-size:7px;padding:5px;box-shadow:none;border-width:2px;background:#101225;color:#9b9ac7}
+.ic{width:22px;height:22px;vertical-align:middle;display:inline-block}
+.threats li span .ic,.epi li span .ic{width:22px;height:22px}
+.log{padding:0}.log li{list-style:none;padding-left:28px;position:relative;margin:7px 0}.log li .ic{position:absolute;left:0;top:1px;width:20px;height:20px}
+.injart{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.injart .art{width:66px;height:66px;flex-shrink:0;border:3px solid var(--line);background:radial-gradient(circle,#3a3c75,#101225);padding:7px;box-shadow:3px 3px 0 #000;animation:glow 1.2s steps(2) infinite}
+.injart .art .ic{width:100%;height:100%}
+@keyframes glow{50%{box-shadow:3px 3px 0 #000,0 0 0 3px rgba(255,92,92,.6)}}
+.endscene{width:100%;display:block;border:3px solid var(--line);margin:8px 0;aspect-ratio:320/120}
+.mapfx{position:absolute;inset:0;pointer-events:none;z-index:1}.mapfx>svg{width:100%;height:100%;display:block}
+.gang{position:absolute;width:12.5%;aspect-ratio:1;z-index:1;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.gang .ic{width:55%;height:55%;animation:jitter .4s steps(2) infinite}
 .siclock{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#070813;font-family:'Press Start 2P';font-size:7px;color:#b28bff}
 .siclock .bar{height:12px}.siclock .bar i{background:repeating-linear-gradient(90deg,#b28bff 0 6px,#7a5ad6 6px 8px)}
 .ana{margin-top:8px;padding:6px 8px;border-left:4px solid var(--blue);background:#0e1430;font-size:17px;color:#cfe3ff}
@@ -278,9 +319,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <h2>DESIRED OUTCOME</h2>
       <p>Reach <b style="color:#4bd37b">ABUNDANCE</b>: <b>DIVIDEND 60+</b> with <b>HARM under 40</b> by July 2030.</p>
       <ul class="threats" style="margin-top:6px">
-        <li><span>🧬</span>SI-discovered cancer drugs and treatments</li>
-        <li><span>🤖</span>Humanoid robots for elder care and disaster response</li>
-        <li><span>💰</span>A wealthy society with gains broadly shared</li>
+        <li><span data-ic="dna"></span>SI-discovered cancer drugs and treatments</li>
+        <li><span data-ic="robot"></span>Humanoid robots for elder care and disaster response</li>
+        <li><span data-ic="coin"></span>A wealthy society with gains broadly shared</li>
       </ul>
       <div class="goal">
         <div style="border-color:#ff5c5c"><b style="color:#ff5c5c">FRACTURE</b>Low dividend, high harm.</div>
@@ -293,15 +334,15 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div class="box">
       <h2>THREAT BRIEFING</h2>
       <ul class="threats">
-        <li><span>🎖️</span><b>Rival state</b> fields SI cyber agents. Every move is a repeated game: they remember how you played.</li>
-        <li><span>💀</span><b>Criminal syndicates</b> scale ransomware with every leaked or released model.</li>
-        <li><span>🕵️</span><b>Insiders</b> walk out with model weights. The cheapest path to a stolen frontier system is a person.</li>
-        <li><span>👾</span><b>Accidents</b> (GLITCH): well-meaning agents with no attacker and no malice can still take down the grid.</li>
-        <li><span>🔓</span><b>Safeguard removal</b>: refusal-removal ("abliteration") tools strip safety training from open models.</li>
-        <li><span>💸</span><b>Profit pressure</b>: labs race to ship, especially when subscription revenue falls.</li>
-        <li><span>⚡</span><b>Shortages</b> of chips, memory, power and talent choke the dividend.</li>
-        <li><span>🌫️</span><b>Attribution fog</b>: a gang's hack can look like a state attack. Retaliate wrong and you start a war.</li>
-        <li><span>🏘️</span><b>Societal harms</b>: school cheating, voice-clone scams, deepfake abuse, bot-fueled violence, mass-casualty misuse.</li>
+        <li><span data-ic="flag"></span><b>Rival state</b> fields SI cyber agents. Every move is a repeated game: they remember how you played.</li>
+        <li><span data-ic="skull"></span><b>Criminal syndicates</b> scale ransomware with every leaked or released model.</li>
+        <li><span data-ic="person"></span><b>Insiders</b> walk out with model weights. The cheapest path to a stolen frontier system is a person.</li>
+        <li><span data-ic="glitch"></span><b>Accidents</b> (GLITCH): well-meaning agents with no attacker and no malice can still take down the grid.</li>
+        <li><span data-ic="lock"></span><b>Safeguard removal</b>: refusal-removal ("abliteration") tools strip safety training from open models.</li>
+        <li><span data-ic="coin"></span><b>Profit pressure</b>: labs race to ship, especially when subscription revenue falls.</li>
+        <li><span data-ic="bolt"></span><b>Shortages</b> of chips, memory, power and talent choke the dividend.</li>
+        <li><span data-ic="fog"></span><b>Attribution fog</b>: a gang's hack can look like a state attack. Retaliate wrong and you start a war.</li>
+        <li><span data-ic="house"></span><b>Societal harms</b>: school cheating, voice-clone scams, deepfake abuse, bot-fueled violence, mass-casualty misuse.</li>
       </ul>
     </div>
   </div>
@@ -321,7 +362,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <div id="anaRound" style="margin-top:14px"></div>
       <div id="injectBox" style="margin-top:14px;display:none">
         <div class="box">
-          <h3 id="injTitle"></h3>
+          <div class="injart"><div class="art" id="injArt"></div><h3 id="injTitle"></h3></div>
           <p id="injBody" style="margin:8px 0"></p>
           <div class="row"><button class="a" id="injA"></button><button class="b" id="injB"></button></div>
           <div id="injAna"></div>
@@ -333,17 +374,24 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 
   <!-- MAP -->
   <div class="screen" id="g-map">
-    <div class="map" id="map"></div>
-    <div class="dialog" style="margin:0 10px;min-height:70px;font-size:19px" id="mapHint"><span class="who">OVERWORLD</span>Move with the D-pad or tap a tile. Press A at a location.</div>
+    <div class="guide" id="guide"></div>
+    <div class="mapwrap">
+      <div class="steps" id="mapSteps"></div>
+      <div class="map" id="map"></div>
+      <div class="legend" id="legend"></div>
+      <div class="hintline" id="mapHint"></div>
+    </div>
     <div class="ctrl">
       <div class="dpad">
         <span></span><button onclick="mv(0,-1)">▲</button><span></span>
         <button onclick="mv(-1,0)">◀</button><span></span><button onclick="mv(1,0)">▶</button>
         <span></span><button onclick="mv(0,1)">▼</button><span></span>
       </div>
-      <div class="ab"><button class="b" onclick="openResolveCheck()">B</button><button class="a" onclick="enterLoc()">A</button></div>
+      <div class="ab">
+        <div class="abw"><button class="b" onclick="openResolveCheck()">B</button><span>END TURN</span></div>
+        <div class="abw"><button class="a" onclick="enterLoc()">A</button><span>OPEN</span></div>
+      </div>
     </div>
-    <div class="foot"><button class="gold" onclick="openResolveCheck()">END TURN ▶</button></div>
   </div>
 
   <!-- LOCATION -->
@@ -378,14 +426,14 @@ const RIVALS = {
 const DIFFS = {easy:{pc:7,noise:.1,label:'TABLETOP'},normal:{pc:6,noise:.2,label:'SITROOM'},hard:{pc:5,noise:.3,label:'DEFCON'}};
 
 const LOCS = [
-  {id:'wh', x:1,y:1, icon:'🏛️', name:'WHITE HOUSE', who:'NSC STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
-  {id:'sv', x:5,y:1, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
-  {id:'cisa',x:2,y:4, icon:'🔌', name:'CISA / GRID', who:'CISA DIRECTOR', intro:'"Hospitals, water, power. Every one running software older than your interns."'},
-  {id:'ally',x:6,y:4, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
-  {id:'dark',x:1,y:6, icon:'💀', name:'DARKNET', who:'FBI CYBER', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
-  {id:'oss', x:4,y:6, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
-  {id:'soc', x:3,y:1, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'CISO', intro:'"Most breaches I see start with a badge, not a zero-day. And nobody models threats until after the incident."'},
-  {id:'fab', x:6,y:6, icon:'🏭', name:'FABS & POWER', who:'ENERGY SECRETARY', intro:'"Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
+  {id:'wh',short:'WH',purpose:'Set your POSTURE toward the rival. Also: chip controls, cyber ops, intel.', x:1,y:1, icon:'🏛️', name:'WHITE HOUSE', who:'NSC STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
+  {id:'sv',short:'LABS',purpose:'Frontier labs: safety testing, liability rules, talent pipeline.', x:5,y:1, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
+  {id:'cisa',short:'GRID',purpose:'Harden hospitals, water and power against attacks.',x:2,y:4, icon:'🔌', name:'CISA / GRID', who:'CISA DIRECTOR', intro:'"Hospitals, water, power. Every one running software older than your interns."'},
+  {id:'ally',short:'ALLIES',purpose:'Coordinate with allies; open cyber-norms talks with the rival.',x:6,y:4, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
+  {id:'dark',short:'CRIME',purpose:'Fight ransomware gangs; SI defense bounties.',x:1,y:6, icon:'💀', name:'DARKNET', who:'FBI CYBER', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
+  {id:'oss',short:'OPEN',purpose:'Open-source commons: bug disclosure, open-weight rules, tamper-resistant safeguards.', x:4,y:6, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
+  {id:'soc',short:'SOC',purpose:'Security operations: insider threats and threat modeling.', x:3,y:1, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'CISO', intro:'"Most breaches I see start with a badge, not a zero-day. And nobody models threats until after the incident."'},
+  {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:6,y:6, icon:'🏭', name:'FABS & POWER', who:'ENERGY SECRETARY', intro:'"Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
 ];
 
 // Action cards. fx = direct effects; flags set round modifiers.
@@ -637,9 +685,12 @@ function startGame(){S=newState();go('s-game');SFX.ok();startRound()}
 
 /* ===================== HUD ===================== */
 const STATS=[['good','DIVIDEND','SI benefits to society: science, health, robots, prosperity'],['harm','HARM','SI harms to society: cheating, scams, abuse, violence, catastrophe'],['sec','SEC','Security of critical infrastructure'],['econ','ECON','SI competitiveness'],['trust','TRUST','Public trust / civil liberties'],['ally','ALLY','Alliance cohesion'],['esc','ESC','Escalation with rival (lower is better)'],['risk','RISK','Accident / misuse risk (lower is better)'],['rcap','RIVAL','Rival SI-cyber capability'],['ccap','CRIME','Criminal capability'],['chips','CHIPS','Chip & memory supply'],['power','POWER','Energy affordability for compute'],['talent','TALENT','SI & security talent pool'],['subs','SUBS','Consumer SI subscription revenue']];
+let hudOpen=false;
 function renderHud(){
   const h=document.getElementById('hud');h.innerHTML='';
-  STATS.forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat${k==='good'||k==='harm'?' big':''}" title="${tip}"><span class="n">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
+  const KEY=['good','harm','sec','esc'];
+  STATS.filter(([k])=>hudOpen||KEY.includes(k)).forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat${k==='good'||k==='harm'?' big':''}" title="${tip}"><span class="n">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
+  h.innerHTML+=`<button class="hudtog" onclick="hudOpen=!hudOpen;renderHud()">${hudOpen?'▲ FEWER METERS':'▼ ALL 14 METERS'}</button>`;
   document.getElementById('rnum').textContent=S.round;document.getElementById('date').textContent=dateFor(S.round);
   document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;document.getElementById('pcv').textContent=S.pc;
 }
@@ -693,7 +744,7 @@ function briefNext(){
     typeInto(document.getElementById('briefTxt'),'Incoming. Decision required before orders go out.');
     const ib=document.getElementById('injectBox');ib.style.display='';
     if(['autoacc','leak','zeroday'].includes(currentInject.id)){document.getElementById('briefPt').innerHTML=portrait('glitch');document.getElementById('briefWho').textContent='GLITCH · ROGUE SI'}
-    document.getElementById('injTitle').textContent=currentInject.title;
+    document.getElementById('injTitle').textContent=currentInject.title;document.getElementById('injArt').innerHTML=icon(INJ_ICON[currentInject.id]||'eye');
     document.getElementById('injBody').textContent=currentInject.body;
     const A=document.getElementById('injA'),B=document.getElementById('injB');
     A.textContent=currentInject.a.t;B.textContent=currentInject.b.t;
@@ -724,7 +775,7 @@ function renderMap(){
     if(ch==='m')d.innerHTML=sprite('tree');else if(ch==='r')d.innerHTML=sprite('road');else if(ch!=='w'&&(x*7+y*13)%4===0)d.innerHTML=sprite('tuft');
     const L=LOCS.find(l=>l.x===x&&l.y===y);
     if(L){const n=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id).length+(L.id==='wh'&&S.posture?1:0);
-      d.className='t loc'+(n?' picked':'');d.innerHTML=`${sprite(L.id)}<span class="lbl">${L.name.split(' ')[0]}</span>${n?`<span class="badge">★${n>1?n:''}</span>`:''}`}
+      d.className='t loc'+(n?' picked':'');d.innerHTML=`${sprite(L.id)}<span class="lbl">${L.short}</span>${n?`<span class="badge">★${n>1?n:''}</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':''}`}
     d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
     map.appendChild(d);
   }
@@ -732,14 +783,44 @@ function renderMap(){
   if(S.m.risk>50){const spots=[];for(let yy=1;yy<7;yy++)for(let xx=0;xx<8;xx++){const c=TILE[yy][xx];if(c!=='m'&&c!=='w'&&!LOCS.some(l=>l.x===xx&&l.y===yy))spots.push([xx,yy])}
     const sp=spots[(S.round*5+S.m.risk)%spots.length];const g=document.createElement('div');g.className='glitch';g.style.left=sp[0]*12.5+'%';g.style.top=sp[1]*12.5+'%';g.innerHTML=glitchSVG();
     g.onclick=e=>{e.stopPropagation();toast(`GLITCH · ROGUE SI · RISK ${S.m.risk}`);SFX.bad()};map.appendChild(g)}
+  {const m=S.m;let fx='';
+    const nr=m.esc>45?Math.min(4,1+Math.floor((m.esc-45)/12)):0;
+    for(let i=0;i<nr;i++)fx+=`<rect y="${33.5+(i%2)*2}" width="2.4" height="2.4" fill="#ff5c5c"><animate attributeName="x" from="84" to="-4" dur="${(2.6+i*.7).toFixed(1)}s" begin="${(i*.8).toFixed(1)}s" repeatCount="indefinite"/></rect>`;
+    fx+=`<rect y="35" width="2.4" height="2.4" fill="#5ab0ff"><animate attributeName="x" from="-4" to="84" dur="4s" repeatCount="indefinite"/></rect>`;
+    if(!S.flags.intel)[[0,14],[71,20]].forEach(([y,d],i)=>{fx+=`<g opacity=".35">${icon('fog',`x="-24" y="${y}" width="22" height="13"`)}<animateTransform attributeName="transform" type="translate" from="0 0" to="110 0" dur="${d}s" begin="-${i*7}s" repeatCount="indefinite"/></g>`});
+    const ov=document.createElement('div');ov.className='mapfx';ov.innerHTML=`<svg viewBox="0 0 80 80" preserveAspectRatio="none" shape-rendering="crispEdges">${fx}</svg>`;map.appendChild(ov);
+    const ng=Math.max(0,Math.min(3,Math.floor((m.ccap-35)/12)));[[2,6],[1,5],[0,6]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*12.5+'%';g.style.top=gy*12.5+'%';g.innerHTML=icon('skull');map.appendChild(g)})}
+  if(!guideSeen){guideSeen=true;showGuide()}
   map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);
   updateHint();
 }
 function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=heroSVG();h.style.left=(hero.x*12.5)+'%';h.style.top=(hero.y*12.5)+'%';updateHint()}
+let guideSeen=false;
+function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div class="box"><h2>MAP GUIDE</h2>
+  <p style="margin-top:6px">This map is your government. Each building is a place to act. Every round, 6 months pass:</p>
+  <ol class="strat"><li><b>Tap WH</b> (the building marked START) and choose your <b>posture</b> toward the rival: Cooperate, Hedge or Escalate.</li>
+  <li><b>Tap other buildings</b> to spend <b>Political Capital (PC)</b> on actions. Each card shows the threat analyst's read on what it does.</li>
+  <li>Press <b>B · END TURN</b>. Everyone moves at once and you see the results.</li></ol>
+  <p class="small" style="margin-top:6px">You can tap buildings directly, or walk with the arrows and press <b>A · OPEN</b>.</p></div>
+  <div class="box"><h2>BUILDINGS</h2>${LOCS.map(L=>`<div class="bk"><div class="sw">${sprite(L.id)}</div><div><b>${L.short} · ${L.name}</b>${L.purpose}</div></div>`).join('')}</div>
+  <div class="box"><h2>MAP SIGNS</h2>
+  <div class="bk"><div class="sw" style="background:#101225">${icon('skull')}</div><div><b>SKULLS</b>Ransomware gangs. More appear as CRIME rises.</div></div>
+  <div class="bk"><div class="sw" style="background:#b79c5b;display:flex;align-items:center;justify-content:center"><i style="width:12px;height:12px;background:#ff5c5c;display:block"></i></div><div><b>RED SQUARES ON THE ROAD</b>Rival cyber traffic. More appear as escalation rises; the map glows red above 70.</div></div>
+  <div class="bk"><div class="sw" style="background:#101225">${icon('fog')}</div><div><b>CLOUDS</b>Attribution fog. Buy INTEL at WH to clear it.</div></div>
+  <div class="bk"><div class="sw" style="background:#101225">${glitchSVG()}</div><div><b>GLITCH</b>A rogue SI agent. Shows up when RISK passes 50. Tap it to check.</div></div>
+  <div class="bk"><div class="sw" style="background:#101225;color:var(--gold);font-family:'Press Start 2P';font-size:14px;display:flex;align-items:center;justify-content:center">★</div><div><b>GOLD STAR</b>You've placed orders there this round.</div></div></div>
+  <button class="a" style="width:100%;margin-top:12px" onclick="document.getElementById('guide').classList.remove('on')">GOT IT ▶</button>`;
+  g.classList.add('on');g.scrollTop=0}
 function updateHint(){
   const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);const e=document.getElementById('mapHint');
-  const st=`Posture: <b style="color:var(--gold)">${S.posture?PL[S.posture]:'NOT SET'}</b> · Orders: ${S.picks.length} · PC ${S.pc}`;
-  e.innerHTML=`<span class="who">OVERWORLD</span>`+(L?`<b>${L.icon} ${L.name}</b> — press A.<br>`:'')+st;
+  const step=!S.posture?1:(S.pc>0?2:3);
+  document.getElementById('mapSteps').innerHTML=[['1 · SET POSTURE<br>AT WHITE HOUSE',1],['2 · SPEND '+S.pc+' PC<br>AT BUILDINGS',2],['3 · END TURN<br>(B BUTTON)',3]].map(([t,i])=>`<div class="${i===step?'now':i<step?'ok':''}">${t}</div>`).join('')+`<div class="help" onclick="showGuide()">?</div>`;
+  e.innerHTML=L?`<b style="color:var(--gold)">${L.name}</b> · press <b>A</b> to open`:`<b>Tap any building</b> to open it · Posture: <b style="color:var(--gold)">${S.posture?PL[S.posture]:'NOT SET'}</b>`;
+  const m=S.m;let lg=`<span>${icon('skull')}Gangs (CRIME)</span><span><i style="background:#ff5c5c"></i>Rival attacks (ESC)</span>`;
+  if(!S.flags.intel)lg+=`<span>${icon('fog')}Fog: buy INTEL</span>`;
+  if(m.risk>50)lg+=`<span>${icon('glitch')}GLITCH (RISK)</span>`;
+  lg+=`<span style="color:var(--gold)">★ Orders placed</span>`;
+  document.getElementById('legend').innerHTML=lg;
 }
 function mv(dx,dy){const nx=hero.x+dx,ny=hero.y+dy;if(nx<0||ny<0||nx>7||ny>7)return;const ch=TILE[ny][nx];if(ch==='m'||ch==='w'){SFX.bad();return}facing=dy<0?'up':'down';step++;hero={x:nx,y:ny};placeHero();SFX.move()}
 function enterLoc(){const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);if(!L){toast('NOTHING HERE');return}openLoc(L)}
@@ -826,6 +907,58 @@ function redReason(choice){
   if(choice==='coop'&&R===RIVALS.hardliner) return l[1];
   return l[Math.floor(Math.random()*l.length)];
 }
+
+
+/* ===================== PIXEL ICONS (12x12) ===================== */
+const ICONS={
+ skull:{pal:{w:'#f4f1e6',k:'#1b1b2f'},rows:["...wwwwww...","..wwwwwwww..",".wwwwwwwwww.",".wkkwwwwkkw.",".wkkwwwwkkw.",".wwwwkkwwww.","..wwwwwwww..","...wkwkwkw..","...wwwwwww.."]},
+ flag:{pal:{r:'#ff5c5c',y:'#f7c948',k:'#9b9ac7'},rows:["k...........","krrrrrrrr...","krrryrrrr...","krryyyrrr...","krrryrrrr...","krrrrrrrr...","k...........","k...........","k...........","k...........","kk.........."]},
+ person:{pal:{s:'#f1c27d',n:'#23305e',y:'#f7c948',h:'#3b2a1a'},rows:["...hhh......","..hsssh.....","..sssss.....","...sss......","..nnnnn.....",".nnnnnnn.yy.",".nnnnnnnyyyy",".s.nnn.s.yy.","...nnn...y..","...n.n...yy.","...n.n...y..","..nn.nn....."]},
+ lock:{pal:{g:'#c9c9d6',y:'#f7c948',k:'#1b1b2f'},rows:["......ggg...",".....g...g..",".....g...g..",".....g......","..yyyyyyy...","..yyyyyyy...","..yyykyyy...","..yyykyyy...","..yyyyyyy...","..yyyyyyy..."]},
+ coin:{pal:{y:'#f7c948',k:'#7a5f10'},rows:["...yyyyy....","..yyyyyyy...",".yyykkkyyy..",".yykyyyyyy..",".yyykkyyyy..",".yyyyykyyy..",".yykkkyyyy..","..yyyyyyy...","...yyyyy...."]},
+ chip:{pal:{k:'#3a3a50',g:'#c9c9d6',c:'#4bd37b'},rows:["..g.g.g.g...",".kkkkkkkkk..","gkkcccccckg.",".kkckkkkckk.","gkkckcckckg.",".kkckkkkckk.","gkkcccccckg.",".kkkkkkkkk..","..g.g.g.g..."]},
+ bolt:{pal:{y:'#ffd23c'},rows:[".....yyyy...","....yyyy....","...yyyy.....","..yyyyyyy...",".....yyy....","....yyy.....","...yy.......","..y........."]},
+ fog:{pal:{w:'#cfd3e6',g:'#9b9ac7'},rows:["............","....www.....","..wwwwwww...",".wwwwwwwwww.","wwwwwwwwwwww","wwwwwwwwwwww",".gggggggggg."]},
+ house:{pal:{r:'#ff5c5c',w:'#e8dcc0',k:'#3a2a1a',b:'#5ab0ff'},rows:[".....rr.....","....rrrr....","...rrrrrr...","..rrrrrrrr..",".rrrrrrrrrr.","..wwwwwwww..","..wbbwwbbw..","..wbbwwbbw..","..wwwkkwww..","..wwwkkwww.."]},
+ dna:{pal:{b:'#5ab0ff',r:'#ff5c5c',g:'#9b9ac7'},rows:["..b......r..","...b....r...","....bggr....",".....br.....","....rggb....","...r....b...","..r......b..","...r....b...","....rggb....",".....rb.....","....bggr....","...b....r..."]},
+ robot:{pal:{g:'#c9c9d6',k:'#1b1b2f',c:'#5ab0ff',d:'#6b6b7a'},rows:[".....d......","...ggggg....","..gckgckg...","..ggggggg...","...gkkkg....","..ddddddd...",".gdddcdddg..",".gdddddddg..","..ddddddd...","...dd.dd....","...gg.gg...."]},
+ school:{pal:{k:'#2a2c55',y:'#f7c948',g:'#4a4f6b'},rows:["............",".....kk.....","...kkkkkk...",".kkkkkkkkkk.","...kkkkkk.y.","....gggg..y.","....gggg..y.","..........yy"]},
+ hospital:{pal:{w:'#f4f1e6',r:'#ff5c5c',g:'#9b9ac7',b:'#5ab0ff'},rows:["..wwwwwwww..","..wwwrrwww..","..wwrrrrww..","..wwwrrwww..","..wwwwwwww..","..wbwbbwbw..","..wbwbbwbw..","..wwwggwww..","..wwwggwww.."]},
+ phone:{pal:{k:'#1b1b2f',g:'#9b9ac7',c:'#5ab0ff',r:'#ff5c5c'},rows:["...gggggg...","...gccccg...","...gcrrcg...","...gcrrcg...","...gccccg...","...gccccg...","...gggggg...","...gggkgg..."]},
+ fire:{pal:{r:'#ff5c5c',o:'#ff9a3c',y:'#f7c948'},rows:[".....r......","....rr...r..","...rro..rr..","..rroo.rro..","..roooorro..",".rrooyooorr.",".rooyyyoor..",".rooyyyyoor.","..rooyyoor..","...rrrrrr..."]},
+ rad:{pal:{y:'#f7c948',k:'#1b1b2f'},rows:["...yyyyyy...","..yyyyyyyy..",".yykyyyykyy.",".ykkkyykkky.",".ykkkyykkky.",".yyyykkyyyy.",".yyyykkyyyy.",".yyykkkkyyy.","..yykkkkyy..","...yyyyyy..."]},
+ shake:{pal:{s:'#f1c27d',n:'#23305e',r:'#7a2a2a'},rows:["............","............","nn........rr","nnn......rrr","nnnssssssrrr","nnssssssssrr","nn.ssssss.rr","....ssss...."]},
+ ballot:{pal:{w:'#f4f1e6',k:'#c9c9d6',b:'#5ab0ff'},rows:["....wwww....","....wbbw....","....wwww....","..kkkkkkkk..","..k.kkkk.k..","..kbbbbbbk..","..kbbbbbbk..","..kbbbbbbk..","..kkkkkkkk.."]},
+ eye:{pal:{w:'#f4f1e6',b:'#5ab0ff',k:'#c9c9d6'},rows:["............","...kkkkkk...","..kwwbbwwk..",".kwwbkkbwwk.",".kwwbkkbwwk.","..kwwbbwwk..","...kkkkkk..."]},
+ brain:{pal:{p:'#b28bff',P:'#7a5ad6'},rows:["...pppppp...","..pPpppPpp..",".pppPppPppp.",".pPpppPpppp.",".ppPppppPpp.",".pppPpPpppp.","..ppppPppp..","...pp..pp..."]},
+};
+function icon(k,attrs='class="ic"'){if(k==='glitch')return glitchSVG(attrs);const I=ICONS[k];return spr(I.rows,I.pal,12,12,attrs)}
+const INJ_ICON={hosp:'hospital',zeroday:'chip',leak:'lock',lobby:'coin',summit:'shake',misattr:'fog',election:'ballot',ally:'shake',autoacc:'glitch',talentraid:'person',hbm:'chip',energy:'bolt',subs:'coin',abl:'lock',insiderinj:'person',cheat:'school',deepfake:'phone',radical:'fire',wmd:'rad',cancer:'dna',humanoid:'robot'};
+function logIcon(l){const R=[[/^ATTRIBUTION/,'fog'],[/^INSIDER/,'person'],[/^ACCIDENT/,'glitch'],[/^BREAKTHROUGH/,'dna'],[/^HARM/,'fire'],[/^SI CLOCK/,'brain'],[/^Ransomware/,'skull'],[/^Criminal/,'skull'],[/^Labs/,'coin'],[/open weights|^Refusal|^Within days/,'lock'],[/^Norms/,'shake'],[/chip controls|critical-mineral/,'chip'],[/^Disclosure/,'eye'],[/^Consumers/,'coin'],[/^Strained grid/,'bolt'],[/^Talent drain/,'person'],[/^Forward ops/,'flag'],[/^Your retaliation/,'flag']];for(const[re,k]of R)if(re.test(l))return icon(k);return icon('eye')}
+
+/* ===================== ENDING SCENES ===================== */
+function endScene(k){let sd=11;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;
+  const P={ABUNDANCE:{sky:['#1a4a7a','#8ad8ff'],bld:'#24506a',win:'#f7f1a0',sun:'#ffe066',gnd:'#2f7a3a',lit:.55},
+   'GILDED AGE':{sky:['#2a1a0a','#d0902a'],bld:'#3a2a10',win:'#f7c948',sun:'#ffb347',gnd:'#3a2a10',lit:.6},
+   'SAFE STAGNATION':{sky:['#2a2f3a','#6a7080'],bld:'#3a3f4a',win:'#8a8f9a',sun:null,gnd:'#2a2f3a',lit:.12},
+   FRACTURE:{sky:['#1a0505','#7a1a1a'],bld:'#1a1014',win:'#ff5c5c',sun:null,gnd:'#140a0a',lit:.3}}[k];
+  let o=`<defs><linearGradient id="esky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${P.sky[0]}"/><stop offset="1" stop-color="${P.sky[1]}"/></linearGradient></defs><rect width="320" height="120" fill="url(#esky)"/>`;
+  if(P.sun)o+=`<rect x="238" y="12" width="22" height="22" fill="${P.sun}"/><rect x="234" y="16" width="30" height="14" fill="${P.sun}"/>`;
+  if(k==='SAFE STAGNATION')for(let i=0;i<3;i++)o+=`<g opacity=".5">${icon('fog',`x="${i*110}" y="${10+i*12}" width="60" height="35"`)}<animateTransform attributeName="transform" type="translate" values="0 0;30 0;0 0" dur="${12+i*3}s" repeatCount="indefinite"/></g>`;
+  let x=0;while(x<320){const w=10+Math.floor(rnd()*16),h=25+Math.floor(rnd()*60),y=104-h;o+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${P.bld}"/>`;
+    for(let wy=y+4;wy<100;wy+=6)for(let wx=x+2;wx<x+w-2;wx+=4)if(rnd()<P.lit)o+=`<rect x="${wx}" y="${wy}" width="2" height="2" fill="${P.win}"/>`;
+    if(k==='GILDED AGE'&&rnd()<.35)o+=`<rect x="${x+w/2-2}" y="${y-6}" width="4" height="4" fill="#6a6a6a" opacity=".7"><animate attributeName="y" values="${y-6};${y-30}" dur="${2+rnd()*2}s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="${2+rnd()*2}s" repeatCount="indefinite"/></rect>`;
+    if(k==='FRACTURE'&&rnd()<.4)o+=`<g>${icon('fire',`x="${x+w/2-6}" y="${y-11}" width="12" height="12"`)}<animate attributeName="opacity" values="1;.5;1" dur="${(.4+rnd()*.4).toFixed(2)}s" repeatCount="indefinite"/></g>`;
+    if(k==='ABUNDANCE'&&rnd()<.25)o+=`<rect x="${x+2}" y="${y-3}" width="${w-4}" height="3" fill="#4bd37b"/>`;
+    x+=w+2}
+  o+=`<rect y="104" width="320" height="16" fill="${P.gnd}"/>`;
+  if(k==='ABUNDANCE'){for(let i=0;i<4;i++)o+=`<g>${icon('robot',`x="${20+i*70}" y="91" width="14" height="14"`)}<animateTransform attributeName="transform" type="translate" values="0 0;36 0;0 0" dur="${6+i*1.5}s" repeatCount="indefinite"/></g>`;
+    o+=`<g>${icon('dna',`x="150" y="40" width="20" height="20"`)}<animateTransform attributeName="transform" type="translate" values="0 0;0 -4;0 0" dur="2s" repeatCount="indefinite"/></g>`}
+  if(k==='GILDED AGE'){o+=icon('coin','x="150" y="30" width="18" height="18"');o+=`<g>${icon('phone','x="60" y="88" width="14" height="14"')}<animate attributeName="opacity" values="1;.2;1" dur=".6s" repeatCount="indefinite"/></g>`}
+  if(k==='FRACTURE'){o+=`<g>${glitchSVG('x="150" y="80" width="20" height="24"')}<animateTransform attributeName="transform" type="translate" values="0 0;2 -2;0 0" dur=".3s" repeatCount="indefinite"/></g>`;o+=icon('skull','x="40" y="92" width="12" height="12"')+icon('skull','x="260" y="92" width="12" height="12"')}
+  if(k==='SAFE STAGNATION')o+=icon('robot','x="150" y="91" width="14" height="14" opacity=".5"');
+  return `<svg class="endscene" viewBox="0 0 320 120" shape-rendering="crispEdges" preserveAspectRatio="xMidYMid slice">${o}</svg>`}
+function fillIcons(){document.querySelectorAll('[data-ic]').forEach(e=>e.innerHTML=icon(e.dataset.ic))}
 
 /* ===================== THREAT ANALYST ===================== */
 const LBL={sec:'SEC',econ:'ECON',trust:'TRUST',ally:'ALLY',esc:'ESC',risk:'RISK',rcap:'RIVAL',ccap:'CRIME',chips:'CHIPS',power:'POWER',talent:'TALENT',subs:'SUBS',good:'DIVIDEND',harm:'HARM'};
@@ -950,7 +1083,7 @@ function resolve(){
 
 function renderResolve(bp,red,cell,log,acc,fog){
   showGame('g-res');const b=document.getElementById('resBody');
-  const dl=Object.entries(acc).filter(([k,v])=>v!==0).map(([k,v])=>{const bad=['esc','risk','rcap','ccap'].includes(k);const good=bad?v<0:v>0;return `<span class="${good?'up':'dn'}">${k.toUpperCase()} ${v>0?'+':''}${v}</span>`}).join('');
+  const dl=Object.entries(acc).filter(([k,v])=>v!==0&&LBL[k]).map(([k,v])=>{const good=BAD.includes(k)?v<0:v>0;return `<span class="${good?'up':'dn'}">${LBL[k]} ${v>0?'+':''}${v}</span>`}).join('');
   const hostile=bp==='esc'||red==='esc',peace=bp==='coop'&&red==='coop';
   const col=peace?'#4bd37b':hostile?'#ff5c5c':'#f7c948';
   const link=peace?`<path d="M4 22 H76" stroke="${col}" stroke-width="3" stroke-dasharray="6 4"><animate attributeName="stroke-dashoffset" from="0" to="-20" dur=".6s" repeatCount="indefinite"/></path><rect x="36" y="16" width="8" height="12" fill="${col}"/>`
@@ -961,7 +1094,7 @@ function renderResolve(bp,red,cell,log,acc,fog){
    <div class="dialog"><span class="who">RIVAL MINISTRY · INTERCEPT</span><span class="pt">${portrait('red')}</span>${redReason(red)}</div>
    <div class="box" style="margin-top:14px"><h2>YOU: ${PL[bp]} · RIVAL: ${PL[red]}</h2><p style="margin:6px 0 10px">${cell.note}</p></div>`;
   b.appendChild(matrixEl(bp,red));
-  b.innerHTML+=`<div class="box"><h3>ROUND ${S.round} EVENTS</h3><ul class="log" style="margin-top:6px">${log.map(l=>`<li>${l}</li>`).join('')}</ul></div>
+  b.innerHTML+=`<div class="box"><h3>ROUND ${S.round} EVENTS</h3><ul class="log" style="margin-top:6px">${log.map(l=>`<li>${logIcon(l)}${l}</li>`).join('')}</ul></div>
    <div class="box"><h3>NET CHANGE</h3><div class="delta" style="margin-top:8px">${dl||'<span>NO CHANGE</span>'}</div></div>`;
   if(S.dead){SFX.bad()}else if(acc.sec>0&&acc.esc<=0)SFX.ok();else SFX.bad();
   document.getElementById('resNext').onclick=()=>{if(S.dead)return endGame();S.round++;if(S.round>S.maxRounds)return endGame();startRound()};
@@ -975,13 +1108,13 @@ function ending(){const m=S.m;const G=m.good>=60,Hh=m.harm>=40||!!S.dead;
   if(!G&&!Hh)return{k:'SAFE STAGNATION',c:'#5ab0ff',t:'Nothing broke, and nothing much was cured. You kept the harms down by holding the technology back. Rivals and other countries took the breakthroughs.'};
   return{k:'FRACTURE',c:'#ff5c5c',t:'The worst of both worlds. Few breakthroughs reached people, while cheating, fraud, abuse and violence spread and frontier models ended up in the wrong hands.'}}
 function epilogue(){const m=S.m,e=[];
-  e.push(['🧬',m.good>=60?'Medicine: SI-discovered cancer drugs are cutting deaths.':m.good>=40?'Medicine: several SI-found drug targets are in trials.':'Medicine: breakthroughs stalled for lack of compute and talent.']);
-  e.push(['🤖',m.good>=55&&m.sec>=45?'Robots: humanoids care for elders and respond to disasters.':m.good>=55?'Robots: humanoids are everywhere, and hijacked ones make the news.':'Robots: humanoids are still demos.']);
-  e.push(['💰',m.econ>=70?'Economy: a productivity boom; wages are rising.':m.econ>=45?'Economy: steady growth, unevenly shared.':'Economy: stagnant, squeezed by chip, energy and talent shortages.']);
-  e.push(['🎓',m.harm<25?'Schools: adapted with SI tutors and oral exams.':m.harm<50?'Schools: cheating is widespread; diplomas are worth less.':'Schools: trust in grades has collapsed.']);
-  e.push(['🏘️',m.harm<30?'Communities: scams and deepfakes are contained.':m.harm<55?'Communities: voice-clone scams and deepfake abuse are everyday crimes.':'Communities: bot-driven radicalization is fueling violence.']);
-  e.push(['🔓',S.insiders?`Models: ${S.insiders} frontier model${S.insiders>1?'s were':' was'} stolen by insiders.`:'Models: no frontier weights were stolen.']);
-  e.push(['☢️',m.harm>=70?'Catastrophe: a mass-casualty plot came close.':'Catastrophe: averted.']);
+  e.push(['dna',m.good>=60?'Medicine: SI-discovered cancer drugs are cutting deaths.':m.good>=40?'Medicine: several SI-found drug targets are in trials.':'Medicine: breakthroughs stalled for lack of compute and talent.']);
+  e.push(['robot',m.good>=55&&m.sec>=45?'Robots: humanoids care for elders and respond to disasters.':m.good>=55?'Robots: humanoids are everywhere, and hijacked ones make the news.':'Robots: humanoids are still demos.']);
+  e.push(['coin',m.econ>=70?'Economy: a productivity boom; wages are rising.':m.econ>=45?'Economy: steady growth, unevenly shared.':'Economy: stagnant, squeezed by chip, energy and talent shortages.']);
+  e.push(['school',m.harm<25?'Schools: adapted with SI tutors and oral exams.':m.harm<50?'Schools: cheating is widespread; diplomas are worth less.':'Schools: trust in grades has collapsed.']);
+  e.push(['house',m.harm<30?'Communities: scams and deepfakes are contained.':m.harm<55?'Communities: voice-clone scams and deepfake abuse are everyday crimes.':'Communities: bot-driven radicalization is fueling violence.']);
+  e.push(['lock',S.insiders?`Models: ${S.insiders} frontier model${S.insiders>1?'s were':' was'} stolen by insiders.`:'Models: no frontier weights were stolen.']);
+  e.push(['rad',m.harm>=70?'Catastrophe: a mass-casualty plot came close.':'Catastrophe: averted.']);
   return e}
 function quadSVG(){const m=S.m,x=10+m.good*1.6,y=170-m.harm*1.6;
   return `<svg class="quad" viewBox="0 0 180 180" shape-rendering="crispEdges"><rect x="10" y="10" width="80" height="80" fill="#3a2a10"/><rect x="90" y="10" width="80" height="80" fill="#3a3a10"/><rect x="10" y="90" width="80" height="80" fill="#10263a"/><rect x="90" y="90" width="80" height="80" fill="#103a1a"/>
@@ -1019,7 +1152,7 @@ function endGame(){
   if(!S.tamper&&S.m.ccap>55)L.push('Open releases were stripped of safety training again and again. Safeguards trained into open weights can be removed, so plan defenses as if they will be.');
   if(!L.length)L.push('A balanced run. The uncomfortable lesson of this game: the best policies were boring — hardening, intel, disclosure — and the exciting ones mostly raised escalation.');
   b.innerHTML=`<div class="box center"><div class="px" style="font-size:8px;color:var(--dim)">${S.dead?'GAME OVER':'DEBRIEF'}</div><div class="fin" style="margin:10px 0">GRADE ${grade}</div><div class="px" style="font-size:9px">SCORE ${sc}/100</div>${S.dead?`<p style="margin-top:10px;color:var(--red)">${S.dead}</p>`:''}</div>
-   <div class="box ending"><div class="px" style="font-size:8px;color:var(--dim)">THE FUTURE YOU BUILT</div><div class="fin" style="color:${E.c};font-size:22px;margin:8px 0">${E.k}</div>${quadSVG()}<p style="text-align:left">${E.t}</p><ul class="epi" style="text-align:left">${epilogue().map(([i,t])=>`<li><span>${i}</span>${t}</li>`).join('')}</ul></div>
+   <div class="box ending"><div class="px" style="font-size:8px;color:var(--dim)">THE FUTURE YOU BUILT</div><div class="fin" style="color:${E.c};font-size:22px;margin:8px 0">${E.k}</div>${endScene(E.k)}${quadSVG()}<p style="text-align:left">${E.t}</p><ul class="epi" style="text-align:left">${epilogue().map(([i,t])=>`<li><span>${icon(i)}</span>${t}</li>`).join('')}</ul></div>
    <div class="box"><h2>FINAL STATE</h2><div class="delta" style="margin-top:8px">${STATS.map(([k,nm])=>`<span>${nm} ${S.m[k]}</span>`).join('')}</div></div>
    <div class="box"><h2>POSTURE HISTORY</h2>
    <div class="matrix" style="grid-template-columns:40px repeat(${Math.max(1,n)},1fr);margin-top:8px"><div class="h"></div>${H.map((h,i)=>`<div class="h">R${i+1}</div>`).join('')}<div class="h">YOU</div>${H.map(h=>`<div>${PL[h].slice(0,3)}</div>`).join('')}<div class="h">RED</div>${R.map(h=>`<div>${PL[h].slice(0,3)}</div>`).join('')}</div></div>
@@ -1029,6 +1162,7 @@ function endGame(){
 
 // keyboard
 document.addEventListener('keydown',e=>{if(!document.getElementById('g-map').classList.contains('on'))return;const k=e.key;if(k==='ArrowUp')mv(0,-1);if(k==='ArrowDown')mv(0,1);if(k==='ArrowLeft')mv(-1,0);if(k==='ArrowRight')mv(1,0);if(k==='Enter'||k===' ')enterLoc()});
+fillIcons();
 </script>
 </body>
 </html>

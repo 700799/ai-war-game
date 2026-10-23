@@ -501,6 +501,13 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
 .bytechip .lbdog{width:34px;height:34px}
 .bdpt{flex:none;width:52px;height:52px;border:3px solid #e8e4d8;background:linear-gradient(#2a3166,#161a3a);overflow:hidden}.bdpt svg{width:100%;height:100%;display:block}
 .bytesheet{border-color:#f2c14e}.bytesheet .lhead{align-items:center}
+
+.mt{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;text-decoration-thickness:1.5px}
+.stat .n.mt{text-decoration-color:rgba(255,255,255,.35)}
+.chgl{margin-top:8px}.chgl b{color:#fff}
+.mgrid{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.mchip{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:11px;padding:6px 8px;box-shadow:2px 2px 0 #000}
+.mchip.on{background:#f2c14e;color:#000;border-color:#000}
 </style>
 </head>
 <body>
@@ -1349,7 +1356,7 @@ let hudOpen=false;
 function renderHud(){
   const h=document.getElementById('hud');h.innerHTML='';
   const KEY=['sec','esc','modelsec','rcap','good','harm'];
-  STATS.filter(([k])=>hudOpen||KEY.includes(k)).forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat${k==='good'||k==='harm'?' big':''}" title="${tip}"><span class="n">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
+  STATS.filter(([k])=>hudOpen||KEY.includes(k)).forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat${k==='good'||k==='harm'?' big':''}" title="${tip}"><span class="n mt" data-m="${k}">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
   h.innerHTML+=`<button class="hudtog" onclick="hudOpen=!hudOpen;renderHud()">${hudOpen?'▲ FEWER METERS':'▼ ALL 18 METERS'}</button>`;
   document.getElementById('rnum').textContent=S.round;document.getElementById('rmax').textContent=S.maxRounds;document.getElementById('date').textContent=dateFor(S.round);
   document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;document.getElementById('pcv').textContent=S.pc;
@@ -1465,6 +1472,12 @@ const LEARN_SCI={
  70:"Systems now act with real autonomy across many tasks. Oversight shifts from checking each answer to setting rules and limits for whole systems.",
  90:"Near superintelligence, small mistakes in goals or controls can have outsized effects. The choices made in earlier rounds decide whether this era brings abundance or fracture."
 };
+const FULLN={sec:'Security',econ:'Economy',trust:'Public trust',ally:'Allies',esc:'Escalation',risk:'Accident risk',rcap:'Rival strength',ccap:'Criminal strength',chips:'Chips & memory',power:'Power supply',talent:'Talent',subs:'Subscriptions',good:'Science dividend',harm:'Harm to society',equity:'Equity',wellbeing:'Wellbeing',botsafe:'Robot safety',modelsec:'Model security'};
+function meterSec(k){const st=STATS.find(x=>x[0]===k)||[],M=MEAN[k]||[],bad=BAD.includes(k);return `<div class="liss"><b>${LBL[k]} · ${FULLN[k]}</b><p>${st[2]||''}.</p><p><span style="color:${bad?'#ff9f9f':'#7fe0a0'}">▲ Up:</span> ${M[0]||''}<br><span style="color:${bad?'#7fe0a0':'#ff9f9f'}">▼ Down:</span> ${M[1]||''}</p><p style="color:#ffd23f">${M[2]||''}</p>${typeof S!=='undefined'&&S&&S.m?`<p class="small">Right now: ${Math.round(S.m[k])} / 100 · ${bad?'lower is better':'higher is better'}</p>`:''}</div>`}
+function openMeter(k){const el=document.getElementById('learnDrawer');
+  el.innerHTML=`<div class="lsheet" role="dialog" aria-label="Meter"><div class="lgrab"></div><div class="lhead"><div><div class="lsub">📊 METER · ${LBL[k]}</div><div class="ltitle">${FULLN[k]}</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody">${meterSec(k)}<div class="lsec"><div class="llbl">ALL METERS</div><div class="mgrid">${STATS.map(([x])=>`<button class="mchip${x===k?' on':''}" onclick="openMeter('${x}')">${LBL[x]}</button>`).join('')}</div></div></div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;
+  el.classList.add('on')}
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('.mt[data-m]');if(!t)return;e.preventDefault();e.stopPropagation();openMeter(t.dataset.m)},true);
 function learnSec(lbl,txt,col){return `<div class="lsec"><div class="llbl"${col?` style="color:${col}"`:''}>${lbl}</div><p>${txt}</p></div>`}
 function openLearn(key){let h='',title='',sub='';
   const [kind,id]=String(key).split(':');
@@ -1475,6 +1488,7 @@ function openLearn(key){let h='',title='',sub='';
     h=learnSec('WHAT IT IS',L[1])+learnSec('WHY IT MATTERS',L[2],'#ff8f8f')+learnSec('THE TRADEOFF',L[3],'#ffd23f')+learnSec('THE LESSON',L[4],'#4bd37b')+learnSec('WHAT YOU CAN DO HERE',ACTIONS.filter(a=>a.loc===id).map(a=>`<b>${a.name}</b> (${a.cost} PC): ${a.desc}`).join('<br><br>')||'Set your posture.');}
   else if(kind==='sci'){title='Science update: SI clock '+id+'%';sub='WHAT THIS STAGE MEANS';
     h=learnSec('THE BIG PICTURE',LEARN_SCI[id]||'')+learnSec('WHAT IS THE SI CLOCK?','It tracks how close the world is to superintelligence: AI that outperforms people at most tasks. It rises every round whether you act or not, because many labs and countries are racing.','#9fb8e8')+learnSec('WHY IT MATTERS','Higher capability multiplies both sides of the ledger: bigger science DIVIDEND and bigger potential HARM. Your policies decide which one wins.','#ffd23f');}
+  else if(kind==='out'&&id){title='What these changes mean';sub='THIS ROUND’S METERS';h=id.split(',').filter(k=>LBL[k]).map(meterSec).join('')+learnSec('HOW METERS CONNECT',LEARN_GEN.out[2]+' '+LEARN_GEN.out[3],'#ffd23f')}
   else {const G=LEARN_GEN[kind]||LEARN_GEN.out;title=G[0];sub='HOW THIS WORKS';
     h=G.slice(1).map((t,i)=>learnSec(['THE IDEA','WHY IT MATTERS','KEY DETAIL','KEEP IN MIND','STRATEGY TIP'][i],t,['','#ff8f8f','#ffd23f','#9fb8e8','#4bd37b'][i])).join('');
     if(kind==='brief'&&S.rival){const R=RIVALS[S.rival];if(R)h+=learnSec('YOUR RIVAL',`<b>${R.name||S.rival}</b>: ${R.desc||''}`,'#ff8f8f')}}
@@ -1596,9 +1610,10 @@ function chooseInject(k){
   if(c.esc) S.flags.misfire=true;
   if(S.dead) return endGame();
   renderHud();SFX.ok();
-  const d=Object.keys(S.m).filter(x=>S.m[x]!==before[x]&&LBL[x]).map(x=>{const v=S.m[x]-before[x];const good=BAD.includes(x)?v<0:v>0;return `<span class="${good?'up':'dn'}">${good?'✓':'✗'} ${LBL[x]} ${v>0?'+':''}${v}</span>`}).join(' · ');
-  beats.push({step:'NEXT',learn:'out',frame:portrait('brief'),who:curBriefer().n,role:'BRIEFER · OUTCOME',
-    body:`<p class="beattxt" id="beatTxt"></p><div class="beatfx">${d||'No change.'}</div><div class="beatlbl">WHAT'S NEXT</div><div class="tip"><span class="tipn">1</span><div><b>Set your posture at HQ</b></div></div><div class="tip"><span class="tipn">2</span><div><b>Spend your PC at buildings</b></div></div><div class="tip"><span class="tipn">3</span><div><b>Tap End Turn</b></div></div>`,
+  const d=Object.keys(S.m).filter(x=>S.m[x]!==before[x]&&LBL[x]).map(x=>{const v=S.m[x]-before[x];const good=BAD.includes(x)?v<0:v>0;return `<span class="${good?'up':'dn'} mt" data-m="${x}">${good?'✓':'✗'} ${LBL[x]} ${v>0?'+':''}${v}</span>`}).join(' · ');
+  const chg=Object.keys(S.m).filter(x=>S.m[x]!==before[x]&&LBL[x]);
+  beats.push({step:'NEXT',learn:'out:'+chg.join(','),frame:portrait('brief'),who:curBriefer().n,role:'BRIEFER · OUTCOME',
+    body:`<p class="beattxt" id="beatTxt"></p><div class="beatfx">${d||'No change.'}</div>${chg.length?`<ul class="wlist chgl">${chg.map(x=>{const v=S.m[x]-before[x];return `<li><b>${FULLN[x]}</b> ${PLAIN[x]?'· '+PLAIN[x][v>0?0:1]:''}</li>`}).join('')}</ul><p class="beatsmall">Tap any meter tag to learn what it means.</p>`:''}<div class="beatlbl">WHAT'S NEXT</div><div class="tip"><span class="tipn">1</span><div><b>Set your posture at HQ</b></div></div><div class="tip"><span class="tipn">2</span><div><b>Spend your PC at buildings</b></div></div><div class="tip"><span class="tipn">3</span><div><b>Tap End Turn</b></div></div>`,
     type:c.log,next:'TO THE MAP ▶',go:toMap});
   beatI++;renderBeat();
 }
@@ -2060,7 +2075,7 @@ function roundReview(bp,red,log,acc){const m=S.m,R=[],N=[];
 /* ===================== RISK ANALYST ===================== */
 const LBL={sec:'SEC',econ:'ECON',trust:'TRUST',ally:'ALLY',esc:'ESC',risk:'RISK',rcap:'RIVAL',ccap:'CRIME',chips:'CHIPS',power:'POWER',talent:'TALENT',subs:'SUBS',good:'DIVIDEND',harm:'HARM',equity:'EQUITY',wellbeing:'WELLBEING',botsafe:'ROBOT SAFETY',modelsec:'MODEL SEC'};
 const BAD=['esc','risk','rcap','ccap','harm'];
-function fxLine(fx){return Object.entries(fx||{}).filter(([k,v])=>v&&LBL[k]).map(([k,v])=>{const good=BAD.includes(k)?v<0:v>0;return `<span class="${good?'up':'dn'}">${good?'✓':'✗'} ${LBL[k]} ${v>0?'+':''}${v}</span>`}).join(' · ')||'No direct meter change'}
+function fxLine(fx){return Object.entries(fx||{}).filter(([k,v])=>v&&LBL[k]).map(([k,v])=>{const good=BAD.includes(k)?v<0:v>0;return `<span class="${good?'up':'dn'} mt" data-m="${k}">${good?'✓':'✗'} ${LBL[k]} ${v>0?'+':''}${v}</span>`}).join(' · ')||'No direct meter change'}
 const NOTE={toolctl:'Strongest long-term slowdown, but leaks badly without allies.',cloudkyc:'Closes the cloud-rental loophole in export controls.',antismug:'Closes the smuggling loophole; also weakens gangs.',minerals:'Cuts the damage if the rival retaliates with a minerals ban.',redteam:'Biggest MODEL SEC boost. Model attacks become likely once it falls below 60.',provenance:'Stops poisoning and backdoors; also adds SEC.',agentsafe:'Cheapest MODEL SEC boost; limits damage when agents are tricked.',vulnshare:'Cheap; helps every lab patch faster.',weightsec:'Cuts outside theft odds sharply and insider risk a bit.',apiguard:'Blocks about 75% of distillation attempts.',weights:'Open-release odds drop from 55% to 20%. Trade-off: less research, startups and scrutiny.',botcert:'Biggest ROBOT SAFETY boost. Unsafe robots cause incidents once the SI clock passes 40.',botsec:'Also adds SEC: a hijacked robot is a cyberattack with arms.',botliab:'Cheapest ROBOT SAFETY boost.',botprivacy:'Protects TRUST; robots in homes see everything.',botdividend:'Stops robots from draining EQUITY once the SI clock passes 50.',feeds:'Biggest WELLBEING boost. Costs app revenue (SUBS).',phonefree:'Cheapest WELLBEING boost.',retrain:'Offsets the job losses the SI clock causes every round.',audit:'Cheapest EQUITY boost on the board.',privacy:'Protects TRUST; limits surveillance harms.',access:'Raises EQUITY and DIVIDEND together.',kids:'Cuts HARM to young users.',intel:'Reveals the rival\'s likely move; attribution errors drop from 22% to 5%.',harden:'Also shrinks every bad posture hit by 40% and cuts ransomware damage.',
  evals:'Labs\' ship-fast odds −22%. Safe shipping earns extra DIVIDEND.',liab:'Labs\' ship-fast odds −20%. Stack with testing.',
  chips:'Raises rival escalation odds; rival cuts critical minerals (CHIPS −2). Coordinate allies first.',offense:'Raises rival escalation odds. Never pair with COOPERATE.',
@@ -2229,7 +2244,7 @@ function resolve(){
 
 function renderResolve(bp,red,cell,log,acc,fog){
   showGame('g-res');const b=document.getElementById('resBody');
-  const dl=Object.entries(acc).filter(([k,v])=>v!==0&&LBL[k]).map(([k,v])=>{const good=BAD.includes(k)?v<0:v>0;return `<span class="${good?'up':'dn'}">${good?'✓':'✗'} ${LBL[k]} ${v>0?'+':''}${v}</span>`}).join('');
+  const dl=Object.entries(acc).filter(([k,v])=>v!==0&&LBL[k]).map(([k,v])=>{const good=BAD.includes(k)?v<0:v>0;return `<span class="${good?'up':'dn'} mt" data-m="${k}">${good?'✓':'✗'} ${LBL[k]} ${v>0?'+':''}${v}</span>`}).join('');
   const hostile=bp==='esc'||red==='esc',peace=bp==='coop'&&red==='coop';
   const col=peace?'#4bd37b':hostile?'#ff5c5c':'#f7c948';
   const link=peace?`<path d="M4 22 H76" stroke="${col}" stroke-width="3" stroke-dasharray="6 4"><animate attributeName="stroke-dashoffset" from="0" to="-20" dur=".6s" repeatCount="indefinite"/></path><rect x="36" y="16" width="8" height="12" fill="${col}"/>`

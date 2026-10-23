@@ -215,6 +215,12 @@ button:disabled{opacity:.4}
 .gang .ic{width:55%;height:55%;animation:jitter .4s steps(2) infinite}
 .siclock{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#070813;font-family:'Press Start 2P';font-size:7px;color:#b28bff}
 .siclock .bar{height:12px}.siclock .bar i{background:repeating-linear-gradient(90deg,#b28bff 0 6px,#7a5ad6 6px 8px)}
+.dog{display:flex;gap:8px;align-items:flex-start;margin-top:10px}
+.dogpt{flex-shrink:0;width:54px;height:54px;border:3px solid var(--line);background:linear-gradient(#2a2c55,#1a1c3a);box-shadow:3px 3px 0 #000;animation:bob 1s steps(2) infinite}.dogpt svg{width:100%;height:100%;display:block}
+.dogbub{flex:1;position:relative;background:#0e1430;border:3px solid #c8893a;padding:8px 10px;font-size:17px;color:#cfe3ff;box-shadow:3px 3px 0 #000}
+.dogbub::before{content:'';position:absolute;left:-11px;top:16px;border:6px solid transparent;border-right-color:#c8893a}
+.doglb{font-family:'Press Start 2P';font-size:7px;color:#c8893a;display:block;margin-bottom:4px}
+.dogbub .up{color:var(--green)}.dogbub .dn{color:var(--red)}
 .ana{margin-top:8px;padding:6px 8px;border-left:4px solid var(--blue);background:#0e1430;font-size:17px;color:#cfe3ff}
 .ana .lb{font-family:'Press Start 2P';font-size:7px;color:var(--blue);display:block;margin-bottom:3px}
 .ana .up{color:var(--green)}.ana .dn{color:var(--red)}
@@ -305,7 +311,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       </div>
       <div class="dots" id="dots"></div>
       <button class="howbtn" onclick="go('s-how')" style="margin:22px auto 0;display:block">📖 HOW TO PLAY</button>
-      <div class="cast"><span class="castbub">Ready, Chair?</span><div class="castrow"><span id="castHero" class="castch"></span><span id="castGlitch" class="castch"></span></div><div class="castfloor"></div></div>
+      <div class="cast"><span class="castbub">Woof. Ready, Chair?</span><div class="castrow"><span id="castHero" class="castch"></span><span id="castDog" class="castch" style="width:56px;height:56px;align-self:flex-end"></span><span id="castGlitch" class="castch"></span></div><div class="castfloor"></div></div>
     </div>
     <div class="px" style="font-size:7px;color:var(--dim)">Fictional scenario. The rival is an invented state, not any real country.<br>All actors are archetypes, not real people or organizations.</div>
   </div>
@@ -457,13 +463,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
       <div class="row" id="lens" style="margin-top:6px"></div>
     </div>
   </div>
-  <div class="foot"><button onclick="go('s-title')">◀</button><button class="a" onclick="go('s-mission');document.getElementById('misPt').innerHTML=portrait('sit')">BEGIN ▶</button></div>
+  <div class="foot"><button onclick="go('s-title')">◀</button><button class="a" onclick="go('s-mission');document.getElementById('misPt').innerHTML=portrait('sit');document.getElementById('misDog').innerHTML=dogSVG()">BEGIN ▶</button></div>
 </section>
 
 <!-- MISSION BRIEFING -->
 <section class="screen" id="s-mission">
   <div class="scroll">
     <div class="dialog"><span class="who">THREAT ANALYST</span><span class="pt" id="misPt"></span>Welcome to the cell. It's January 2027. Superintelligence will arrive by the end of this decade whether we act or not. We don't get to stop it. We get to decide what it does to us. I'll brief you on threats every round and score every option before you choose.</div>
+    <div class="dog" style="margin-top:14px"><div class="dogpt" id="misDog"></div><div class="dogbub"><span class="doglb">🐾 BYTE · ADVISOR DOG</span>Woof. I'm Byte. I've read every threat report in the building, mostly while lying on them. Each round I'll tell you what's optimal and why. Follow me and you'll do fine. Ignore me and, well, I'll still love you.</div></div>
     <div class="box" style="margin-top:14px">
       <h2>TIMELINE</h2>
       <p>Choose <b>4, 6 or 8 rounds</b> covering <b>Jan 2027 → mid-2030</b>; shorter games take bigger time steps. The <b style="color:#b28bff">SI CLOCK</b> climbs every round on its own. Labs shipping and a strong rival speed it up; safety tests slow it slightly. As it rises, everything gets amplified: the dividend <i>and</i> the harm.</p>
@@ -523,6 +530,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
     <div class="scroll">
       <div class="dialog" id="brief"><span class="who" id="briefWho">SITROOM</span><span class="pt" id="briefPt"></span><span id="briefTxt"></span><span class="more" id="briefMore">▼</span></div>
       <div id="anaRound" style="margin-top:14px"></div>
+      <div id="anaTips" style="margin-top:10px"></div>
       <div id="injectBox" style="margin-top:14px;display:none">
         <div class="box">
           <div class="injart"><div class="art" id="injArt"></div><h3 id="injTitle"></h3></div>
@@ -997,6 +1005,7 @@ function startRound(){
   document.getElementById('injectBox').style.display='none';
   document.getElementById('briefNext').style.display='';
   document.getElementById('briefWho').textContent='SITROOM';document.getElementById('briefPt').innerHTML=portrait('sit');
+  document.getElementById('anaTips').innerHTML=tipsHTML();
   const lf=S.focus[S.focus.length-1];
   document.getElementById('anaRound').innerHTML=anaHTML('THREAT ANALYST · '+dateFor(S.round),threatModel()+(lf?`<br>Last round you spent ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ The home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}`:'')+`<br>Insider risk: ${Math.round(insiderP()*100)}% · Goal check: DIVIDEND ${S.m.good} (60+) · HARM ${S.m.harm} (under 40) · EQUITY ${S.m.equity} (45+) · Kids' WELLBEING ${S.m.wellbeing}${S.m.wellbeing<40?' ⚠ adding HARM':''}`);
   typeInto(document.getElementById('briefTxt'),briefText());
@@ -1017,7 +1026,10 @@ function briefNext(){
     const A=document.getElementById('injA'),B=document.getElementById('injB');
     A.textContent=currentInject.a.t;B.textContent=currentInject.b.t;
     A.onclick=()=>chooseInject('a');B.onclick=()=>chooseInject('b');
-    const n=INOTE[currentInject.id]||{};document.getElementById('injAna').innerHTML=anaHTML('THREAT ANALYST','<b>A:</b> '+fxLine(currentInject.a.fx)+(n.a?' · '+n.a:'')+'<br><b>B:</b> '+fxLine(currentInject.b.fx)+(n.b?' · '+n.b:''));
+    const n=INOTE[currentInject.id]||{};const rc=INREC[currentInject.id]?INREC[currentInject.id](S):null;
+    if(rc){(rc[0]==='a'?A:B).textContent='★ '+(rc[0]==='a'?A:B).textContent}
+    document.getElementById('injAna').innerHTML=anaHTML('THREAT ANALYST','<b>A:</b> '+fxLine(currentInject.a.fx)+(n.a?' · '+n.a:'')+'<br><b>B:</b> '+fxLine(currentInject.b.fx)+(n.b?' · '+n.b:''));
+    if(rc)document.getElementById('injAna').innerHTML+=dogHTML('MY PICK',`<i style="color:#9b9ac7">${dogLine('crisis')}</i><br><b style="color:#4bd37b">★ Go with ${rc[0].toUpperCase()}.</b><br>↳ Why: ${rc[1]}`);
     document.getElementById('briefNext').style.display='none';
   }
 }
@@ -1119,10 +1131,10 @@ function applyPlan(){const P=recommendPlan();S.picks.forEach(id=>{const a=ACTION
   SFX.ok();toast('PLAN APPLIED · TAP END TURN');renderHud();renderMap()}
 function planHTML(){const P=recommendPlan();const byLoc=id=>LOCS.find(l=>l.id===ACTIONS.find(a=>a.id===id).loc).short;
   const SHORT=SHORTN;const _x={intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure'};
-  return `<div class="plan"><div class="planrow"><div class="pt1"><span class="lbp">🔎 ANALYST PLAN</span>${PL[P.posture]} · ${P.picks.map(([id])=>SHORT[id]).join(' · ')}</div><button class="a" onclick="applyPlan()">USE<br>PLAN</button></div>
-  <details><summary>Why? (tap)</summary><div class="pl"><b>HQ:</b> Posture <b style="color:var(--gold)">${PL[P.posture]}</b>. ${P.why}</div>
+  return `<div class="plan"><div class="planrow"><div class="pt1"><span class="lbp">🐾 BYTE'S PLAN</span>${PL[P.posture]} · ${P.picks.map(([id])=>SHORT[id]).join(' · ')}</div><button class="a" onclick="applyPlan()">USE<br>PLAN</button></div>
+  <details${S.round<=2?' open':''}><summary>Why each pick? (tap)</summary><div class="dog" style="margin:6px 0 2px"><div class="dogpt">${dogSVG()}</div><div class="dogbub">I'm Byte, your advisor dog. I rank what matters most this round. You can follow me or go your own way.</div></div><div class="pl"><b>HQ:</b> Posture <b style="color:var(--gold)">${PL[P.posture]}</b>. ${P.why}</div>
   ${P.picks.map(([id,r])=>{const a=ACTIONS.find(x=>x.id===id);return `<div class="pl"><b>${byLoc(id)}:</b> ${a.name} (${a.cost} PC). ${r}</div>`}).join('')}
-  <p class="small" style="margin-top:6px">Or tap buildings and choose yourself. Blue TIP tags mark the analyst's picks.</p></details></div>`}
+  <p class="small" style="margin-top:6px">Or tap buildings and choose yourself. Blue TIP tags mark Byte's picks.</p></details></div>`}
 
 let guideSeen=false;
 function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div class="box"><h2>MAP GUIDE</h2>
@@ -1169,8 +1181,9 @@ function openLoc(L){
     <div class="post" id="post"></div><div id="intelHint" class="small" style="margin-top:8px"></div>`;
     body.appendChild(box);
     const p=box.querySelector('#post');
-    const recP=recommendPlan().posture;P.forEach(k=>{const b=document.createElement('button');b.innerHTML=PL[k]+(k===recP?'<br><span style="font-size:6px;color:#5ab0ff">ANALYST PICK</span>':'');b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();toast('POSTURE SET · NOW SPEND PC');openLoc(L)};p.appendChild(b)});
+    const recP=recommendPlan().posture;P.forEach(k=>{const b=document.createElement('button');b.innerHTML=PL[k]+(k===recP?'<br><span style="font-size:6px;color:#c8893a">BYTE\'S PICK</span>':'');b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();toast('POSTURE SET · NOW SPEND PC');openLoc(L)};p.appendChild(b)});
     {const last=S.redHist[S.redHist.length-1];const R=RIVALS[S.rival];box.querySelector('#intelHint').innerHTML=anaHTML('THREAT ANALYST',last?`Rival (${R.name}) last chose <b>${PL[last]}</b>. They remember ${R.memory} round${R.memory>1?'s':''} of your moves. ${last==='esc'?'Answering with HEDGE or ESCALATE avoids being farmed; COOPERATE risks the sucker\'s payoff.':last==='coop'?'COOPERATE locks in mutual restraint; ESCALATE exploits them once, and they\'ll remember.':'They\'re probing. Matching with HEDGE is safe; COOPERATE can invite reciprocity.'}`:`Opening move. A ${R.name} starts ${R.coop>.4?'inclined to cooperate':R.esc>.5?'inclined to escalate':'opportunistic'}. Buy INTEL (1 PC) to see their likely move.`)}
+    {const ev=postureEV(),rp=recommendPlan().posture;box.querySelector('#intelHint').innerHTML+=dogHTML('THE MATH',`<i style="color:#9b9ac7">${dogLine('math')}</i><br>`+`Rival odds: cooperate ${Math.round(ev.pr.coop*100)}% · hedge ${Math.round(ev.pr.hedge*100)}% · escalate ${Math.round(ev.pr.esc*100)}%`+P.map(k=>`<br>${k===ev.best?'★':'·'} <b style="color:${k===ev.best?'#4bd37b':'#fff'}">${PL[k]}</b>: SEC ${ev.sc[k].sec>=0?'+':''}${ev.sc[k].sec.toFixed(1)}, ESC ${ev.sc[k].esc>=0?'+':''}${ev.sc[k].esc.toFixed(1)}`).join('')+`<br>↳ Why: ${ev.best===rp?`Short-term math and long-term reciprocity agree: ${PL[rp]}.`:`Short-term math favors ${PL[ev.best]}, but the analyst picks ${PL[rp]} because the rival remembers your move next round. Repeated games reward reciprocity over one-round gains.`}`)}
     if(S.flags.intel){box.querySelector('#intelHint').innerHTML+=`<div class="ana"><b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}</div>`}
     body.appendChild(matrixEl(null,null));
   }
@@ -1179,7 +1192,7 @@ function openLoc(L){
     const picked=S.picks.includes(a.id);
     const c=document.createElement('div');c.className='card'+(picked?' sel':'');
     const rec=recommendPlan().picks.find(([id])=>id===a.id);
-    c.innerHTML=`${rec?'<div class="pick">★ ANALYST PICK</div>':''}<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('THREAT ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}`;
+    c.innerHTML=`${rec?'<div class="pick">🐾 BYTE\'S PICK</div>':''}<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('THREAT ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}${dogHTML('',(ACT_HINT[a.id]?`<span style="color:#4bd37b">✓ Best when:</span> ${ACT_HINT[a.id][0]}<br><span style="color:#ff8f8f">✗ Skip when:</span> ${ACT_HINT[a.id][1]}<br>`:'')+`<b style="color:${rec?'#4bd37b':'#9b9ac7'}">Right now:</b> ${rec?'I would buy it. '+rec[1]:'Lower priority than my picks this round.'}`)}`;
     c.onclick=()=>toggleAction(a,L);body.appendChild(c);
   });
 }
@@ -1203,7 +1216,7 @@ function matrixEl(b,r){
 }
 
 /* ===================== RIVAL SI ===================== */
-function redProbs(){
+function redProbs(quiet){
   const R=RIVALS[S.rival];const n=DIFFS[S.diff].noise;
   let pc=R.coop,pe=R.esc;
   const h=S.hist.slice(-R.memory);
@@ -1221,7 +1234,7 @@ function redProbs(){
   if(S.rival==='hardliner'&&S.hist.includes('esc')&&S.flags.coord){pe-=.15}
   pc=cl(pc*100,5,85)/100;pe=cl(pe*100,5,85)/100;
   // noise
-  pc+= (Math.random()-.5)*n;pe+=(Math.random()-.5)*n;
+  if(!quiet){pc+= (Math.random()-.5)*n;pe+=(Math.random()-.5)*n;}
   pc=Math.max(.03,pc);pe=Math.max(.03,pe);const ph=Math.max(.05,1-pc-pe);
   const t=pc+pe+ph;return {coop:pc/t,hedge:ph/t,esc:pe/t};
 }
@@ -1293,6 +1306,140 @@ function endScene(k){let sd=11;const rnd=()=>(sd=(sd*16807)%2147483647)/21474836
   if(k==='SAFE STAGNATION')o+=icon('robot','x="150" y="91" width="14" height="14" opacity=".5"');
   return `<svg class="endscene" viewBox="0 0 320 120" shape-rendering="crispEdges" preserveAspectRatio="xMidYMid slice">${o}</svg>`}
 function fillIcons(){document.querySelectorAll('[data-ic]').forEach(e=>e.innerHTML=icon(e.dataset.ic))}
+
+
+/* ===================== BYTE, THE ADVISOR DOG ===================== */
+const DOG_PAL={b:'#c8893a',d:'#8a5a22',w:'#f4f1e6',k:'#1b1b2f',n:'#111',g:'#6b4a2a',r:'#d33a3a',s:'#9aa3b5',y:'#f7c948'};
+const DOG=["..dd.......dd...",".dbbd.....dbbd..",".dbbbd...dbbbd..","..dbbbbbbbbbd...","..bbbbbbbbbbb...","..bbsbbbbbsbb...","..bskkbbbbkksb..","..bskkbbbbkksb..","..bbbbbbbbbbb...","..bbbwbnnbwbb...","...bbbnnnbbb....","...bbwwwwbbb....","....brrrbb......",".....bbbb.......","...yyyyyyyy.....","...y.ykky.y....."];
+const DOG_TALK=["..dd.......dd...",".dbbd.....dbbd..",".dbbbd...dbbbd..","..dbbbbbbbbbd...","..bbbbbbbbbbb...","..bbsbbbbbsbb...","..bskkbbbbkksb..","..bskkbbbbkksb..","..bbbbbbbbbbb...","..bbbwbnnbwbb...","...bbbnnnbbb....","...bbwwkwwbb....","....brrrbb......",".....bbbb.......","...yyyyyyyy.....","...y.ykky.y....."];
+let dogFrame=0;
+function dogSVG(a=''){return spr(dogFrame%2?DOG_TALK:DOG,DOG_PAL,16,16,a)}
+function dogHTML(label,body,mood){dogFrame++;return `<div class="dog"><div class="dogpt">${dogSVG()}</div><div class="dogbub"><span class="doglb">🐾 BYTE${label?' · '+label:''}</span>${body}</div></div>`}
+const DOG_LINES={tips:['Sniffed out the priorities.','Nose says: start here.','Trust the nose.'],math:['I ran the numbers. Good dog.','Crunched it between naps.'],review:['Here is what I saw from under the desk.','Round over. Field notes:'],card:['Let me sniff this one.'],crisis:['Ears up. Here is my read.']};
+const dogLine=k=>DOG_LINES[k][Math.floor(Math.random()*DOG_LINES[k].length)];
+
+/* ===================== OPTIMAL-PLAY HINTS ===================== */
+const ACT_HINT={
+ intel:['Always, round 1 especially.','Never really; it is the best value in the game.'],
+ harden:['SEC under 75, or the rival may escalate.','SEC is already 80+ and PC is tight.'],
+ evals:['RISK is 45+ or labs keep shipping.','RISK is low and you need ECON.'],
+ liab:['Stacked with testing to slow risky launches.','RISK is already under 40.'],
+ chips:['Allies are coordinated and the rival is pulling ahead.','Escalation is above 60, or you have not coordinated allies.'],
+ offense:['The rival keeps escalating and you are hedging or escalating.','You are posturing COOPERATE (reads as duplicity).'],
+ coord:['ALLY under 55, or before chip controls.','Allies are already 70+.'],
+ norms:['ESC is 50+ and you are not escalating.','You plan to ESCALATE this round (it backfires).'],
+ cvd:['You have 1 PC left over.','Never harmful; just low impact.'],
+ weights:['CRIME is 60+ and releases keep landing.','You need DIVIDEND and EQUITY growth.'],
+ crime:['CRIME is 50+.','CRIME is under 40.'],
+ bounty:['You also run testing (extra RISK cut).','RISK is already high and you skip testing.'],
+ insider:['Insider risk shows 10%+.','Insider risk is 5% or less.'],
+ tmodel:['RISK is 55+ or ransomware is hitting hard.','Threats are low and PC is tight.'],
+ fabs:['CHIPS under 40.','CHIPS is 60+.'],
+ power:['POWER under 40.','POWER is 60+.'],
+ talent:['TALENT under 45.','TALENT is 65+.'],
+ tamper:['Early in the game; it lasts every round after.','Late rounds, with little time left to pay off.'],
+ retrain:['EQUITY under 45 or the SI clock is past 40.','EQUITY is 60+.'],
+ audit:['EQUITY under 60. It is cheap.','EQUITY is already high.'],
+ privacy:['TRUST under 50.','TRUST is 65+ and ECON is weak.'],
+ access:['EQUITY under 50; it also adds DIVIDEND.','SUBS revenue is collapsing.'],
+ kids:['HARM above 30 or WELLBEING under 55.','WELLBEING is 65+.'],
+ feeds:['WELLBEING under 48.','WELLBEING is high and SUBS is weak.'],
+ phonefree:['WELLBEING under 60. Cheapest home-front action.','WELLBEING is 70+.'],
+ botcert:['SI clock 30+ and ROBOT SAFETY under 55.','The SI clock is under 25; robots are not deployed yet.'],
+ botsec:['SI clock 40+ and ROBOT SAFETY under 50.','Robots are not deployed yet.'],
+ botliab:['SI clock 30+. Cheap and lasting.','ROBOT SAFETY is already 65+.'],
+ botprivacy:['TRUST is slipping and robots are in homes.','PC is tight.'],
+ botdividend:['SI clock 50+ and EQUITY under 50.','The SI clock is under 50.'],
+ weightsec:['RIVAL 55+ or SI clock 40+.','Early game with a weak rival.'],
+ apiguard:['SI clock 30+ (distillation gets frequent).','SI clock under 25.'],
+ redteam:['MODEL SEC under 50.','MODEL SEC is 65+.'],
+ provenance:['MODEL SEC under 55, or backdoors keep landing.','MODEL SEC is high.'],
+ agentsafe:['SI clock 25+. Cheapest MODEL SEC boost.','Never really; it is cheap.'],
+ vulnshare:['1 PC left over.','PC is tight.']};
+const INREC={
+ hosp:s=>['b','Attribution is unproven. Blaming a state adds ESC 8 and hurts allies; treat it as crime unless INTEL confirms it.'],
+ zeroday:s=>['a','Your own grid is the bigger target. Disclosing adds SEC 8; hoarding raises ESC and RISK.'],
+ leak:s=>s.m.trust>40?['a','Takedowns are partly symbolic, but they slow the spread, and your TRUST can absorb the cost.']:['b','TRUST is too low to spend 6 on a mostly symbolic takedown.'],
+ lobby:s=>['a','Waivers raise RISK 6 and speed up risky launches. Holding costs only ECON 3.'],
+ summit:s=>['a','Talks cut ESC 6 and make the rival likelier to cooperate next round. Declining signals hostility.'],
+ misattr:s=>['b','Early forensics are often wrong. Retaliating adds ESC 10 now and 4 more later; waiting costs only TRUST 3.'],
+ election:s=>s.m.trust<40?['a','TRUST is low; you need the +5 to avoid losing your job.']:['b','TRUST is fine. Quiet talk lowers ESC instead of feeding the rival’s hardliners.'],
+ ally:s=>['b','Sanctioning allies costs ALLY 8, which weakens every coalition you need later.'],
+ talentraid:s=>s.m.econ>45?['a','Keeping researchers costs ECON 3; losing them costs TALENT 7 and gives the rival 4.']:['b','ECON is too weak to fund counteroffers.'],
+ hbm:s=>['a','Prioritizing protects CHIPS. Letting prices clear drops SUBS 7, which pushes labs to cut safety.'],
+ energy:s=>s.m.trust>45?['a','POWER +8 protects the grid and the dividend; your TRUST can absorb the cost.']:['b','TRUST is low; rationing avoids a backlash and also cuts RISK.'],
+ subs:s=>['a','Letting the market sort it raises RISK 4 as labs cut red-teaming.'],
+ abl:s=>s.m.ccap>55?['a','CRIME is high; slow the spread even if it is whack-a-mole.']:['b','Planning as if safeguards fail adds SEC 3 and costs no TRUST.'],
+ insiderinj:s=>['a','Recovering the weights prevents RIVAL +4. The morale hit is temporary.'],
+ cheat:s=>s.m.econ>45?['b','Redesigning tests adds DIVIDEND and lasts. Bans push use underground and cost TALENT.']:['a','ECON is too weak to fund the redesign right now.'],
+ deepfake:s=>['a','Cuts HARM 4 and builds TRUST. Case-by-case lets HARM grow.'],
+ radical:s=>s.m.trust>40?['a','Cuts HARM 4; your TRUST can absorb the free-speech backlash.']:['b','TRUST is low; counter-messaging avoids another hit.'],
+ wmd:s=>['a','Catastrophic risk dominates. Cut CRIME and HARM now, even at a TRUST cost.'],
+ cancer:s=>s.m.chips>30?['a','DIVIDEND +8 is one of the biggest gains in the game; the CHIPS cost is small.']:['b','CHIPS is critically low; fast-tracking would starve everything else.'],
+ humanoid:s=>s.m.botsafe>=50?['a','ROBOT SAFETY is 50+, so deployment adds DIVIDEND without inviting incidents.']:['b','ROBOT SAFETY is under 50. Deploying now invites incidents; certify robots first.'],
+ layoffs:s=>['a','EQUITY must stay 45+ for Abundance. Letting markets adjust costs 7 at once.'],
+ companion:s=>['a','Cuts HARM 4 and protects kids. Parental controls alone rarely get used.'],
+ bias:s=>['a','EQUITY +5 and TRUST +2. Voluntary guidance changes little.'],
+ eldeep:s=>['a','Protects TRUST and cuts HARM. Letting platforms decide costs TRUST 4.'],
+ surveil:s=>s.m.sec<35?['b','SEC is critically low; you need the boost even at a TRUST cost.']:['a','Warrants protect TRUST and EQUITY; SEC barely moves.'],
+ artists:s=>s.m.econ>50?['a','ECON can absorb it; EQUITY +4 helps your Abundance requirement.']:['b','ECON is weak; take the economic boost for now.'],
+ bills:s=>['a','EQUITY +3. Spreading the cost hurts EQUITY and TRUST.'],
+ divide:s=>['a','EQUITY +5 and DIVIDEND +2 together. Rare double win.'],
+ doomscroll:s=>['a','WELLBEING +6. Awareness alone loses to engagement-optimized design.'],
+ challenge:s=>['a','Protects preteens and cuts HARM. Leaving it to parents costs both.'],
+ addictsuit:s=>['a','WELLBEING +5. Siding with industry costs WELLBEING and TRUST.'],
+ loop:s=>['a','WELLBEING +4. Calling it personal choice costs 4.'],
+ bothijack:s=>['a','A recall rebuilds ROBOT SAFETY and TRUST. A quiet patch tends to leak.'],
+ botinjury:s=>['a','Grounding and investigating adds ROBOT SAFETY 5; operating on invites more injuries.'],
+ botcare:s=>['a','Best for WELLBEING and EQUITY; nearly the same DIVIDEND.'],
+ botarms:s=>['a','Keeps a human in charge of force. Cuts HARM and builds TRUST.'],
+ botjobs:s=>['a','EQUITY must stay 45+. Letting it ride costs 6.'],
+ openrel:s=>(s.m.modelsec>=50&&s.m.ccap<55)?['a','MODEL SEC can absorb some misuse, and the release adds DIVIDEND and EQUITY.']:['b','MODEL SEC is weak or CRIME is high; a release now feeds attackers.'],
+ distill:s=>['a','API checks and legal action cut the rival’s gain. Competing on price hands them +3.'],
+ weighttheft:s=>s.m.esc>60?['b','ESC is already 60+; +5 more risks open conflict. Harden quietly.']:['a','ESC has room. Attributing with allies builds a norm against theft.'],
+ injection:s=>['a','Human sign-off stops repeat hijacks. Insuring invites copycats.'],
+ poison:s=>['a','Provenance rules raise MODEL SEC. A quiet retrain costs TRUST when it leaks.'],
+ jailbreak:s=>['a','Coordinated patches cut CRIME. Going alone lets attackers find the slowest lab.'],
+ backdoor:s=>['a','Scan-before-use adds MODEL SEC and SEC. An advisory alone gets ignored.'],
+ autoacc:s=>s.m.econ>45?['a','Banning agents in critical systems cuts RISK 6 and adds SEC.']:['b','ECON is weak; kill switches are the cheaper fix.']};
+function postureEV(){const pr=redProbs(true);const F=S.flags;const sc={};
+  P.forEach(b=>{let es=0,ee=0;P.forEach(r=>{const c=MATRIX[b][r];let sec=c.sec,esc=c.esc;if(F.harden&&sec<0)sec*=.6;if(F.coord&&esc>0)esc*=.8;es+=pr[r]*sec;ee+=pr[r]*esc});sc[b]={sec:es,esc:ee,score:es-.7*ee}});
+  const best=P.reduce((a,b)=>sc[b].score>sc[a].score?b:a,'coop');return {pr,sc,best}}
+function roundTips(){const m=S.m,F=S.flags,T=[];const add=(c,t,w)=>{if(c&&T.length<4)T.push([t,w])};
+  const lf=S.focus[S.focus.length-1];const pace=Math.round(20+40*(S.round-1)/Math.max(1,S.maxRounds-1));
+  add(m.esc>=70,'Do not ESCALATE this round.','At 90 the game ends, and one attribution error can add 4 to 10 on top.');
+  add(m.harm>=32,'HARM is close to 40. Prioritize harm-cutting actions.','Above 40 you cannot reach Abundance, and HARM rarely falls on its own.');
+  add(lf&&lf.HOME===0,'Spend at least 1 PC at TOWN or ROBOTS.','You skipped the home front last round; a second skip costs WELLBEING, EQUITY and TRUST.');
+  add(lf&&lf.SEC===0,'Spend at least 1 PC on security (HQ, SOC, RED, GRID, ALLIES or CRIME).','Two rounds without security raises ESC and cuts SEC.');
+  add(m.ccap>=55,'Fight gangs at CRIME.','Ransomware damage is roughly (CRIME − 25) ÷ 6 SEC per round.');
+  add(m.risk>=58,'Mandate testing at LABS.','Above 60 RISK, accidents can cost 10+ SEC in one round.');
+  add(S.si>=25&&m.modelsec<55,'Shore up MODEL SEC at RED.','Below 60, model attacks start landing, and the odds rise with the SI clock.');
+  add(m.wellbeing<45,'Protect kids at TOWN (phone-free schools, feed rules).','Below 40, WELLBEING adds HARM every round.');
+  add(m.equity<48,'Raise EQUITY at TOWN or ROBOTS.','Abundance needs EQUITY 45+, and automation pulls it down every round.');
+  add(S.si>=35&&m.botsafe<50,'Certify robots at ROBOTS.','Once the SI clock passes 40, unsafe robots cause incidents.');
+  add(m.good<pace-5,`DIVIDEND is behind pace (about ${pace} by now).`,'You need 60+ by 2030. Testing plus liability earns extra dividend whenever labs ship.');
+  add(insiderP()>.1,'Run the insider program at SOC.',`Insider risk is ${Math.round(insiderP()*100)}% this round.`);
+  add(m.rcap>=65,'Secure the weights at SOC.','A strong rival tries harder to steal; each theft adds RIVAL 5.');
+  add(m.ally<45,'Coordinate with ALLIES.','Low alliance cohesion makes chip controls leak and attribution errors likelier.');
+  add(!F.intel,'Buy INTEL first (1 PC at HQ).','It shows the rival’s likely move and cuts attribution errors from 22% to 5%.');
+  return T}
+function tipsHTML(){const T=roundTips();if(!T.length)return '';return dogHTML('WHAT IS OPTIMAL NOW',`<i style="color:#9b9ac7">${dogLine('tips')}</i>`+T.map(([t,w],i)=>`<div style="margin-top:${i?8:2}px"><b style="color:#fff">${i+1}. ${t}</b><br><span style="color:#9fb8e8">↳ Why: ${w}</span></div>`).join(''))}
+function roundReview(bp,red,log,acc){const m=S.m,R=[],N=[];
+  if(bp==='coop'&&red==='esc'){R.push('You cooperated and the rival escalated (the sucker’s payoff).');N.push(['HEDGE next round','so they cannot farm you; reopen with COOPERATE once they calm down.'])}
+  else if(bp==='coop'&&red==='coop')R.push('Mutual restraint. This is the best joint outcome; keep it going.');
+  else if(bp==='esc'&&red==='esc'){R.push('Mutual escalation. Both sides lost.');N.push(['COOPERATE or HEDGE next','to break the spiral; the rival mirrors your last move.'])}
+  else if(bp==='esc'&&red==='coop'){R.push('You exploited their restraint. It paid once.');N.push(['Expect retaliation',': rivals remember. HEDGE next round.'])}
+  if(log.some(l=>l.startsWith('ATTRIBUTION')))N.push(['Buy INTEL','so the next criminal hack is not mistaken for a state attack.']);
+  if(log.some(l=>l.startsWith('ACCIDENT')))N.push(['Mandate testing + threat model','because accidents scale with RISK.']);
+  if(log.some(l=>l.startsWith('MODEL ATTACK')))N.push(['Red-teaming or agent safeguards','because MODEL SEC is below 60.']);
+  if(log.some(l=>l.startsWith('DISTILLATION')))N.push(['Anti-distillation checks at LABS','because they block about 75% of copy attempts.']);
+  if(log.some(l=>l.startsWith('MODEL THEFT')||l.startsWith('INSIDER THREAT')))N.push(['Secure the weights + insider program','because each theft hands the rival +5.']);
+  if(log.some(l=>/Ransomware season: (severe|moderate)/.test(l)))N.push(['Harden + fight gangs','because ransomware damage scales with CRIME.']);
+  if(log.some(l=>l.startsWith('HOME FRONT')))N.push(['Spend at TOWN','so the home-front penalty does not repeat.']);
+  if(log.some(l=>l.startsWith('ROBOT INCIDENT')))N.push(['Certify robots','because incidents scale with low ROBOT SAFETY.']);
+  if(!N.length)N.push(['Stay the course','; nothing went badly this round.']);
+  const left=S.maxRounds-S.round;
+  return dogHTML('ROUND REVIEW',`<i style="color:#9b9ac7">${dogLine('review')}</i><br>${R.join(' ')}${R.length?'<br>':''}<b style="color:#fff">Next round:</b>${N.slice(0,3).map(([a,b])=>`<br>• <b style="color:#4bd37b">${a}</b> ${b}`).join('')}<br><b style="color:#fff">On pace?</b> DIVIDEND ${m.good}/60 ${m.good>=60?'✓':'✗'} · HARM ${m.harm}/40 ${m.harm<40?'✓':'✗'} · EQUITY ${m.equity}/45 ${m.equity>=45?'✓':'✗'} · ${left} round${left===1?'':'s'} left`)}
 
 /* ===================== THREAT ANALYST ===================== */
 const LBL={sec:'SEC',econ:'ECON',trust:'TRUST',ally:'ALLY',esc:'ESC',risk:'RISK',rcap:'RIVAL',ccap:'CRIME',chips:'CHIPS',power:'POWER',talent:'TALENT',subs:'SUBS',good:'DIVIDEND',harm:'HARM',equity:'EQUITY',wellbeing:'WELLBEING',botsafe:'ROBOT SAFETY',modelsec:'MODEL SEC'};
@@ -1456,6 +1603,7 @@ function renderResolve(bp,red,cell,log,acc,fog){
    :`<path d="M4 22 H76" stroke="${col}" stroke-width="2" stroke-dasharray="2 6"><animate attributeName="stroke-dashoffset" from="0" to="-16" dur="1s" repeatCount="indefinite"/></path><text x="40" y="16" text-anchor="middle" font-family="Press Start 2P" font-size="7" fill="${col}">?</text>`;
   b.innerHTML=`<div class="clash ${hostile?'shake':''}"><div class="side"><div class="pt big">${portrait('you')}</div><span>YOU</span><b>${PL[bp]}</b></div><svg viewBox="0 0 80 44" class="link" shape-rendering="crispEdges">${link}</svg><div class="side"><div class="pt big">${portrait('rival')}</div><span>RIVAL</span><b>${PL[red]}</b></div></div>
    ${log.some(l=>l.startsWith('ACCIDENT'))?`<div class="dialog" style="margin-bottom:16px"><span class="who">GLITCH · NO ONE ORDERED THIS</span><span class="pt">${portrait('glitch')}</span>I was only trying to help. Nobody told me the substations mattered.</div>`:''}
+   <div style="margin-bottom:16px">${roundReview(bp,red,log,acc)}</div>
    <div class="dialog"><span class="who">RIVAL MINISTRY · INTERCEPT</span><span class="pt">${portrait('rival')}</span>${redReason(red)}</div>
    <div class="box" style="margin-top:14px"><h2>YOU: ${PL[bp]} · RIVAL: ${PL[red]}</h2><p style="margin:6px 0 10px">${cell.note}</p></div>`;
   b.appendChild(matrixEl(bp,red));
@@ -1515,7 +1663,7 @@ function finaleStory(){clearInterval(finTimer);const E=ending();const f=document
     <div class="fbtn"><button onclick="finaleCredits()">CREDITS ▶</button><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`;
   const c=document.getElementById('crawl');let i=0;const next=()=>{if(i>=lines.length)return;const [k,t]=lines[i++];const p=document.createElement('p');p.innerHTML=icon(k);const sp=document.createElement('span');p.appendChild(sp);c.appendChild(p);typeInto(sp,t,()=>setTimeout(next,250))};next()}
 function finaleCredits(){const f=document.getElementById('finale');SFX.fanfare();
-  const cast=[['THE CHAIR','YOU'],['THREAT ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CISO','SOC'],['GRID DEFENSE CHIEF','GRID'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
+  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['THREAT ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CISO','SOC'],['GRID DEFENSE CHIEF','GRID'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
   f.style.justifyContent='center';
   f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(24):''}<div class="credits"><div style="font-size:14px;color:#f7c948">SIGNAL / NOISE</div><div>A SUPERINTELLIGENCE WARGAME</div><b>STARRING</b>${cast.map(([a,b])=>`${a}<br><span style="color:#9b9ac7">${b}</span>`).join('<br>')}<b>FINAL SCORE</b>${scoreGame()} / 100<b>SI CLOCK</b>${S.si}%<b>THANK YOU FOR PLAYING</b><br><br></div>
     <div class="fbtn"><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`}
@@ -1600,7 +1748,7 @@ function carGo(d){const c=document.getElementById('car');const n=c.children.leng
   dots.querySelectorAll('i').forEach(e=>e.onclick=()=>c.scrollTo({left:+e.dataset.i*c.clientWidth+ +e.dataset.i*12,behavior:'smooth'}));
   const upd=()=>{const k=Math.round(c.scrollLeft/(c.clientWidth+12));dots.querySelectorAll('i').forEach((e,j)=>e.classList.toggle('on',j===k))};
   c.addEventListener('scroll',upd,{passive:true});upd();
-  const ch=document.getElementById('castHero');if(ch)ch.innerHTML=heroSVG('width="100%" height="100%"');const cg=document.getElementById('castGlitch');if(cg)cg.innerHTML=glitchSVG('width="100%" height="100%"');
+  const ch=document.getElementById('castHero');if(ch)ch.innerHTML=heroSVG('width="100%" height="100%"');const cd=document.getElementById('castDog');if(cd)cd.innerHTML=dogSVG('width="100%" height="100%"');const cg=document.getElementById('castGlitch');if(cg)cg.innerHTML=glitchSVG('width="100%" height="100%"');
   const w=document.getElementById('winpose');if(w)w.innerHTML=spr(HERO_WIN.concat(LEGS_A),HERO_PAL,12,16,'width="100%" height="100%"');})();
 </script>
 </body>

@@ -509,6 +509,7 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
 .mchip{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:11px;padding:6px 8px;box-shadow:2px 2px 0 #000}
 .mchip.on{background:#f2c14e;color:#000;border-color:#000}
 .banal{margin:6px 0 0;padding-left:20px}.banal li{margin:8px 0;line-height:1.45}.banal b{color:#f2c48a}
+.bsum{margin-top:8px!important;font-family:VT323,monospace;font-size:19px;line-height:1.3;color:#e6e4f5}
 </style>
 </head>
 <body>
@@ -1596,7 +1597,7 @@ function weighPoints(I){const m=S.m,keys=new Set([...Object.keys(I.a.fx||{}),...
   return W.slice(0,4)}
 function optWeigh(k,c){const {P,C}=prosCons(c.fx);return `<div class="wopt"><div class="wh"><span class="optk ${k}">${k.toUpperCase()}</span><b>${c.t.replace(/^[AB] · /,'')}</b></div>${P.length?`<div class="wp">✓ ${P.join(', ')}</div>`:''}${C.length?`<div class="wc">✗ ${C.join(', ')}</div>`:''}</div>`}
 let LEANS=[];
-function leanHTML(txt){const i=LEANS.push(txt)-1;return `<button class="leanbtn" onclick="event.stopPropagation();openLean(${i})"><span class="lbdog">${dogSVG()}</span><span class="lbt">Still stuck? <b>Hear Byte’s lean</b></span><span class="lbarr">▶</span></button>`}
+function leanHTML(txt){return ''}
 function byteDrawer(sub,title,html){const el=document.getElementById('learnDrawer');
   el.innerHTML=`<div class="lsheet bytesheet" role="dialog" aria-label="Byte"><div class="lgrab"></div><div class="lhead"><div class="bdpt">${dogSVG()}</div><div style="flex:1;min-width:0"><div class="lsub" style="color:#f2c48a">🐾 BYTE · ${sub}</div><div class="ltitle">${title}</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody">${html}</div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;
   el.classList.add('on')}
@@ -1632,8 +1633,55 @@ function byteAnalysis(a){const m=S.m,B=[],{P,C}=prosCons(a.fx);const pcLeft=S.pc
   if(B.length<3&&!ACT_HINT[a.id])B.push('<b>Rule of thumb:</b> worth it when the meters it improves are below 50, and you still have PC for the other fronts.');
   if(B.length<3&&ACT_HINT[a.id])B.push(`<b>Rule of thumb:</b> best when ${ACT_HINT[a.id][0].replace(/\.$/,'').toLowerCase()}.`);
   return B.slice(0,5)}
-function openByteCard(id){const a=ACTIONS.find(x=>x.id===id),H=ACT_HINT[id],rec=recommendPlan().picks.find(([x])=>x===id);
-  byteDrawer(a.name,'My analysis',`<div class="lsec"><div class="llbl" style="color:#f2c48a">🐾 BYTE’S ANALYSIS</div><ul class="banal">${byteAnalysis(a).map(x=>`<li>${x}</li>`).join('')}</ul></div>`+(H?`<div class="lsec"><div class="llbl" style="color:#4bd37b">✓ BEST WHEN</div><p>${H[0]}</p></div><div class="lsec"><div class="llbl" style="color:#ff8f8f">✗ SKIP WHEN</div><p>${H[1]}</p></div>`:'')+leanHTML(rec?'I lean yes this round. '+rec[1]:'I lean no. Other buys matter more this round.'))}
+const LEARN_ACT={
+ harden:"Most hospitals, water plants and power grids run on old software that is hard to patch. Hardening means updating systems, splitting networks so one break-in cannot spread, and keeping offline backups. It is slow, unglamorous work, but it lowers the damage from every kind of attack: rival, criminal or accidental.",
+ evals:"Before a powerful model is released, testers check what it can do: write malware, help with weapons, deceive users. Pre-deployment evaluations make that testing mandatory. They slow launches a little, but catch dangerous abilities before the public gets them.",
+ liab:"Liability means a company pays when its product causes harm. A safe harbor protects companies that followed agreed safety steps. Together they reward careful labs and punish reckless ones, without banning anything outright.",
+ chips:"Export controls are rules that block selling certain technology to a rival. Advanced AI chips are the most powerful lever, because training frontier models needs huge numbers of them. Controls slow the rival, but cost your own companies sales and invite retaliation.",
+ toolctl:"Chips are made with extremely specialized machines that only a few countries can build. Controlling those machines slows a rival for years, not months, because it stops them from making their own advanced chips. It only works if every country that makes the machines agrees.",
+ cloudkyc:"KYC means Know Your Customer. Cloud companies rent out powerful chips over the internet, so a rival blocked from buying chips can sometimes rent them instead. Checking who rents large amounts of compute closes that loophole.",
+ antismug:"When chips are banned, smugglers route them through shell companies in third countries. Enforcement means tracking shipments, checking end users and penalizing brokers. Controls without enforcement are mostly a signal.",
+ minerals:"Chips, batteries and magnets need rare minerals that a few countries dominate. A reserve, recycling and supply deals with friendly countries mean a rival cannot easily squeeze you by cutting off supplies.",
+ offense:"Forward defense means operating inside an adversary’s networks to disrupt attacks before they reach you. It can stop threats early, but the other side sees it as aggression, and it raises the risk of escalation.",
+ intel:"Intelligence collection gathers information on what the rival is planning and who is behind attacks. Good intelligence turns guessing into strategy and prevents blaming the wrong party for an attack.",
+ coord:"Allied coordination means acting together with friendly countries: shared controls, shared warnings and joint responses. A coalition’s pressure is harder to dodge, and a shared response is less likely to look like one country picking a fight.",
+ norms:"Norms are shared rules of behavior, like agreeing not to attack hospitals. Norms talks build trust slowly, but they fall apart if one side looks aggressive at the same time.",
+ cvd:"Coordinated vulnerability disclosure is a system where researchers who find software flaws report them privately so they can be fixed before attackers find them. Funding it makes everyone’s software safer.",
+ weights:"Open-weight models publish the files that make a model work, so anyone can run or modify them. Restricting release of the most powerful ones keeps dangerous capabilities away from bad actors, but slows research and helps big companies over small ones.",
+ crime:"AI tools make ransomware, scams and fraud cheaper to run. Disrupting syndicates means taking down their servers, seizing payments and arresting leaders, often with partner countries.",
+ insider:"Many of the worst leaks come from people who already have access. Insider-threat programs use access logs, least privilege (only the access you need) and two-person rules for sensitive actions.",
+ tmodel:"Threat modeling asks four questions: who might attack, what do they want, how could they get in, and where are we weakest? It makes the rest of your security spending smarter.",
+ fabs:"Fabs are chip factories. High-bandwidth memory is the special memory AI chips need. Both are hugely expensive and take years to build, but they reduce dependence on a few overseas suppliers.",
+ power:"AI data centers need enormous, steady electricity. Building new power plants and grid connections takes years, so planning ahead keeps compute affordable without pushing up household bills.",
+ talent:"A few thousand researchers drive frontier AI. Talent pipelines include training programs, scholarships and visas that attract and keep top engineers and scientists.",
+ tamper:"Safety training in an open model can be stripped away with simple tricks. Tamper-resistant safeguards are research and methods that make those protections harder to remove.",
+ retrain:"When AI automates jobs, workers need a path forward: retraining, wage insurance while they switch careers, and benefits that move with them from job to job.",
+ audit:"Algorithms used for hiring, loans or housing can repeat past unfairness found in their training data. Fairness audits test results across different groups before the system is used on real people.",
+ privacy:"AI systems run on data. Privacy laws limit what can be collected, how long it is kept, and whether it can be sold, giving people more control over their information.",
+ access:"Public AI access gives schools, libraries and small businesses affordable access to powerful tools, so the benefits are not limited to people who can pay the most.",
+ kids:"Youth online safety rules set age-appropriate defaults: private accounts, limits on contact from strangers, and stronger protection from harmful content for kids and teens.",
+ feeds:"Recommendation feeds learn what keeps each person scrolling. Rules for minors can turn off autoplay and endless scroll, limit late-night notifications, and stop engagement-maximizing design for kids.",
+ phonefree:"Phone-free school policies keep phones put away during the school day. Supporters point to better attention and in-person friendships during class time.",
+ botcert:"Like cars and elevators, robots that work around people need safety testing: speed limits, force limits and reliable emergency stops before they are sold.",
+ botsec:"A connected robot can be hacked like any computer, but a hacked robot can move and cause physical harm. Cybersecurity standards require secure updates, strong logins and safe failure modes.",
+ botliab:"When a robot hurts someone, who pays? Clear liability rules and insurance requirements make sure victims are compensated and push makers to build safer machines.",
+ botprivacy:"Home robots have cameras and microphones that see and hear everything. Privacy rules limit recording, require consent and visible indicators, and ban selling what they collect.",
+ botdividend:"An automation dividend shares some of the gains from robot labor with the public, for example through a fund or tax, so productivity gains do not all go to a few owners.",
+ weightsec:"Model weights are the files that make a frontier model work, and they can be worth billions. Securing them means isolated networks, hardware protections and strict access rules, treating them like crown jewels.",
+ apiguard:"Distillation means training a cheap copy of a model by asking it millions of questions. API checks spot unusual query patterns, set rate limits and verify who is using the service.",
+ redteam:"Red teams attack your own systems on purpose to find weak spots first. For AI, that means trying jailbreaks, prompt injection and data poisoning before real attackers do.",
+ provenance:"Provenance means tracking where training data and models came from. It helps catch poisoned data and backdoored models before they are used.",
+ agentsafe:"AI agents can take actions: send emails, move money, run code. Safeguards limit their permissions, require confirmation for risky steps, and resist hidden instructions planted in web pages or files.",
+ vulnshare:"Model flaw reporting lets researchers and users report dangerous model behaviors privately, so labs can fix them quickly before they spread.",
+ bounty:"Bug bounties pay outside researchers who find and responsibly report flaws. For AI, they reward finding ways to break model safety before attackers do."
+};
+function openByteCard(id){const a=ACTIONS.find(x=>x.id===id),H=ACT_HINT[id];const L=LOCS.find(l=>l.id===a.loc);
+  byteDrawer(a.name,'What you should know',
+   `<div class="lsec"><div class="llbl" style="color:#5ab0ff">📋 SUMMARY</div><p>${a.desc}</p><p class="bsum">${fxLine(a.fx)} · <b>${a.cost} PC</b> · ${L?L.short:''} · ${a.tag||''}</p></div>`+
+   (LEARN_ACT[id]?`<div class="lsec"><div class="llbl" style="color:#9fb8e8">📘 THE IDEA IN THE REAL WORLD</div><p>${LEARN_ACT[id]}</p></div>`:'')+
+   `<div class="lsec"><div class="llbl" style="color:#f2c48a">🐾 BYTE’S ANALYSIS</div><ul class="banal">${byteAnalysis(a).map(x=>`<li>${x}</li>`).join('')}</ul></div>`+
+   (H?`<div class="lsec"><div class="llbl" style="color:#4bd37b">✓ MAKES SENSE WHEN</div><p>${H[0]}</p></div><div class="lsec"><div class="llbl" style="color:#ff8f8f">✗ THINK TWICE WHEN</div><p>${H[1]}</p></div>`:'')+
+   `<div class="lsec"><div class="llbl" style="color:#ffd23f">🤔 ASK YOURSELF</div><p>Which meter is closest to a danger line right now, and does this help it? What else could ${a.cost} PC buy this round?</p></div>`)}
 function weighHTML(I,rc){return `<div class="beatlbl">WEIGHING IT</div>${optWeigh('a',I.a)}${optWeigh('b',I.b)}<div class="beatlbl">WHAT TO WEIGH RIGHT NOW</div><ul class="wlist">${weighPoints(I).map(x=>`<li>${x}</li>`).join('')}</ul><p class="beatsmall">There is no free option. Pick the cost you can best afford.</p>${rc?leanHTML(`I lean ${rc[0].toUpperCase()}. ${rc[1]}`):''}`}
 function chooseInject(k){
   const c=currentInject[k];const before={...S.m};applyFx(c.fx);S.injectLog.push(currentInject.id);

@@ -614,6 +614,16 @@ svg .spark{transform-box:fill-box;transform-origin:center;animation:sparkTooth 6
 .unlk{flex:1;min-width:90px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;background:#0f1130;border:2px solid #39ff8a;text-align:center}
 .unli{width:54px;height:54px}.unli svg{width:100%;height:100%;display:block}
 .unlk b{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:12px;letter-spacing:.5px}.unlk span{font-size:15px;color:#9fb8e8;line-height:1.15}
+
+.scib{display:flex;gap:10px;align-items:flex-start;margin-top:14px;padding:10px;background:#0f1130;border:2px solid #343b58}
+.scipt{flex:none;width:56px;height:56px;border:3px solid #e8e4d8;background:linear-gradient(#2a3166,#161a3a);overflow:hidden}.scipt svg{width:100%;height:100%;display:block}
+.learnbtn.sci2{top:auto;bottom:0;right:0}
+.stgrid{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.stbtn{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:12px 14px;font-family:'VT323',monospace;font-size:19px;line-height:1.2;background:#141633;border:3px solid #39ff8a;box-shadow:4px 4px 0 #000;color:#f4f1e6}
+.stbtn b{font-family:'Press Start 2P',monospace;font-size:11px;color:#fff}.stbtn span{color:#d8d6ee}.stbtn i{font-style:normal;color:#9fb8e8;font-size:16px}
+.stbtn.sel{background:#3b2f08;border-color:var(--gold)}.stbtn.sel b{color:var(--gold)}
+.bytechip.wide{width:100%;justify-content:center;margin:10px 0}
+.scilearn{margin-top:8px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:800;font-size:11px;padding:7px 10px;background:#0b0c22;color:#ffe14d;border:2px solid #ffe14d;box-shadow:2px 2px 0 #000}
 </style>
 </head>
 <body>
@@ -1587,7 +1597,7 @@ const SCI={20:['Today\u2019s frontier systems write code, analyze data and help 
  50:['Systems now run research labs around the clock, designing experiments and new drugs.','The dividend speeds up, and so do accidents. Testing and robot certification matter more now.'],
  70:['Systems now outperform people at most cognitive work.','Jobs shift fast. Watch EQUITY, and keep humans in charge of force and critical decisions.'],
  90:['We are close to the superintelligence threshold. Whatever we built now runs at machine speed.','No time for new foundations. Protect what works and lock in the gains.']};
-const BEAT_STEPS=['SITUATION','EVENT','ADVICE','YOUR CALL','NEXT'];
+const BEAT_STEPS=['SITUATION','CRISIS','YOUR CALL','STANCE','MAP'];
 
 /* ===== LEARN DRAWER: educational explainers ===== */
 const LEARN_INJ={
@@ -1749,21 +1759,17 @@ function startRound(){
     body:`<p class="beattxt">${st.idea}</p><div class="beatlbl">NOW OPEN ON THE MAP</div><div class="unl">${st.locs.map(id=>{const L=LOCS.find(l=>l.id===id);return `<div class="unlk"><div class="unli">${sprite(id)}</div><b>${L.short}</b><span>${L.name}</span></div>`}).join('')}</div>${S.round===1?'<p class="beatsmall">More buildings and crises unlock as the rounds go on. Learn one layer at a time.</p>':''}`,next:'CONTINUE ▶'})});
   beats.push({step:'SITUATION',frame:portrait('brief'),who:curBriefer().n,role:curBriefer().t+' · '+dateFor(S.round),
     body:`<p class="beattxt" id="beatTxt"></p>${stageIdx()>=3?`<div class="pgap"><span>POWER GAP</span><b class="${S.m.econ-S.m.rcap<4?'dn':'up'}">You ${Math.round(S.m.econ)} vs Rival ${Math.round(S.m.rcap)}</b>${S.m.econ-S.m.rcap<4?'<i>Thucydides Trap zone</i>':S.m.econ-S.m.rcap<10?'<i>Gap narrowing</i>':''}</div>`:''}${stageIdx()>=3?`<div class="pgap tokl mt" data-tok="1" onclick="openLearn('con:tokens')"><span>TOKEN PRICE</span><b>$${S.tok} per million tokens</b>${S.tokPrev?`<i>${Math.round((1-S.tok/S.tokPrev)*100)}% cheaper than last round</i>`:'<i>tap to learn</i>'}</div>`:''}<div class="beatlbl">TOP THREATS</div><div class="tchips">${chips}</div>`+(lf?`<p class="beatsmall">Last round: ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ Home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}</p>`:''),
-    learn:'brief',type:briefText(),next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']});
+    learn:'brief',type:briefText(),next:currentInject?'FLASH TRAFFIC ▶':'YOUR STANCE ▶',go:currentInject?null:toStance,skip:currentInject?null:['CRISIS','YOUR CALL']});
   S.siSeen=S.siSeen||[];const sm=[20,30,50,70,90].filter(t=>S.si>=t&&!S.siSeen.includes(t));
-  if(sm.length){const t=sm[sm.length-1];sm.forEach(x=>S.siSeen.push(x));
-    beats.push({step:'SITUATION',frame:portrait('sci'),who:'DR. VERA SATO',role:'CHIEF SCIENTIST · SI CLOCK '+S.si+'%',
-      body:`<div class="beatlbl">WHAT SI CAN DO NOW</div><p class="beattxt" id="beatTxt"></p><div class="beatlbl">WHAT IT MEANS FOR YOU</div><p class="beattxt" style="font-size:19px">${SCI[t][1]}</p>`,learn:'sci:'+t,type:SCI[t][0],next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']});
-    beats[beats.length-2].next='SCIENCE UPDATE ▶'}
+  if(sm.length){const t=sm[sm.length-1];sm.forEach(x=>S.siSeen.push(x));const sb=beats[beats.length-1];
+    sb.body+=`<div class="scib"><div class="scipt">${portrait('sci')}</div><div><div class="beatlbl" style="margin-top:0">DR. VERA SATO · SI CLOCK ${S.si}%</div><p class="beattxt" style="font-size:19px;margin:4px 0 0">${SCI[t][0]}</p><p class="beatsmall" style="margin-top:4px">${SCI[t][1]}</p><button class="scilearn" onclick="openLearn('sci:${t}')">ⓘ WHAT THIS STAGE MEANS</button></div></div>`}
   if(currentInject){const ic=INJ_ICON[currentInject.id]||'eye';const isG=['autoacc','leak','zeroday'].includes(currentInject.id);
-    beats.push({step:'EVENT',flash:true,frame:isG?glitchSVG('width="100%" height="100%"'):`<div class="bigicon">${icon(ic,'width="100%" height="100%"')}</div>`,who:'FLASH TRAFFIC',role:currentInject.title,
-      body:`<p class="beattxt">${currentInject.body}</p><p class="beatsmall">A decision is required before orders go out.</p>`,learn:'inj:'+currentInject.id,next:'ASK BYTE ▶'})}
+    beats.push({step:'CRISIS',flash:true,frame:isG?glitchSVG('width="100%" height="100%"'):`<div class="bigicon">${icon(ic,'width="100%" height="100%"')}</div>`,who:'FLASH TRAFFIC',role:currentInject.title,
+      body:`<p class="beattxt">${currentInject.body}</p><p class="beatsmall">A decision is required before orders go out.</p>`,learn:'inj:'+currentInject.id,next:'YOUR CALL ▶'})}
   const rc=currentInject&&INREC[currentInject.id]?INREC[currentInject.id](S):null;
-  beats.push({step:'ADVICE',learn:'byte',frame:dogSVG('width="100%" height="100%"'),who:'BYTE',role:'ADVISOR DOG',
-    body:(currentInject?weighHTML(currentInject,rc):'')+(T.length?`<div class="beatlbl">${currentInject?'WATCH-OUTS FOR YOUR ORDERS':'WATCH-OUTS THIS ROUND'}</div>`+T.map(([t,w],i)=>`<div class="tip"><span class="tipn">${i+1}</span><div><b>${t}</b><br><span>Why: ${w}</span></div></div>`).join(''):''),
-    next:currentInject?'YOUR CALL ▶':'TO THE MAP ▶',go:currentInject?null:toMap,skip:currentInject?null:['EVENT','YOUR CALL']});
+  S.roundTips=T;
   if(currentInject)beats.push({step:'YOUR CALL',frame:portrait('you'),who:'YOU',role:'THE CHAIR · CHOOSE ONE',learn:'inj:'+currentInject.id,
-    body:`<p class="beattxt">${currentInject.title}</p>${optCard('a',currentInject.a,rc)}${optCard('b',currentInject.b,rc)}`,next:null});
+    body:`<p class="beattxt">${currentInject.title}</p><button class="bytechip wide" onclick="openByteCrisis()"><span class="lbdog">${dogSVG()}</span><span>ASK BYTE TO WEIGH IT</span></button>${optCard('a',currentInject.a,rc)}${optCard('b',currentInject.b,rc)}`,next:null});
   beatI=0;renderBeat();
 }
 
@@ -1927,6 +1933,14 @@ function openByteCard(id){const a=ACTIONS.find(x=>x.id===id),H=ACT_HINT[id];cons
    (H?`<div class="lsec"><div class="llbl" style="color:#4bd37b">✓ MAKES SENSE WHEN</div><p>${H[0]}</p></div><div class="lsec"><div class="llbl" style="color:#ff8f8f">✗ THINK TWICE WHEN</div><p>${H[1]}</p></div>`:'')+
    `<div class="lsec"><div class="llbl" style="color:#ffd23f">🤔 ASK YOURSELF</div><p>Which meter is closest to a danger line right now, and does this help it? What else could ${a.cost} PC buy this round?</p></div>`)}
 function weighHTML(I,rc){return `<div class="beatlbl">WEIGHING IT</div>${optWeigh('a',I.a)}${optWeigh('b',I.b)}<div class="beatlbl">WHAT TO WEIGH RIGHT NOW</div><ul class="wlist">${weighPoints(I).map(x=>`<li>${x}</li>`).join('')}</ul><p class="beatsmall">There is no free option. Pick the cost you can best afford.</p>${rc?leanHTML(`I lean ${rc[0].toUpperCase()}. ${rc[1]}`):''}`}
+
+function stanceHTML(){const ev=postureEV(),last=S.redHist[S.redHist.length-1],R=RIVALS[S.rival];
+  const btn=k=>`<button class="stbtn${S.posture===k?' sel':''}" onclick="S.posture='${k}';renderBeat();SFX.ok()"><b>${PL[k]}</b><span>${{coop:'Offer restraint. Pays off if they match it; costly if they exploit it.',hedge:'Stay guarded. Safe and steady, but slow.',esc:'Race ahead. Can win one round; they will remember.'}[k]}</span><i>Odds they ${k==='coop'?'cooperate':k==='hedge'?'stay neutral':'compete'}: ${Math.round(ev.pr[k]*100)}%</i></button>`;
+  return `<p class="beattxt" style="font-size:19px">Both sides choose at the same time. ${last?`Last round the rival chose <b style="color:#ffd23f">${PL[last]}</b>.`:`A ${R.name} tends to ${R.coop>.4?'reciprocate':'probe for weakness'}.`}</p><div class="stgrid">${P.map(btn).join('')}</div>${S.flags.intel?`<div class="ana"><b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}</div>`:''}<button class="bytechip wide" onclick="openByteStance()"><span class="lbdog">${dogSVG()}</span><span>ASK BYTE ABOUT STANCE</span></button>`}
+function toStance(){const b={step:'STANCE',learn:'brief',frame:portrait('you'),who:'YOU',role:'THE CHAIR · CHOOSE A STANCE',get body(){return stanceHTML()},get next(){return S.posture?'TO THE MAP ▶':null},go:()=>{if(!S.posture)return;toMap()}};
+  const k=beats.findIndex(x=>x.step==='STANCE');if(k>=0)beats[k]=b;else beats.push(b);beatI=beats.length-1;renderBeat()}
+function openByteStance(){const ev=postureEV(),T=S.roundTips||[];byteDrawer('YOUR STANCE','Weighing the three options',`<div class="lsec"><div class="llbl" style="color:#f2c48a">🐾 THE MATH</div><p>Rival odds: cooperate ${Math.round(ev.pr.coop*100)}% · stay neutral ${Math.round(ev.pr.hedge*100)}% · compete ${Math.round(ev.pr.esc*100)}%</p><ul class="banal">${P.map(k=>`<li><b>${PL[k]}:</b> expected SEC ${ev.sc[k].sec>=0?'+':''}${ev.sc[k].sec.toFixed(1)}, ESC ${ev.sc[k].esc>=0?'+':''}${ev.sc[k].esc.toFixed(1)}</li>`).join('')}</ul></div><div class="lsec"><div class="llbl" style="color:#ffd23f">WEIGH IT</div><p>COOPERATE pays off only if they cooperate too, and they may exploit it. COMPETE can race ahead for one round, but they remember. STAY NEUTRAL is safe but slow. In a repeated game, matching their last move and forgiving now and then tends to win.</p></div>${T.length?`<div class="lsec"><div class="llbl" style="color:#ff8f8f">WATCH-OUTS FOR YOUR ORDERS</div><ul class="banal">${T.map(([t,w])=>`<li><b>${t}</b> ${w}</li>`).join('')}</ul></div>`:''}`)}
+function openByteCrisis(){const I=currentInject,rc=INREC[I.id]?INREC[I.id](S):null;byteDrawer(I.title,'Weighing both options',weighHTML(I,rc))}
 function chooseInject(k){
   const c=currentInject[k];const before={...S.m};applyFx(c.fx);S.injectLog.push(currentInject.id);
   S.lastInject={title:currentInject.title,log:c.log,fx:c.fx};
@@ -1936,9 +1950,9 @@ function chooseInject(k){
   renderHud();SFX.ok();
   const d=Object.keys(S.m).filter(x=>S.m[x]!==before[x]&&LBL[x]).map(x=>{const v=S.m[x]-before[x];const good=BAD.includes(x)?v<0:v>0;return `<span class="${good?'up':'dn'} mt" data-m="${x}">${good?'✓':'✗'} ${LBL[x]} ${v>0?'+':''}${v}</span>`}).join(' · ');
   const chg=Object.keys(S.m).filter(x=>S.m[x]!==before[x]&&LBL[x]);
-  beats.push({step:'NEXT',learn:'out:'+chg.join(','),frame:portrait('brief'),who:curBriefer().n,role:'BRIEFER · OUTCOME',
-    body:`<p class="beattxt" id="beatTxt"></p><div class="beatfx">${d||'No change.'}</div>${chg.length?`<ul class="wlist chgl">${chg.map(x=>{const v=S.m[x]-before[x];return `<li><b>${FULLN[x]}</b> ${PLAIN[x]?'· '+PLAIN[x][v>0?0:1]:''}</li>`}).join('')}</ul><p class="beatsmall">Tap any meter tag to learn what it means.</p>`:''}<div class="beatlbl">WHAT'S NEXT</div><div class="tip"><span class="tipn">1</span><div><b>Set your posture at HQ</b></div></div><div class="tip"><span class="tipn">2</span><div><b>Spend your PC at buildings</b></div></div><div class="tip"><span class="tipn">3</span><div><b>Tap End Turn</b></div></div>`,
-    type:c.log,next:'TO THE MAP ▶',go:toMap});
+  beats.push({step:'YOUR CALL',learn:'out:'+chg.join(','),frame:portrait('brief'),who:curBriefer().n,role:'BRIEFER · OUTCOME',
+    body:`<p class="beattxt" id="beatTxt"></p><div class="beatfx">${d||'No change.'}</div>${chg.length?`<ul class="wlist chgl">${chg.map(x=>{const v=S.m[x]-before[x];return `<li><b>${FULLN[x]}</b> ${PLAIN[x]?'· '+PLAIN[x][v>0?0:1]:''}</li>`}).join('')}</ul><p class="beatsmall">Tap any meter tag to learn what it means.</p>`:''}<div class="beatlbl">WHAT'S NEXT</div><div class="tip"><span class="tipn">1</span><div><b>Choose your stance toward the rival</b></div></div><div class="tip"><span class="tipn">2</span><div><b>Spend your PC on the map</b></div></div><div class="tip"><span class="tipn">3</span><div><b>Tap End Turn</b></div></div>`,
+    type:c.log,next:'YOUR STANCE ▶',go:toStance});
   beatI++;renderBeat();
 }
 
@@ -2117,8 +2131,8 @@ function openMapInfo(k){const el=document.getElementById('learnDrawer');const o=
   el.innerHTML=`<div class="lsheet" role="dialog"><div class="lgrab"></div><div class="lhead"><div><div class="lsub">${k==='plan'?'🐾 BYTE':'📋 MAP'}</div><div class="ltitle">${k==='plan'?'Suggested plan':'Orders & map key'}</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody">${body}</div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;el.classList.add('on')}
 function updateHint(){
   const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);const e=document.getElementById('mapHint');
-  const step=!S.posture?1:(S.pc>0?2:3);
-  document.getElementById('mapSteps').innerHTML=[['1 · SET POSTURE<br>AT HQ',1],['2 · SPEND '+S.pc+' PC<br>AT BUILDINGS',2],['3 · END TURN<br>(RED BUTTON)',3]].map(([t,i])=>`<div class="${i===step?'now':i<step?'ok':''}">${t}</div>`).join('')+`<div class="help" onclick="showGuide()">?</div>`;
+  const step=S.pc>0?1:2;
+  document.getElementById('mapSteps').innerHTML=[['1 · SPEND '+S.pc+' PC<br>AT BUILDINGS',1],['2 · END TURN<br>(RED BUTTON)',2]].map(([t,i])=>`<div class="${i===step?'now':i<step?'ok':''}">${t}</div>`).join('')+`<div class="help" onclick="showGuide()">?</div>`;
   e.innerHTML=L?`<b style="color:var(--gold)">${L.name}</b> · tap it to open`:`<b>Tap any building</b> to open it · Posture: <b style="color:var(--gold)">${S.posture?PL[S.posture]:'NOT SET'}</b>`;
   {const o=document.getElementById('orders');const items=[];
     if(S.posture)items.push(`<span class="oc" style="border-color:${PCOL[S.posture]};color:${PCOL[S.posture]}" onclick="openLoc(LOCS[0])">${PL[S.posture]} · HQ</span>`);
@@ -2140,19 +2154,8 @@ function openLoc(L){
   showGame('g-loc');SFX.sel();
   document.getElementById('locWho').textContent=L.who;document.getElementById('locRole').textContent=(L.title?L.title+' · ':'')+L.name;document.getElementById('locPt').innerHTML=portrait(L.id);document.getElementById('locLearn').innerHTML=learnBtn('loc:'+L.id);
   {const fr=document.getElementById('locPt');fr.classList.add('talking');typeInto(document.getElementById('locTxt'),L.intro,()=>fr.classList.remove('talking'))}
-  const body=document.getElementById('locBody');body.innerHTML=`<p class="small" style="margin-bottom:10px">${L.id==='wh'?'Pick a posture (required, free), then tap any card to buy it.':'Tap a card to buy it with PC. Tap again to undo.'} You have <b style="color:var(--gold)">${S.pc} PC</b> left.</p>`;
-  if(L.id==='wh'){
-    const box=document.createElement('div');box.className='box';
-    box.innerHTML=`<h2>SET POSTURE</h2><p class="small">Simultaneous move vs. the rival. Free. Required.</p>
-    <div class="post" id="post"></div><div id="intelHint" class="small" style="margin-top:8px"></div>`;
-    body.appendChild(box);
-    const p=box.querySelector('#post');
-    const recP=recommendPlan().posture;P.forEach(k=>{const b=document.createElement('button');b.innerHTML=PL[k];b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();toast('POSTURE SET · NOW SPEND PC');openLoc(L)};p.appendChild(b)});
-    {const last=S.redHist[S.redHist.length-1];const R=RIVALS[S.rival];box.querySelector('#intelHint').innerHTML=anaHTML('RISK ANALYST',last?`Rival (${R.name}) last chose <b>${PL[last]}</b>. They remember ${R.memory} round${R.memory>1?'s':''} of your moves. ${last==='esc'?'Answering with STAY NEUTRAL or COMPETE avoids being farmed; COOPERATE risks the sucker\'s payoff.':last==='coop'?'COOPERATE locks in mutual restraint; COMPETE outpaces them once, and they\'ll remember.':'They\'re probing. Matching with STAY NEUTRAL is safe; COOPERATE can invite reciprocity.'}`:`Opening move. A ${R.name} starts ${R.coop>.4?'inclined to cooperate':R.esc>.5?'inclined to compete':'opportunistic'}. Buy INTEL (1 PC) to see their likely move.`)}
-    {const ev=postureEV(),rp=recommendPlan().posture;box.querySelector('#intelHint').innerHTML+=dogHTML('THE MATH',`<i style="color:#9b9ac7">${dogLine('math')}</i><br>`+`Rival odds: cooperate ${Math.round(ev.pr.coop*100)}% · stay neutral ${Math.round(ev.pr.hedge*100)}% · compete ${Math.round(ev.pr.esc*100)}%`+P.map(k=>`<br>· <b style="color:#fff">${PL[k]}</b>: SEC ${ev.sc[k].sec>=0?'+':''}${ev.sc[k].sec.toFixed(1)}, ESC ${ev.sc[k].esc>=0?'+':''}${ev.sc[k].esc.toFixed(1)}`).join('')+`<br><b style="color:#ffd23f">Weigh it:</b> COOPERATE pays off only if they cooperate too, and they may exploit it. COMPETE can race ahead for one round, but they remember. STAY NEUTRAL is safe but slow.`+leanHTML(ev.best===rp?`I lean ${PL[rp]}. Short-term math and long-term reciprocity agree.`:`Short-term math favors ${PL[ev.best]}, but I lean ${PL[rp]} because the rival remembers your move next round.`))}
-    if(S.flags.intel){box.querySelector('#intelHint').innerHTML+=`<div class="ana"><b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}</div>`}
-    body.appendChild(matrixEl(null,null));
-  }
+  const body=document.getElementById('locBody');body.innerHTML=`<p class="small" style="margin-bottom:10px">${'Tap a card to buy it with PC. Tap again to undo.'} You have <b style="color:var(--gold)">${S.pc} PC</b> left.</p>`;
+  if(L.id==='wh'){const box=document.createElement('div');box.className='box';box.innerHTML=`<h2>YOUR STANCE: <span style="color:${PCOL[S.posture]||'#fff'}">${S.posture?PL[S.posture]:'NOT SET'}</span></h2><p class="small">Change it any time before End Turn.</p><div class="post">${P.map(k=>`<button class="${S.posture===k?'sel':''}" onclick="S.posture='${k}';SFX.ok();openLoc(LOCS[0])">${PL[k]}</button>`).join('')}</div>`;body.appendChild(box);body.appendChild(matrixEl(null,null))}
   if(L.id==='soc'&&S.flags.tmodel){const tb=document.createElement('div');tb.className='box';tb.style.marginBottom='12px';tb.innerHTML=`<h3>THREAT MODEL</h3><p class="small" style="margin-top:6px">${S.tmReveal}</p><p class="small">Insider risk this round: ${Math.round(insiderP()*100)}%</p>`;body.appendChild(tb)}
   ACTIONS.filter(a=>a.loc===L.id).forEach(a=>{
     const picked=S.picks.includes(a.id);
@@ -2468,7 +2471,7 @@ function checkDeath(){if(S.dead)return;if(S.m.esc>=90)S.dead='Escalation reached
   else if(S.m.trust<=10)S.dead='Trust collapsed. Lawmakers stripped your cell of its authority. The game continues — without you.'}
 
 function openResolveCheck(){
-  if(!S.posture){toast('SET POSTURE AT HQ');SFX.bad();hero={x:3,y:2};placeHero();return}
+  if(!S.posture){toast('CHOOSE A STANCE FIRST');SFX.bad();toStance();showGame('g-brief');return}
   resolve();
 }
 

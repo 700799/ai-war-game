@@ -1080,11 +1080,13 @@ const PT={
 const glitchSVG=(a='')=>{const OL='#10261f',Y='#f8f0a0';let t='',b='';[32,40,48,56,64].forEach(x=>t+=`<path d="M${x} 59 L${x+3.5} 67 L${x+7} 59 Z"/>`);[35,43.5,52,60.5].forEach(x=>b+=`<path d="M${x} 82 L${x+3.5} 74 L${x+7} 82 Z"/>`);
   return `<svg ${a} viewBox="0 0 100 120"><ellipse cx="50" cy="116" rx="30" ry="3.5" fill="rgba(0,0,0,.3)"/><g stroke="${OL}" stroke-width="4" stroke-linejoin="round" fill="${Y}"><path d="M22 32 L17 6 L41 20 Z"/><path d="M78 32 L83 6 L59 20 Z"/><path d="M30 100 L30 114 L45 114 L45 100"/><path d="M55 100 L55 114 L70 114 L70 100"/><path d="M14 52 Q14 14 50 14 Q86 14 86 52 L88 96 Q88 106 76 106 L24 106 Q12 106 12 96 Z"/><path d="M15 60 Q3 80 8 98 Q14 101 19 96"/><path d="M85 60 Q97 80 92 98 Q86 101 81 96"/><circle cx="36" cy="38" r="12" fill="#fff"/><circle cx="64" cy="38" r="12" fill="#fff"/></g><circle cx="40" cy="40" r="5.5" fill="${OL}"/><circle cx="68" cy="40" r="5.5" fill="${OL}"/><circle cx="41.5" cy="38.2" r="1.6" fill="#fff"/><circle cx="69.5" cy="38.2" r="1.6" fill="#fff"/><ellipse cx="50" cy="70" rx="22" ry="15" fill="${OL}"/><g fill="#fff">${t}${b}</g></svg>`};
 function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt||'#f4f1e6',TI=o.tie||'#d33a3a',OL='#10121f';let v='';
+  if(o.cape)v+=`<path d="M2 100 Q4 66 22 60 L30 50 L36 72 Z M98 100 Q96 66 78 60 L70 50 L64 72 Z" fill="${o.cape}" stroke="${OL}" stroke-width="2"/><path d="M8 100 Q10 74 26 68 M92 100 Q90 74 74 68" stroke="rgba(255,255,255,.2)" stroke-width="2" fill="none"/>`;
   if(o.long)v+=`<path d="M23 40 Q20 82 30 86 L70 86 Q80 82 77 40 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   if(o.pony)v+=`<path d="M68 28 Q92 36 86 74 Q80 66 70 52 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   v+=o.broad?`<path d="M0 100 Q3 70 50 67 Q97 70 100 100 Z" fill="${SU}" stroke="${OL}" stroke-width="2"/>`:`<path d="M6 100 Q9 74 50 72 Q91 74 94 100 Z" fill="${SU}" stroke="${OL}" stroke-width="2"/><path d="M40 73 L50 90 L60 73 Z" fill="${SH}" stroke="${OL}" stroke-width="1.5"/>`;
   if(o.lanyard)v+=`<path d="M41 74 L47 92 M59 74 L53 92" stroke="#2a7de1" stroke-width="2.4" fill="none"/><rect x="44" y="90" width="12" height="9" rx="1.5" fill="#f4f1e6" stroke="${OL}" stroke-width="1.5"/><rect x="46" y="92" width="4" height="4" fill="#2a7de1"/>`;
   if(o.coat)v+=`<path d="M40 73 L46 100 M60 73 L54 100" stroke="${OL}" stroke-width="1.6" fill="none"/><rect x="62" y="84" width="10" height="3" fill="#5ab0ff"/><rect x="64" y="80" width="2" height="7" fill="#d33a3a"/>`;
+  if(o.bowtie)v+=`<path d="M50 80 L39 74 L39 86 Z M50 80 L61 74 L61 86 Z" fill="${o.bowtie}" stroke="${OL}" stroke-width="1.6"/><circle cx="50" cy="80" r="3" fill="${o.bowtie}" stroke="${OL}" stroke-width="1.6"/>`;
   if(!o.notie)v+=`<path d="M47.5 76 L52.5 76 L54 92 L50 97 L46 92 Z" fill="${TI}" stroke="${OL}" stroke-width="1.5"/>`;
   if(o.bun)v+=`<circle cx="50" cy="15" r="11" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   v+=o.broad?`<rect x="40" y="58" width="20" height="15" fill="${SK}" stroke="${OL}" stroke-width="2"/>`:`<rect x="43" y="60" width="14" height="14" fill="${SK}" stroke="${OL}" stroke-width="2"/>`;
@@ -1092,6 +1094,10 @@ function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt|
   if(o.beard)v+=`<path d="M27 48 Q28 73 50 73 Q72 73 73 48 Q67 61 50 61 Q33 61 27 48 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   if(o.cap)v+=`<path d="M25 36 Q26 13 50 13 Q74 13 75 36 Z" fill="${o.capc}" stroke="${OL}" stroke-width="2"/><path d="M21 35 L79 35 L82 41 L18 41 Z" fill="#1b1b2f"/><circle cx="50" cy="25" r="4.5" fill="${o.badge||'#f7c948'}" stroke="${OL}" stroke-width="1.5"/>`;
   else if(o.buzz)v+=`<path d="M27 38 Q27 17 50 17 Q73 17 73 38 Q66 26 50 26 Q34 26 27 38 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
+  else if(o.hijab){}
+  else if(o.bald)v+=`<path d="M26 46 Q25 36 30 32 L31 44 Z M74 46 Q75 36 70 32 L69 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/><path d="M38 24 Q50 19 62 24" stroke="#fff" stroke-width="2" opacity=".35" fill="none"/>`;
+  else if(o.curly)v+=`<g fill="${HR}" stroke="${OL}" stroke-width="2"><circle cx="30" cy="30" r="9"/><circle cx="40" cy="20" r="10"/><circle cx="52" cy="17" r="10"/><circle cx="63" cy="21" r="10"/><circle cx="71" cy="31" r="9"/><circle cx="26" cy="41" r="6"/><circle cx="75" cy="41" r="6"/></g>`;
+  else if(o.bob)v+=`<path d="M23 60 Q18 14 50 14 Q82 14 77 60 L69 60 Q73 33 60 27 Q48 33 33 28 Q27 40 31 60 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   else if(o.sidepart)v+=`<path d="M26 44 Q22 14 46 15 Q78 13 75 44 Q73 28 60 24 Q50 22 42 20 Q36 30 26 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/><path d="M42 20 Q44 16 46 15" stroke="#444" stroke-width="1.5" fill="none"/>`;
   else v+=`<path d="M26 44 Q22 15 50 15 Q78 15 74 44 Q71 29 59 26 Q47 31 35 27 Q29 33 26 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   if(o.shades)v+=`<rect x="33" y="41" width="15" height="9" rx="3" fill="#111"/><rect x="52" y="41" width="15" height="9" rx="3" fill="#111"/><path d="M48 44 L52 44" stroke="#111" stroke-width="2"/><path d="M36 43 L41 43" stroke="#555" stroke-width="1.5"/>`;
@@ -1099,10 +1105,23 @@ function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt|
   if(o.thick)v+=`<rect x="31" y="38.5" width="18" height="15" rx="5" fill="rgba(200,230,255,.22)" stroke="#16161f" stroke-width="4.2"/><rect x="51" y="38.5" width="18" height="15" rx="5" fill="rgba(200,230,255,.22)" stroke="#16161f" stroke-width="4.2"/><path d="M48.5 44 L51.5 44" stroke="#16161f" stroke-width="3.5"/><path d="M31 43 L25 41 M69 43 L75 41" stroke="#16161f" stroke-width="3"/><path d="M34 41.5 L38 41.5" stroke="#fff" stroke-width="1.5" opacity=".7"/>`;
   if(o.glasses)v+=`<circle cx="41" cy="46" r="6.5" fill="rgba(255,255,255,.15)" stroke="#2a2a2a" stroke-width="2"/><circle cx="59" cy="46" r="6.5" fill="rgba(255,255,255,.15)" stroke="#2a2a2a" stroke-width="2"/><path d="M47.5 46 L52.5 46" stroke="#2a2a2a" stroke-width="2"/>`;
   v+=`<path d="M50 48 L47.5 54 L51 54.5" stroke="${OL}" stroke-width="1.6" fill="none" stroke-linejoin="round"/>${o.grin?`<path d="M39 56 Q50 69 61 56 Z" fill="#fff" stroke="${OL}" stroke-width="2" stroke-linejoin="round"/><path d="M40 58 L60 58" stroke="${OL}" stroke-width="1"/>`:o.smirk?`<path d="M45 60 Q52 62.5 58 57" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`:`<path d="M44 59 Q50 63 56 59" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`}<circle cx="34" cy="54" r="3" fill="#f2a07b" opacity=".35"/><circle cx="66" cy="54" r="3" fill="#f2a07b" opacity=".35"/>`;
+  if(o.tophat)v+=`<rect x="31" y="-2" width="38" height="26" fill="#14141c" stroke="${OL}" stroke-width="2"/><rect x="31" y="15" width="38" height="6" fill="${o.tophat}"/><rect x="18" y="22" width="64" height="6" rx="3" fill="#14141c" stroke="${OL}" stroke-width="2"/><path d="M36 2 L36 13" stroke="rgba(255,255,255,.18)" stroke-width="3"/>`;
+  if(o.wand)v+=`<path d="M78 98 L92 62" stroke="#111" stroke-width="4" stroke-linecap="round"/><path d="M89 69 L92 62" stroke="#fff" stroke-width="4" stroke-linecap="round"/><g fill="#ffe14d"><path d="M92 50 L94 55 L99 57 L94 59 L92 64 L90 59 L85 57 L90 55 Z"/><circle cx="83" cy="52" r="1.6"/><circle cx="98" cy="68" r="1.4"/></g>`;
+  if(o.hijab)v+=`<path fill-rule="evenodd" d="M50 10 Q80 10 80 48 Q80 70 72 78 L86 100 L14 100 L28 78 Q20 70 20 48 Q20 10 50 10 Z M50 22 Q30 22 29 46 Q29 68 50 70 Q71 68 71 46 Q70 22 50 22 Z" fill="${o.hijab}" stroke="${OL}" stroke-width="2"/><path d="M30 34 Q50 26 70 34" stroke="rgba(255,255,255,.25)" stroke-width="2" fill="none"/>`;
+  if(o.mustache)v+=`<path d="M41 56.5 Q46 53 50 55.5 Q54 53 59 56.5 Q55 59 50 57.5 Q45 59 41 56.5 Z" fill="${o.mustache===1?HR:o.mustache}" stroke="${OL}" stroke-width="1.2"/>`;
+  if(o.earrings)v+=`<circle cx="25" cy="55" r="2.6" fill="#f7c948" stroke="${OL}" stroke-width="1"/><circle cx="75" cy="55" r="2.6" fill="#f7c948" stroke="${OL}" stroke-width="1"/>`;
   if(o.headset)v+=`<path d="M24 44 Q24 12 50 12 Q76 12 76 44" stroke="#9aa3b5" stroke-width="3" fill="none"/><rect x="20" y="40" width="7" height="12" rx="3" fill="#9aa3b5" stroke="${OL}" stroke-width="1.5"/><path d="M24 52 Q26 62 38 60" stroke="#9aa3b5" stroke-width="2" fill="none"/>`;
   return `<svg viewBox="0 0 100 100">${v}</svg>`}
 const RIVAL_CREST=`<svg viewBox="0 0 100 100"><path d="M50 8 L86 20 L82 58 Q76 82 50 94 Q24 82 18 58 L14 20 Z" fill="#ff5c5c" stroke="#10121f" stroke-width="3" stroke-linejoin="round"/><path d="M50 18 L76 27 L73 56 Q68 74 50 83 Q32 74 27 56 L24 27 Z" fill="#8a1c1c"/><circle cx="50" cy="50" r="16" fill="none" stroke="#f7c948" stroke-width="6"/><circle cx="50" cy="50" r="6" fill="#f7c948"/></svg>`;
-function portrait(k){if(k==='glitch')return glitchSVG();if(k==='rival')return RIVAL_CREST;return vportrait(PT[k])}
+
+const BRIEFERS=[
+ {n:'COL. DANA OKAFOR',t:'SITUATION ROOM',o:{hair:'#1a1110',suit:'#2b3a2a',curly:1,earrings:1,smirk:1,skin:'#7a4a2a',tie:'#c9a227'}},
+ {n:'AMIRA HADDAD',t:'DIPLOMATIC DESK',o:{hair:'#2a1a12',suit:'#4a4f6b',hijab:'#2f8a8a',notie:1,shirt:'#f4f1e6',skin:'#d9a273'}},
+ {n:'MEI LIN',t:'NIGHT WATCH',o:{hair:'#121018',suit:'#22263a',bob:1,headset:1,notie:1,shirt:'#5ab0ff',skin:'#f0c9a0'}},
+ {n:'DR. INGRID LARSEN',t:'STRATEGY CELL',o:{hair:'#e8e4dc',suit:'#5a3a5a',bun:1,thick:1,notie:1,shirt:'#d9c9e8',skin:'#f6d3b8'}},
+ {n:'MARLOW THE MAGNIFICENT',t:'FORECASTS & ILLUSIONS',o:{hair:'#2a1a12',suit:'#1b1b2a',tophat:'#c0392b',cape:'#8a1c2c',bowtie:'#c0392b',notie:1,shirt:'#f4f1e6',mustache:'#2a1a12',wand:1,smirk:1,skin:'#f1c27d'}}];
+function curBriefer(){const r=(typeof S!=='undefined'&&S&&S.round)||1;return BRIEFERS[(r-1)%BRIEFERS.length]}
+function portrait(k){if(k==='glitch')return glitchSVG();if(k==='brief')return vportrait(curBriefer().o);if(k==='rival')return RIVAL_CREST;return vportrait(PT[k])}
 
 /* title scene: two cities, packets crossing in both directions */
 function titleScene(){
@@ -1341,7 +1360,7 @@ function startRound(){
   currentInject=pool.length?pool[Math.floor(Math.random()*pool.length)]:null;
   const lf=S.focus[S.focus.length-1];const T=roundTips();
   const chips=threatModel().replace('Top threats right now: ','').split(' · ').map(x=>`<span class="tchip">${x}</span>`).join('');
-  beats=[{step:'SITUATION',frame:portrait('brief'),who:'THE BRIEFER',role:'SITUATION ROOM · '+dateFor(S.round),
+  beats=[{step:'SITUATION',frame:portrait('brief'),who:curBriefer().n,role:curBriefer().t+' · '+dateFor(S.round),
     body:`<p class="beattxt" id="beatTxt"></p><div class="beatlbl">TOP THREATS</div><div class="tchips">${chips}</div>`+(lf?`<p class="beatsmall">Last round: ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ Home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}</p>`:''),
     learn:'brief',type:briefText(),next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']}];
   S.siSeen=S.siSeen||[];const sm=[20,30,50,70,90].filter(t=>S.si>=t&&!S.siSeen.includes(t));
@@ -1408,7 +1427,7 @@ function chooseInject(k){
   if(S.dead) return endGame();
   renderHud();SFX.ok();
   const d=Object.keys(S.m).filter(x=>S.m[x]!==before[x]&&LBL[x]).map(x=>{const v=S.m[x]-before[x];const good=BAD.includes(x)?v<0:v>0;return `<span class="${good?'up':'dn'}">${good?'✓':'✗'} ${LBL[x]} ${v>0?'+':''}${v}</span>`}).join(' · ');
-  beats.push({step:'NEXT',learn:'out',frame:portrait('brief'),who:'THE BRIEFER',role:'OUTCOME',
+  beats.push({step:'NEXT',learn:'out',frame:portrait('brief'),who:curBriefer().n,role:'BRIEFER · OUTCOME',
     body:`<p class="beattxt" id="beatTxt"></p><div class="beatfx">${d||'No change.'}</div><div class="beatlbl">WHAT'S NEXT</div><div class="tip"><span class="tipn">1</span><div><b>Set your posture at HQ</b></div></div><div class="tip"><span class="tipn">2</span><div><b>Spend your PC at buildings</b></div></div><div class="tip"><span class="tipn">3</span><div><b>Tap End Turn</b></div></div>`,
     type:c.log,next:'TO THE MAP ▶',go:toMap});
   beatI++;renderBeat();
@@ -2022,7 +2041,7 @@ function renderResolve(bp,red,cell,log,acc,fog){
    :hostile?`<path d="M4 22 L20 10 L32 30 L46 8 L58 32 L76 22" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="miter"><animate attributeName="opacity" values="1;.15;1" dur=".25s" repeatCount="indefinite"/></path>`
    :`<path d="M4 22 H76" stroke="${col}" stroke-width="2" stroke-dasharray="2 6"><animate attributeName="stroke-dashoffset" from="0" to="-16" dur="1s" repeatCount="indefinite"/></path><text x="40" y="16" text-anchor="middle" font-family="Press Start 2P" font-size="7" fill="${col}">?</text>`;
   b.innerHTML=`   <div class="${hostile?'shake':''}">${beatHTML(portrait('rival').replace('<svg','<svg width="100%" height="100%"'),'RIVAL MINISTRY','INTERCEPTED MESSAGE',`<p class="beattxt" style="margin:0">${redReason(red)}</p><div class="vs" style="margin-top:12px"><span>YOU<b>${PL[bp]}</b></span><span>RIVAL<b>${PL[red]}</b></span></div><p class="beatsmall">${cell.note}</p>`)}</div>
-   <div class="beatgap">${beatHTML(portrait('brief').replace('<svg','<svg width="100%" height="100%"'),'THE BRIEFER','WHAT HAPPENED · '+dateFor(S.round),`<ul class="log" style="margin:0">${log.map(l=>`<li>${logIcon(l)}${l}</li>`).join('')}</ul><div class="beatlbl">NET CHANGE</div><div class="delta">${dl||'<span>NO CHANGE</span>'}</div>`)}</div>
+   <div class="beatgap">${beatHTML(portrait('brief').replace('<svg','<svg width="100%" height="100%"'),curBriefer().n,'WHAT HAPPENED · '+dateFor(S.round),`<ul class="log" style="margin:0">${log.map(l=>`<li>${logIcon(l)}${l}</li>`).join('')}</ul><div class="beatlbl">NET CHANGE</div><div class="delta">${dl||'<span>NO CHANGE</span>'}</div>`)}</div>
    ${log.some(l=>l.startsWith('ACCIDENT'))?`<div class="beatgap">${beatHTML(glitchSVG('width="100%" height="100%"'),'GLITCH','NO ONE ORDERED THIS','<p class="beattxt" style="margin:0">I was only trying to help. Nobody told me the substations mattered.</p>')}</div>`:''}
    <div class="beatgap">${roundReview(bp,red,log,acc)}</div>
    <div class="beatgap"></div>`;
@@ -2081,7 +2100,7 @@ function finaleStory(){clearInterval(finTimer);const E=ending();const f=document
     <div class="fbtn"><button onclick="finaleCredits()">CREDITS ▶</button><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`;
   const c=document.getElementById('crawl');let i=0;const next=()=>{if(i>=lines.length)return;const [k,t]=lines[i++];const p=document.createElement('p');p.innerHTML=icon(k);const sp=document.createElement('span');p.appendChild(sp);c.appendChild(p);typeInto(sp,t,()=>setTimeout(next,250))};next()}
 function finaleCredits(){const f=document.getElementById('finale');SFX.fanfare();
-  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['DR. VERA SATO','CHIEF SCIENTIST'],['THE BRIEFER','SITUATION ROOM'],['RISK ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CHIEF MARCUS BRANDT','GRID DEFENSE'],['TESS RIVERA','THREAT HUNTER'],['MINH TRAN','PRINCIPAL ENGINEER'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
+  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['DR. VERA SATO','CHIEF SCIENTIST'],...BRIEFERS.map(b=>[b.n,'BRIEFER · '+b.t]),['RISK ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CHIEF MARCUS BRANDT','GRID DEFENSE'],['TESS RIVERA','THREAT HUNTER'],['MINH TRAN','PRINCIPAL ENGINEER'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
   f.style.justifyContent='center';
   f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(24):''}<div class="credits"><div style="font-size:14px;color:#f7c948">SIGNAL / NOISE</div><div>A SUPERINTELLIGENCE WARGAME</div><b>STARRING</b>${cast.map(([a,b])=>`${a}<br><span style="color:#9b9ac7">${b}</span>`).join('<br>')}<b>FINAL SCORE</b>${scoreGame()} / 100<b>SI CLOCK</b>${S.si}%<b>THANK YOU FOR PLAYING</b><br><br></div>
     <div class="fbtn"><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`}

@@ -634,7 +634,7 @@ const LOCS = [
   {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:6,y:6, icon:'🏭', name:'FABS & POWER', who:'ENERGY SECRETARY', intro:'"Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
   {id:'town',short:'TOWN',purpose:'Society: jobs, fairness, privacy, kids online, addictive feeds, public access to SI.', x:5,y:5, icon:'🏛', name:'TOWN HALL', who:'MAYOR', intro:'"My town does not care about chips or treaties. They care about jobs, their kids, and whether the machine treats them fairly."'},
   {id:'bots',short:'ROBOTS',purpose:'Humanoid robot policy: safety certification, cybersecurity, liability, home privacy, and sharing the gains with displaced workers.', x:6,y:2, icon:'🤖', name:'ROBOTICS BOARD', who:'ROBOTICS SAFETY CHIEF', intro:'"A chatbot that makes a mistake writes a bad sentence. A humanoid that makes a mistake drops a patient. We need rules before there are millions of them."'},
-  {id:'red',short:'RED',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:3,y:5, icon:'🎯', name:'RED TEAM LAB', who:'RED TEAM LEAD', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
+  {id:'red',short:'RED',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:3,y:5, icon:'🎯', name:'RED TEAM LAB', who:'DR. VERA SATO', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
 ];
 
 // Action cards. fx = direct effects; flags set round modifiers.
@@ -931,7 +931,8 @@ const PT={
  oss:{hair:'#a0522d',suit:'#2f7a3a',beard:1,notie:1,shirt:'#2f7a3a',glasses:1},
  soc:{hair:'#3a2a1a',suit:'#2a4fb3',glasses:1,headset:1,notie:1,shirt:'#1b1b2f',skin:'#c68642'},
  fab:{hair:'#888',suit:'#3a3a50',cap:1,capc:'#f7c948',badge:'#3a3a50',tie:'#c96a1a'},
- red:{hair:'#c03a3a',suit:'#1b1b2f',notie:1,shirt:'#3a3a50',skin:'#e0ac69',glasses:1},
+ sci:{hair:'#2b1a10',suit:'#eef2f5',shirt:'#4bb3a0',notie:1,coat:1,skin:'#f1c27d',bun:1,thick:1},
+ red:{hair:'#2b1a10',suit:'#eef2f5',shirt:'#4bb3a0',notie:1,coat:1,skin:'#f1c27d',bun:1,thick:1},
  bots:{hair:'#333',suit:'#6b6b7a',glasses:1,tie:'#5ab0ff',skin:'#c68642'},
  town:{hair:'#5a3a2a',suit:'#2f7a3a',tie:'#f7c948',skin:'#8d5524',long:1},
 };
@@ -940,13 +941,16 @@ const glitchSVG=(a='')=>{const OL='#10261f',Y='#f8f0a0';let t='',b='';[32,40,48,
 function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt||'#f4f1e6',TI=o.tie||'#d33a3a',OL='#10121f';let v='';
   if(o.long)v+=`<path d="M23 40 Q20 82 30 86 L70 86 Q80 82 77 40 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   v+=`<path d="M6 100 Q9 74 50 72 Q91 74 94 100 Z" fill="${SU}" stroke="${OL}" stroke-width="2"/><path d="M40 73 L50 90 L60 73 Z" fill="${SH}" stroke="${OL}" stroke-width="1.5"/>`;
+  if(o.coat)v+=`<path d="M40 73 L46 100 M60 73 L54 100" stroke="${OL}" stroke-width="1.6" fill="none"/><rect x="62" y="84" width="10" height="3" fill="#5ab0ff"/><rect x="64" y="80" width="2" height="7" fill="#d33a3a"/>`;
   if(!o.notie)v+=`<path d="M47.5 76 L52.5 76 L54 92 L50 97 L46 92 Z" fill="${TI}" stroke="${OL}" stroke-width="1.5"/>`;
+  if(o.bun)v+=`<circle cx="50" cy="15" r="11" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   v+=`<rect x="43" y="60" width="14" height="14" fill="${SK}" stroke="${OL}" stroke-width="2"/><circle cx="26" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/><circle cx="74" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/><ellipse cx="50" cy="44" rx="24" ry="26" fill="${SK}" stroke="${OL}" stroke-width="2"/>`;
   if(o.beard)v+=`<path d="M27 48 Q28 73 50 73 Q72 73 73 48 Q67 61 50 61 Q33 61 27 48 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   if(o.cap)v+=`<path d="M25 36 Q26 13 50 13 Q74 13 75 36 Z" fill="${o.capc}" stroke="${OL}" stroke-width="2"/><path d="M21 35 L79 35 L82 41 L18 41 Z" fill="#1b1b2f"/><circle cx="50" cy="25" r="4.5" fill="${o.badge||'#f7c948'}" stroke="${OL}" stroke-width="1.5"/>`;
   else v+=`<path d="M26 44 Q22 15 50 15 Q78 15 74 44 Q71 29 59 26 Q47 31 35 27 Q29 33 26 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   if(o.shades)v+=`<rect x="33" y="41" width="15" height="9" rx="3" fill="#111"/><rect x="52" y="41" width="15" height="9" rx="3" fill="#111"/><path d="M48 44 L52 44" stroke="#111" stroke-width="2"/><path d="M36 43 L41 43" stroke="#555" stroke-width="1.5"/>`;
   else v+=`<ellipse cx="41" cy="46" rx="2.6" ry="3.3" fill="${OL}"/><ellipse cx="59" cy="46" rx="2.6" ry="3.3" fill="${OL}"/><circle cx="41.8" cy="45" r=".9" fill="#fff"/><circle cx="59.8" cy="45" r=".9" fill="#fff"/><path d="M36 39 Q41 36.5 46 39 M54 39 Q59 36.5 64 39" stroke="${o.cap?OL:HR}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+  if(o.thick)v+=`<rect x="31" y="38.5" width="18" height="15" rx="5" fill="rgba(200,230,255,.22)" stroke="#16161f" stroke-width="4.2"/><rect x="51" y="38.5" width="18" height="15" rx="5" fill="rgba(200,230,255,.22)" stroke="#16161f" stroke-width="4.2"/><path d="M48.5 44 L51.5 44" stroke="#16161f" stroke-width="3.5"/><path d="M31 43 L25 41 M69 43 L75 41" stroke="#16161f" stroke-width="3"/><path d="M34 41.5 L38 41.5" stroke="#fff" stroke-width="1.5" opacity=".7"/>`;
   if(o.glasses)v+=`<circle cx="41" cy="46" r="6.5" fill="rgba(255,255,255,.15)" stroke="#2a2a2a" stroke-width="2"/><circle cx="59" cy="46" r="6.5" fill="rgba(255,255,255,.15)" stroke="#2a2a2a" stroke-width="2"/><path d="M47.5 46 L52.5 46" stroke="#2a2a2a" stroke-width="2"/>`;
   v+=`<path d="M50 48 L47.5 54 L51 54.5" stroke="${OL}" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M44 59 Q50 63 56 59" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="34" cy="54" r="3" fill="#f2a07b" opacity=".35"/><circle cx="66" cy="54" r="3" fill="#f2a07b" opacity=".35"/>`;
   if(o.headset)v+=`<path d="M24 44 Q24 12 50 12 Q76 12 76 44" stroke="#9aa3b5" stroke-width="3" fill="none"/><rect x="20" y="40" width="7" height="12" rx="3" fill="#9aa3b5" stroke="${OL}" stroke-width="1.5"/><path d="M24 52 Q26 62 38 60" stroke="#9aa3b5" stroke-width="2" fill="none"/>`;
@@ -1059,6 +1063,11 @@ function briefText(){
 }
 
 let currentInject=null, briefStage=0, beats=[], beatI=0;
+const SCI={20:['Today\u2019s frontier systems write code, analyze data and help with research, but people still check their work.','The SI clock climbs every round whether we act or not. As it rises, both the dividend and the harm get bigger.'],
+ 30:['Systems now match top human experts at writing code and finding software flaws.','Attackers get that too. Expect more model attacks and faster exploits: red-team your models.'],
+ 50:['Systems now run research labs around the clock, designing experiments and new drugs.','The dividend speeds up, and so do accidents. Testing and robot certification matter more now.'],
+ 70:['Systems now outperform people at most cognitive work.','Jobs shift fast. Watch EQUITY, and keep humans in charge of force and critical decisions.'],
+ 90:['We are close to the superintelligence threshold. Whatever we built now runs at machine speed.','No time for new foundations. Protect what works and lock in the gains.']};
 const BEAT_STEPS=['SITUATION','EVENT','ADVICE','YOUR CALL','NEXT'];
 function beatHTML(frame,who,role,body,txtId){return `<div class="beat"><div class="beathead"><div class="beatframe">${frame}</div><div class="beatname"><b>${who}</b><span>${role||''}</span></div></div><div class="beatbody">${body}</div></div>`}
 function renderBeat(){const b=beats[beatI];
@@ -1083,6 +1092,11 @@ function startRound(){
   beats=[{step:'SITUATION',frame:portrait('brief'),who:'THE BRIEFER',role:'SITUATION ROOM · '+dateFor(S.round),
     body:`<p class="beattxt" id="beatTxt"></p><div class="beatlbl">TOP THREATS</div><div class="tchips">${chips}</div>`+(lf?`<p class="beatsmall">Last round: ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ Home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}</p>`:''),
     type:briefText(),next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']}];
+  S.siSeen=S.siSeen||[];const sm=[20,30,50,70,90].filter(t=>S.si>=t&&!S.siSeen.includes(t));
+  if(sm.length){const t=sm[sm.length-1];sm.forEach(x=>S.siSeen.push(x));
+    beats.push({step:'SITUATION',frame:portrait('sci'),who:'DR. VERA SATO',role:'CHIEF SCIENTIST · SI CLOCK '+S.si+'%',
+      body:`<div class="beatlbl">WHAT SI CAN DO NOW</div><p class="beattxt" id="beatTxt"></p><div class="beatlbl">WHAT IT MEANS FOR YOU</div><p class="beattxt" style="font-size:19px">${SCI[t][1]}</p>`,type:SCI[t][0],next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']});
+    beats[0].next='SCIENCE UPDATE ▶'}
   if(currentInject){const ic=INJ_ICON[currentInject.id]||'eye';const isG=['autoacc','leak','zeroday'].includes(currentInject.id);
     beats.push({step:'EVENT',flash:true,frame:isG?glitchSVG('width="100%" height="100%"'):`<div class="bigicon">${icon(ic,'width="100%" height="100%"')}</div>`,who:'FLASH TRAFFIC',role:currentInject.title,
       body:`<p class="beattxt">${currentInject.body}</p><p class="beatsmall">A decision is required before orders go out.</p>`,next:'ASK BYTE ▶'})}
@@ -1727,7 +1741,7 @@ function finaleStory(){clearInterval(finTimer);const E=ending();const f=document
     <div class="fbtn"><button onclick="finaleCredits()">CREDITS ▶</button><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`;
   const c=document.getElementById('crawl');let i=0;const next=()=>{if(i>=lines.length)return;const [k,t]=lines[i++];const p=document.createElement('p');p.innerHTML=icon(k);const sp=document.createElement('span');p.appendChild(sp);c.appendChild(p);typeInto(sp,t,()=>setTimeout(next,250))};next()}
 function finaleCredits(){const f=document.getElementById('finale');SFX.fanfare();
-  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['THREAT ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CISO','SOC'],['GRID DEFENSE CHIEF','GRID'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
+  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['DR. VERA SATO','CHIEF SCIENTIST'],['THE BRIEFER','SITUATION ROOM'],['THREAT ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CISO','SOC'],['GRID DEFENSE CHIEF','GRID'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
   f.style.justifyContent='center';
   f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(24):''}<div class="credits"><div style="font-size:14px;color:#f7c948">SIGNAL / NOISE</div><div>A SUPERINTELLIGENCE WARGAME</div><b>STARRING</b>${cast.map(([a,b])=>`${a}<br><span style="color:#9b9ac7">${b}</span>`).join('<br>')}<b>FINAL SCORE</b>${scoreGame()} / 100<b>SI CLOCK</b>${S.si}%<b>THANK YOU FOR PLAYING</b><br><br></div>
     <div class="fbtn"><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`}

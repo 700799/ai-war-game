@@ -491,6 +491,8 @@ svg .head{transform-box:fill-box;transform-origin:50% 90%;animation:headSway 5.2
 .planwrap[open]>.plan{margin-top:6px}
 .tapdark{filter:brightness(.45)!important;transition:filter .06s ease-out!important}
 button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filter .35s ease-out}
+.guide{padding-bottom:0}
+.gfoot{position:sticky;bottom:0;z-index:2;margin:12px -12px 0;padding:10px 12px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(rgba(7,8,19,0),#070813 28%)}
 </style>
 </head>
 <body>
@@ -1726,7 +1728,7 @@ function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div 
   <div class="bk"><div class="sw" style="background:#101225">${icon('fog')}</div><div><b>CLOUDS</b>Attribution fog. Buy INTEL at HQ to clear it.</div></div>
   <div class="bk"><div class="sw" style="background:#101225">${glitchSVG()}</div><div><b>GLITCH</b>A rogue SI agent. Shows up when RISK passes 50. Tap it to check.</div></div>
   <div class="bk"><div class="sw" style="background:#101225;color:var(--gold);font-family:'Press Start 2P';font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--green)">✔</div><div><b>GREEN CHECK</b>You've placed orders there this round. The name plate shows what you ordered. Blue TIP tags mark the analyst's suggestions.</div></div></div>
-  <button class="a" style="width:100%;margin-top:12px" onclick="document.getElementById('guide').classList.remove('on')">GOT IT ▶</button>`;
+  <div class="gfoot"><button class="a" style="width:100%" onclick="document.getElementById('guide').classList.remove('on')">GOT IT ▶</button></div>`;
   g.classList.add('on');g.scrollTop=0}
 function updateHint(){
   const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);const e=document.getElementById('mapHint');

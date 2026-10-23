@@ -58,7 +58,7 @@ button:disabled{opacity:.4}
 .top .px{font-size:9px}
 .pc{color:var(--gold)}
 /* map */
-.map{display:grid;grid-template-columns:repeat(8,1fr);gap:0;border:4px solid var(--line);box-shadow:6px 6px 0 #000;image-rendering:pixelated;background:var(--tile1);margin:10px;position:relative;touch-action:manipulation}
+.map{display:grid;grid-template-columns:repeat(7,1fr);gap:0;border:4px solid var(--line);box-shadow:6px 6px 0 #000;image-rendering:pixelated;background:var(--tile1);margin:10px;position:relative;touch-action:manipulation}
 .t{aspect-ratio:1;position:relative;background:var(--tile1);cursor:pointer}
 .t.g2{background:var(--tile2)}
 .t.w{background:var(--water);background-image:linear-gradient(45deg,transparent 45%,#4a6fd6 45%,#4a6fd6 55%,transparent 55%);background-size:12px 12px}
@@ -67,7 +67,7 @@ button:disabled{opacity:.4}
 .t.loc{display:flex;align-items:center;justify-content:center;font-size:26px;background:#243a24;outline:2px dashed rgba(255,255,255,.25);outline-offset:-3px}
 .t.loc.done{filter:saturate(.4) brightness(.7)}
 .t.loc .lbl{position:absolute;bottom:-2px;left:0;right:0;font-family:'Press Start 2P';font-size:6px;text-align:center;color:#fff;text-shadow:1px 1px 0 #000;white-space:nowrap;overflow:hidden}
-.hero{position:absolute;width:12.5%;aspect-ratio:1;pointer-events:none;transition:left .18s steps(3),top .18s steps(3);display:flex;align-items:center;justify-content:center}
+.hero{position:absolute;width:14.2857%;aspect-ratio:1;pointer-events:none;transition:left .18s steps(3),top .18s steps(3);display:flex;align-items:center;justify-content:center}
 .hero .sp{width:8px;height:8px;background:transparent;box-shadow:
  16px 0 0 #2b2,24px 0 0 #2b2,
  8px 8px 0 #fc9,16px 8px 0 #fc9,24px 8px 0 #fc9,32px 8px 0 #fc9,
@@ -265,7 +265,7 @@ button:disabled{opacity:.4}
 @keyframes glow{50%{box-shadow:3px 3px 0 #000,0 0 0 3px rgba(255,92,92,.6)}}
 .endscene{width:100%;display:block;border:3px solid var(--line);margin:8px 0;aspect-ratio:320/120}
 .mapfx{position:absolute;inset:0;pointer-events:none;z-index:1}.mapfx>svg{width:100%;height:100%;display:block}
-.gang{position:absolute;width:12.5%;aspect-ratio:1;z-index:1;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.gang{position:absolute;width:14.2857%;aspect-ratio:1;z-index:1;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .gang .ic{width:55%;height:55%;animation:jitter .4s steps(2) infinite}
 .siclock{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#070813;font-family:'Press Start 2P';font-size:7px;color:#b28bff}
 .siclock .bar{height:12px}.siclock .bar i{background:repeating-linear-gradient(90deg,#b28bff 0 6px,#7a5ad6 6px 8px)}
@@ -307,7 +307,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .map.hot::after{animation:heat 1.2s steps(2) infinite}
 @keyframes heat{50%{opacity:.45}}
 .hero{z-index:2}
-.glitch{position:absolute;width:12.5%;aspect-ratio:1;z-index:2;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.glitch{position:absolute;width:14.2857%;aspect-ratio:1;z-index:2;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .glitch svg{width:80%;height:95%;animation:jitter .5s steps(2) infinite}
 @keyframes jitter{50%{transform:translate(1px,-2px)}}
 .hero svg{width:78%;height:92%;filter:drop-shadow(0 3px 0 rgba(0,0,0,.45));animation:bob .8s steps(2) infinite}
@@ -520,6 +520,16 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
 .slogan span:first-child{color:#39ff14}.slogan span:last-child{color:#ff5c5c}
 .sdef{color:#ffd23f}
 .premise2{font-size:17px;color:#9fb8e8;margin-top:-4px;text-align:center}
+
+/* boulevard */
+.t.rv{background-color:#262833!important;background-image:repeating-linear-gradient(180deg,#e8c34a 0 7px,transparent 7px 15px)!important;background-size:2px 100%!important;background-repeat:no-repeat!important;background-position:50% 0!important;box-shadow:inset 3px 0 0 #3d4157,inset -3px 0 0 #3d4157!important;filter:none!important}
+.vcar{position:absolute;inset:0;transform:rotate(90deg)}.vcar svg{position:absolute;inset:0;width:100%;height:100%;opacity:.45}
+.t.lot{background-color:#1f2336!important}
+
+.t.loc.sl .lbl,.t.loc.sl .lbl.done{left:auto!important;right:calc(100% - 4px)!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)!important}
+.t.loc.sr .lbl,.t.loc.sr .lbl.done{left:calc(100% - 4px)!important;right:auto!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)!important}
+.t.loc.sl svg,.t.loc.sr svg{inset:8%!important;width:84%!important;height:84%!important}
+.t.loc.sl .tip{right:auto;left:-4px}
 </style>
 </head>
 <body>
@@ -851,17 +861,17 @@ let glen='std';
 const DIFFS = {easy:{pc:9,noise:.1,label:'TABLETOP'},normal:{pc:8,noise:.2,label:'SITROOM'},hard:{pc:7,noise:.3,label:'DEFCON'}};
 
 const LOCS = [
-  {id:'wh',short:'HQ',purpose:'National security headquarters. Set your POSTURE toward the rival. Also: chip controls, cyber ops, intel.', x:1,y:1, icon:'🏛️', name:'HEADQUARTERS', who:'HQ STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
-  {id:'sv',short:'LABS',purpose:'Frontier labs: safety testing, liability rules, talent pipeline.', x:5,y:1, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
-  {id:'cisa',short:'GRID',purpose:'Harden hospitals, water and power against attacks.',x:2,y:4, icon:'🔌', name:'GRID DEFENSE', who:'CHIEF MARCUS BRANDT', title:'GRID DEFENSE CHIEF', intro:'"Hospitals, water, power. Every one runs software older than your interns. Give me the budget and I will make them tough."'},
-  {id:'ally',short:'ALLIES',purpose:'Coordinate with allies; open cyber-norms talks with the rival.',x:6,y:4, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
-  {id:'dark',short:'CRIME',purpose:'Fight ransomware gangs; SI defense bounties.',x:1,y:6, icon:'💀', name:'DARKNET', who:'CYBER POLICE', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
-  {id:'oss',short:'OPEN',purpose:'Open-source commons: bug disclosure, open-weight rules, tamper-resistant safeguards.', x:4,y:6, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
-  {id:'soc',short:'SOC',purpose:'Security operations: insider threats and threat modeling.', x:3,y:1, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'TESS RIVERA', title:'THREAT HUNTER', intro:'"I hunt attackers for a living. Most breaches start with a badge, not a zero-day, and nobody models threats until after the incident."'},
-  {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:6,y:6, icon:'🏭', name:'FABS & POWER', who:'MINH TRAN', title:'PRINCIPAL ENGINEER', intro:'"I spent fifteen years tuning chip fabs. Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
-  {id:'town',short:'TOWN',purpose:'Society: jobs, fairness, privacy, kids online, addictive feeds, public access to SI.', x:5,y:5, icon:'🏛', name:'TOWN HALL', who:'MAYOR', intro:'"My town does not care about chips or treaties. They care about jobs, their kids, and whether the machine treats them fairly."'},
-  {id:'bots',short:'ROBOTS',purpose:'Humanoid robot policy: safety certification, cybersecurity, liability, home privacy, and sharing the gains with displaced workers.', x:6,y:2, icon:'🤖', name:'ROBOTICS BOARD', who:'ROBOTICS SAFETY CHIEF', intro:'"A chatbot that makes a mistake writes a bad sentence. A humanoid that makes a mistake drops a patient. We need rules before there are millions of them."'},
-  {id:'red',short:'RED',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:3,y:5, icon:'🎯', name:'RED TEAM LAB', who:'DR. VERA SATO', title:'CHIEF SCIENTIST', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
+  {id:'wh',short:'HQ',purpose:'National security headquarters. Set your POSTURE toward the rival. Also: chip controls, cyber ops, intel.', x:3,y:1, icon:'🏛️', name:'HEADQUARTERS', who:'HQ STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
+  {id:'sv',short:'LABS',purpose:'Frontier labs: safety testing, liability rules, talent pipeline.', x:4,y:4, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
+  {id:'cisa',short:'GRID',purpose:'Harden hospitals, water and power against attacks.',x:2,y:3, icon:'🔌', name:'GRID DEFENSE', who:'CHIEF MARCUS BRANDT', title:'GRID DEFENSE CHIEF', intro:'"Hospitals, water, power. Every one runs software older than your interns. Give me the budget and I will make them tough."'},
+  {id:'ally',short:'ALLIES',purpose:'Coordinate with allies; open cyber-norms talks with the rival.',x:2,y:4, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
+  {id:'dark',short:'CRIME',purpose:'Fight ransomware gangs; SI defense bounties.',x:4,y:3, icon:'💀', name:'DARKNET', who:'CYBER POLICE', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
+  {id:'oss',short:'OPEN',purpose:'Open-source commons: bug disclosure, open-weight rules, tamper-resistant safeguards.', x:2,y:5, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
+  {id:'soc',short:'SOC',purpose:'Security operations: insider threats and threat modeling.', x:2,y:2, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'TESS RIVERA', title:'THREAT HUNTER', intro:'"I hunt attackers for a living. Most breaches start with a badge, not a zero-day, and nobody models threats until after the incident."'},
+  {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:4,y:5, icon:'🏭', name:'FABS & POWER', who:'MINH TRAN', title:'PRINCIPAL ENGINEER', intro:'"I spent fifteen years tuning chip fabs. Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
+  {id:'town',short:'TOWN',purpose:'Society: jobs, fairness, privacy, kids online, addictive feeds, public access to SI.', x:2,y:6, icon:'🏛', name:'TOWN HALL', who:'MAYOR', intro:'"My town does not care about chips or treaties. They care about jobs, their kids, and whether the machine treats them fairly."'},
+  {id:'bots',short:'ROBOTS',purpose:'Humanoid robot policy: safety certification, cybersecurity, liability, home privacy, and sharing the gains with displaced workers.', x:4,y:6, icon:'🤖', name:'ROBOTICS BOARD', who:'ROBOTICS SAFETY CHIEF', intro:'"A chatbot that makes a mistake writes a bad sentence. A humanoid that makes a mistake drops a patient. We need rules before there are millions of them."'},
+  {id:'red',short:'RED',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:4,y:2, icon:'🎯', name:'RED TEAM LAB', who:'DR. VERA SATO', title:'CHIEF SCIENTIST', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
 ];
 
 // Action cards. fx = direct effects; flags set round modifiers.
@@ -1262,7 +1272,7 @@ function titleScene(){
 /* ===================== STATE ===================== */
 let S;
 let rival='realist', diff='normal';
-let hero={x:3,y:3};
+let hero={x:3,y:4};
 let sound=true, AC=null;
 
 function newState(){
@@ -1746,8 +1756,9 @@ function chooseInject(k){
 }
 
 /* ===================== MAP ===================== */
+const GW=7,TP=100/7;
 const TILE=[
- 'mmmmmmmm','m..g.g.m','m.g...gm','r.rrrr.r','mg.g..gm','m..g.g.m','mg...g.m','wwwwwwww'];
+ 'mmmmmmm','m.g.g.m','m.LvL.m','m.LvL.m','m.LvL.m','m.LvL.m','m.LvL.m'];
 
 /* night-metro tiles */
 function rnd(x,y,k){const v=Math.sin(x*12.9898+y*78.233+k*37.719)*43758.5453;return v-Math.floor(v)}
@@ -1760,28 +1771,28 @@ function towerSVG(x,y){const h=34+Math.floor(rnd(x,y,1)*56),w=60+Math.floor(rnd(
   for(let wy=top+8;wy<94;wy+=11)for(let wx=x0+7;wx<x0+w-8;wx+=12){const r=rnd(wx,wy,x*8+y);
     const c=r>.62?'#ffd97a':r>.5?'#8fd3ff':'#151826';o+=`<rect x="${wx}" y="${wy}" width="6" height="6" fill="${c}"${r>.62?' opacity=".9"':''}/>`}
   return `<svg viewBox="0 0 100 100" preserveAspectRatio="none">${o}</svg>`}
-function lampSVG(x,y){const lx=rnd(x,y,6)>.5?18:82;
+function lampSVG(x,y){const lx=x?82:18;
   return `<svg viewBox="0 0 100 100"><ellipse cx="${lx}" cy="88" rx="26" ry="9" fill="rgba(255,214,120,.18)"/><path d="M${lx} 90 V40 h${lx<50?14:-14}" stroke="#555a70" stroke-width="4" fill="none"/><circle cx="${lx+(lx<50?14:-14)}" cy="43" r="5" fill="#ffe7a3"/><circle cx="${lx+(lx<50?14:-14)}" cy="43" r="12" fill="rgba(255,231,163,.25)"/></svg>`}
 function carSVG(x,y){const c=['#d33a3a','#f2c14e','#5ab0ff','#e6e6e6'][Math.floor(rnd(x,y,7)*4)],cx=20+Math.floor(rnd(x,y,8)*40),top=rnd(x,y,9)>.5?24:60;
   return `<svg viewBox="0 0 100 100"><rect x="${cx}" y="${top}" width="34" height="16" rx="4" fill="${c}" stroke="#0a0b14" stroke-width="3"/><rect x="${cx+9}" y="${top+3}" width="14" height="10" fill="#1a2238"/><circle cx="${cx+35}" cy="${top+4}" r="2.5" fill="#fff6c8"/><circle cx="${cx+35}" cy="${top+12}" r="2.5" fill="#fff6c8"/></svg>`}
 function renderMap(){
   const map=document.getElementById('map');map.innerHTML='';
-  for(let y=0;y<8;y++)for(let x=0;x<8;x++){
-    const d=document.createElement('div');const ch=TILE[y][x];d.className='t'+(ch==='g'?' g2':ch==='w'?' w':ch==='r'?' r':ch==='m'?' m':'');
-    if(ch==='m')d.innerHTML=towerSVG(x,y);else if(ch==='r'){if(rnd(x,y,10)>.55)d.innerHTML=carSVG(x,y)}else if(ch!=='w'&&(x*7+y*13)%4===0)d.innerHTML=lampSVG(x,y);
+  for(let y=0;y<GW;y++)for(let x=0;x<GW;x++){
+    const d=document.createElement('div');const ch=TILE[y][x];d.className='t'+(ch==='g'?' g2':ch==='w'?' w':ch==='r'?' r':ch==='v'?' rv':ch==='m'?' m':ch==='L'?' lot':'');
+    if(ch==='m')d.innerHTML=towerSVG(Math.min(x,GW-1-x),y);else if(ch==='v'){if(y===3||y===5)d.innerHTML=`<div class="vcar">${carSVG(y,1)}</div>`}else if(ch==='.'&&(x===1||x===GW-2)&&y%2===0)d.innerHTML=lampSVG(x<3?1:0,0);
     const L=LOCS.find(l=>l.x===x&&l.y===y);
     if(L){const n=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id).length+(L.id==='wh'&&S.posture?1:0);
       const mine=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id);
       let lbl=L.short,lst='';
       if(L.id==='wh'&&S.posture){lbl=PLS[S.posture]+(mine.length?' +'+mine.length:'');lst=`style="background:${PCOL[S.posture]};color:#000;border-color:#000"`}
       else if(mine.length){lbl='✔ '+PLATE[mine[0]]+(mine.length>1?' +'+(mine.length-1):'');lst='class="lbl done"'}
-      d.className='t loc'+(n?' picked':'');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
+      d.className='t loc'+(n?' picked':'')+(x<3?' sl':x>3?' sr':'');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
     d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
     map.appendChild(d);
   }
   const h=document.createElement('div');h.className='hero';h.id='hero';map.appendChild(h);placeHero();
-  if(S.m.risk>50){const spots=[];for(let yy=1;yy<7;yy++)for(let xx=0;xx<8;xx++){const c=TILE[yy][xx];if(c!=='m'&&c!=='w'&&!LOCS.some(l=>l.x===xx&&l.y===yy))spots.push([xx,yy])}
-    const sp=spots[(S.round*5+S.m.risk)%spots.length];const g=document.createElement('div');g.className='glitch';g.style.left=sp[0]*12.5+'%';g.style.top=sp[1]*12.5+'%';g.innerHTML=glitchSVG();
+  if(S.m.risk>50){const spots=[];for(let yy=1;yy<GW;yy++)for(let xx=0;xx<GW;xx++){const c=TILE[yy][xx];if(c!=='m'&&c!=='w'&&!LOCS.some(l=>l.x===xx&&l.y===yy))spots.push([xx,yy])}
+    const sp=spots[(S.round*5+S.m.risk)%spots.length];const g=document.createElement('div');g.className='glitch';g.style.left=sp[0]*TP+'%';g.style.top=sp[1]*TP+'%';g.innerHTML=glitchSVG();
     g.onclick=e=>{e.stopPropagation();toast(`GLITCH · ROGUE SI · RISK ${S.m.risk}`);SFX.bad()};map.appendChild(g)}
   {const m=S.m;let fx='';
     const nr=m.esc>45?Math.min(4,1+Math.floor((m.esc-45)/12)):0;
@@ -1789,7 +1800,7 @@ function renderMap(){
     fx+=`<rect y="35" width="2.4" height="2.4" fill="#5ab0ff"><animate attributeName="x" from="-4" to="84" dur="4s" repeatCount="indefinite"/></rect>`;
     if(!S.flags.intel)[[0,14],[71,20]].forEach(([y,d],i)=>{fx+=`<g opacity=".35">${icon('fog',`x="-24" y="${y}" width="22" height="13"`)}<animateTransform attributeName="transform" type="translate" from="0 0" to="110 0" dur="${d}s" begin="-${i*7}s" repeatCount="indefinite"/></g>`});
     const ov=document.createElement('div');ov.className='mapfx';ov.innerHTML=`<svg viewBox="0 0 80 80" preserveAspectRatio="none" shape-rendering="crispEdges">${fx}</svg>`;map.appendChild(ov);
-    const ng=Math.max(0,Math.min(3,Math.floor((m.ccap-35)/12)));[[2,6],[1,5],[0,6]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*12.5+'%';g.style.top=gy*12.5+'%';g.innerHTML=icon('skull');map.appendChild(g)})}
+    const ng=Math.max(0,Math.min(3,Math.floor((m.ccap-35)/12)));[[1,6],[5,6],[1,4]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*TP+'%';g.style.top=gy*TP+'%';g.innerHTML=icon('skull');map.appendChild(g)})}
   document.getElementById('planBox').innerHTML=planHTML();
   if(!guideSeen){guideSeen=true;showGuide()}
   map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);
@@ -1827,7 +1838,7 @@ function teamSVG(attrs=''){const OL='#10121f',st=step%2;
   o+=`<g fill="none" stroke="${OL}" stroke-width="1.2" stroke-linecap="round"><path d="M56.5 25 Q60 27.5 63.5 25"/><path d="M23 26 Q25.5 27.5 28 26"/><path d="M94 27 Q97 28.5 100 27" stroke="#d9a07a"/></g>`;
   o+=`<text x="106.5" y="53" text-anchor="middle" font-family="serif" font-weight="700" font-size="9" fill="#fff">π</text>`;
   return `<svg ${attrs} class="team" viewBox="0 0 120 80" aria-label="Your team: lead scientist with clipboard, advisor with laptop, math advisor">${o}</svg>`}
-function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=teamSVG();h.style.left=(hero.x*12.5)+'%';h.style.top=(hero.y*12.5)+'%';updateHint()}
+function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=teamSVG();h.style.left=(hero.x*TP)+'%';h.style.top=(hero.y*TP)+'%';updateHint()}
 /* ===================== ANALYST PLAN ===================== */
 const SHORTN0=1;const SHORTN={redline:'Red line',restraint:'Restraint pledge',burden:'Burden-sharing',antitrust:'Antitrust',toolctl:'Tool controls',cloudkyc:'Cloud checks',antismug:'Anti-smuggling',minerals:'Minerals reserve',redteam:'Red-teaming',provenance:'Provenance',agentsafe:'Agent safeguards',vulnshare:'Flaw reporting',weightsec:'Secure weights',apiguard:'Anti-distillation',botcert:'Robot certification',botsec:'Robot security',botliab:'Robot liability',botprivacy:'Robot privacy',botdividend:'Automation dividend',feeds:'Feed rules',phonefree:'Phone-free schools',retrain:'Retraining',audit:'Fairness audits',privacy:'Privacy law',access:'Public access',kids:'Youth safety',intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure',chips:'Chip controls',offense:'Cyber ops',weights:'Limit weights',bounty:'SI bounty'};
 const PLATE={redline:'REDLINE',restraint:'PLEDGE',burden:'SHARE',antitrust:'ANTITRUST',toolctl:'TOOLS',cloudkyc:'CLOUD',antismug:'SMUGGLE',minerals:'MINERAL',redteam:'REDTEAM',provenance:'PROVEN',agentsafe:'AGENTS',vulnshare:'FLAWS',weightsec:'WEIGHTS',apiguard:'APIGUARD',botcert:'CERTIFY',botsec:'ANTIHACK',botliab:'LIABLE',botprivacy:'PRIVACY',botdividend:'DIVIDEND',feeds:'FEEDS',phonefree:'NOPHONE',retrain:'RETRAIN',audit:'AUDITS',privacy:'PRIVACY',access:'ACCESS',kids:'YOUTH',intel:'INTEL',harden:'HARDEN',tamper:'GUARDS',crime:'GANGS',evals:'TESTS',tmodel:'TMODEL',insider:'INSIDER',fabs:'FABS',power:'POWER',talent:'TALENT',coord:'ALLIES',norms:'NORMS',liab:'LIABLE',cvd:'BUGS',chips:'CHIPS',offense:'CYBEROP',weights:'WEIGHTS',bounty:'BOUNTY'};
@@ -1919,7 +1930,7 @@ function updateHint(){
   lg+=`<span style="color:var(--green)">✔ Green = ordered</span><span style="color:#5ab0ff">TIP = analyst pick</span>`;
   document.getElementById('legend').innerHTML=lg;
 }
-function mv(dx,dy){const nx=hero.x+dx,ny=hero.y+dy;if(nx<0||ny<0||nx>7||ny>7)return;const ch=TILE[ny][nx];if(ch==='m'||ch==='w'){SFX.bad();return}facing=dy<0?'up':'down';step++;hero={x:nx,y:ny};placeHero();SFX.move()}
+function mv(dx,dy){const nx=hero.x+dx,ny=hero.y+dy;if(nx<0||ny<0||nx>GW-1||ny>GW-1)return;const ch=TILE[ny][nx];if(ch==='m'||ch==='w'){SFX.bad();return}facing=dy<0?'up':'down';step++;hero={x:nx,y:ny};placeHero();SFX.move()}
 function enterLoc(){const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);if(!L){toast('NOTHING HERE');return}openLoc(L)}
 
 function openLoc(L){
@@ -2247,7 +2258,7 @@ function checkDeath(){if(S.dead)return;if(S.m.esc>=90)S.dead='Escalation reached
   else if(S.m.trust<=10)S.dead='Trust collapsed. Lawmakers stripped your cell of its authority. The game continues — without you.'}
 
 function openResolveCheck(){
-  if(!S.posture){toast('SET POSTURE AT HQ');SFX.bad();hero={x:1,y:1};placeHero();return}
+  if(!S.posture){toast('SET POSTURE AT HQ');SFX.bad();hero={x:3,y:2};placeHero();return}
   resolve();
 }
 

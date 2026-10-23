@@ -533,6 +533,18 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
 .map{margin-left:0!important;margin-right:0!important;width:100%!important}
 .mapwrap{padding-left:6px!important;padding-right:6px!important}
 .tokl{cursor:pointer;text-decoration:none!important}.tokl b{color:#ffd23f}
+
+/* ===== bigger, sharper, shiny buildings ===== */
+.t.loc{overflow:visible;z-index:3}
+.t.loc svg,.t.loc.sl svg,.t.loc.sr svg{inset:1%!important;width:98%!important;height:98%!important;shape-rendering:crispEdges;image-rendering:pixelated;transform-origin:50% 55%;
+  animation:bldSpin 11s ease-in-out infinite,bldGlow 3.6s ease-in-out infinite;animation-delay:var(--ad,0s),var(--ad,0s)}
+@keyframes bldSpin{0%,86%,100%{transform:perspective(220px) rotateY(0) scale(1.06)}91%{transform:perspective(220px) rotateY(180deg) scale(1.12)}96%{transform:perspective(220px) rotateY(360deg) scale(1.06)}}
+@keyframes bldGlow{0%,100%{filter:brightness(1.18) saturate(1.25) drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 4px rgba(255,255,255,.3))}50%{filter:brightness(1.3) saturate(1.35) drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 10px rgba(140,200,255,.65))}}
+.t.loc::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:4;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.55) 48%,rgba(255,255,255,.1) 54%,transparent 62%);background-size:300% 100%;background-position:150% 0;mix-blend-mode:screen;animation:bldShine 7s ease-in-out infinite;animation-delay:var(--ad,0s)}
+@keyframes bldShine{0%,70%{background-position:150% 0;opacity:0}72%{opacity:1}88%{background-position:-50% 0;opacity:1}90%,100%{background-position:-50% 0;opacity:0}}
+.t.loc .lbl,.t.loc .lbl.done{font-size:13px!important;padding:4px 6px!important}
+.hero svg.team{width:235%!important}
+@media (prefers-reduced-motion:reduce){.t.loc svg{animation:none!important}.t.loc::after{display:none}}
 </style>
 </head>
 <body>
@@ -1802,7 +1814,7 @@ function renderMap(){
       let lbl=L.short,lst='';
       if(L.id==='wh'&&S.posture){lbl=PLS[S.posture]+(mine.length?' +'+mine.length:'');lst=`style="background:${PCOL[S.posture]};color:#000;border-color:#000"`}
       else if(mine.length){lbl='✔ '+PLATE[mine[0]]+(mine.length>1?' +'+(mine.length-1):'');lst='class="lbl done"'}
-      d.className='t loc'+(n?' picked':'')+(x<3?' sr':x>3?' sl':'');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
+      d.className='t loc'+(n?' picked':'')+(x<3?' sr':x>3?' sl':'');d.style.setProperty('--ad',(-((x*3+y*5)%11)*0.9).toFixed(1)+'s');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
     d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
     map.appendChild(d);
   }

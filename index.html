@@ -450,6 +450,25 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .hero{z-index:9!important}
 .hero svg.team{filter:drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 7px rgba(255,236,170,.55)) drop-shadow(0 3px 0 rgba(0,0,0,.5))!important}
 .hero::before{content:'';position:absolute;left:50%;bottom:4%;width:200%;height:34%;transform:translateX(-50%);background:radial-gradient(ellipse at center,rgba(255,236,170,.35),transparent 70%);pointer-events:none}
+
+/* ===== idle character animation ===== */
+.beatframe svg{transform-origin:50% 100%;animation:idleBreath 3.6s ease-in-out infinite}
+@keyframes idleBreath{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-1.2px) scale(1.012)}}
+.beatframe svg .eyes{transform-box:fill-box;transform-origin:center;animation:blinkEyes 4.6s infinite}
+@keyframes blinkEyes{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.beatframe.talking svg .mouth{transform-box:fill-box;transform-origin:center top;animation:talkMouth .22s ease-in-out infinite alternate}
+@keyframes talkMouth{from{transform:scaleY(1)}to{transform:scaleY(1.7) translateY(.6px)}}
+.beatframe.talking svg{animation:idleBreath 3.6s ease-in-out infinite,talkNod .9s ease-in-out infinite}
+@keyframes talkNod{0%,100%{rotate:0deg}30%{rotate:-1.2deg}70%{rotate:1deg}}
+@media (prefers-reduced-motion:reduce){.beatframe svg,.beatframe svg .eyes,.beatframe.talking svg .mouth{animation:none}}
+
+/* ===== everyone blinks and moves a little ===== */
+svg .eyes{transform-box:fill-box;transform-origin:center;animation:blinkEyes 4.6s infinite}
+svg .head{transform-box:fill-box;transform-origin:50% 90%;animation:headSway 5.2s ease-in-out infinite}
+@keyframes headSway{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(.6px,-.4px) rotate(1.6deg)}55%{transform:translate(0,.3px) rotate(0deg)}80%{transform:translate(-.6px,-.3px) rotate(-1.6deg)}}
+.beatframe.talking svg .head{animation-duration:2.2s}
+.dogpt svg,.beatframe svg,.lopt svg{transform-origin:50% 100%;animation:idleBreath 3.6s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){svg .eyes,svg .head,.dogpt svg{animation:none}}
 </style>
 </head>
 <body>
@@ -1085,16 +1104,20 @@ function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt|
   if(o.pony)v+=`<path d="M68 28 Q92 36 86 74 Q80 66 70 52 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   v+=o.broad?`<path d="M0 100 Q3 70 50 67 Q97 70 100 100 Z" fill="${SU}" stroke="${OL}" stroke-width="2"/>`:`<path d="M6 100 Q9 74 50 72 Q91 74 94 100 Z" fill="${SU}" stroke="${OL}" stroke-width="2"/><path d="M40 73 L50 90 L60 73 Z" fill="${SH}" stroke="${OL}" stroke-width="1.5"/>`;
   if(o.camo){const cid='cm'+Math.floor(Math.random()*1e6);v+=`<defs><clipPath id="${cid}"><path d="M0 100 Q3 70 50 67 Q97 70 100 100 Z"/></clipPath></defs><g clip-path="url(#${cid})"><ellipse cx="16" cy="88" rx="12" ry="6" fill="#4a5a32"/><ellipse cx="34" cy="78" rx="9" ry="5" fill="#2e3a22"/><ellipse cx="70" cy="80" rx="12" ry="6" fill="#4a5a32"/><ellipse cx="88" cy="92" rx="10" ry="5" fill="#2e3a22"/><ellipse cx="52" cy="96" rx="11" ry="5" fill="#7a6a44"/><ellipse cx="80" cy="72" rx="7" ry="4" fill="#7a6a44"/><ellipse cx="22" cy="72" rx="7" ry="3.5" fill="#7a6a44"/></g><path d="M0 100 Q3 70 50 67 Q97 70 100 100" fill="none" stroke="${OL}" stroke-width="2"/>`}
+  if(o.hoodie)v+=`<path d="M30 72 Q50 84 70 72" stroke="${OL}" stroke-width="2" fill="none"/><path d="M43 79 L42 92 M57 79 L58 92" stroke="#f4f1e6" stroke-width="2"/><circle cx="42" cy="93" r="1.6" fill="#f4f1e6"/><circle cx="58" cy="93" r="1.6" fill="#f4f1e6"/>`;
+  if(o.chain)v+=`<path d="M36 74 Q50 98 64 74" stroke="#f7c948" stroke-width="3.2" fill="none" stroke-dasharray="3 1.4"/><circle cx="50" cy="89" r="5" fill="#f7c948" stroke="${OL}" stroke-width="1.5"/><path d="M47.5 89 L50 86 L52.5 89 L50 92 Z" fill="#fff"/>`;
   if(o.lanyard)v+=`<path d="M41 74 L47 92 M59 74 L53 92" stroke="#2a7de1" stroke-width="2.4" fill="none"/><rect x="44" y="90" width="12" height="9" rx="1.5" fill="#f4f1e6" stroke="${OL}" stroke-width="1.5"/><rect x="46" y="92" width="4" height="4" fill="#2a7de1"/>`;
   if(o.coat)v+=`<path d="M40 73 L46 100 M60 73 L54 100" stroke="${OL}" stroke-width="1.6" fill="none"/><rect x="62" y="84" width="10" height="3" fill="#5ab0ff"/><rect x="64" y="80" width="2" height="7" fill="#d33a3a"/>`;
   if(o.bowtie)v+=`<path d="M50 80 L39 74 L39 86 Z M50 80 L61 74 L61 86 Z" fill="${o.bowtie}" stroke="${OL}" stroke-width="1.6"/><circle cx="50" cy="80" r="3" fill="${o.bowtie}" stroke="${OL}" stroke-width="1.6"/>`;
   if(!o.notie)v+=`<path d="M47.5 76 L52.5 76 L54 92 L50 97 L46 92 Z" fill="${TI}" stroke="${OL}" stroke-width="1.5"/>`;
+  const ph=-(Math.random()*5).toFixed(2);v+=`<g class="head" style="animation-delay:${ph}s">`;
   if(o.bun)v+=`<circle cx="50" cy="15" r="11" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   v+=o.broad?`<rect x="40" y="58" width="20" height="15" fill="${SK}" stroke="${OL}" stroke-width="2"/>`:`<rect x="43" y="60" width="14" height="14" fill="${SK}" stroke="${OL}" stroke-width="2"/>`;
   v+=`<circle cx="26" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/><circle cx="74" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/><ellipse cx="50" cy="44" rx="24" ry="26" fill="${SK}" stroke="${OL}" stroke-width="2"/>`;
   if(o.beard)v+=`<path d="M27 48 Q28 73 50 73 Q72 73 73 48 Q67 61 50 61 Q33 61 27 48 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   if(o.cap)v+=`<path d="M25 36 Q26 13 50 13 Q74 13 75 36 Z" fill="${o.capc}" stroke="${OL}" stroke-width="2"/><path d="M21 35 L79 35 L82 41 L18 41 Z" fill="#1b1b2f"/><circle cx="50" cy="25" r="4.5" fill="${o.badge||'#f7c948'}" stroke="${OL}" stroke-width="1.5"/>`;
   else if(o.buzz)v+=`<path d="M27 38 Q27 17 50 17 Q73 17 73 38 Q66 26 50 26 Q34 26 27 38 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
+  else if(o.twists)v+=`<g fill="${HR}" stroke="${OL}" stroke-width="1.8"><path d="M26 42 Q24 26 30 20 L70 20 Q76 26 74 42 Q70 30 50 28 Q30 30 26 42 Z"/>${[30,37,44,51,58,65].map((x,i)=>`<path d="M${x} 22 Q${x+2} ${6+(i%2)*3} ${x+5} 22 Z"/>`).join('')}</g>`;
   else if(o.hijab){}
   else if(o.bald)v+=`<path d="M26 46 Q25 36 30 32 L31 44 Z M74 46 Q75 36 70 32 L69 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/><path d="M38 24 Q50 19 62 24" stroke="#fff" stroke-width="2" opacity=".35" fill="none"/>`;
   else if(o.curly)v+=`<g fill="${HR}" stroke="${OL}" stroke-width="2"><circle cx="30" cy="30" r="9"/><circle cx="40" cy="20" r="10"/><circle cx="52" cy="17" r="10"/><circle cx="63" cy="21" r="10"/><circle cx="71" cy="31" r="9"/><circle cx="26" cy="41" r="6"/><circle cx="75" cy="41" r="6"/></g>`;
@@ -1102,11 +1125,11 @@ function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt|
   else if(o.sidepart)v+=`<path d="M26 44 Q22 14 46 15 Q78 13 75 44 Q73 28 60 24 Q50 22 42 20 Q36 30 26 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/><path d="M42 20 Q44 16 46 15" stroke="#444" stroke-width="1.5" fill="none"/>`;
   else v+=`<path d="M26 44 Q22 15 50 15 Q78 15 74 44 Q71 29 59 26 Q47 31 35 27 Q29 33 26 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   if(o.shades)v+=`<rect x="33" y="41" width="15" height="9" rx="3" fill="#111"/><rect x="52" y="41" width="15" height="9" rx="3" fill="#111"/><path d="M48 44 L52 44" stroke="#111" stroke-width="2"/><path d="M36 43 L41 43" stroke="#555" stroke-width="1.5"/>`;
-  else v+=`<ellipse cx="41" cy="46" rx="2.6" ry="3.3" fill="${OL}"/><ellipse cx="59" cy="46" rx="2.6" ry="3.3" fill="${OL}"/><circle cx="41.8" cy="45" r=".9" fill="#fff"/><circle cx="59.8" cy="45" r=".9" fill="#fff"/><path d="M36 39 Q41 36.5 46 39 M54 39 Q59 36.5 64 39" stroke="${o.cap?OL:HR}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+  else v+=`<g class="eyes" style="animation-delay:${(-(Math.random()*4)).toFixed(2)}s"><ellipse cx="41" cy="46" rx="2.6" ry="3.3" fill="${OL}"/><ellipse cx="59" cy="46" rx="2.6" ry="3.3" fill="${OL}"/><circle cx="41.8" cy="45" r=".9" fill="#fff"/><circle cx="59.8" cy="45" r=".9" fill="#fff"/></g><path d="M36 39 Q41 36.5 46 39 M54 39 Q59 36.5 64 39" stroke="${o.cap?OL:HR}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
   if(o.stern)v+=`<path d="M35 37 L46 41 M65 37 L54 41" stroke="${OL}" stroke-width="3" stroke-linecap="round"/>`;
   if(o.thick)v+=`<rect x="31" y="38.5" width="18" height="15" rx="5" fill="rgba(200,230,255,.22)" stroke="#16161f" stroke-width="4.2"/><rect x="51" y="38.5" width="18" height="15" rx="5" fill="rgba(200,230,255,.22)" stroke="#16161f" stroke-width="4.2"/><path d="M48.5 44 L51.5 44" stroke="#16161f" stroke-width="3.5"/><path d="M31 43 L25 41 M69 43 L75 41" stroke="#16161f" stroke-width="3"/><path d="M34 41.5 L38 41.5" stroke="#fff" stroke-width="1.5" opacity=".7"/>`;
   if(o.glasses)v+=`<circle cx="41" cy="46" r="6.5" fill="rgba(255,255,255,.15)" stroke="#2a2a2a" stroke-width="2"/><circle cx="59" cy="46" r="6.5" fill="rgba(255,255,255,.15)" stroke="#2a2a2a" stroke-width="2"/><path d="M47.5 46 L52.5 46" stroke="#2a2a2a" stroke-width="2"/>`;
-  v+=`<path d="M50 48 L47.5 54 L51 54.5" stroke="${OL}" stroke-width="1.6" fill="none" stroke-linejoin="round"/>${o.grin?`<path d="M39 56 Q50 69 61 56 Z" fill="#fff" stroke="${OL}" stroke-width="2" stroke-linejoin="round"/><path d="M40 58 L60 58" stroke="${OL}" stroke-width="1"/>`:o.stern?`<path d="M44 60.5 L56 60.5" stroke="${OL}" stroke-width="2.4" stroke-linecap="round"/>`:o.smirk?`<path d="M45 60 Q52 62.5 58 57" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`:`<path d="M44 59 Q50 63 56 59" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`}<circle cx="34" cy="54" r="3" fill="#f2a07b" opacity=".35"/><circle cx="66" cy="54" r="3" fill="#f2a07b" opacity=".35"/>`;
+  v+=`<path d="M50 48 L47.5 54 L51 54.5" stroke="${OL}" stroke-width="1.6" fill="none" stroke-linejoin="round"/><g class="mouth">${o.grin?`<path d="M39 56 Q50 69 61 56 Z" fill="#fff" stroke="${OL}" stroke-width="2" stroke-linejoin="round"/><path d="M40 58 L60 58" stroke="${OL}" stroke-width="1"/>`:o.stern?`<path d="M44 60.5 L56 60.5" stroke="${OL}" stroke-width="2.4" stroke-linecap="round"/>`:o.smirk?`<path d="M45 60 Q52 62.5 58 57" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`:`<path d="M44 59 Q50 63 56 59" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`}</g><circle cx="34" cy="54" r="3" fill="#f2a07b" opacity=".35"/><circle cx="66" cy="54" r="3" fill="#f2a07b" opacity=".35"/>`;
   if(o.tophat)v+=`<rect x="31" y="-2" width="38" height="26" fill="#14141c" stroke="${OL}" stroke-width="2"/><rect x="31" y="15" width="38" height="6" fill="${o.tophat}"/><rect x="18" y="22" width="64" height="6" rx="3" fill="#14141c" stroke="${OL}" stroke-width="2"/><path d="M36 2 L36 13" stroke="rgba(255,255,255,.18)" stroke-width="3"/>`;
   if(o.wand)v+=`<path d="M78 98 L92 62" stroke="#111" stroke-width="4" stroke-linecap="round"/><path d="M89 69 L92 62" stroke="#fff" stroke-width="4" stroke-linecap="round"/><g fill="#ffe14d"><path d="M92 50 L94 55 L99 57 L94 59 L92 64 L90 59 L85 57 L90 55 Z"/><circle cx="83" cy="52" r="1.6"/><circle cx="98" cy="68" r="1.4"/></g>`;
   if(o.stubble)v+=`<path d="M29 52 Q31 70 50 71 Q69 70 71 52 Q66 63 50 63 Q34 63 29 52 Z" fill="rgba(40,30,20,.28)"/>`;
@@ -1114,8 +1137,10 @@ function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt|
   if(o.beret)v+=`<path d="M23 36 Q20 14 46 12 Q72 10 82 25 Q80 31 70 31 Q48 31 23 37 Z" fill="${o.beret}" stroke="${OL}" stroke-width="2"/><path d="M24 36 Q48 30 72 31" stroke="${OL}" stroke-width="3" fill="none"/><path d="M33 24 L37 20 L41 24 L37 28 Z" fill="#c9a227" stroke="${OL}" stroke-width="1.2"/>`;
   if(o.hijab)v+=`<path fill-rule="evenodd" d="M50 10 Q80 10 80 48 Q80 70 72 78 L86 100 L14 100 L28 78 Q20 70 20 48 Q20 10 50 10 Z M50 22 Q30 22 29 46 Q29 68 50 70 Q71 68 71 46 Q70 22 50 22 Z" fill="${o.hijab}" stroke="${OL}" stroke-width="2"/><path d="M30 34 Q50 26 70 34" stroke="rgba(255,255,255,.25)" stroke-width="2" fill="none"/>`;
   if(o.mustache)v+=`<path d="M41 56.5 Q46 53 50 55.5 Q54 53 59 56.5 Q55 59 50 57.5 Q45 59 41 56.5 Z" fill="${o.mustache===1?HR:o.mustache}" stroke="${OL}" stroke-width="1.2"/>`;
+  if(o.studs)v+=`<path d="M25 52 L27 54.5 L25 57 L23 54.5 Z M75 52 L77 54.5 L75 57 L73 54.5 Z" fill="#dff6ff" stroke="${OL}" stroke-width="1"/>`;
   if(o.earrings)v+=`<circle cx="25" cy="55" r="2.6" fill="#f7c948" stroke="${OL}" stroke-width="1"/><circle cx="75" cy="55" r="2.6" fill="#f7c948" stroke="${OL}" stroke-width="1"/>`;
   if(o.headset)v+=`<path d="M24 44 Q24 12 50 12 Q76 12 76 44" stroke="#9aa3b5" stroke-width="3" fill="none"/><rect x="20" y="40" width="7" height="12" rx="3" fill="#9aa3b5" stroke="${OL}" stroke-width="1.5"/><path d="M24 52 Q26 62 38 60" stroke="#9aa3b5" stroke-width="2" fill="none"/>`;
+  v+=`</g>`;
   return `<svg viewBox="0 0 100 100">${v}</svg>`}
 const RIVAL_CREST=`<svg viewBox="0 0 100 100"><path d="M50 8 L86 20 L82 58 Q76 82 50 94 Q24 82 18 58 L14 20 Z" fill="#ff5c5c" stroke="#10121f" stroke-width="3" stroke-linejoin="round"/><path d="M50 18 L76 27 L73 56 Q68 74 50 83 Q32 74 27 56 L24 27 Z" fill="#8a1c1c"/><circle cx="50" cy="50" r="16" fill="none" stroke="#f7c948" stroke-width="6"/><circle cx="50" cy="50" r="6" fill="#f7c948"/></svg>`;
 
@@ -1124,7 +1149,8 @@ const BRIEFERS=[
  {n:'AMIRA HADDAD',t:'DIPLOMATIC DESK',o:{hair:'#2a1a12',suit:'#4a4f6b',hijab:'#2f8a8a',notie:1,shirt:'#f4f1e6',skin:'#d9a273'}},
  {n:'MEI LIN',t:'NIGHT WATCH',o:{hair:'#121018',suit:'#22263a',bob:1,headset:1,notie:1,shirt:'#5ab0ff',skin:'#f0c9a0'}},
  {n:'DR. INGRID LARSEN',t:'STRATEGY CELL',o:{hair:'#e8e4dc',suit:'#5a3a5a',bun:1,thick:1,notie:1,shirt:'#d9c9e8',skin:'#f6d3b8'}},
- {n:'SGT. MAJ. JAX HOLLOWAY',t:'FIELD OPS · ARMY RANGER',o:{hair:'#3a2a1a',suit:'#5a6a3a',camo:1,broad:1,beret:'#c2a46a',facepaint:1,stubble:1,stern:1,notie:1,skin:'#d9a273'}}];
+ {n:'SGT. MAJ. JAX HOLLOWAY',t:'FIELD OPS · ARMY RANGER',o:{hair:'#3a2a1a',suit:'#5a6a3a',camo:1,broad:1,beret:'#c2a46a',facepaint:1,stubble:1,stern:1,notie:1,skin:'#d9a273'}},
+ {n:'DEREK SANDERS',t:'STREET SIGNALS · HIP-HOP ARTIST',o:{hair:'#120c08',suit:'#6a2fb0',twists:1,hoodie:1,chain:1,studs:1,grin:1,notie:1,shirt:'#6a2fb0',skin:'#6b4226'}}];
 function curBriefer(){const r=(typeof S!=='undefined'&&S&&S.round)||1;return BRIEFERS[(r-1)%BRIEFERS.length]}
 function portrait(k){if(k==='glitch')return glitchSVG();if(k==='brief')return vportrait(curBriefer().o);if(k==='rival')return RIVAL_CREST;return vportrait(PT[k])}
 
@@ -1351,7 +1377,7 @@ function renderBeat(){const b=beats[beatI];
   document.getElementById('beatArea').innerHTML=beatHTML(b.frame,b.who,b.role,b.body,b.learn);
   const btn=document.getElementById('briefNext');btn.style.display=b.next?'':'none';btn.textContent=b.next||'';
   document.getElementById('briefScroll').scrollTop=0;
-  const t=document.getElementById('beatTxt');if(t&&b.type)typeInto(t,b.type);
+  const t=document.getElementById('beatTxt');const fr=document.querySelector('#beatArea .beatframe');if(t&&b.type){fr&&fr.classList.add('talking');typeInto(t,b.type,()=>{fr&&fr.classList.remove('talking')})}
   if(b.flash){const g=document.getElementById('g-brief');g.classList.remove('flash');void g.offsetWidth;g.classList.add('flash');SFX.bad()}else SFX.sel()}
 function briefNext(){const b=beats[beatI];if(b&&b.go)return b.go();beatI++;renderBeat()}
 function toMap(){showGame('g-map');renderMap()}
@@ -1516,7 +1542,7 @@ function teamSVG(attrs=''){const OL='#10121f',st=step%2;
   o+=`<rect x="56.5" y="27" width="7" height="6" fill="#e8b98a"/><circle cx="60" cy="18" r="11.5" fill="#e8b98a"/>`;
   o+=`<circle cx="60" cy="4.5" r="5" fill="#3b2416"/><path d="M48.5 19 Q48 6 60 6 Q72 6 71.5 19 Q68 11 61 11.5 Q54 12 48.5 19 Z" fill="#3b2416"/>`;
   o+=`</g><g stroke="#111" stroke-width="2.2" fill="rgba(170,220,255,.25)"><rect x="51" y="15" width="8" height="7" rx="2"/><rect x="61.5" y="15" width="8" height="7" rx="2"/></g><path d="M59 17.5 H61.5" stroke="#111" stroke-width="2"/>`;
-  o+=`<g fill="${OL}"><circle cx="55" cy="18.5" r="1.4"/><circle cx="65.5" cy="18.5" r="1.4"/><circle cx="22" cy="21.5" r="1.3"/><circle cx="29" cy="21.5" r="1.3"/><circle cx="93.5" cy="21" r="1.3"/><circle cx="100.5" cy="21" r="1.3"/></g>`;
+  o+=`<g class="eyes" fill="${OL}"><circle cx="55" cy="18.5" r="1.4"/><circle cx="65.5" cy="18.5" r="1.4"/><circle cx="22" cy="21.5" r="1.3"/><circle cx="29" cy="21.5" r="1.3"/><circle cx="93.5" cy="21" r="1.3"/><circle cx="100.5" cy="21" r="1.3"/></g>`;
   o+=`<g fill="none" stroke="${OL}" stroke-width="1.2" stroke-linecap="round"><path d="M56.5 25 Q60 27.5 63.5 25"/><path d="M23 26 Q25.5 27.5 28 26"/><path d="M94 27 Q97 28.5 100 27" stroke="#d9a07a"/></g>`;
   o+=`<text x="106.5" y="53" text-anchor="middle" font-family="serif" font-weight="700" font-size="9" fill="#fff">π</text>`;
   return `<svg ${attrs} class="team" viewBox="0 0 120 80" aria-label="Your team: lead scientist with clipboard, advisor with laptop, math advisor">${o}</svg>`}
@@ -1614,7 +1640,7 @@ function enterLoc(){const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);if(!L){toas
 function openLoc(L){
   showGame('g-loc');SFX.sel();
   document.getElementById('locWho').textContent=L.who;document.getElementById('locRole').textContent=(L.title?L.title+' · ':'')+L.name;document.getElementById('locPt').innerHTML=portrait(L.id);document.getElementById('locLearn').innerHTML=learnBtn('loc:'+L.id);
-  typeInto(document.getElementById('locTxt'),L.intro);
+  {const fr=document.getElementById('locPt');fr.classList.add('talking');typeInto(document.getElementById('locTxt'),L.intro,()=>fr.classList.remove('talking'))}
   const body=document.getElementById('locBody');body.innerHTML=`<p class="small" style="margin-bottom:10px">${L.id==='wh'?'Pick a posture (required, free), then tap any card to buy it.':'Tap a card to buy it with PC. Tap again to undo.'} You have <b style="color:var(--gold)">${S.pc} PC</b> left.</p>`;
   if(L.id==='wh'){
     const box=document.createElement('div');box.className='box';
@@ -1757,7 +1783,7 @@ const DOG=["..dd.......dd...",".dbbd.....dbbd..",".dbbbd...dbbbd..","..dbbbbbbbb
 const DOG_TALK=["..dd.......dd...",".dbbd.....dbbd..",".dbbbd...dbbbd..","..dbbbbbbbbbd...","..bbbbbbbbbbb...","..bbsbbbbbsbb...","..bskkbbbbkksb..","..bskkbbbbkksb..","..bbbbbbbbbbb...","..bbbwbnnbwbb...","...bbbnnnbbb....","...bbwwkwwbb....","....brrrbb......",".....bbbb.......","...yyyyyyyy.....","...y.ykky.y....."];
 let dogFrame=0;
 function dogSVG(a=''){const F='#c8893a',D='#8a5a22',W='#f4ead8',OL='#2a1a0e',talk=dogFrame%2;
-  return `<svg ${a} viewBox="0 0 100 100"><g stroke="${OL}" stroke-width="2.5" stroke-linejoin="round"><path d="M16 100 Q19 76 50 74 Q81 76 84 100 Z" fill="#3a4a6a"/><path d="M38 79 L50 85 L38 91 Z M62 79 L50 85 L62 91 Z" fill="#d33a3a"/><circle cx="50" cy="85" r="3.2" fill="#a02020"/><path d="M25 25 Q7 29 11 58 Q20 63 29 50 Z" fill="${D}"/><path d="M75 25 Q93 29 89 58 Q80 63 71 50 Z" fill="${D}"/><ellipse cx="50" cy="44" rx="27" ry="26" fill="${F}"/><ellipse cx="50" cy="58" rx="15" ry="11" fill="${W}"/><ellipse cx="50" cy="52" rx="5.5" ry="4" fill="${OL}"/><path d="M50 56 L50 60.5 M44 61.5 Q50 65.5 56 61.5" fill="none" stroke-linecap="round"/></g>${talk?`<ellipse cx="50" cy="64.5" rx="3.6" ry="2.6" fill="#d35a6a" stroke="${OL}" stroke-width="1.5"/>`:''}<circle cx="47.7" cy="51" r="1.2" fill="#fff" opacity=".7"/><path d="M33 33 Q38.5 30 44 33" stroke="${OL}" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M55 30 Q60.5 25.5 67 29" stroke="${OL}" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="39" cy="40" rx="3.3" ry="4.1" fill="${OL}"/><circle cx="40" cy="38.8" r="1.1" fill="#fff"/><ellipse cx="61" cy="40" rx="3.6" ry="4.4" fill="${OL}"/><circle cx="62.1" cy="38.6" r="1.2" fill="#fff"/><circle cx="61" cy="40" r="9.5" fill="rgba(170,220,255,.32)" stroke="#f7c948" stroke-width="3.2"/><path d="M55 35.5 Q58 32.5 62.5 32.5" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".9"/><path d="M69.5 45 Q78 60 67 73" stroke="#f7c948" stroke-width="1.6" fill="none" stroke-dasharray="2.2 1.6"/></svg>`}
+  return `<svg ${a} viewBox="0 0 100 100"><g stroke="${OL}" stroke-width="2.5" stroke-linejoin="round"><path d="M16 100 Q19 76 50 74 Q81 76 84 100 Z" fill="#3a4a6a"/><path d="M38 79 L50 85 L38 91 Z M62 79 L50 85 L62 91 Z" fill="#d33a3a"/><circle cx="50" cy="85" r="3.2" fill="#a02020"/><path d="M25 25 Q7 29 11 58 Q20 63 29 50 Z" fill="${D}"/><path d="M75 25 Q93 29 89 58 Q80 63 71 50 Z" fill="${D}"/><ellipse cx="50" cy="44" rx="27" ry="26" fill="${F}"/><ellipse cx="50" cy="58" rx="15" ry="11" fill="${W}"/><ellipse cx="50" cy="52" rx="5.5" ry="4" fill="${OL}"/><path d="M50 56 L50 60.5 M44 61.5 Q50 65.5 56 61.5" fill="none" stroke-linecap="round"/></g>${talk?`<ellipse cx="50" cy="64.5" rx="3.6" ry="2.6" fill="#d35a6a" stroke="${OL}" stroke-width="1.5"/>`:''}<circle cx="47.7" cy="51" r="1.2" fill="#fff" opacity=".7"/><path d="M33 33 Q38.5 30 44 33" stroke="${OL}" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M55 30 Q60.5 25.5 67 29" stroke="${OL}" stroke-width="2.4" fill="none" stroke-linecap="round"/><g class="eyes" style="animation-delay:-1.7s"><ellipse cx="39" cy="40" rx="3.3" ry="4.1" fill="${OL}"/><circle cx="40" cy="38.8" r="1.1" fill="#fff"/><ellipse cx="61" cy="40" rx="3.6" ry="4.4" fill="${OL}"/><circle cx="62.1" cy="38.6" r="1.2" fill="#fff"/></g><circle cx="61" cy="40" r="9.5" fill="rgba(170,220,255,.32)" stroke="#f7c948" stroke-width="3.2"/><path d="M55 35.5 Q58 32.5 62.5 32.5" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".9"/><path d="M69.5 45 Q78 60 67 73" stroke="#f7c948" stroke-width="1.6" fill="none" stroke-dasharray="2.2 1.6"/></svg>`}
 function dogHTML(label,body,mood){dogFrame++;return `<div class="dog"><div class="dogpt">${dogSVG()}</div><div class="dogbub"><span class="doglb">🐾 BYTE${label?' · '+label:''}</span>${body}</div></div>`}
 const DOG_LINES={tips:['Sniffed out the priorities.','Nose says: start here.','Trust the nose.'],math:['I ran the numbers. Good dog.','Crunched it between naps.'],review:['Here is what I saw from under the desk.','Round over. Field notes:'],card:['Let me sniff this one.'],crisis:['Ears up. Here is my read.']};
 const dogLine=k=>DOG_LINES[k][Math.floor(Math.random()*DOG_LINES[k].length)];

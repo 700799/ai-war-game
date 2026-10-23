@@ -591,6 +591,29 @@ svg .spark{transform-box:fill-box;transform-origin:center;animation:sparkTooth 6
 #g-map .mapwrap{padding-left:0!important;padding-right:0!important}
 #map{border-left:none!important;border-right:none!important;box-shadow:none!important}
 #g-map .steps,#g-map .mapbar{padding:0 8px;box-sizing:border-box}
+
+/* ===== 4-meter HUD ===== */
+.hud{grid-template-columns:1fr 1fr;gap:8px 14px;padding:10px 12px}
+.stat.big .n{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:12px;letter-spacing:.5px;width:76px;text-decoration:none}
+.stat.big .bar{height:12px}.stat.big .v{font-size:12px;width:28px}
+.stat .dv{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:11px;min-width:24px}
+.stat.danger .n{color:#ff5c5c;animation:blink 1s steps(2) infinite}
+.mrow{display:grid;grid-template-columns:92px 1fr 30px 30px;gap:6px 8px;align-items:center;padding:6px 6px;margin-top:4px;border-left:3px solid transparent}
+.mrow.chg{background:#1b2244;border-left-color:#ffd23f}
+.mrow .mn{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:11px;cursor:pointer}
+.mrow .bar{height:10px;background:#1a1c33;border:1px solid #000}.mrow .bar i{display:block;height:100%;background:#5ab0ff}
+.mrow .mv{font-weight:800;font-size:13px;text-align:right}.mrow .dv{font-weight:800;font-size:12px}
+.mrow .mtip{grid-column:1/-1;font-size:13px;color:#9b9ac7;line-height:1.3}
+
+.t.loc.locked svg{filter:grayscale(1) brightness(.45)!important;animation:none!important}
+.t.loc.locked{background:#1a1d2c!important;box-shadow:inset 0 0 0 2px #2a2f45!important}
+.t.loc.locked::after{display:none}
+.t.loc.locked .lbl,.t.loc.locked .lbl.done{color:#6b6f8a;border-color:#3a3f58;background:#0b0c18}
+.t.loc.locked::before{content:'🔒';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:18px;z-index:5;filter:drop-shadow(0 1px 0 #000)}
+.unl{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.unlk{flex:1;min-width:90px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;background:#0f1130;border:2px solid #39ff8a;text-align:center}
+.unli{width:54px;height:54px}.unli svg{width:100%;height:100%;display:block}
+.unlk b{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:12px;letter-spacing:.5px}.unlk span{font-size:15px;color:#9fb8e8;line-height:1.15}
 </style>
 </head>
 <body>
@@ -1517,12 +1540,19 @@ const STATS=[['good','DIVIDEND','SI benefits to society: science, health, robots
 let hudOpen=false;
 function renderHud(){
   const h=document.getElementById('hud');h.innerHTML='';
-  const KEY=['sec','esc','modelsec','rcap','good','harm'];
-  STATS.filter(([k])=>hudOpen||KEY.includes(k)).forEach(([k,n,tip])=>{h.innerHTML+=`<div class="stat${k==='good'||k==='harm'?' big':''}" title="${tip}"><span class="n mt" data-m="${k}">${n}</span><div class="bar ${k}"><i style="width:${S.m[k]}%"></i></div><span class="v">${S.m[k]}</span></div>`});
-  h.innerHTML+=`<button class="hudtog" onclick="hudOpen=!hudOpen;renderHud()">${hudOpen?'▲ FEWER METERS':'▼ ALL 18 METERS'}</button>`;
+  const KEY=['sec','esc','good','harm'];const prev=S.hudPrev||{};
+  KEY.forEach(k=>{const [,n,tip]=STATS.find(x=>x[0]===k);const v=Math.round(S.m[k]),d=prev[k]!=null?v-Math.round(prev[k]):0;const bad=BAD.includes(k);const danger=(k==='sec'&&v<=25)||(k==='esc'&&v>=70)||(k==='harm'&&v>=35);
+    h.innerHTML+=`<div class="stat big${danger?' danger':''}" title="${tip}"><span class="n mt" data-m="${k}">${n}</span><div class="bar ${k}"><i style="width:${v}%"></i></div><span class="v">${v}</span>${d?`<span class="dv ${(bad?d<0:d>0)?'up':'dn'}">${d>0?'+':''}${d}</span>`:''}</div>`});
+  const changed=STATS.filter(([k])=>!KEY.includes(k)&&prev[k]!=null&&Math.round(S.m[k])!==Math.round(prev[k])).length;
+  h.innerHTML+=`<button class="hudtog" onclick="openMeters()">▼ ALL METERS${changed?` · ${changed} CHANGED`:''}</button>`;
   document.getElementById('rnum').textContent=S.round;document.getElementById('rmax').textContent=S.maxRounds;document.getElementById('date').textContent=dateFor(S.round);
   document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;document.getElementById('pcv').textContent=S.pc;
 }
+function openMeters(){const prev=S.hudPrev||{};const el=document.getElementById('learnDrawer');
+  const row=([k,n,tip])=>{const v=Math.round(S.m[k]),d=prev[k]!=null?v-Math.round(prev[k]):0,bad=BAD.includes(k);return `<div class="mrow${d?' chg':''}"><span class="mn mt" data-m="${k}">${n}</span><div class="bar ${k}"><i style="width:${v}%"></i></div><span class="mv">${v}</span><span class="dv ${d?((bad?d<0:d>0)?'up':'dn'):''}">${d?(d>0?'+':'')+d:''}</span><span class="mtip">${tip}</span></div>`};
+  const groups=[['NATIONAL SECURITY',['sec','esc','rcap','ccap','ally','trust']],['SUPERINTELLIGENCE',['risk','modelsec','botsafe']],['ECONOMY & COMPUTE',['econ','chips','power','talent','subs']],['SOCIETY',['good','harm','equity','wellbeing']]];
+  el.innerHTML=`<div class="lsheet" role="dialog"><div class="lgrab"></div><div class="lhead"><div><div class="lsub">📊 ALL 18 METERS</div><div class="ltitle">How things stand</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody"><p class="small">Highlighted rows changed since last round. Tap a name to learn what it means.</p>${groups.map(([g,ks])=>`<div class="lsec"><div class="llbl">${g}</div>${ks.map(k=>row(STATS.find(x=>x[0]===k))).join('')}</div>`).join('')}</div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;
+  el.classList.add('on')}
 
 /* ===================== BRIEF / TYPEWRITER ===================== */
 let typing=null;
@@ -1689,23 +1719,42 @@ function briefNext(){const b=beats[beatI];if(b&&b.go)return b.go();beatI++;rende
 function toMap(){showGame('g-map');renderMap()}
 function optCard(k,c,rc){const n=(INOTE[currentInject.id]||{})[k];const pick=false;
   return `<button class="optcard ${k}${pick?' pick':''}" onclick="chooseInject('${k}')"><span class="opti" role="button" aria-label="More details" onclick="event.stopPropagation();optInfo('${k}')">ⓘ<small>INFO</small></span><span class="optk">${k.toUpperCase()}</span><span class="optmain"><span class="optt">${c.t.replace(/^[AB] · /,'')}${pick?' <em>★ BYTE’S PICK</em>':''}</span><span class="optfx">${fxLine(c.fx)}${n?'<br>'+n:''}</span></span></button>`}
+
+/* ===== progressive unlock ===== */
+const STAGES=[
+ {t:'THE RIVAL',locs:['wh','cisa','sv'],idea:'Every round you and the rival choose a stance at the same time. Cooperate, stay neutral or compete. They remember what you did.',learn:'brief',inj:['summit','lobby','hosp','zeroday','election','cancer']},
+ {t:'THE HOME FRONT',locs:['town','bots'],idea:'While you handle the rival, feeds, scams, job losses and robots reshape life at home. The best ending needs a fair, healthy society, so split your spending.',learn:'inj:doomscroll',inj:['doomscroll','challenge','addictsuit','loop','companion','layoffs','bias','surveil','artists','divide','eldeep','radical','humanoid','bothijack','botinjury','botcare','botarms','botjobs','subs']},
+ {t:'FOG & INTEL',locs:['soc','dark'],idea:'You rarely know who attacked you. Intel clears the fog. Criminals and rival hackers use the same tools, so blaming the wrong party starts fights.',learn:'inj:misattr',inj:['misattr','leak','insiderinj','deepfake','cheat','bankheist']},
+ {t:'CHIPS & ALLIES',locs:['ally','fab'],idea:'SI runs on chips and power. Export controls slow a rival but leak without allies and invite retaliation.',learn:'inj:rareban',inj:['hbm','energy','ally','talentraid','bills','rareban','smuggle','pricewar']},
+ {t:'ATTACKS ON MODELS',locs:['red','oss'],idea:'Models can be stolen, copied, poisoned or jailbroken. Open releases spread benefits and misuse alike.',learn:'inj:weighttheft',inj:['weighttheft','distill','injection','poison','jailbreak','backdoor','openrel','abl','otattack','wmd','autoacc']}];
+function stageFor(r){const n=STAGES.length;const per=S.maxRounds>=n?1:n/S.maxRounds;return Math.min(n-1,Math.floor((r-1)*per))}
+function unlockedLocs(){const st=stageFor(S.round);return new Set(STAGES.slice(0,st+1).flatMap(x=>x.locs))}
+function isUnlocked(id){return unlockedLocs().has(id)}
+function unlockedInj(){const st=stageFor(S.round);return new Set(STAGES.slice(0,st+1).flatMap(x=>x.inj))}
+function newStageThisRound(){const st=stageFor(S.round);const prev=S.round>1?stageFor(S.round-1):-1;if(st===prev)return null;const list=[];for(let k=prev+1;k<=st;k++)list.push(STAGES[k]);return list}
+function stageIdx(){return stageFor(S.round)}
 function startRound(){
-  S.posture=null;S.picks=[];S.flags={};S.intelReveal=null;S.pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2;
+  S.posture=null;S.picks=[];S.flags={};S.intelReveal=null;S.pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2+(S.maxRounds<=4?1:0);
+  S.hudPrev=S.hudPrevNext||null;S.hudPrevNext={...S.m};
   S.tokPrev=S.tok||null;S.tok=Math.max(4,Math.round(100*Math.pow(.62,(S.round-1)*(6/S.maxRounds))*(S.m.chips<40?1.35:1)*(S.m.power<40?1.25:1)));
   LOCS.forEach(l=>l.done=false);
   renderHud();showGame('g-brief');briefStage=0;
-  const pool=INJECTS.filter(i=>i.cond(S)&&!S.injectLog.includes(i.id));
+  const uInj=unlockedInj();const pool=INJECTS.filter(i=>uInj.has(i.id)&&i.cond(S)&&!S.injectLog.includes(i.id));
   currentInject=pool.length?pool[Math.floor(Math.random()*pool.length)]:null;
   const lf=S.focus[S.focus.length-1];const T=roundTips();
   const chips=threatModel().replace('Top threats right now: ','').split(' · ').map(x=>`<span class="tchip">${x}</span>`).join('');
-  beats=[{step:'SITUATION',frame:portrait('brief'),who:curBriefer().n,role:curBriefer().t+' · '+dateFor(S.round),
-    body:`<p class="beattxt" id="beatTxt"></p><div class="pgap"><span>POWER GAP</span><b class="${S.m.econ-S.m.rcap<4?'dn':'up'}">You ${Math.round(S.m.econ)} vs Rival ${Math.round(S.m.rcap)}</b>${S.m.econ-S.m.rcap<4?'<i>Thucydides Trap zone</i>':S.m.econ-S.m.rcap<10?'<i>Gap narrowing</i>':''}</div><div class="pgap tokl mt" data-tok="1" onclick="openLearn('con:tokens')"><span>TOKEN PRICE</span><b>$${S.tok} per million tokens</b>${S.tokPrev?`<i>${Math.round((1-S.tok/S.tokPrev)*100)}% cheaper than last round</i>`:'<i>tap to learn</i>'}</div><div class="beatlbl">TOP THREATS</div><div class="tchips">${chips}</div>`+(lf?`<p class="beatsmall">Last round: ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ Home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}</p>`:''),
-    learn:'brief',type:briefText(),next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']}];
+  const NS=newStageThisRound();
+  beats=[];
+  if(NS)NS.forEach((st,i)=>{beats.push({step:'SITUATION',frame:`<div class="bigicon">${icon('star','width="100%" height="100%"')}</div>`,who:'NEW THIS ROUND',role:'LAYER '+(STAGES.indexOf(st)+1)+' OF '+STAGES.length+' · '+st.t,learn:st.learn,
+    body:`<p class="beattxt">${st.idea}</p><div class="beatlbl">NOW OPEN ON THE MAP</div><div class="unl">${st.locs.map(id=>{const L=LOCS.find(l=>l.id===id);return `<div class="unlk"><div class="unli">${sprite(id)}</div><b>${L.short}</b><span>${L.name}</span></div>`}).join('')}</div>${S.round===1?'<p class="beatsmall">More buildings and crises unlock as the rounds go on. Learn one layer at a time.</p>':''}`,next:'CONTINUE ▶'})});
+  beats.push({step:'SITUATION',frame:portrait('brief'),who:curBriefer().n,role:curBriefer().t+' · '+dateFor(S.round),
+    body:`<p class="beattxt" id="beatTxt"></p>${stageIdx()>=3?`<div class="pgap"><span>POWER GAP</span><b class="${S.m.econ-S.m.rcap<4?'dn':'up'}">You ${Math.round(S.m.econ)} vs Rival ${Math.round(S.m.rcap)}</b>${S.m.econ-S.m.rcap<4?'<i>Thucydides Trap zone</i>':S.m.econ-S.m.rcap<10?'<i>Gap narrowing</i>':''}</div>`:''}${stageIdx()>=3?`<div class="pgap tokl mt" data-tok="1" onclick="openLearn('con:tokens')"><span>TOKEN PRICE</span><b>$${S.tok} per million tokens</b>${S.tokPrev?`<i>${Math.round((1-S.tok/S.tokPrev)*100)}% cheaper than last round</i>`:'<i>tap to learn</i>'}</div>`:''}<div class="beatlbl">TOP THREATS</div><div class="tchips">${chips}</div>`+(lf?`<p class="beatsmall">Last round: ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ Home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}</p>`:''),
+    learn:'brief',type:briefText(),next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']});
   S.siSeen=S.siSeen||[];const sm=[20,30,50,70,90].filter(t=>S.si>=t&&!S.siSeen.includes(t));
   if(sm.length){const t=sm[sm.length-1];sm.forEach(x=>S.siSeen.push(x));
     beats.push({step:'SITUATION',frame:portrait('sci'),who:'DR. VERA SATO',role:'CHIEF SCIENTIST · SI CLOCK '+S.si+'%',
       body:`<div class="beatlbl">WHAT SI CAN DO NOW</div><p class="beattxt" id="beatTxt"></p><div class="beatlbl">WHAT IT MEANS FOR YOU</div><p class="beattxt" style="font-size:19px">${SCI[t][1]}</p>`,learn:'sci:'+t,type:SCI[t][0],next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']});
-    beats[0].next='SCIENCE UPDATE ▶'}
+    beats[beats.length-2].next='SCIENCE UPDATE ▶'}
   if(currentInject){const ic=INJ_ICON[currentInject.id]||'eye';const isG=['autoacc','leak','zeroday'].includes(currentInject.id);
     beats.push({step:'EVENT',flash:true,frame:isG?glitchSVG('width="100%" height="100%"'):`<div class="bigicon">${icon(ic,'width="100%" height="100%"')}</div>`,who:'FLASH TRAFFIC',role:currentInject.title,
       body:`<p class="beattxt">${currentInject.body}</p><p class="beatsmall">A decision is required before orders go out.</p>`,learn:'inj:'+currentInject.id,next:'ASK BYTE ▶'})}
@@ -1931,8 +1980,8 @@ function renderMap(){
       let lbl=L.short,lst='';
       if(L.id==='wh'&&S.posture){lbl=PLS[S.posture]+(mine.length?' +'+mine.length:'');lst=`style="background:${PCOL[S.posture]};color:#000;border-color:#000"`}
       else if(mine.length){lbl='✔ '+PLATE[mine[0]]+(mine.length>1?' +'+(mine.length-1):'');lst='class="lbl done"'}
-      d.className='t loc'+(n?' picked':'')+(x<3?' sr':x>3?' sl':'');d.style.setProperty('--ad',(-((x*3+y*5)%11)*0.9).toFixed(1)+'s');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
-    d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
+      const lk=!isUnlocked(L.id);d.className='t loc'+(n?' picked':'')+(x<3?' sr':x>3?' sl':'')+(lk?' locked':'');d.style.setProperty('--ad',(-((x*3+y*5)%11)*0.9).toFixed(1)+'s');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
+    d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}if(L&&!isUnlocked(L.id)){toast('UNLOCKS IN A LATER ROUND');SFX.bad();return}facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
     map.appendChild(d);
   }
   const h=document.createElement('div');h.className='hero';h.id='hero';map.appendChild(h);placeHero();
@@ -1997,7 +2046,7 @@ function recommendPlan(){const m=S.m,R=RIVALS[S.rival],last=S.redHist[S.redHist.
   else if(last==='esc'){posture='hedge';why='They competed hard last round. Stay neutral so you are not exploited, without starting a spiral.'}
   else if(last==='coop'){posture='coop';why='They cooperated. Match it to lock in mutual restraint.'}
   else {posture=m.esc>55?'coop':'hedge';why=m.esc>55?'Escalation is high. Offer cooperation to cool things down.':'They are probing. Match by staying neutral.'}
-  const want=[];const add=(id,c,r)=>{if(c)want.push([id,r])};
+  const want=[];const add=(id,c,r)=>{if(c&&isUnlocked(ACTIONS.find(a=>a.id===id).loc))want.push([id,r])};
   add('intel',true,'Cheap. Reveals their move and clears attribution fog.');
   add('harden',m.sec<75,'Security is the base of everything; cuts all damage.');
   add('retrain',m.equity<42,'Automation is leaving workers behind.');
@@ -2035,7 +2084,7 @@ function recommendPlan(){const m=S.m,R=RIVALS[S.rival],last=S.redHist[S.redHist.
   add('fabs',m.econ-m.rcap<6&&m.chips<60,'The power gap is narrowing (Thucydides Trap).');
   {const st=id=>(S.lastBuy||{})[id]===S.round-1?((S.buys||{})[id]||0):0;const fresh=want.filter(w=>st(w[0])<2),stale=want.filter(w=>st(w[0])>=2);want.length=0;want.push(...fresh,...stale)}
   const lf=S.focus[S.focus.length-1];if(lf&&lf.HOME===0)want.unshift(['phonefree','You skipped the home front last round. Skip it twice and it costs you.']);
-  let pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2;const picks=[];
+  let pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2+(S.maxRounds<=4?1:0);const picks=[];
   for(const [id,r] of want){const a=ACTIONS.find(x=>x.id===id);if(a.cost<=pc&&!picks.find(p=>p[0]===id)){picks.push([id,r]);pc-=a.cost}}
   return {posture,why,picks}}
 function applyPlan(){const P=recommendPlan();S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id);S.pc+=a.cost;delete S.flags[a.flag]});S.picks=[];
@@ -2199,7 +2248,7 @@ const ICONS={
  eye:{pal:{w:'#f4f1e6',b:'#5ab0ff',k:'#c9c9d6'},rows:["............","...kkkkkk...","..kwwbbwwk..",".kwwbkkbwwk.",".kwwbkkbwwk.","..kwwbbwwk..","...kkkkkk..."]},
  brain:{pal:{p:'#b28bff',P:'#7a5ad6'},rows:["...pppppp...","..pPpppPpp..",".pppPppPppp.",".pPpppPpppp.",".ppPppppPpp.",".pppPpPpppp.","..ppppPppp..","...pp..pp..."]},
 };
-function icon(k,attrs='class="ic"'){if(k==='glitch')return glitchSVG(attrs);const I=ICONS[k];return spr(I.rows,I.pal,12,12,attrs)}
+function icon(k,attrs='class="ic"'){if(k==='glitch')return glitchSVG(attrs);if(k==='star')return `<svg ${attrs} viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#1b2a5a" stroke="#39ff8a" stroke-width="4"/><path d="M50 14 L60 38 L86 40 L66 57 L72 84 L50 70 L28 84 L34 57 L14 40 L40 38 Z" fill="#ffd23f" stroke="#10121f" stroke-width="3" stroke-linejoin="round"/><text x="50" y="58" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="16" fill="#10121f">NEW</text></svg>`;const I=ICONS[k];return spr(I.rows,I.pal,12,12,attrs)}
 const INJ_ICON={bankheist:'skull',otattack:'hospital',pricewar:'chip',rareban:'chip',smuggle:'chip',injection:'skull',poison:'skull',jailbreak:'lock',backdoor:'lock',openrel:'lock',distill:'chip',weighttheft:'lock',bothijack:'robot',botinjury:'hospital',botcare:'robot',botarms:'robot',botjobs:'person',doomscroll:'phone',challenge:'hospital',addictsuit:'school',loop:'phone',layoffs:'person',companion:'phone',bias:'eye',eldeep:'ballot',surveil:'eye',artists:'coin',bills:'bolt',divide:'school',hosp:'hospital',zeroday:'chip',leak:'lock',lobby:'coin',summit:'shake',misattr:'fog',election:'ballot',ally:'shake',autoacc:'glitch',talentraid:'person',hbm:'chip',energy:'bolt',subs:'coin',abl:'lock',insiderinj:'person',cheat:'school',deepfake:'phone',radical:'fire',wmd:'rad',cancer:'dna',humanoid:'robot'};
 function logIcon(l){const R=[[/^ATTRIBUTION/,'fog'],[/^INSIDER/,'person'],[/^ACCIDENT/,'glitch'],[/^BREAKTHROUGH/,'dna'],[/^HARM/,'fire'],[/^SI CLOCK/,'brain'],[/^Ransomware/,'skull'],[/^Criminal/,'skull'],[/^Labs/,'coin'],[/open weights|^Refusal|^Within days/,'lock'],[/^Norms/,'shake'],[/chip controls|critical-mineral/,'chip'],[/^Disclosure/,'eye'],[/^Consumers/,'coin'],[/^INEQUALITY/,'person'],[/^WELLBEING/,'phone'],[/^ROBOT/,'robot'],[/^MODEL ATTACK/,'skull'],[/^Model defenses/,'eye'],[/^MODEL THEFT/,'lock'],[/^DISTILLATION/,'chip'],[/^API checks/,'eye'],[/^HOME FRONT/,'house'],[/^SECURITY FRONT/,'flag'],[/^Strained grid/,'bolt'],[/^Talent drain/,'person'],[/^Forward ops/,'flag'],[/^Your retaliation/,'flag']];for(const[re,k]of R)if(re.test(l))return icon(k);return icon('eye')}
 
@@ -2480,18 +2529,19 @@ function resolve(){
     if(F.insider&&Math.random()<.65){applyFx({trust:+1},acc);log.push('INSIDER CAUGHT: access logs flagged an engineer copying model weights to a personal drive. Contained.')}
     else{S.insiders++;applyFx({rcap:+5,ccap:+3,trust:-3},acc);log.push('INSIDER THREAT: frontier model weights walked out with a departing employee. They surfaced abroad weeks later.')}}
   // ---- 6b1. Attacks on models ----
-  applyFx({modelsec:Math.round((-1-S.si/40)*KD())},acc);
-  if(S.si>=25&&!S.ms.ms25){S.ms.ms25=1;log.push('MODEL ATTACKS: every deployed model is now a target. Attackers trick, poison, jailbreak and hijack them.')}
-  if(Math.random()<Math.max(0,(62-m.modelsec)/100)*(.5+S.si/100)){const A=[
+  const MODELS_ON=stageIdx()>=4;
+  if(MODELS_ON)applyFx({modelsec:Math.round((-1-S.si/40)*KD())},acc);
+  if(MODELS_ON&&S.si>=25&&!S.ms.ms25){S.ms.ms25=1;log.push('MODEL ATTACKS: every deployed model is now a target. Attackers trick, poison, jailbreak and hijack them.')}
+  if(MODELS_ON&&Math.random()<Math.max(0,(62-m.modelsec)/100)*(.5+S.si/100)){const A=[
     ['MODEL ATTACK: hidden instructions on a web page hijacked an SI agent with access to customer accounts.',{trust:-3,econ:-2,harm:+2}],
     ['MODEL ATTACK: poisoned training data planted a hidden backdoor in a widely used model.',{sec:-2,harm:+2}],
     ['MODEL ATTACK: a new jailbreak let users bypass safety rules on several major models.',{ccap:+3,harm:+2}],
     ['MODEL ATTACK: a backdoored open-weight model was found running inside city services.',{sec:-3,ccap:+2}]][Math.floor(Math.random()*4)];applyFx(A[1],acc);log.push(A[0])}
   else if((F.redteam||F.agentsafe||F.provenance)&&S.si>=25)log.push('Model defenses held: red teams and safeguards blocked this round\'s attacks.');
   // ---- 6b2. Model theft + distillation ----
-  if(Math.random()<Math.max(.01,.05+(m.rcap>60?.04:0)-(F.weightsec?.045:0)-(m.modelsec-45)/600)){S.thefts++;applyFx({rcap:+5,ccap:+2},acc);log.push('MODEL THEFT: state-backed hackers copied frontier model weights from a domestic lab.')}
+  if(MODELS_ON&&Math.random()<Math.max(.01,.05+(m.rcap>60?.04:0)-(F.weightsec?.045:0)-(m.modelsec-45)/600)){S.thefts++;applyFx({rcap:+5,ccap:+2},acc);log.push('MODEL THEFT: state-backed hackers copied frontier model weights from a domestic lab.')}
   const dp=Math.min(.6,S.si/150+(shipped?.1:0))*(F.apiguard?.25:1)*(m.modelsec>=60?.6:1);
-  if(Math.random()<dp){S.distills++;applyFx({rcap:+3,econ:-1},acc);log.push('DISTILLATION: a rival-linked lab trained a cheap copy of your best model by querying it millions of times.')}
+  if(MODELS_ON&&Math.random()<dp){S.distills++;applyFx({rcap:+3,econ:-1},acc);log.push('DISTILLATION: a rival-linked lab trained a cheap copy of your best model by querying it millions of times.')}
   else if(F.apiguard&&S.si>=30)log.push('API checks flagged and blocked a large-scale distillation attempt.');
   // ---- 6c. Economy: chips, memory, energy, talent, subscriptions ----
   const ef={chips:Math.round(-2*KD()),power:Math.round(-2*KD()),talent:Math.round(-2*KD())};
@@ -2560,13 +2610,13 @@ function resolve(){
   if(S.si>=35&&Math.random()<Math.min(.4,(m.rcap-35)/80+(red==='esc'?.12:0))*(F.otseg?.2:1)*(F.harden?.7:1)){applyFx({sec:-4,wellbeing:-1,trust:-1},acc);log.push('OT ATTACK: rival-linked hackers used an SI agent to tamper with a water plant’s control system. Operators caught it, but the town was under a boil-water notice (SEC −4).')}
   else if(F.otseg&&S.si>=35&&m.rcap>45)log.push('OT lockdown held: an intrusion attempt on pipeline controls hit an air gap and went nowhere.');
   // ---- tokenomics ----
-  if(S.tok<45){const fx={good:+1};if(!F.metering)fx.ccap=+1;if(S.tok<25)fx.subs=-1;applyFx(fx,acc);log.push(`📘 TOKENOMICS: tokens now cost $${S.tok} per million. Cheap SI spreads to classrooms and clinics (DIVIDEND +1)${F.metering?'; metering kept scam farms in check':', but scam farms scale up too (CRIME +1)'}${S.tok<25?'. A price war is squeezing lab revenue (SUBS −1)':''}.`);CON('tokens')}
+  if(stageIdx()>=3&&S.tok<45){const fx={good:+1};if(!F.metering)fx.ccap=+1;if(S.tok<25)fx.subs=-1;applyFx(fx,acc);log.push(`📘 TOKENOMICS: tokens now cost $${S.tok} per million. Cheap SI spreads to classrooms and clinics (DIVIDEND +1)${F.metering?'; metering kept scam farms in check':', but scam farms scale up too (CRIME +1)'}${S.tok<25?'. A price war is squeezing lab revenue (SUBS −1)':''}.`);CON('tokens')}
   if(F.credits&&S.tok<60){applyFx({good:+1},acc);log.push('Public compute credits stretched further as token prices fell (DIVIDEND +1).')}
   // ---- strategy & economics dynamics ----
-  {const gap=m.econ-m.rcap;if(gap<4){const d=gap<0?2:1;applyFx({esc:+d},acc);log.push(`📘 THUCYDIDES TRAP: the rival is ${gap<0?'ahead of':'closing on'} you (power gap ${gap>0?'+':''}${Math.round(gap)}). Both sides grow more suspicious (ESC +${d}).`);CON('thucy')}}
-  if(S.si>=45&&!F.harden&&!F.redteam){applyFx({sec:-2},acc);log.push('📘 OFFENSE-DEFENSE BALANCE: SI makes attacks cheaper than defense. Without hardening or red-teaming, attackers gain ground (SEC −2).');CON('offdef')}
+  if(stageIdx()>=3){const gap=m.econ-m.rcap;if(gap<4){const d=gap<0?2:1;applyFx({esc:+d},acc);log.push(`📘 THUCYDIDES TRAP: the rival is ${gap<0?'ahead of':'closing on'} you (power gap ${gap>0?'+':''}${Math.round(gap)}). Both sides grow more suspicious (ESC +${d}).`);CON('thucy')}}
+  if(stageIdx()>=4&&S.si>=45&&!F.harden&&!F.redteam){applyFx({sec:-2},acc);log.push('📘 OFFENSE-DEFENSE BALANCE: SI makes attacks cheaper than defense. Without hardening or red-teaming, attackers gain ground (SEC −2).');CON('offdef')}
   if((S.burdenT||0)>0){applyFx({sec:+1},acc);S.burdenT--}
-  else if(m.ally<50&&!F.coord&&S.round>1){applyFx({sec:-1,econ:-1},acc);log.push('📘 FREE RIDERS: allies leaned on your defenses without paying their share (SEC −1, ECON −1).');CON('free')}
+  else if(stageIdx()>=3&&m.ally<50&&!F.coord&&S.round>1){applyFx({sec:-1,econ:-1},acc);log.push('📘 FREE RIDERS: allies leaned on your defenses without paying their share (SEC −1, ECON −1).');CON('free')}
   if((S.ctrlRounds||0)>=2&&(F.chips||F.toolctl)){const c=Math.min(3,S.ctrlRounds-1);applyFx({econ:-c},acc);log.push(`📘 DECOUPLING COSTS: ${S.ctrlRounds} rounds of controls cost your own firms trade and sales (ECON −${c}). Comparative advantage cuts both ways.`);CON('decouple')}
   if(F.antitrust)CON('wta');
   if(F.restraint)CON('costly');

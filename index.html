@@ -489,6 +489,8 @@ svg .head{transform-box:fill-box;transform-origin:50% 90%;animation:headSway 5.2
 .planwrap>summary::-webkit-details-marker{display:none}
 .planwrap>summary .pdc::after{content:'SHOW ▼';color:#ffe14d}.planwrap[open]>summary .pdc::after{content:'HIDE ▲'}
 .planwrap[open]>.plan{margin-top:6px}
+.tapdark{filter:brightness(.45)!important;transition:filter .06s ease-out!important}
+button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filter .35s ease-out}
 </style>
 </head>
 <body>
@@ -2352,11 +2354,8 @@ function carGo(d){const c=document.getElementById('car');const n=c.children.leng
 <script>
 (function(){
   var SEL='button,[onclick],.optcard,.card,.rcard,.ocard,summary,[role=button]';
-  var sw=null;try{var lb=document.createElement('label');lb.style.cssText='position:fixed;left:-99px;top:0;opacity:0;pointer-events:none';var ip=document.createElement('input');ip.type='checkbox';ip.setAttribute('switch','');lb.appendChild(ip);document.body.appendChild(lb);sw=lb}catch(e){}
-  function buzz(){try{if(navigator.vibrate){navigator.vibrate(12);return}}catch(e){}try{sw&&sw.click()}catch(e){}}
-  document.addEventListener('pointerdown',function(e){var t=e.target.closest&&e.target.closest(SEL);if(!t||t===document.body||t.id==='optPop')return;
-    t.classList.remove('tapshake');void t.offsetWidth;t.classList.add('tapshake');setTimeout(function(){t.classList.remove('tapshake')},280)},true);
-  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest(SEL);if(t&&t.id!=='optPop'&&t!==sw)buzz()},true);
+  document.addEventListener('pointerdown',function(e){var t=e.target.closest&&e.target.closest(SEL);if(!t||t===document.body||t.id==='optPop'||t.id==='learnDrawer')return;
+    t.classList.add('tapdark');var off=function(){setTimeout(function(){t.classList.remove('tapdark')},120)};document.addEventListener('pointerup',off,{once:true});document.addEventListener('pointercancel',off,{once:true})},true);
 })();
 </script>
 <div id="learnDrawer" onclick="if(event.target===this)closeLearn()"></div>

@@ -8,6 +8,18 @@ A think-tank-style, game-theoretic superintelligence wargame in a pixel/Nintendo
 
 **Play:** https://700799.github.io/ai-war-game/
 
+## How a game unfolds
+
+The game teaches one layer at a time. Each round can unlock a new layer of the AI race, with its own buildings and crises:
+
+1. **The rival:** stance, reciprocity, the payoff table
+2. **The home front:** feeds, jobs, robots and fairness
+3. **Fog and intel:** attribution, insiders, scams
+4. **Chips and allies:** export controls, retaliation, tokenomics
+5. **Attacks on models:** theft, distillation, poisoning, jailbreaks
+
+Four headline meters (Security, Escalation, Dividend, Harm) stay on screen; the other 14 live in a drawer. Byte the advisor dog weighs pros and cons when asked, but never picks for you.
+
 ## What you'll learn
 
 1. Game theory with rivals

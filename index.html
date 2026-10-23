@@ -470,6 +470,11 @@ svg .head{transform-box:fill-box;transform-origin:50% 90%;animation:headSway 5.2
 .dogpt svg,.beatframe svg,.lopt svg{transform-origin:50% 100%;animation:idleBreath 3.6s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){svg .eyes,svg .head,.dogpt svg{animation:none}}
 .liss{margin-top:8px;padding:8px 10px;background:#0f1130;border-left:3px solid #ffe14d}.liss b{font-size:13px;letter-spacing:.5px}.liss p{margin:3px 0 0}
+
+.dogpick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dcard{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px}
+.dframe{display:block;width:84px;height:84px;border:3px solid #e8e4d8;background:linear-gradient(#2a3166,#161a3a);overflow:hidden}
+.dframe svg{width:100%;height:100%;display:block}
 </style>
 </head>
 <body>
@@ -655,6 +660,11 @@ svg .head{transform-box:fill-box;transform-origin:50% 90%;animation:headSway 5.2
     <div class="box">
       <h2>DIFFICULTY</h2>
       <div class="row" id="diffs"></div>
+    </div>
+    <div class="box">
+      <h2>BYTE'S LOOK</h2>
+      <p class="small">Your advisor dog. Same smart advice, your choice of style.</p>
+      <div class="dogpick" id="dogpick" style="margin-top:6px"></div>
     </div>
     <div class="box">
       <h2>GAME LENGTH</h2>
@@ -1217,6 +1227,68 @@ const DIFF_IC={
  hard:`<svg viewBox="0 0 60 60"><path d="M16 46 L16 30 Q16 14 30 14 Q44 14 44 30 L44 46 Z" fill="#ff5c5c" stroke="#10121f" stroke-width="3"/><rect x="10" y="46" width="40" height="8" rx="2" fill="#555" stroke="#10121f" stroke-width="3"/><path d="M24 26 Q26 20 32 20" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M6 20 L11 24 M54 20 L49 24 M30 4 L30 9" stroke="#ff5c5c" stroke-width="3" stroke-linecap="round"/></svg>`};
 const DIFF_TXT={easy:'Forgiving',normal:'Balanced',hard:'Brutal'};
 const LEN_TXT={quick:'~10 min',std:'~15 min',full:'~20 min'};
+function dogMake(o){const OL='#10121f',F=o.fur,M=o.muzzle||'#f4ead2',E=o.ear||F;let v='';
+  // body / clothing
+  v+=`<path d="M14 100 Q18 75 50 73 Q82 75 86 100 Z" fill="${o.coat}" stroke="${OL}" stroke-width="2.5"/>`;
+  if(o.hoodie)v+=`<path d="M22 82 Q20 66 30 62 L70 62 Q80 66 78 82 Q66 74 50 74 Q34 74 22 82 Z" fill="${o.coat}" stroke="${OL}" stroke-width="2.5"/><path d="M44 78 L43 92 M56 78 L57 92" stroke="#f4f1e6" stroke-width="2"/>`;
+  if(o.sweater)v+=`<path d="M20 90 H80 M18 96 H82" stroke="rgba(255,255,255,.3)" stroke-width="2"/><path d="M38 74 Q50 82 62 74" fill="none" stroke="${OL}" stroke-width="2"/>`;
+  if(o.lapels)v+=`<path d="M40 74 L50 90 L60 74" fill="#f4f1e6" stroke="${OL}" stroke-width="2"/>`;
+  if(o.tie)v+=`<path d="M47.5 78 L52.5 78 L54 92 L50 97 L46 92 Z" fill="${o.tie}" stroke="${OL}" stroke-width="1.6"/>`;
+  if(o.bowtie)v+=`<path d="M50 80 L38 74 L38 86 Z M50 80 L62 74 L62 86 Z" fill="${o.bowtie}" stroke="${OL}" stroke-width="2"/><circle cx="50" cy="80" r="3" fill="${o.bowtie}" stroke="${OL}" stroke-width="1.6"/>`;
+  if(o.scarf)v+=`<path d="M28 70 Q50 82 72 70 L72 77 Q50 89 28 77 Z" fill="${o.scarf}" stroke="${OL}" stroke-width="2"/><path d="M60 78 L64 96 L56 96 L54 80 Z" fill="${o.scarf}" stroke="${OL}" stroke-width="2"/>`;
+  if(o.bandana)v+=`<path d="M30 70 Q50 76 70 70 L50 90 Z" fill="${o.bandana}" stroke="${OL}" stroke-width="2"/><circle cx="44" cy="77" r="1.5" fill="#fff"/><circle cx="56" cy="77" r="1.5" fill="#fff"/><circle cx="50" cy="83" r="1.5" fill="#fff"/>`;
+  if(o.collar)v+=`<path d="M30 71 Q50 79 70 71" stroke="${o.collar}" stroke-width="5" fill="none"/><circle cx="50" cy="81" r="4.5" fill="#f7c948" stroke="${OL}" stroke-width="1.5"/>`;
+  if(o.pearls)v+=`<g fill="#fffaf0" stroke="${OL}" stroke-width=".8">${[30,35,40,45,50,55,60,65,70].map((x,i)=>`<circle cx="${x}" cy="${73+Math.sin(i/8*Math.PI)*6}" r="2.6"/>`).join('')}</g>`;
+  // ears behind
+  const ears={
+    floppy:`<path d="M26 26 Q7 30 11 60 Q20 65 30 51 Z" fill="${E}"/><path d="M74 26 Q93 30 89 60 Q80 65 70 51 Z" fill="${E}"/>`,
+    long:`<path d="M26 28 Q10 36 13 76 Q24 82 32 56 Z" fill="${E}"/><path d="M74 28 Q90 36 87 76 Q76 82 68 56 Z" fill="${E}"/>`,
+    pointy:`<path d="M27 34 L22 4 L45 21 Z" fill="${E}"/><path d="M73 34 L78 4 L55 21 Z" fill="${E}"/><path d="M29 28 L26 12 L39 22 Z M71 28 L74 12 L61 22 Z" fill="${o.inner||'#f2b8a8'}" stroke="none"/>`,
+    big:`<path d="M26 34 L14 0 L46 20 Z" fill="${E}"/><path d="M74 34 L86 0 L54 20 Z" fill="${E}"/><path d="M28 28 L20 9 L38 21 Z M72 28 L80 9 L62 21 Z" fill="${o.inner||'#f2b8a8'}" stroke="none"/>`,
+    fold:`<path d="M27 26 L16 20 L22 36 Z" fill="${E}"/><path d="M73 26 L84 20 L78 36 Z" fill="${E}"/>`,
+    pom:`<circle cx="18" cy="48" r="12" fill="${E}"/><circle cx="82" cy="48" r="12" fill="${E}"/><circle cx="16" cy="62" r="10" fill="${E}"/><circle cx="84" cy="62" r="10" fill="${E}"/>`};
+  v+=`<g class="head" style="animation-delay:-${o.ph||0}s"><g stroke="${OL}" stroke-width="2.5" stroke-linejoin="round">${ears[o.ears]}`;
+  if(o.puff)v+=`<circle cx="50" cy="16" r="15" fill="${F}"/><circle cx="38" cy="20" r="9" fill="${F}"/><circle cx="62" cy="20" r="9" fill="${F}"/>`;
+  v+=`<ellipse cx="50" cy="44" rx="${o.wide?29:27}" ry="26" fill="${F}"/>`;
+  v+=`</g>`;
+  // markings (no stroke)
+  if(o.mask==='husky')v+=`<path d="M24 46 Q26 30 50 30 Q74 30 76 46 Q70 40 62 42 Q56 34 50 44 Q44 34 38 42 Q30 40 24 46 Z" fill="${o.mark}"/><path d="M47 22 L50 30 L53 22 Z" fill="${o.mark}"/>`;
+  if(o.mask==='pug')v+=`<ellipse cx="50" cy="56" rx="19" ry="14" fill="${o.mark}"/>`;
+  if(o.mask==='saddle')v+=`<path d="M24 40 Q28 20 50 18 Q72 20 76 40 Q66 30 50 32 Q34 30 24 40 Z" fill="${o.mark}"/>`;
+  if(o.spots)v+=`<g fill="${o.spots}"><circle cx="34" cy="30" r="3.4"/><circle cx="64" cy="26" r="2.6"/><circle cx="70" cy="40" r="3"/><circle cx="30" cy="44" r="2.4"/><circle cx="56" cy="22" r="2"/></g><ellipse cx="62" cy="38" rx="8" ry="7" fill="${o.spots}"/>`;
+  if(o.blaze)v+=`<path d="M46 20 Q50 16 54 20 L56 46 L44 46 Z" fill="${o.blaze}"/>`;
+  if(o.wrinkle)v+=`<path d="M40 30 Q50 26 60 30 M42 35 Q50 32 58 35" stroke="rgba(0,0,0,.35)" stroke-width="1.6" fill="none"/>`;
+  // muzzle, nose
+  if(o.mask!=='pug')v+=`<ellipse cx="50" cy="58" rx="${o.snout||15}" ry="11" fill="${M}" stroke="${OL}" stroke-width="2"/>`;
+  v+=`<ellipse cx="50" cy="52" rx="5.5" ry="4" fill="${OL}"/><ellipse cx="48.5" cy="51" rx="1.6" ry="1" fill="#fff" opacity=".6"/>`;
+  v+=`<path d="M50 56 L50 60 M43 61 Q50 67 57 61" stroke="${OL}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+  if(o.tongue)v+=`<path d="M47 63 Q50 72 53 63 Z" fill="#ff7a8a" stroke="${OL}" stroke-width="1.4"/>`;
+  // eyes
+  const ec=o.eye||OL;
+  v+=`<g class="eyes" style="animation-delay:-${(o.ph||0)*0.7}s"><ellipse cx="39" cy="41" rx="3.4" ry="4.2" fill="${ec}"/><ellipse cx="61" cy="41" rx="3.4" ry="4.2" fill="${ec}"/>${o.eye?`<circle cx="39" cy="41" r="1.6" fill="${OL}"/><circle cx="61" cy="41" r="1.6" fill="${OL}"/>`:''}<circle cx="40.2" cy="39.6" r="1.1" fill="#fff"/><circle cx="62.2" cy="39.6" r="1.1" fill="#fff"/></g>`;
+  if(o.brows)v+=`<path d="M34 34 Q39 31 44 34 M56 34 Q61 31 66 34" stroke="${OL}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+  // eyewear
+  if(o.monocle)v+=`<circle cx="61" cy="41" r="9.5" fill="rgba(170,220,255,.3)" stroke="#f7c948" stroke-width="3"/><path d="M69.5 46 Q78 60 68 74" stroke="#f7c948" stroke-width="1.6" fill="none" stroke-dasharray="2.2 1.6"/>`;
+  if(o.glasses)v+=`<g fill="rgba(200,230,255,.2)" stroke="${o.glasses}" stroke-width="2.6"><circle cx="39" cy="41" r="8"/><circle cx="61" cy="41" r="8"/></g><path d="M47 41 L53 41" stroke="${o.glasses}" stroke-width="2.4"/>`;
+  if(o.square)v+=`<g fill="rgba(200,230,255,.2)" stroke="${o.square}" stroke-width="3.4"><rect x="29" y="34" width="18" height="13" rx="3"/><rect x="53" y="34" width="18" height="13" rx="3"/></g><path d="M47 40 L53 40" stroke="${o.square}" stroke-width="3"/>`;
+  if(o.shades)v+=`<path d="M28 36 H72 L70 46 Q66 50 58 47 L52 41 H48 L42 47 Q34 50 30 46 Z" fill="#111" stroke="${OL}" stroke-width="1.6"/><path d="M33 39 L39 39" stroke="#6aa8ff" stroke-width="1.6"/>`;
+  if(o.visor)v+=`<rect x="26" y="34" width="48" height="13" rx="6" fill="rgba(57,255,138,.35)" stroke="#39ff8a" stroke-width="2.4"/><path d="M30 40 H70" stroke="#39ff8a" stroke-width="1" stroke-dasharray="3 2"/>`;
+  // headwear
+  if(o.headset)v+=`<path d="M22 44 Q22 12 50 12 Q78 12 78 44" stroke="#9aa3b5" stroke-width="3.2" fill="none"/><rect x="17" y="38" width="8" height="13" rx="3" fill="#9aa3b5" stroke="${OL}" stroke-width="1.5"/><path d="M21 51 Q24 62 37 60" stroke="#9aa3b5" stroke-width="2" fill="none"/>`;
+  if(o.earpiece)v+=`<path d="M75 46 Q80 60 70 76" stroke="#cfd6e6" stroke-width="1.6" fill="none"/><circle cx="75" cy="45" r="2.4" fill="#cfd6e6" stroke="${OL}" stroke-width="1"/>`;
+  if(o.beret)v+=`<path d="M24 26 Q22 6 48 6 Q74 6 80 20 Q78 26 68 25 Q48 24 24 28 Z" fill="${o.beret}" stroke="${OL}" stroke-width="2.4"/><circle cx="50" cy="5" r="2.5" fill="${o.beret}" stroke="${OL}" stroke-width="1.5"/>`;
+  if(o.deerstalker)v+=`<path d="M24 28 Q24 4 50 4 Q76 4 76 28 Z" fill="#8a6a3a" stroke="${OL}" stroke-width="2.4"/><path d="M28 26 Q50 12 72 26 M34 10 L66 26 M66 10 L34 26" stroke="#5a4222" stroke-width="1.4" fill="none"/><path d="M24 27 L14 32 L26 31 Z M76 27 L86 32 L74 31 Z" fill="#8a6a3a" stroke="${OL}" stroke-width="2"/><path d="M48 4 Q50 0 52 4" stroke="${OL}" stroke-width="2" fill="none"/>`;
+  if(o.gradcap)v+=`<path d="M18 16 L50 4 L82 16 L50 28 Z" fill="#1b1b2a" stroke="${OL}" stroke-width="2.2"/><path d="M30 20 L30 28 Q50 36 70 28 L70 20" fill="#1b1b2a" stroke="${OL}" stroke-width="2.2"/><path d="M50 16 L76 18 L76 32" stroke="#f7c948" stroke-width="2" fill="none"/><circle cx="76" cy="33" r="2.4" fill="#f7c948"/>`;
+  if(o.hardhat)v+=`<path d="M24 28 Q24 6 50 6 Q76 6 76 28 Z" fill="#f7c948" stroke="${OL}" stroke-width="2.4"/><rect x="18" y="26" width="64" height="5" rx="2" fill="#f7c948" stroke="${OL}" stroke-width="2"/><rect x="46" y="6" width="8" height="20" fill="#e0b030"/>`;
+  v+=`</g>`;
+  return `<svg viewBox="0 0 100 100">${v}</svg>`}
+
+let dogLook='agent';
+const DOG_LOOKS={
+ agent:{name:'AGENT K-9',sub:'German shepherd · shades · earpiece',o:{fur:'#c99a5a',mark:'#2a1f18',mask:'saddle',ear:'#2a1f18',muzzle:'#e8c89a',coat:'#14141c',lapels:1,tie:'#14141c',shades:1,earpiece:1,ears:'big',inner:'#5a4a3a',ph:.6}},
+ detective:{name:'THE DETECTIVE',sub:'Basset hound · deerstalker',o:{fur:'#c98b4a',ear:'#6a3a18',muzzle:'#fff4e0',coat:'#7a5a3a',lapels:1,deerstalker:1,ears:'long',brows:1,snout:17,ph:1.2}},
+ shiba:{name:'BOLT THE SHIBA',sub:'Shiba engineer · hard hat',o:{fur:'#e08a3a',blaze:'#fff4e0',ear:'#e08a3a',muzzle:'#fff4e0',coat:'#3a4a5a',bandana:'#2a7de1',hardhat:1,ears:'pointy',inner:'#ffd9c0',square:'#222',ph:2.2}},
+ husky:{name:'HACKER HUSKY',sub:'Husky · neon visor · hoodie',o:{fur:'#f4f6fb',mark:'#5a6378',mask:'husky',ear:'#5a6378',muzzle:'#ffffff',coat:'#22263a',hoodie:1,visor:1,ears:'pointy',eye:'#6ac8ff',ph:3}}};
 function renderSetup(){
   const r=document.getElementById('rivals');r.innerHTML='';
   for(const k in RIVALS){const R=RIVALS[k];const b=document.createElement('button');b.className='rcard'+(k===rival?' sel':'');
@@ -1225,6 +1297,7 @@ function renderSetup(){
     b.onclick=()=>{rival=k;renderSetup();SFX.sel()};r.appendChild(b)}
   const d=document.getElementById('diffs');d.innerHTML='';
   for(const k in DIFFS){const b=document.createElement('button');b.className='ocard'+(k===diff?' sel':'');b.innerHTML=`<span class="oic">${DIFF_IC[k]}</span><span class="olbl">${DIFFS[k].label}</span><span class="osub">${DIFF_TXT[k]}<br>${DIFFS[k].pc} PC/round</span>`;b.onclick=()=>{diff=k;renderSetup();SFX.sel()};d.appendChild(b)}
+  const dp=document.getElementById('dogpick');if(dp){dp.innerHTML='';for(const k in DOG_LOOKS){const L=DOG_LOOKS[k];const b=document.createElement('button');b.className='ocard dcard'+(k===dogLook?' sel':'');b.innerHTML=`<span class="dframe">${dogMake(L.o)}</span><span class="olbl">${L.name}</span><span class="osub">${L.sub}</span>`;b.onclick=()=>{dogLook=k;renderSetup();SFX.sel()};dp.appendChild(b)}}
   const ln=document.getElementById('lens');ln.innerHTML='';
   for(const k in LENGTHS){const n=LENGTHS[k].r;const b=document.createElement('button');b.className='ocard'+(k===glen?' sel':'');b.innerHTML=`<span class="pips">${'<i></i>'.repeat(n)}</span><span class="olbl">${LENGTHS[k].label.split(' · ')[0]}</span><span class="osub">${n} rounds<br>${LEN_TXT[k]}</span>`;b.onclick=()=>{glen=k;renderSetup();SFX.sel()};ln.appendChild(b)}
 }
@@ -1783,7 +1856,8 @@ const DOG_PAL={b:'#c8893a',d:'#8a5a22',w:'#f4f1e6',k:'#1b1b2f',n:'#111',g:'#6b4a
 const DOG=["..dd.......dd...",".dbbd.....dbbd..",".dbbbd...dbbbd..","..dbbbbbbbbbd...","..bbbbbbbbbbb...","..bbsbbbbbsbb...","..bskkbbbbkksb..","..bskkbbbbkksb..","..bbbbbbbbbbb...","..bbbwbnnbwbb...","...bbbnnnbbb....","...bbwwwwbbb....","....brrrbb......",".....bbbb.......","...yyyyyyyy.....","...y.ykky.y....."];
 const DOG_TALK=["..dd.......dd...",".dbbd.....dbbd..",".dbbbd...dbbbd..","..dbbbbbbbbbd...","..bbbbbbbbbbb...","..bbsbbbbbsbb...","..bskkbbbbkksb..","..bskkbbbbkksb..","..bbbbbbbbbbb...","..bbbwbnnbwbb...","...bbbnnnbbb....","...bbwwkwwbb....","....brrrbb......",".....bbbb.......","...yyyyyyyy.....","...y.ykky.y....."];
 let dogFrame=0;
-function dogSVG(a=''){const F='#c8893a',D='#8a5a22',W='#f4ead8',OL='#2a1a0e',talk=dogFrame%2;
+function dogSVG(a=''){const L=DOG_LOOKS[dogLook]||DOG_LOOKS.agent;return dogMake(L.o).replace('<svg','<svg '+a)}
+function dogSVGClassic(a=''){const F='#c8893a',D='#8a5a22',W='#f4ead8',OL='#2a1a0e',talk=dogFrame%2;
   return `<svg ${a} viewBox="0 0 100 100"><g stroke="${OL}" stroke-width="2.5" stroke-linejoin="round"><path d="M16 100 Q19 76 50 74 Q81 76 84 100 Z" fill="#3a4a6a"/><path d="M38 79 L50 85 L38 91 Z M62 79 L50 85 L62 91 Z" fill="#d33a3a"/><circle cx="50" cy="85" r="3.2" fill="#a02020"/><path d="M25 25 Q7 29 11 58 Q20 63 29 50 Z" fill="${D}"/><path d="M75 25 Q93 29 89 58 Q80 63 71 50 Z" fill="${D}"/><ellipse cx="50" cy="44" rx="27" ry="26" fill="${F}"/><ellipse cx="50" cy="58" rx="15" ry="11" fill="${W}"/><ellipse cx="50" cy="52" rx="5.5" ry="4" fill="${OL}"/><path d="M50 56 L50 60.5 M44 61.5 Q50 65.5 56 61.5" fill="none" stroke-linecap="round"/></g>${talk?`<ellipse cx="50" cy="64.5" rx="3.6" ry="2.6" fill="#d35a6a" stroke="${OL}" stroke-width="1.5"/>`:''}<circle cx="47.7" cy="51" r="1.2" fill="#fff" opacity=".7"/><path d="M33 33 Q38.5 30 44 33" stroke="${OL}" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M55 30 Q60.5 25.5 67 29" stroke="${OL}" stroke-width="2.4" fill="none" stroke-linecap="round"/><g class="eyes" style="animation-delay:-1.7s"><ellipse cx="39" cy="40" rx="3.3" ry="4.1" fill="${OL}"/><circle cx="40" cy="38.8" r="1.1" fill="#fff"/><ellipse cx="61" cy="40" rx="3.6" ry="4.4" fill="${OL}"/><circle cx="62.1" cy="38.6" r="1.2" fill="#fff"/></g><circle cx="61" cy="40" r="9.5" fill="rgba(170,220,255,.32)" stroke="#f7c948" stroke-width="3.2"/><path d="M55 35.5 Q58 32.5 62.5 32.5" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".9"/><path d="M69.5 45 Q78 60 67 73" stroke="#f7c948" stroke-width="1.6" fill="none" stroke-dasharray="2.2 1.6"/></svg>`}
 function dogHTML(label,body,mood){dogFrame++;return `<div class="dog"><div class="dogpt">${dogSVG()}</div><div class="dogbub"><span class="doglb">🐾 BYTE${label?' · '+label:''}</span>${body}</div></div>`}
 const DOG_LINES={tips:['Sniffed out the priorities.','Nose says: start here.','Trust the nose.'],math:['I ran the numbers. Good dog.','Crunched it between naps.'],review:['Here is what I saw from under the desk.','Round over. Field notes:'],card:['Let me sniff this one.'],crisis:['Ears up. Here is my read.']};

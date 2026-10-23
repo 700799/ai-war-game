@@ -545,6 +545,27 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
 .t.loc .lbl,.t.loc .lbl.done{font-size:13px!important;padding:4px 6px!important}
 .hero svg.team{width:235%!important}
 @media (prefers-reduced-motion:reduce){.t.loc svg{animation:none!important}.t.loc::after{display:none}}
+
+/* ===== lively faces ===== */
+svg .head{animation:headLife 14s ease-in-out infinite!important}
+@keyframes headLife{0%,100%{transform:rotate(0) translate(0,0)}8%{transform:rotate(1.5deg)}14%{transform:rotate(0)}22%,24%{transform:translateY(1.6px)}23%,25%{transform:translateY(-.4px)}26%{transform:none}40%{transform:rotate(-4deg) translate(-1px,-.5px)}48%{transform:rotate(-4deg) translate(-1px,-.5px)}54%{transform:none}70%{transform:rotate(-1.5deg)}78%{transform:rotate(1deg)}}
+svg .eyes{animation:eyeLife 14s ease-in-out infinite!important}
+@keyframes eyeLife{0%,100%{transform:none}5%{transform:scaleY(.1)}6%{transform:none}16%,20%{transform:translateX(2px)}22%{transform:none}30%,34%{transform:translateX(-2px)}36%{transform:none}40%,48%{transform:translate(1.5px,-2px)}52%{transform:none}63%{transform:scaleY(.1)}64%{transform:none}80%,84%{transform:translateY(1px)}86%{transform:none}}
+svg .ear{transform-box:fill-box;transform-origin:center;animation:earLife 9s ease-in-out infinite}
+svg .er{animation-delay:-.15s}
+@keyframes earLife{0%,88%,100%{transform:none}90%{transform:rotate(-14deg) scale(1.06)}92%{transform:rotate(10deg)}94%{transform:none}}
+svg .nose{transform-box:fill-box;transform-origin:50% 100%;animation:noseLife 7s ease-in-out infinite}
+@keyframes noseLife{0%,60%,100%{transform:none}64%{transform:scaleX(1.25)}68%{transform:none}72%{transform:scaleX(1.25)}76%{transform:none}}
+svg .hair{transform-box:fill-box;transform-origin:50% 100%;animation:hairLife 5s ease-in-out infinite}
+@keyframes hairLife{0%,100%{transform:skewX(0)}50%{transform:skewX(-2.2deg) translateX(.4px)}}
+svg .pony{transform-box:fill-box;transform-origin:0 0;animation:ponyLife 3.4s ease-in-out infinite}
+@keyframes ponyLife{0%,100%{transform:rotate(0)}50%{transform:rotate(7deg)}}
+svg .mouth{transform-box:fill-box;transform-origin:center;animation:mouthLife 11s ease-in-out infinite}
+@keyframes mouthLife{0%,100%{transform:none}10%,18%{transform:scale(1.25,1.15)}22%{transform:none}44%,50%{transform:scaleX(.7) translateX(1px)}54%{transform:none}}
+.beatframe.talking svg .mouth{animation:talkMouth .22s ease-in-out infinite alternate!important}
+svg .spark{transform-box:fill-box;transform-origin:center;animation:sparkTooth 6s ease-in-out infinite;opacity:0}
+@keyframes sparkTooth{0%,70%,100%{opacity:0;transform:scale(.2) rotate(0)}76%{opacity:1;transform:scale(1.2) rotate(45deg)}82%{opacity:0;transform:scale(.3) rotate(90deg)}}
+@media (prefers-reduced-motion:reduce){svg .ear,svg .nose,svg .hair,svg .pony,svg .mouth,svg .spark,svg .head,svg .eyes{animation:none!important}}
 </style>
 </head>
 <body>
@@ -1238,7 +1259,7 @@ const glitchSVG=(a='')=>{const OL='#10261f',Y='#f8f0a0';let t='',b='';[32,40,48,
 function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt||'#f4f1e6',TI=o.tie||'#d33a3a',OL='#10121f';let v='';
   if(o.cape)v+=`<path d="M2 100 Q4 66 22 60 L30 50 L36 72 Z M98 100 Q96 66 78 60 L70 50 L64 72 Z" fill="${o.cape}" stroke="${OL}" stroke-width="2"/><path d="M8 100 Q10 74 26 68 M92 100 Q90 74 74 68" stroke="rgba(255,255,255,.2)" stroke-width="2" fill="none"/>`;
   if(o.long)v+=`<path d="M23 40 Q20 82 30 86 L70 86 Q80 82 77 40 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
-  if(o.pony)v+=`<path d="M68 28 Q92 36 86 74 Q80 66 70 52 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
+  if(o.pony)v+=`<path class="pony" d="M68 28 Q92 36 86 74 Q80 66 70 52 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   v+=o.broad?`<path d="M0 100 Q3 70 50 67 Q97 70 100 100 Z" fill="${SU}" stroke="${OL}" stroke-width="2"/>`:`<path d="M6 100 Q9 74 50 72 Q91 74 94 100 Z" fill="${SU}" stroke="${OL}" stroke-width="2"/><path d="M40 73 L50 90 L60 73 Z" fill="${SH}" stroke="${OL}" stroke-width="1.5"/>`;
   if(o.camo){const cid='cm'+Math.floor(Math.random()*1e6);v+=`<defs><clipPath id="${cid}"><path d="M0 100 Q3 70 50 67 Q97 70 100 100 Z"/></clipPath></defs><g clip-path="url(#${cid})"><ellipse cx="16" cy="88" rx="12" ry="6" fill="#4a5a32"/><ellipse cx="34" cy="78" rx="9" ry="5" fill="#2e3a22"/><ellipse cx="70" cy="80" rx="12" ry="6" fill="#4a5a32"/><ellipse cx="88" cy="92" rx="10" ry="5" fill="#2e3a22"/><ellipse cx="52" cy="96" rx="11" ry="5" fill="#7a6a44"/><ellipse cx="80" cy="72" rx="7" ry="4" fill="#7a6a44"/><ellipse cx="22" cy="72" rx="7" ry="3.5" fill="#7a6a44"/></g><path d="M0 100 Q3 70 50 67 Q97 70 100 100" fill="none" stroke="${OL}" stroke-width="2"/>`}
   if(o.hoodie)v+=`<path d="M30 72 Q50 84 70 72" stroke="${OL}" stroke-width="2" fill="none"/><path d="M43 79 L42 92 M57 79 L58 92" stroke="#f4f1e6" stroke-width="2"/><circle cx="42" cy="93" r="1.6" fill="#f4f1e6"/><circle cx="58" cy="93" r="1.6" fill="#f4f1e6"/>`;
@@ -1250,8 +1271,9 @@ function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt|
   const ph=-(Math.random()*5).toFixed(2);v+=`<g class="head" style="animation-delay:${ph}s">`;
   if(o.bun)v+=`<circle cx="50" cy="15" r="11" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   v+=o.broad?`<rect x="40" y="58" width="20" height="15" fill="${SK}" stroke="${OL}" stroke-width="2"/>`:`<rect x="43" y="60" width="14" height="14" fill="${SK}" stroke="${OL}" stroke-width="2"/>`;
-  v+=`<circle cx="26" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/><circle cx="74" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/><ellipse cx="50" cy="44" rx="24" ry="26" fill="${SK}" stroke="${OL}" stroke-width="2"/>`;
+  v+=`<g class="ear el"><circle cx="26" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/></g><g class="ear er"><circle cx="74" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/></g><ellipse cx="50" cy="44" rx="24" ry="26" fill="${SK}" stroke="${OL}" stroke-width="2"/>`;
   if(o.beard)v+=`<path d="M27 48 Q28 73 50 73 Q72 73 73 48 Q67 61 50 61 Q33 61 27 48 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
+  const h0=v.length;
   if(o.cap)v+=`<path d="M25 36 Q26 13 50 13 Q74 13 75 36 Z" fill="${o.capc}" stroke="${OL}" stroke-width="2"/><path d="M21 35 L79 35 L82 41 L18 41 Z" fill="#1b1b2f"/><circle cx="50" cy="25" r="4.5" fill="${o.badge||'#f7c948'}" stroke="${OL}" stroke-width="1.5"/>`;
   else if(o.buzz)v+=`<path d="M27 38 Q27 17 50 17 Q73 17 73 38 Q66 26 50 26 Q34 26 27 38 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   else if(o.twists)v+=`<g fill="${HR}" stroke="${OL}" stroke-width="1.8"><path d="M26 42 Q24 26 30 20 L70 20 Q76 26 74 42 Q70 30 50 28 Q30 30 26 42 Z"/>${[30,37,44,51,58,65].map((x,i)=>`<path d="M${x} 22 Q${x+2} ${6+(i%2)*3} ${x+5} 22 Z"/>`).join('')}</g>`;
@@ -1261,12 +1283,13 @@ function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt|
   else if(o.bob)v+=`<path d="M23 60 Q18 14 50 14 Q82 14 77 60 L69 60 Q73 33 60 27 Q48 33 33 28 Q27 40 31 60 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   else if(o.sidepart)v+=`<path d="M26 44 Q22 14 46 15 Q78 13 75 44 Q73 28 60 24 Q50 22 42 20 Q36 30 26 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/><path d="M42 20 Q44 16 46 15" stroke="#444" stroke-width="1.5" fill="none"/>`;
   else v+=`<path d="M26 44 Q22 15 50 15 Q78 15 74 44 Q71 29 59 26 Q47 31 35 27 Q29 33 26 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
+  if(!o.cap&&!o.hijab&&!o.beret&&!o.tophat)v=v.slice(0,h0)+'<g class="hair">'+v.slice(h0)+'</g>';
   if(o.shades)v+=`<rect x="33" y="41" width="15" height="9" rx="3" fill="#111"/><rect x="52" y="41" width="15" height="9" rx="3" fill="#111"/><path d="M48 44 L52 44" stroke="#111" stroke-width="2"/><path d="M36 43 L41 43" stroke="#555" stroke-width="1.5"/>`;
   else v+=`<g class="eyes" style="animation-delay:${(-(Math.random()*4)).toFixed(2)}s"><ellipse cx="41" cy="46" rx="2.6" ry="3.3" fill="${OL}"/><ellipse cx="59" cy="46" rx="2.6" ry="3.3" fill="${OL}"/><circle cx="41.8" cy="45" r=".9" fill="#fff"/><circle cx="59.8" cy="45" r=".9" fill="#fff"/></g><path d="M36 39 Q41 36.5 46 39 M54 39 Q59 36.5 64 39" stroke="${o.cap?OL:HR}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
   if(o.stern)v+=`<path d="M35 37 L46 41 M65 37 L54 41" stroke="${OL}" stroke-width="3" stroke-linecap="round"/>`;
   if(o.thick)v+=`<rect x="31" y="38.5" width="18" height="15" rx="5" fill="rgba(200,230,255,.22)" stroke="#16161f" stroke-width="4.2"/><rect x="51" y="38.5" width="18" height="15" rx="5" fill="rgba(200,230,255,.22)" stroke="#16161f" stroke-width="4.2"/><path d="M48.5 44 L51.5 44" stroke="#16161f" stroke-width="3.5"/><path d="M31 43 L25 41 M69 43 L75 41" stroke="#16161f" stroke-width="3"/><path d="M34 41.5 L38 41.5" stroke="#fff" stroke-width="1.5" opacity=".7"/>`;
   if(o.glasses)v+=`<circle cx="41" cy="46" r="6.5" fill="rgba(255,255,255,.15)" stroke="#2a2a2a" stroke-width="2"/><circle cx="59" cy="46" r="6.5" fill="rgba(255,255,255,.15)" stroke="#2a2a2a" stroke-width="2"/><path d="M47.5 46 L52.5 46" stroke="#2a2a2a" stroke-width="2"/>`;
-  v+=`<path d="M50 48 L47.5 54 L51 54.5" stroke="${OL}" stroke-width="1.6" fill="none" stroke-linejoin="round"/><g class="mouth">${o.grin?`<path d="M39 56 Q50 69 61 56 Z" fill="#fff" stroke="${OL}" stroke-width="2" stroke-linejoin="round"/><path d="M40 58 L60 58" stroke="${OL}" stroke-width="1"/>`:o.stern?`<path d="M44 60.5 L56 60.5" stroke="${OL}" stroke-width="2.4" stroke-linecap="round"/>`:o.smirk?`<path d="M45 60 Q52 62.5 58 57" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`:`<path d="M44 59 Q50 63 56 59" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`}</g><circle cx="34" cy="54" r="3" fill="#f2a07b" opacity=".35"/><circle cx="66" cy="54" r="3" fill="#f2a07b" opacity=".35"/>`;
+  v+=`<g class="nose"><path d="M50 48 L47.5 54 L51 54.5" stroke="${OL}" stroke-width="1.6" fill="none" stroke-linejoin="round"/><circle cx="47.6" cy="54" r=".9" fill="${OL}"/><circle cx="51.6" cy="54" r=".9" fill="${OL}"/></g><g class="mouth">${o.grin?`<path d="M39 56 Q50 69 61 56 Z" fill="#fff" stroke="${OL}" stroke-width="2" stroke-linejoin="round"/><path d="M40 58 L60 58" stroke="${OL}" stroke-width="1"/>`:o.stern?`<path d="M44 60.5 L56 60.5" stroke="${OL}" stroke-width="2.4" stroke-linecap="round"/>`:o.smirk?`<path d="M45 60 Q52 62.5 58 57" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`:`<path d="M44 59 Q50 63 56 59" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`}</g><circle cx="34" cy="54" r="3" fill="#f2a07b" opacity=".35"/><circle cx="66" cy="54" r="3" fill="#f2a07b" opacity=".35"/>`;
   if(o.tophat)v+=`<rect x="31" y="-2" width="38" height="26" fill="#14141c" stroke="${OL}" stroke-width="2"/><rect x="31" y="15" width="38" height="6" fill="${o.tophat}"/><rect x="18" y="22" width="64" height="6" rx="3" fill="#14141c" stroke="${OL}" stroke-width="2"/><path d="M36 2 L36 13" stroke="rgba(255,255,255,.18)" stroke-width="3"/>`;
   if(o.wand)v+=`<path d="M78 98 L92 62" stroke="#111" stroke-width="4" stroke-linecap="round"/><path d="M89 69 L92 62" stroke="#fff" stroke-width="4" stroke-linecap="round"/><g fill="#ffe14d"><path d="M92 50 L94 55 L99 57 L94 59 L92 64 L90 59 L85 57 L90 55 Z"/><circle cx="83" cy="52" r="1.6"/><circle cx="98" cy="68" r="1.4"/></g>`;
   if(o.stubble)v+=`<path d="M29 52 Q31 70 50 71 Q69 70 71 52 Q66 63 50 63 Q34 63 29 52 Z" fill="rgba(40,30,20,.28)"/>`;
@@ -1276,6 +1299,7 @@ function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt|
   if(o.mustache)v+=`<path d="M41 56.5 Q46 53 50 55.5 Q54 53 59 56.5 Q55 59 50 57.5 Q45 59 41 56.5 Z" fill="${o.mustache===1?HR:o.mustache}" stroke="${OL}" stroke-width="1.2"/>`;
   if(o.studs)v+=`<path d="M25 52 L27 54.5 L25 57 L23 54.5 Z M75 52 L77 54.5 L75 57 L73 54.5 Z" fill="#dff6ff" stroke="${OL}" stroke-width="1"/>`;
   if(o.earrings)v+=`<circle cx="25" cy="55" r="2.6" fill="#f7c948" stroke="${OL}" stroke-width="1"/><circle cx="75" cy="55" r="2.6" fill="#f7c948" stroke="${OL}" stroke-width="1"/>`;
+  if(o.grin)v+=`<path class="spark" d="M58 57 L59.2 59.8 L62 61 L59.2 62.2 L58 65 L56.8 62.2 L54 61 L56.8 59.8 Z" fill="#fff"/>`;
   if(o.headset)v+=`<path d="M24 44 Q24 12 50 12 Q76 12 76 44" stroke="#9aa3b5" stroke-width="3" fill="none"/><rect x="20" y="40" width="7" height="12" rx="3" fill="#9aa3b5" stroke="${OL}" stroke-width="1.5"/><path d="M24 52 Q26 62 38 60" stroke="#9aa3b5" stroke-width="2" fill="none"/>`;
   v+=`</g>`;
   return `<svg viewBox="0 0 100 100">${v}</svg>`}

@@ -568,6 +568,15 @@ svg .spark{transform-box:fill-box;transform-origin:center;animation:sparkTooth 6
 @media (prefers-reduced-motion:reduce){svg .ear,svg .nose,svg .hair,svg .pony,svg .mouth,svg .spark,svg .head,svg .eyes{animation:none!important}}
 .t.walk{background-color:#1b1e2c!important}
 .map{width:100%!important;max-width:520px}
+
+#g-map #planBox,#g-map #orders,#g-map #legend,#g-map #mapHint{display:none!important}
+#g-map .mapwrap{overflow:hidden!important}
+#map .t{aspect-ratio:auto!important}
+#map{flex:none;margin:4px auto 0!important;max-width:none!important}
+.mapbar{display:grid;grid-template-columns:1fr 1.3fr;gap:8px;width:100%;margin:6px 0 2px}
+.mapbar button{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:12px;padding:9px 6px;letter-spacing:.3px}
+.mapbar button:first-child{background:#f2c14e;color:#14121f;border-color:#000}
+.t.walk svg{opacity:0}
 </style>
 </head>
 <body>
@@ -848,7 +857,7 @@ svg .spark{transform-box:fill-box;transform-origin:center;animation:sparkTooth 6
     <div class="guide" id="guide"></div>
     <div class="mapwrap">
       <div class="steps" id="mapSteps"></div>
-      <div id="planBox" style="width:100%"></div>
+      <div id="planBox" style="width:100%"></div><div class="mapbar"><button onclick="openMapInfo('plan')">🐾 BYTE’S PLAN</button><button id="ordBtn" onclick="openMapInfo('orders')">📋 ORDERS &amp; MAP KEY</button></div>
       <div class="map" id="map"></div>
       <div class="orders" id="orders"></div>
       <div class="legend" id="legend"></div>
@@ -1351,7 +1360,7 @@ function titleScene(){
 /* ===================== STATE ===================== */
 let S;
 let rival='realist', diff='normal';
-let hero={x:3,y:6};
+let hero={x:3,y:7};
 let sound=true, AC=null;
 
 function newState(){
@@ -1849,6 +1858,13 @@ function chooseInject(k){
 
 /* ===================== MAP ===================== */
 const GW=7,GH=12,TP=100/7,TPY=100/12;
+const RH=[.6,1,.32,1,.32,1,.32,1,.32,1,.32,1],RHT=RH.reduce((a,b)=>a+b,0);
+const RT=y=>RH.slice(0,y).reduce((a,b)=>a+b,0)/RHT*100,RHP=y=>RH[y]/RHT*100;
+function fitMap(){const map=document.getElementById('map'),w=map&&map.parentElement;if(!map||!w||!w.clientHeight)return;
+  let used=0;[...w.children].forEach(c=>{if(c!==map&&getComputedStyle(c).display!=='none')used+=c.offsetHeight+8});
+  const avail=w.clientHeight-used-14,ww=w.clientWidth-8;const W=Math.max(220,Math.min(ww,avail*GW/RHT));
+  map.style.setProperty('width',W+'px','important');map.style.setProperty('height',(W*RHT/GW)+'px','important');map.style.gridTemplateRows=RH.map(r=>r+'fr').join(' ')}
+if(typeof window!=='undefined'&&window.addEventListener)window.addEventListener('resize',()=>fitMap());
 const TILE=[
  'mmmmmmm','mm.g.mm','k..v..k','L..v..L','k..v..k','L..v..L','k..v..k','L..v..L','k..v..k','L..v..L','k..v..k','L..v..L'];
 
@@ -1884,7 +1900,7 @@ function renderMap(){
   }
   const h=document.createElement('div');h.className='hero';h.id='hero';map.appendChild(h);placeHero();
   if(S.m.risk>50){const spots=[];for(let yy=1;yy<GH;yy++)for(let xx=0;xx<GW;xx++){const c=TILE[yy][xx];if(c!=='m'&&c!=='w'&&!LOCS.some(l=>l.x===xx&&l.y===yy))spots.push([xx,yy])}
-    const sp=spots[(S.round*5+S.m.risk)%spots.length];const g=document.createElement('div');g.className='glitch';g.style.left=sp[0]*TP+'%';g.style.top=sp[1]*TPY+'%';g.innerHTML=glitchSVG();
+    const sp=spots[(S.round*5+S.m.risk)%spots.length];const g=document.createElement('div');g.className='glitch';g.style.left=sp[0]*TP+'%';g.style.top=(RT(sp[1])+RHP(sp[1])/2-RHP(1)/2)+'%';g.style.height=RHP(1)+'%';g.innerHTML=glitchSVG();
     g.onclick=e=>{e.stopPropagation();toast(`GLITCH · ROGUE SI · RISK ${S.m.risk}`);SFX.bad()};map.appendChild(g)}
   {const m=S.m;let fx='';
     const nr=m.esc>45?Math.min(4,1+Math.floor((m.esc-45)/12)):0;
@@ -1892,7 +1908,7 @@ function renderMap(){
     fx+=`<rect y="35" width="2.4" height="2.4" fill="#5ab0ff"><animate attributeName="x" from="-4" to="84" dur="4s" repeatCount="indefinite"/></rect>`;
     if(!S.flags.intel)[[0,14],[71,20]].forEach(([y,d],i)=>{fx+=`<g opacity=".35">${icon('fog',`x="-24" y="${y}" width="22" height="13"`)}<animateTransform attributeName="transform" type="translate" from="0 0" to="110 0" dur="${d}s" begin="-${i*7}s" repeatCount="indefinite"/></g>`});
     const ov=document.createElement('div');ov.className='mapfx';ov.innerHTML=`<svg viewBox="0 0 80 80" preserveAspectRatio="none" shape-rendering="crispEdges">${fx}</svg>`;map.appendChild(ov);
-    const ng=Math.max(0,Math.min(3,Math.floor((m.ccap-35)/12)));[[2,8],[4,10],[2,6]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*TP+'%';g.style.top=gy*TPY+'%';g.innerHTML=icon('skull');map.appendChild(g)})}
+    const ng=Math.max(0,Math.min(3,Math.floor((m.ccap-35)/12)));[[2,8],[4,10],[2,6]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*TP+'%';g.style.top=(RT(gy)+RHP(gy)/2-RHP(1)/2)+'%';g.style.height=RHP(1)+'%';g.innerHTML=icon('skull');map.appendChild(g)})}
   document.getElementById('planBox').innerHTML=planHTML();
   if(!guideSeen){guideSeen=true;showGuide()}
   map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);
@@ -1930,7 +1946,7 @@ function teamSVG(attrs=''){const OL='#10121f',st=step%2;
   o+=`<g fill="none" stroke="${OL}" stroke-width="1.2" stroke-linecap="round"><path d="M56.5 25 Q60 27.5 63.5 25"/><path d="M23 26 Q25.5 27.5 28 26"/><path d="M94 27 Q97 28.5 100 27" stroke="#d9a07a"/></g>`;
   o+=`<text x="106.5" y="53" text-anchor="middle" font-family="serif" font-weight="700" font-size="9" fill="#fff">π</text>`;
   return `<svg ${attrs} class="team" viewBox="0 0 120 80" aria-label="Your team: lead scientist with clipboard, advisor with laptop, math advisor">${o}</svg>`}
-function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=teamSVG();h.style.left=(hero.x*TP)+'%';h.style.top=(hero.y*TPY)+'%';updateHint()}
+function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=teamSVG();h.style.left=(hero.x*TP)+'%';h.style.top=(RT(hero.y)+RHP(hero.y)/2-RHP(1)/2)+'%';h.style.height=RHP(1)+'%';updateHint()}
 /* ===================== ANALYST PLAN ===================== */
 const SHORTN0=1;const SHORTN={fincyber:'Bank defense',otseg:'OT lockdown',credits:'Compute credits',metering:'Usage metering',redline:'Red line',restraint:'Restraint pledge',burden:'Burden-sharing',antitrust:'Antitrust',toolctl:'Tool controls',cloudkyc:'Cloud checks',antismug:'Anti-smuggling',minerals:'Minerals reserve',redteam:'Red-teaming',provenance:'Provenance',agentsafe:'Agent safeguards',vulnshare:'Flaw reporting',weightsec:'Secure weights',apiguard:'Anti-distillation',botcert:'Robot certification',botsec:'Robot security',botliab:'Robot liability',botprivacy:'Robot privacy',botdividend:'Automation dividend',feeds:'Feed rules',phonefree:'Phone-free schools',retrain:'Retraining',audit:'Fairness audits',privacy:'Privacy law',access:'Public access',kids:'Youth safety',intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure',chips:'Chip controls',offense:'Cyber ops',weights:'Limit weights',bounty:'SI bounty'};
 const PLATE={fincyber:'BANKS',otseg:'OT',credits:'CREDITS',metering:'METER',redline:'REDLINE',restraint:'PLEDGE',burden:'SHARE',antitrust:'ANTITRUST',toolctl:'TOOLS',cloudkyc:'CLOUD',antismug:'SMUGGLE',minerals:'MINERAL',redteam:'REDTEAM',provenance:'PROVEN',agentsafe:'AGENTS',vulnshare:'FLAWS',weightsec:'WEIGHTS',apiguard:'APIGUARD',botcert:'CERTIFY',botsec:'ANTIHACK',botliab:'LIABLE',botprivacy:'PRIVACY',botdividend:'DIVIDEND',feeds:'FEEDS',phonefree:'NOPHONE',retrain:'RETRAIN',audit:'AUDITS',privacy:'PRIVACY',access:'ACCESS',kids:'YOUTH',intel:'INTEL',harden:'HARDEN',tamper:'GUARDS',crime:'GANGS',evals:'TESTS',tmodel:'TMODEL',insider:'INSIDER',fabs:'FABS',power:'POWER',talent:'TALENT',coord:'ALLIES',norms:'NORMS',liab:'LIABLE',cvd:'BUGS',chips:'CHIPS',offense:'CYBEROP',weights:'WEIGHTS',bounty:'BOUNTY'};
@@ -2010,6 +2026,9 @@ function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div 
   <div class="bk"><div class="sw" style="background:#101225;color:var(--gold);font-family:'Press Start 2P';font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--green)">✔</div><div><b>GREEN CHECK</b>You've placed orders there this round. The name plate shows what you ordered. Blue TIP tags mark the analyst's suggestions.</div></div></div>
   <div class="gfoot"><button class="a" style="width:100%" onclick="document.getElementById('guide').classList.remove('on')">GOT IT ▶</button></div>`;
   g.classList.add('on');g.scrollTop=0}
+function openMapInfo(k){const el=document.getElementById('learnDrawer');const o=document.getElementById('orders'),lg=document.getElementById('legend'),h=document.getElementById('mapHint');
+  const body=k==='plan'?`<div class="lsec"><p>Use this if you are stuck. You can always choose for yourself.</p></div>${planHTML().replace('<details class="planwrap"','<details class="planwrap" open')}`:`<div class="lsec"><div class="llbl">YOUR ORDERS</div><div class="orders" style="display:flex">${o?o.innerHTML:''}</div></div><div class="lsec"><div class="llbl">WHERE YOU ARE</div><p>${h?h.innerHTML:''}</p></div><div class="lsec"><div class="llbl">MAP KEY</div><div class="legend" style="display:flex">${lg?lg.innerHTML:''}</div></div>`;
+  el.innerHTML=`<div class="lsheet" role="dialog"><div class="lgrab"></div><div class="lhead"><div><div class="lsub">${k==='plan'?'🐾 BYTE':'📋 MAP'}</div><div class="ltitle">${k==='plan'?'Suggested plan':'Orders & map key'}</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody">${body}</div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;el.classList.add('on')}
 function updateHint(){
   const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);const e=document.getElementById('mapHint');
   const step=!S.posture?1:(S.pc>0?2:3);
@@ -2025,6 +2044,8 @@ function updateHint(){
   if(m.risk>50)lg+=`<span>${icon('glitch')}GLITCH (RISK)</span>`;
   lg+=`<span style="color:var(--green)">✔ Green = ordered</span><span style="color:#5ab0ff">TIP = analyst pick</span>`;
   document.getElementById('legend').innerHTML=lg;
+  {const b=document.getElementById('ordBtn');if(b)b.innerHTML=`📋 ORDERS (${S.picks.length}) · ${S.pc} PC LEFT`}
+  requestAnimationFrame(fitMap);
 }
 function mv(dx,dy){const nx=hero.x+dx,ny=hero.y+dy;if(nx<0||ny<0||nx>GW-1||ny>GH-1)return;const ch=TILE[ny][nx];if(ch==='m'||ch==='w'){SFX.bad();return}facing=dy<0?'up':'down';step++;hero={x:nx,y:ny};placeHero();SFX.move()}
 function enterLoc(){const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);if(!L){toast('NOTHING HERE');return}openLoc(L)}

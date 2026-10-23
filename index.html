@@ -493,6 +493,14 @@ svg .head{transform-box:fill-box;transform-origin:50% 90%;animation:headSway 5.2
 button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filter .35s ease-out}
 .guide{padding-bottom:0}
 .gfoot{position:sticky;bottom:0;z-index:2;margin:12px -12px 0;padding:10px 12px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(rgba(7,8,19,0),#070813 28%)}
+
+.leanbtn{display:flex;align-items:center;gap:10px;width:100%;margin-top:12px;padding:8px 10px;background:#f2c14e;color:#14121f;border:3px solid #000;box-shadow:0 0 10px rgba(242,193,78,.45),4px 4px 0 #000;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:14px;font-weight:600;text-align:left;letter-spacing:.2px}
+.leanbtn b{font-weight:900}.leanbtn .lbt{flex:1;line-height:1.25}.leanbtn .lbarr{font-size:14px}
+.lbdog{flex:none;width:40px;height:40px;background:#1a1f45;border:2px solid #000;display:block;overflow:hidden}.lbdog svg{width:100%;height:100%;display:block}
+.bytechip{display:flex;align-items:center;gap:8px;margin:10px 0 0 auto;padding:6px 10px 6px 6px;background:#f2c14e;color:#14121f;border:3px solid #000;box-shadow:3px 3px 0 #000;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:900;font-size:13px;letter-spacing:.6px}
+.bytechip .lbdog{width:34px;height:34px}
+.bdpt{flex:none;width:52px;height:52px;border:3px solid #e8e4d8;background:linear-gradient(#2a3166,#161a3a);overflow:hidden}.bdpt svg{width:100%;height:100%;display:block}
+.bytesheet{border-color:#f2c14e}.bytesheet .lhead{align-items:center}
 </style>
 </head>
 <body>
@@ -1560,7 +1568,14 @@ function weighPoints(I){const m=S.m,keys=new Set([...Object.keys(I.a.fx||{}),...
   W.push('Ask yourself: is the cost a one-time hit, or does it keep growing?');
   return W.slice(0,4)}
 function optWeigh(k,c){const {P,C}=prosCons(c.fx);return `<div class="wopt"><div class="wh"><span class="optk ${k}">${k.toUpperCase()}</span><b>${c.t.replace(/^[AB] · /,'')}</b></div>${P.length?`<div class="wp">✓ ${P.join(', ')}</div>`:''}${C.length?`<div class="wc">✗ ${C.join(', ')}</div>`:''}</div>`}
-function leanHTML(txt){return `<details class="lean"><summary>🐾 Still stuck? Hear Byte’s lean</summary><div>${txt}</div></details>`}
+let LEANS=[];
+function leanHTML(txt){const i=LEANS.push(txt)-1;return `<button class="leanbtn" onclick="event.stopPropagation();openLean(${i})"><span class="lbdog">${dogSVG()}</span><span class="lbt">Still stuck? <b>Hear Byte’s lean</b></span><span class="lbarr">▶</span></button>`}
+function byteDrawer(sub,title,html){const el=document.getElementById('learnDrawer');
+  el.innerHTML=`<div class="lsheet bytesheet" role="dialog" aria-label="Byte"><div class="lgrab"></div><div class="lhead"><div class="bdpt">${dogSVG()}</div><div style="flex:1;min-width:0"><div class="lsub" style="color:#f2c48a">🐾 BYTE · ${sub}</div><div class="ltitle">${title}</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody">${html}</div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;
+  el.classList.add('on')}
+function openLean(i){byteDrawer('MY LEAN','Here is how I see it',`<div class="lsec"><p style="font-size:18px">${LEANS[i]}</p></div><div class="lsec"><div class="llbl" style="color:#9fb8e8">REMEMBER</div><p>This is one view, not the answer. Weigh the costs you can afford and make your own call.</p></div>`)}
+function openByteCard(id){const a=ACTIONS.find(x=>x.id===id),H=ACT_HINT[id],rec=recommendPlan().picks.find(([x])=>x===id);
+  byteDrawer(a.name,'Should you buy this?',(H?`<div class="lsec"><div class="llbl" style="color:#4bd37b">✓ BEST WHEN</div><p>${H[0]}</p></div><div class="lsec"><div class="llbl" style="color:#ff8f8f">✗ SKIP WHEN</div><p>${H[1]}</p></div>`:'')+`<div class="lsec"><div class="llbl" style="color:#ffd23f">WHAT IT DOES</div><p>${fxLine(a.fx)} · ${a.cost} PC</p></div>`+leanHTML(rec?'I lean yes this round. '+rec[1]:'I lean no. Other buys matter more this round.'))}
 function weighHTML(I,rc){return `<div class="beatlbl">WEIGHING IT</div>${optWeigh('a',I.a)}${optWeigh('b',I.b)}<div class="beatlbl">WHAT TO WEIGH RIGHT NOW</div><ul class="wlist">${weighPoints(I).map(x=>`<li>${x}</li>`).join('')}</ul><p class="beatsmall">There is no free option. Pick the cost you can best afford.</p>${rc?leanHTML(`I lean ${rc[0].toUpperCase()}. ${rc[1]}`):''}`}
 function chooseInject(k){
   const c=currentInject[k];const before={...S.m};applyFx(c.fx);S.injectLog.push(currentInject.id);
@@ -1771,7 +1786,7 @@ function openLoc(L){
     const picked=S.picks.includes(a.id);
     const c=document.createElement('div');c.className='card'+(picked?' sel':'');
     const rec=recommendPlan().picks.find(([id])=>id===a.id);
-    c.innerHTML=`<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('RISK ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}${(s=>`<div class="cardbyte"><span class="doglb">🐾 BYTE</span>${s}</div>`)((ACT_HINT[a.id]?`<span style="color:#4bd37b">✓ Best when:</span> ${ACT_HINT[a.id][0]}<br><span style="color:#ff8f8f">✗ Skip when:</span> ${ACT_HINT[a.id][1]}<br>`:'')+leanHTML(rec?'I lean yes this round. '+rec[1]:'I lean no. Other buys matter more this round.'))}`;
+    c.innerHTML=`<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('RISK ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}<button class="bytechip" aria-label="Ask Byte" onclick="event.stopPropagation();openByteCard('${a.id}')"><span class="lbdog">${dogSVG()}</span><span>ASK BYTE</span></button>`;
     c.onclick=()=>toggleAction(a,L);body.appendChild(c);
   });
 }
@@ -2279,7 +2294,7 @@ function endGame(skipFinale){
   go('s-end');const b=document.getElementById('endBody');const sc=scoreGame();const E=ending();
   const grade=S.dead?'F':sc>=80?'S':sc>=68?'A':sc>=55?'B':sc>=42?'C':'D';
   if(!S.dead)SFX.fanfare();else SFX.bad();
-  const n=S.hist.length;const rec=S.hist.map((h,i)=>`<div class="h">R${i+1}</div><div>${PLS[h]}</div><div>${PL[S.redHist[i]].slice(0,4)}</div>`).join('');
+  const n=S.hist.length;const rec=S.hist.map((h,i)=>`<div class="h">R${i+1}</div><div>${PLS[h]}</div><div>${PLS[S.redHist[i]]}</div>`).join('');
   // analysis
   const L=[];const H=S.hist,R=S.redHist;
   const mutual=H.filter((h,i)=>h==='coop'&&R[i]==='coop').length;

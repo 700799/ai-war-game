@@ -586,7 +586,7 @@ svg .head{transform-box:fill-box;transform-origin:50% 90%;animation:headSway 5.2
         <dt>THE REPEATED PRISONER'S DILEMMA</dt><dd>Each round, betraying a cooperative rival pays off once. But the game repeats, and the rival remembers. When future rounds matter, cooperation can be the rational choice (the "shadow of the future").</dd>
         <dt>THE SECURITY DILEMMA</dt><dd>Moves you make for defense, like export controls or forward ops, look like threats from the other side. Both sides arm "defensively" and both end up less safe.</dd>
         <dt>ATTRIBUTION &amp; NOISY SIGNALS</dt><dd>In cyber, you often can't tell who attacked you. A gang's hack can look like a state's. Retaliating on bad attribution starts spirals no one chose. Information is a weapon.</dd>
-        <dt>RECIPROCITY (TIT-FOR-TAT)</dt><dd>Always cooperating invites exploitation. Always pushing back locks in conflict. Matching the rival's last move, and forgiving now and then, tends to win long games.</dd>
+        <dt>RECIPROCITY (TIT-FOR-TAT)</dt><dd>Always cooperating invites exploitation. Always racing ahead locks in conflict. Matching the rival's last move, and forgiving now and then, tends to win long games.</dd>
         <dt>CREDIBLE DETERRENCE</dt><dd>Threats only work if the other side believes you'll act, and believes you'll stop if they do. Allies make your threats more believable.</dd>
         <dt>INCENTIVE DESIGN (PRINCIPAL-AGENT)</dt><dd>You can't order private labs around. They follow profit. Rules like liability and required testing change what profit rewards, so safety becomes the profitable choice.</dd>
         <dt>DUAL-USE &amp; PUBLIC GOODS</dt><dd>Disclosing bugs and publishing open models help defenders and attackers alike. Almost every SI capability cuts both ways.</dd>
@@ -627,7 +627,7 @@ svg .head{transform-box:fill-box;transform-origin:50% 90%;animation:headSway 5.2
         <li><b>Use tit-for-tat against an Opportunist.</b> Answer exploitation right away, then go back to cooperating. Staying soft gets you farmed.</li>
         <li><b>Stay neutral against a Hardliner, and coordinate with allies.</b> One escalation backed by allies makes later hardliner aggression less likely. Pure cooperation reads as weakness to them.</li>
         <li><b>Coordinate before you coerce.</b> Chip controls without allies cost alliance points and leak. With allies, they cut deeper and the coalition holds.</li>
-        <li><b>Never mix signals.</b> Forward ops while posturing Cooperate reads as duplicity (+escalation). A norms track fails if you push back the same round.</li>
+        <li><b>Never mix signals.</b> Forward ops while posturing Cooperate reads as duplicity (+escalation). A norms track fails if you compete hard the same round.</li>
         <li><b>Slow the labs with incentives.</b> Required testing plus liability rules bring the labs' chance of shipping early from 72% down to 30%. Watch RISK; GLITCH shows up above 50.</li>
         <li><b>Hit the gangs when CRIME passes 50.</b> Disrupting syndicates is the cleanest damage cut. It doesn't touch the rival and doesn't raise escalation.</li>
         <li><b>On flash traffic, check before you shoot.</b> "Wait 72 hours" costs a little trust. Retaliating on a misattribution costs far more.</li>
@@ -864,8 +864,8 @@ const ACTIONS = [
 
 // Posture payoff matrix: [blue][red] -> {sec, esc, rcap, note}
 const P = ['coop','hedge','esc'];
-const PL = {coop:'COOPERATE',hedge:'STAY NEUTRAL',esc:'PUSH BACK'};
-const PLS = {coop:'COOP',hedge:'NEUTRAL',esc:'PUSH BACK'};
+const PL = {coop:'COOPERATE',hedge:'STAY NEUTRAL',esc:'COMPETE'};
+const PLS = {coop:'COOP',hedge:'NEUTRAL',esc:'COMPETE'};
 const MATRIX = {
  coop:{ coop:{sec:+4,esc:-9,note:'Mutual restraint. Best joint outcome.'},
         hedge:{sec:-1,esc:-2,note:'You opened; they probed.'},
@@ -1308,7 +1308,7 @@ function renderSetup(){
   const r=document.getElementById('rivals');r.innerHTML='';
   for(const k in RIVALS){const R=RIVALS[k];const b=document.createElement('button');b.className='rcard'+(k===rival?' sel':'');
     const bar=(lbl,v,col)=>`<div class="rbar"><span>${lbl}</span><i><b style="width:${Math.round(v*100)}%;background:${col}"></b></i></div>`;
-    b.innerHTML=`<span class="rframe">${EMBLEM[k]}</span><span class="rinfo"><span class="rname">${R.name}</span><span class="rdesc">${R.desc}</span>${bar('COOPERATES',R.coop/.6,'#4bd37b')}${bar('PUSHES BACK',R.esc/.7,'#ff5c5c')}<span class="rmem">REMEMBERS ${R.memory} ROUND${R.memory>1?'S':''} OF YOUR MOVES</span></span>${k===rival?'<span class="rtick">✔</span>':''}`;
+    b.innerHTML=`<span class="rframe">${EMBLEM[k]}</span><span class="rinfo"><span class="rname">${R.name}</span><span class="rdesc">${R.desc}</span>${bar('COOPERATES',R.coop/.6,'#4bd37b')}${bar('COMPETES',R.esc/.7,'#ff5c5c')}<span class="rmem">REMEMBERS ${R.memory} ROUND${R.memory>1?'S':''} OF YOUR MOVES</span></span>${k===rival?'<span class="rtick">✔</span>':''}`;
     b.onclick=()=>{rival=k;renderSetup();SFX.sel()};r.appendChild(b)}
   const d=document.getElementById('diffs');d.innerHTML='';
   for(const k in DIFFS){const b=document.createElement('button');b.className='ocard'+(k===diff?' sel':'');b.innerHTML=`<span class="oic">${DIFF_IC[k]}</span><span class="olbl">${DIFFS[k].label}</span><span class="osub">${DIFF_TXT[k]}<br>${DIFFS[k].pc} PC/round</span>`;b.onclick=()=>{diff=k;renderSetup();SFX.sel()};d.appendChild(b)}
@@ -1417,7 +1417,7 @@ const LEARN_INJ={
  autoacc:["Autonomous agent accidents","AI agents that act on their own can cause harm through mistakes, not malice.","As agents get more capable, small errors can cascade across systems.","Pausing deployment slows benefits; continuing risks more incidents.","Testing and kill switches matter more as autonomy grows."]
 };
 const LEARN_LOC={
- wh:["Headquarters: strategy and posture","HQ sets your stance toward the rival each round: Cooperate, Stay Neutral or Push Back.","This is a repeated game, like the classic prisoner’s dilemma. Both sides do best by cooperating, but each is tempted to defect.","Escalating can win one round, but rivals remember. Cooperation pays when it is reciprocated.","Intelligence (INTEL) reveals what the rival is likely to do, which turns guessing into strategy."],
+ wh:["Headquarters: strategy and posture","HQ sets your stance toward the rival each round: Cooperate, Stay Neutral or Compete.","This is a repeated game, like the classic prisoner’s dilemma. Both sides do best by cooperating, but each is tempted to defect.","Escalating can win one round, but rivals remember. Cooperation pays when it is reciprocated.","Intelligence (INTEL) reveals what the rival is likely to do, which turns guessing into strategy."],
  sv:["The Labs: frontier AI developers","Companies building the most capable AI systems.","They drive the economy and the science dividend, but competition pushes them to ship fast.","Testing and liability rules slow risky launches; funding speeds progress.","Shape incentives so careful labs are not punished for being careful."],
  cisa:["Grid Defense: critical infrastructure","Protects hospitals, water, power and banks from cyberattack.","Most infrastructure runs on old software that is hard to patch.","Hardening is slow and unglamorous but makes every other attack less damaging.","Defense is always useful: it pays off no matter what the rival does."],
  ally:["Allies: coalitions and norms","Works with friendly countries on shared rules, export controls and response.","Coordinated pressure works; solo pressure leaks.","Alliances need investment to stay aligned.","Coordinate first, then act."],
@@ -1430,7 +1430,7 @@ const LEARN_LOC={
  red:["Red Team Lab: attacking your own models","Red teams try to break models before attackers do: jailbreaks, poisoning, theft and backdoors.","Model security protects weights, data and agents from tampering.","Red-teaming costs PC but is the biggest MODEL SEC boost.","Below MODEL SEC 60, model attacks become likely."]
 };
 const LEARN_GEN={
- brief:["The situation: a repeated game","Each round, you and the rival choose at the same time, without knowing the other’s move.","This mirrors the prisoner’s dilemma: mutual cooperation is best overall, but each side is tempted to push back for a one-round edge.","Your rival has a doctrine: how often they cooperate, how often they push back and how long they remember your moves.","The SI clock rises every round no matter what. Your job is to steer how its benefits and harms land.","Top threats rank the biggest current risks. Spend PC on the top one or two before anything else."],
+ brief:["The situation: a repeated game","Each round, you and the rival choose at the same time, without knowing the other’s move.","This mirrors the prisoner’s dilemma: mutual cooperation is best overall, but each side is tempted to race ahead for a one-round edge.","Your rival has a doctrine: how often they cooperate, how often they compete and how long they remember your moves.","The SI clock rises every round no matter what. Your job is to steer how its benefits and harms land.","Top threats rank the biggest current risks. Spend PC on the top one or two before anything else."],
  byte:["Expected value: how Byte decides","Byte multiplies each outcome by how likely it is, then adds them up. That is expected value.","A move that is great 20% of the time but terrible 80% of the time is usually worse than a steady, decent one.","Byte also checks the danger lines: SEC or TRUST at 10, or ESC at 90, end the game.","Byte’s picks are a strong default, not the only right answer. Different playstyles can win."],
  out:["Outcomes and feedback loops","Each choice moves meters, and meters feed each other over time.","Low TRUST makes every policy harder; high ESC makes the rival more aggressive; high RISK summons accidents.","Small gains that compound (like DIVIDEND and MODEL SEC) often beat one big move.","Read the changes, then adjust your orders on the map."]
 };
@@ -1525,7 +1525,7 @@ function optInfo(k){const I=currentInject,c=I[k],o=I[k==='a'?'b':'a'];const ok=k
   const gains=fxBullets(c.fx,true),costs=fxBullets(c.fx,false);
   const impl=Object.keys(c.fx||{}).filter(x=>c.fx[x]&&MEAN[x]).map(x=>`<li>${MEAN[x][2]}</li>`).join('');
   let extra='';if(c.signal==='coop')extra='<li>The rival reads this as goodwill: more likely to cooperate next round.</li>';
-  if(c.signal==='esc')extra='<li>The rival reads this as a snub: more likely to push back next round.</li>';
+  if(c.signal==='esc')extra='<li>The rival reads this as a snub: more likely to press hard next round.</li>';
   if(c.esc)extra+='<li>Acting before the facts are in can trigger a retaliation spiral.</li>';
   const byte=`<b style="color:#ffd23f">Weigh it:</b> ${prosCons(c.fx).C.length?'This costs you '+prosCons(c.fx).C.join(', ')+'.':'No direct meter cost.'} ${prosCons(o.fx).C.length?'The other option costs '+prosCons(o.fx).C.join(', ')+'.':'The other option has no direct cost.'} Which loss can you better afford right now?`+(rc?leanHTML(`I lean ${rc[0].toUpperCase()}. ${rc[1]}`):'');
   const el=document.getElementById('optPop');
@@ -1665,7 +1665,7 @@ const PCOL={coop:'#4bd37b',hedge:'#f7c948',esc:'#ff5c5c'};
 function recommendPlan(){const m=S.m,R=RIVALS[S.rival],last=S.redHist[S.redHist.length-1];
   let posture,why;
   if(!last){posture=R.coop>.4?'coop':'hedge';why=R.coop>.4?'This rival tends to reciprocate. Open with cooperation.':'This rival exploits openness. Start guarded.'}
-  else if(last==='esc'){posture='hedge';why='They pushed back last round. Stay neutral so you are not exploited, without starting a spiral.'}
+  else if(last==='esc'){posture='hedge';why='They competed hard last round. Stay neutral so you are not exploited, without starting a spiral.'}
   else if(last==='coop'){posture='coop';why='They cooperated. Match it to lock in mutual restraint.'}
   else {posture=m.esc>55?'coop':'hedge';why=m.esc>55?'Escalation is high. Offer cooperation to cool things down.':'They are probing. Match by staying neutral.'}
   const want=[];const add=(id,c,r)=>{if(c)want.push([id,r])};
@@ -1714,7 +1714,7 @@ function planHTML(){const P=recommendPlan();const byLoc=id=>LOCS.find(l=>l.id===
 let guideSeen=false;
 function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div class="box"><h2>MAP GUIDE</h2>
   <p style="margin-top:6px">This map is your government. Each building is a place to act. Every round, 6 months pass:</p>
-  <ol class="strat"><li><b>Tap HQ</b> (the building marked START) and choose your <b>posture</b> toward the rival: Cooperate, Stay Neutral or Push Back.</li>
+  <ol class="strat"><li><b>Tap HQ</b> (the building marked START) and choose your <b>posture</b> toward the rival: Cooperate, Stay Neutral or Compete.</li>
   <li><b>Tap other buildings</b> to spend <b>Political Capital (PC)</b> on actions. Each card shows the risk analyst's read on what it does.</li>
   <li>Press the red <b>END TURN</b> button. Everyone moves at once and you see the results.</li></ol></div>
   <div class="box"><h2>BUILDINGS</h2><p class="small">Buildings belong to three fronts. Every PC spent on one front is PC not spent on another.</p>${LOCS.map(L=>`<div class="bk"><div class="sw">${sprite(L.id)}</div><div><b>${L.short} · ${L.name} · ${FRONTN[FRONT[L.id]]}</b>${L.purpose}</div></div>`).join('')}</div>
@@ -1757,8 +1757,8 @@ function openLoc(L){
     body.appendChild(box);
     const p=box.querySelector('#post');
     const recP=recommendPlan().posture;P.forEach(k=>{const b=document.createElement('button');b.innerHTML=PL[k];b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();toast('POSTURE SET · NOW SPEND PC');openLoc(L)};p.appendChild(b)});
-    {const last=S.redHist[S.redHist.length-1];const R=RIVALS[S.rival];box.querySelector('#intelHint').innerHTML=anaHTML('RISK ANALYST',last?`Rival (${R.name}) last chose <b>${PL[last]}</b>. They remember ${R.memory} round${R.memory>1?'s':''} of your moves. ${last==='esc'?'Answering with STAY NEUTRAL or PUSH BACK avoids being farmed; COOPERATE risks the sucker\'s payoff.':last==='coop'?'COOPERATE locks in mutual restraint; PUSH BACK exploits them once, and they\'ll remember.':'They\'re probing. Matching with STAY NEUTRAL is safe; COOPERATE can invite reciprocity.'}`:`Opening move. A ${R.name} starts ${R.coop>.4?'inclined to cooperate':R.esc>.5?'inclined to push back':'opportunistic'}. Buy INTEL (1 PC) to see their likely move.`)}
-    {const ev=postureEV(),rp=recommendPlan().posture;box.querySelector('#intelHint').innerHTML+=dogHTML('THE MATH',`<i style="color:#9b9ac7">${dogLine('math')}</i><br>`+`Rival odds: cooperate ${Math.round(ev.pr.coop*100)}% · stay neutral ${Math.round(ev.pr.hedge*100)}% · push back ${Math.round(ev.pr.esc*100)}%`+P.map(k=>`<br>· <b style="color:#fff">${PL[k]}</b>: SEC ${ev.sc[k].sec>=0?'+':''}${ev.sc[k].sec.toFixed(1)}, ESC ${ev.sc[k].esc>=0?'+':''}${ev.sc[k].esc.toFixed(1)}`).join('')+`<br><b style="color:#ffd23f">Weigh it:</b> COOPERATE pays off only if they cooperate too, and they may exploit it. PUSH BACK can win one round, but they remember. STAY NEUTRAL is safe but slow.`+leanHTML(ev.best===rp?`I lean ${PL[rp]}. Short-term math and long-term reciprocity agree.`:`Short-term math favors ${PL[ev.best]}, but I lean ${PL[rp]} because the rival remembers your move next round.`))}
+    {const last=S.redHist[S.redHist.length-1];const R=RIVALS[S.rival];box.querySelector('#intelHint').innerHTML=anaHTML('RISK ANALYST',last?`Rival (${R.name}) last chose <b>${PL[last]}</b>. They remember ${R.memory} round${R.memory>1?'s':''} of your moves. ${last==='esc'?'Answering with STAY NEUTRAL or COMPETE avoids being farmed; COOPERATE risks the sucker\'s payoff.':last==='coop'?'COOPERATE locks in mutual restraint; COMPETE outpaces them once, and they\'ll remember.':'They\'re probing. Matching with STAY NEUTRAL is safe; COOPERATE can invite reciprocity.'}`:`Opening move. A ${R.name} starts ${R.coop>.4?'inclined to cooperate':R.esc>.5?'inclined to compete':'opportunistic'}. Buy INTEL (1 PC) to see their likely move.`)}
+    {const ev=postureEV(),rp=recommendPlan().posture;box.querySelector('#intelHint').innerHTML+=dogHTML('THE MATH',`<i style="color:#9b9ac7">${dogLine('math')}</i><br>`+`Rival odds: cooperate ${Math.round(ev.pr.coop*100)}% · stay neutral ${Math.round(ev.pr.hedge*100)}% · compete ${Math.round(ev.pr.esc*100)}%`+P.map(k=>`<br>· <b style="color:#fff">${PL[k]}</b>: SEC ${ev.sc[k].sec>=0?'+':''}${ev.sc[k].sec.toFixed(1)}, ESC ${ev.sc[k].esc>=0?'+':''}${ev.sc[k].esc.toFixed(1)}`).join('')+`<br><b style="color:#ffd23f">Weigh it:</b> COOPERATE pays off only if they cooperate too, and they may exploit it. COMPETE can race ahead for one round, but they remember. STAY NEUTRAL is safe but slow.`+leanHTML(ev.best===rp?`I lean ${PL[rp]}. Short-term math and long-term reciprocity agree.`:`Short-term math favors ${PL[ev.best]}, but I lean ${PL[rp]} because the rival remembers your move next round.`))}
     if(S.flags.intel){box.querySelector('#intelHint').innerHTML+=`<div class="ana"><b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}</div>`}
     body.appendChild(matrixEl(null,null));
   }
@@ -1782,13 +1782,13 @@ function toggleAction(a,L){
 }
 
 function matrixEl(b,r){const w=document.createElement('div');w.className='box';
-  const ab={coop:'COOPERATE',hedge:'STAY NEUTRAL',esc:'PUSH BACK'};
+  const ab={coop:'COOPERATE',hedge:'STAY NEUTRAL',esc:'COMPETE'};
   const v=(n,bad)=>{const good=bad?n<0:n>0;return `<span class="${n===0?'':good?'up':'dn'}">${n>0?'+':n<0?'−':''}${Math.abs(n)}</span>`};
   let h=`<h3>WHAT EACH COMBINATION DOES</h3><p class="small" style="margin-top:6px">Each box shows the change to your <b style="color:#fff">SECURITY</b> and to <b style="color:#fff">ESCALATION</b>. Green is good for you, red is bad.</p>
   <div class="mx"><div></div><div class="mxh mxtop" style="grid-column:2/5">THE RIVAL CHOOSES →</div><div class="mxh mxtop" style="align-self:end">YOU ↓</div>`;
   P.forEach(k=>h+=`<div class="mxh">${ab[k]}</div>`);
   P.forEach(bk=>{h+=`<div class="mxr">${ab[bk]}</div>`;P.forEach(rk=>{const c=MATRIX[bk][rk];const hit=b===bk&&r===rk;h+=`<div class="mxcell${hit?' hit':''}">${hit?'<i>THIS ROUND</i>':''}<div>SEC ${v(c.sec,false)}</div><div>ESC ${v(c.esc,true)}</div></div>`})});
-  h+=`</div><p class="small" style="margin-top:10px">Best for both: you both COOPERATE. Worst for both: you both PUSH BACK. Pushing back alone pays once, but the rival remembers.</p>`;
+  h+=`</div><p class="small" style="margin-top:10px">Best for both: you both COOPERATE. Worst for both: you both COMPETE. Racing ahead alone pays once, but the rival remembers.</p>`;
   w.innerHTML=h;return w;
 }
 
@@ -1900,13 +1900,13 @@ const dogLine=k=>DOG_LINES[k][Math.floor(Math.random()*DOG_LINES[k].length)];
 /* ===================== OPTIMAL-PLAY HINTS ===================== */
 const ACT_HINT={
  intel:['Always, round 1 especially.','Never really; it is the best value in the game.'],
- harden:['SEC under 75, or the rival may push back.','SEC is already 80+ and PC is tight.'],
+ harden:['SEC under 75, or the rival may press hard.','SEC is already 80+ and PC is tight.'],
  evals:['RISK is 45+ or labs keep shipping.','RISK is low and you need ECON.'],
  liab:['Stacked with testing to slow risky launches.','RISK is already under 40.'],
  chips:['Allies are coordinated and the rival is pulling ahead.','Escalation is above 60, or you have not coordinated allies.'],
- offense:['The rival keeps pushing back and you are neutral or pushing back.','You are posturing COOPERATE (reads as duplicity).'],
+ offense:['The rival keeps competing and you are neutral or racing ahead.','You are posturing COOPERATE (reads as duplicity).'],
  coord:['ALLY under 55, or before chip controls.','Allies are already 70+.'],
- norms:['ESC is 50+ and you are not pushing back.','You plan to PUSH BACK this round (it backfires).'],
+ norms:['ESC is 50+ and you are not competing.','You plan to COMPETE this round (it backfires).'],
  cvd:['You have 1 PC left over.','Never harmful; just low impact.'],
  weights:['CRIME is 60+ and releases keep landing.','You need DIVIDEND and EQUITY growth.'],
  crime:['CRIME is 50+.','CRIME is under 40.'],
@@ -1986,7 +1986,7 @@ function postureEV(){const pr=redProbs(true);const F=S.flags;const sc={};
   const best=P.reduce((a,b)=>sc[b].score>sc[a].score?b:a,'coop');return {pr,sc,best}}
 function roundTips(){const m=S.m,F=S.flags,T=[];const add=(c,t,w)=>{if(c&&T.length<4)T.push([t,w])};
   const lf=S.focus[S.focus.length-1];const pace=Math.round(20+40*(S.round-1)/Math.max(1,S.maxRounds-1));
-  add(m.esc>=70,'Do not PUSH BACK this round.','At 90 the game ends, and one attribution error can add 4 to 10 on top.');
+  add(m.esc>=70,'Do not COMPETE this round.','At 90 the game ends, and one attribution error can add 4 to 10 on top.');
   add(m.harm>=32,'HARM is close to 40. Prioritize harm-cutting actions.','Above 40 you cannot reach Abundance, and HARM rarely falls on its own.');
   add(lf&&lf.HOME===0,'Spend at least 1 PC at TOWN or ROBOTS.','You skipped the home front last round; a second skip costs WELLBEING, EQUITY and TRUST.');
   add(lf&&lf.SEC===0,'Spend at least 1 PC on security (HQ, SOC, RED, GRID, ALLIES or CRIME).','Two rounds without security raises ESC and cuts SEC.');
@@ -2004,9 +2004,9 @@ function roundTips(){const m=S.m,F=S.flags,T=[];const add=(c,t,w)=>{if(c&&T.leng
   return T}
 function tipsHTML(){const T=roundTips();if(!T.length)return '';return dogHTML('WHAT IS OPTIMAL NOW',`<i style="color:#9b9ac7">${dogLine('tips')}</i>`+T.map(([t,w],i)=>`<div style="margin-top:${i?8:2}px"><b style="color:#fff">${i+1}. ${t}</b><br><span style="color:#9fb8e8">↳ Why: ${w}</span></div>`).join(''))}
 function roundReview(bp,red,log,acc){const m=S.m,R=[],N=[];
-  if(bp==='coop'&&red==='esc'){R.push('You cooperated and the rival pushed back (the sucker’s payoff).');N.push(['STAY NEUTRAL next round','so they cannot farm you; reopen with COOPERATE once they calm down.'])}
+  if(bp==='coop'&&red==='esc'){R.push('You cooperated and the rival raced ahead (the sucker’s payoff).');N.push(['STAY NEUTRAL next round','so they cannot farm you; reopen with COOPERATE once they calm down.'])}
   else if(bp==='coop'&&red==='coop')R.push('Mutual restraint. This is the best joint outcome; keep it going.');
-  else if(bp==='esc'&&red==='esc'){R.push('Both sides pushed back. Both lost.');N.push(['COOPERATE or STAY NEUTRAL next','to break the spiral; the rival mirrors your last move.'])}
+  else if(bp==='esc'&&red==='esc'){R.push('Both sides competed hard. Both lost.');N.push(['COOPERATE or STAY NEUTRAL next','to break the spiral; the rival mirrors your last move.'])}
   else if(bp==='esc'&&red==='coop'){R.push('You exploited their restraint. It paid once.');N.push(['Expect retaliation',': rivals remember. STAY NEUTRAL next round.'])}
   if(log.some(l=>l.startsWith('ATTRIBUTION')))N.push(['Buy INTEL','so the next criminal hack is not mistaken for a state attack.']);
   if(log.some(l=>l.startsWith('ACCIDENT')))N.push(['Mandate testing + threat model','because accidents scale with RISK.']);
@@ -2027,12 +2027,12 @@ function fxLine(fx){return Object.entries(fx||{}).filter(([k,v])=>v&&LBL[k]).map
 const NOTE={redteam:'Biggest MODEL SEC boost. Model attacks become likely once it falls below 60.',provenance:'Stops poisoning and backdoors; also adds SEC.',agentsafe:'Cheapest MODEL SEC boost; limits damage when agents are tricked.',vulnshare:'Cheap; helps every lab patch faster.',weightsec:'Cuts outside theft odds sharply and insider risk a bit.',apiguard:'Blocks about 75% of distillation attempts.',weights:'Open-release odds drop from 55% to 20%. Trade-off: less research, startups and scrutiny.',botcert:'Biggest ROBOT SAFETY boost. Unsafe robots cause incidents once the SI clock passes 40.',botsec:'Also adds SEC: a hijacked robot is a cyberattack with arms.',botliab:'Cheapest ROBOT SAFETY boost.',botprivacy:'Protects TRUST; robots in homes see everything.',botdividend:'Stops robots from draining EQUITY once the SI clock passes 50.',feeds:'Biggest WELLBEING boost. Costs app revenue (SUBS).',phonefree:'Cheapest WELLBEING boost.',retrain:'Offsets the job losses the SI clock causes every round.',audit:'Cheapest EQUITY boost on the board.',privacy:'Protects TRUST; limits surveillance harms.',access:'Raises EQUITY and DIVIDEND together.',kids:'Cuts HARM to young users.',intel:'Reveals the rival\'s likely move; attribution errors drop from 22% to 5%.',harden:'Also shrinks every bad posture hit by 40% and cuts ransomware damage.',
  evals:'Labs\' ship-fast odds −22%. Safe shipping earns extra DIVIDEND.',liab:'Labs\' ship-fast odds −20%. Stack with testing.',
  chips:'Raises rival escalation odds; rival cuts critical minerals (CHIPS −2). Coordinate allies first.',offense:'Raises rival escalation odds. Never pair with COOPERATE.',
- coord:'Cuts escalation hits 20% and attribution errors to 14%. Makes chip controls stick.',norms:'Fails and costs trust if you PUSH BACK this round.',
+ coord:'Cuts escalation hits 20% and attribution errors to 14%. Makes chip controls stick.',norms:'Fails and costs trust if you COMPETE this round.',
  cvd:'Patches more bugs if the commons doesn\'t release this round.',crime:'Ransomware damage −2 this round.',
  bounty:'RISK −2 more if paired with testing.',insider:'Catches about 65% of insider attempts this round.',tmodel:'Ransomware damage −2 and accident odds halved this round.',
  fabs:'Eases cost pressure on SUBS and adds DIVIDEND over time.',power:'Low POWER weakens the grid; this keeps it above the danger line.',
  talent:'Talent feeds labs and defenders alike; below 35 your defenders cannot hire.',tamper:'Permanent: each open release adds 1 CRIME instead of 3 and less HARM.'};
-const INOTE={bills:{a:'Slower build-out; neighbors, water and bills protected.',b:'Most compute fastest; grid strain, water and land fights follow.'},openrel:{a:'Big DIVIDEND and EQUITY, some misuse. Irreversible.',b:'Safer in the short run; others release anyway.'},weighttheft:{a:'Raises ESC; builds a norm with allies.',b:'Avoids escalation; the theft goes unanswered.'},botarms:{a:'Keeps a human in charge of force.',b:'Wrongful-force cases tend to follow.'},botcare:{a:'Best for residents\' wellbeing.'},doomscroll:{a:'Protects kids; app revenue drops.',b:'Awareness alone rarely beats engagement-optimized design.'},summit:{a:'Rival more likely to cooperate next round.',b:'Rival more likely to push back next round.'},misattr:{a:'Rival retaliates at resolve (+4 ESC). Odds this was really them: low.',b:'Costs a little trust. Avoids a spiral if it wasn\'t them.'},
+const INOTE={bills:{a:'Slower build-out; neighbors, water and bills protected.',b:'Most compute fastest; grid strain, water and land fights follow.'},openrel:{a:'Big DIVIDEND and EQUITY, some misuse. Irreversible.',b:'Safer in the short run; others release anyway.'},weighttheft:{a:'Raises ESC; builds a norm with allies.',b:'Avoids escalation; the theft goes unanswered.'},botarms:{a:'Keeps a human in charge of force.',b:'Wrongful-force cases tend to follow.'},botcare:{a:'Best for residents\' wellbeing.'},doomscroll:{a:'Protects kids; app revenue drops.',b:'Awareness alone rarely beats engagement-optimized design.'},summit:{a:'Rival more likely to cooperate next round.',b:'Rival more likely to compete hard next round.'},misattr:{a:'Rival retaliates at resolve (+4 ESC). Odds this was really them: low.',b:'Costs a little trust. Avoids a spiral if it wasn\'t them.'},
  lobby:{b:'Labs\' ship-fast odds +15% next round.'},hosp:{a:'Attribution is murky. If it was a gang, you just provoked a state.'},leak:{a:'Takedowns rarely work once weights are on torrents.'},
  abl:{a:'Mirrors reappear fast.',b:'Accepts reality; invests in defense.'},cancer:{a:'Big DIVIDEND, but compute gets tighter.'},humanoid:{a:'Big DIVIDEND, but a new attack surface.'}};
 function anaHTML(label,body){return `<div class="ana"><span class="lb">🔎 ${label}</span>${body}</div>`}
@@ -2073,7 +2073,7 @@ function resolve(){
   // modifiers
   if(F.harden&&cell.sec<0) cell.sec=Math.round(cell.sec*.6);
   if(F.coord&&cell.esc>0) cell.esc=Math.round(cell.esc*.8);
-  if(F.norms){ if(bp!=='esc'){cell.esc-=3;log.push('Norms channel held: hospitals and nuclear C2 declared off-limits by both.')} else {log.push('Norms channel collapsed — you cannot push back and negotiate restraint in the same breath.');S.m.trust-=2}}
+  if(F.norms){ if(bp!=='esc'){cell.esc-=3;log.push('Norms channel held: hospitals and nuclear C2 declared off-limits by both.')} else {log.push('Norms channel collapsed — you cannot race ahead and negotiate restraint in the same breath.');S.m.trust-=2}}
   applyFx({sec:cell.sec,esc:cell.esc,rcap:cell.rcap||0},acc);
   const redLine=`Last round the rival chose to ${PL[red].toLowerCase()}.`;
   // ---- 2. Attribution fog ----

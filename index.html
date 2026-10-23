@@ -382,6 +382,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .opti{position:absolute;top:8px;right:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:2px solid #ffe14d;background:#0b0c22;color:#ffe14d;font-family:'Press Start 2P',monospace;font-size:13px;box-shadow:0 0 8px rgba(255,225,77,.6);z-index:4;cursor:pointer}
 .opti small{position:absolute;bottom:-14px;font-size:6px;letter-spacing:.5px;white-space:nowrap}
 @media (prefers-reduced-motion:reduce){.post button::after,.optcard::after,#g-loc .card::after,.rcard::after,.ocard::after{display:none}.tapshake{animation:none!important}}
+.hero svg.team{width:205%;height:100%;flex:none;overflow:visible}
 </style>
 </head>
 <body>
@@ -580,7 +581,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 <!-- MISSION BRIEFING -->
 <section class="screen" id="s-mission">
   <div class="scroll">
-    <div class="dialog"><span class="who">THREAT ANALYST</span><span class="pt" id="misPt"></span>Welcome to the cell. It's January 2027. Superintelligence will arrive by the end of this decade whether we act or not. We don't get to stop it. We get to decide what it does to us. I'll brief you on threats every round and score every option before you choose.</div>
+    <div class="dialog"><span class="who">RISK ANALYST</span><span class="pt" id="misPt"></span>Welcome to the cell. It's January 2027. Superintelligence will arrive by the end of this decade whether we act or not. We don't get to stop it. We get to decide what it does to us. I'll brief you on threats every round and score every option before you choose.</div>
     <div class="dog" style="margin-top:14px"><div class="dogpt" id="misDog"></div><div class="dogbub"><span class="doglb">🐾 BYTE · ADVISOR DOG</span>Woof. I'm Byte. I've read every threat report in the building, mostly while lying on them. Each round I'll tell you what's optimal and why. Follow me and you'll do fine. Ignore me and, well, I'll still love you.</div></div>
     <div class="box" style="margin-top:14px">
       <h2>TIMELINE</h2>
@@ -1287,7 +1288,39 @@ function renderMap(){
   map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);
   updateHint();
 }
-function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=heroSVG();h.style.left=(hero.x*12.5)+'%';h.style.top=(hero.y*12.5)+'%';updateHint()}
+
+/* map party: scientist leads, two advisors */
+function teamSVG(attrs=''){const OL='#10121f',st=step%2;
+  const leg=(x,c,up)=>`<g transform="${up?'translate(0,-1.5)':''}"><rect x="${x}" y="60" width="5.5" height="13" rx="2.5" fill="${c}"/><ellipse cx="${x+2.5}" cy="74" rx="4.5" ry="2.2" fill="#141420"/></g>`;
+  let o=`<ellipse cx="60" cy="77" rx="52" ry="3" fill="rgba(0,0,0,.3)"/><g stroke="${OL}" stroke-width="1.5" stroke-linejoin="round">`;
+  /* LEFT: slim Asian advisor with laptop */
+  o+=leg(19,'#2a2f3f',st)+leg(27,'#2a2f3f',!st);
+  o+=`<rect x="18" y="36" width="15" height="26" rx="5" fill="#6c7a89"/><path d="M22 36 L25.5 42 L29 36 Z" fill="#e9edf5"/>`;
+  o+=`<rect x="23" y="29" width="5" height="6" fill="#f0c9a0"/><circle cx="25.5" cy="21" r="10" fill="#f0c9a0"/>`;
+  o+=`<path d="M15.5 21 Q15 10 25.5 10 Q36 10 35.5 20 Q33 14 28 14.5 Q24 17 18 16.5 Q16 18 15.5 21 Z" fill="#14110f"/>`;
+  o+=`<rect x="13" y="33" width="24" height="12" rx="1.5" fill="#c9ced8"/><circle cx="25" cy="39" r="1.8" fill="#8fd3ff" stroke="none"/><rect x="11" y="44.5" width="28" height="3" rx="1" fill="#9aa3b5"/>`;
+  o+=`<circle cx="12.5" cy="45" r="2.6" fill="#f0c9a0"/><circle cx="37.5" cy="45" r="2.6" fill="#f0c9a0"/>`;
+  /* RIGHT: Indian math advisor in a turban */
+  o+=leg(90,'#22283a',!st)+leg(99,'#22283a',st);
+  o+=`<rect x="86" y="36" width="22" height="26" rx="7" fill="#2f4a7a"/><path d="M93 36 L97 43 L101 36 Z" fill="#f4f1e6"/>`;
+  o+=`<rect x="94" y="29" width="6" height="6" fill="#a86b3c"/><circle cx="97" cy="21" r="10" fill="#a86b3c"/>`;
+  o+=`<path d="M88 26 Q88.5 35 97 36 Q105.5 35 106 26 Q102 31 97 30.5 Q92 31 88 26 Z" fill="#1d1410"/>`;
+  o+=`<path d="M86 20 Q85 7 97 5 Q109 7 108 20 Q103 15 97 16.5 Q91 15 86 20 Z" fill="#e07a2e"/><path d="M88.5 15 Q97 8.5 105.5 14.5 M90 18 Q97 12 104 17.5" fill="none" stroke="#a8501a" stroke-width="1.2"/><path d="M94.5 6 L97 2.5 L99.5 6 Z" fill="#e07a2e"/>`;
+  o+=`<rect x="100" y="41" width="13" height="16" rx="1.5" fill="#7a3d9a"/><circle cx="101" cy="52" r="2.6" fill="#a86b3c"/><rect x="83" y="38" width="6" height="16" rx="3" fill="#2f4a7a"/><circle cx="86" cy="55" r="2.6" fill="#a86b3c"/>`;
+  /* CENTER: lead scientist with clipboard */
+  o+=leg(53,'#3a3f55',st)+leg(62,'#3a3f55',!st);
+  o+=`<path d="M47 37 Q47 32 53 32 L67 32 Q73 32 73 37 L75 63 L45 63 Z" fill="#f4f6fb"/><path d="M55.5 32 L60 41 L64.5 32 Z" fill="#2fb7a6"/><path d="M57 41 L56 63 M63 41 L64 63" fill="none" stroke="#c9ced8" stroke-width="1.1"/><rect x="65" y="45" width="4" height="1.6" fill="#d33a3a" stroke="none"/>`;
+  o+=`<rect x="41" y="36" width="6.5" height="18" rx="3" fill="#f4f6fb"/><circle cx="44" cy="55" r="2.8" fill="#e8b98a"/>`;
+  o+=`<rect x="63" y="40" width="15" height="19" rx="1.5" fill="#b07a3a"/><rect x="65" y="43.5" width="11" height="13.5" fill="#fff"/><rect x="67" y="38.5" width="7" height="3.5" rx="1" fill="#9aa3b5"/><path d="M67 47 H74 M67 50 H74 M67 53 H72" stroke="#5ab0ff" stroke-width="1"/>`;
+  o+=`<rect x="71" y="35" width="6.5" height="14" rx="3" fill="#f4f6fb"/><circle cx="72" cy="50" r="2.8" fill="#e8b98a"/>`;
+  o+=`<rect x="56.5" y="27" width="7" height="6" fill="#e8b98a"/><circle cx="60" cy="18" r="11.5" fill="#e8b98a"/>`;
+  o+=`<circle cx="60" cy="4.5" r="5" fill="#3b2416"/><path d="M48.5 19 Q48 6 60 6 Q72 6 71.5 19 Q68 11 61 11.5 Q54 12 48.5 19 Z" fill="#3b2416"/>`;
+  o+=`</g><g stroke="#111" stroke-width="2.2" fill="rgba(170,220,255,.25)"><rect x="51" y="15" width="8" height="7" rx="2"/><rect x="61.5" y="15" width="8" height="7" rx="2"/></g><path d="M59 17.5 H61.5" stroke="#111" stroke-width="2"/>`;
+  o+=`<g fill="${OL}"><circle cx="55" cy="18.5" r="1.4"/><circle cx="65.5" cy="18.5" r="1.4"/><circle cx="22" cy="21.5" r="1.3"/><circle cx="29" cy="21.5" r="1.3"/><circle cx="93.5" cy="21" r="1.3"/><circle cx="100.5" cy="21" r="1.3"/></g>`;
+  o+=`<g fill="none" stroke="${OL}" stroke-width="1.2" stroke-linecap="round"><path d="M56.5 25 Q60 27.5 63.5 25"/><path d="M23 26 Q25.5 27.5 28 26"/><path d="M94 27 Q97 28.5 100 27" stroke="#d9a07a"/></g>`;
+  o+=`<text x="106.5" y="53" text-anchor="middle" font-family="serif" font-weight="700" font-size="9" fill="#fff">π</text>`;
+  return `<svg ${attrs} class="team" viewBox="0 0 120 80" aria-label="Your team: lead scientist with clipboard, advisor with laptop, math advisor">${o}</svg>`}
+function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=teamSVG();h.style.left=(hero.x*12.5)+'%';h.style.top=(hero.y*12.5)+'%';updateHint()}
 /* ===================== ANALYST PLAN ===================== */
 const SHORTN0=1;const SHORTN={redteam:'Red-teaming',provenance:'Provenance',agentsafe:'Agent safeguards',vulnshare:'Flaw reporting',weightsec:'Secure weights',apiguard:'Anti-distillation',botcert:'Robot certification',botsec:'Robot security',botliab:'Robot liability',botprivacy:'Robot privacy',botdividend:'Automation dividend',feeds:'Feed rules',phonefree:'Phone-free schools',retrain:'Retraining',audit:'Fairness audits',privacy:'Privacy law',access:'Public access',kids:'Youth safety',intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure',chips:'Chip controls',offense:'Cyber ops',weights:'Limit weights',bounty:'SI bounty'};
 const PLATE={redteam:'REDTEAM',provenance:'PROVEN',agentsafe:'AGENTS',vulnshare:'FLAWS',weightsec:'WEIGHTS',apiguard:'APIGUARD',botcert:'CERTIFY',botsec:'ANTIHACK',botliab:'LIABLE',botprivacy:'PRIVACY',botdividend:'DIVIDEND',feeds:'FEEDS',phonefree:'NOPHONE',retrain:'RETRAIN',audit:'AUDITS',privacy:'PRIVACY',access:'ACCESS',kids:'YOUTH',intel:'INTEL',harden:'HARDEN',tamper:'GUARDS',crime:'GANGS',evals:'TESTS',tmodel:'TMODEL',insider:'INSIDER',fabs:'FABS',power:'POWER',talent:'TALENT',coord:'ALLIES',norms:'NORMS',liab:'LIABLE',cvd:'BUGS',chips:'CHIPS',offense:'CYBEROP',weights:'WEIGHTS',bounty:'BOUNTY'};
@@ -1348,7 +1381,7 @@ let guideSeen=false;
 function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div class="box"><h2>MAP GUIDE</h2>
   <p style="margin-top:6px">This map is your government. Each building is a place to act. Every round, 6 months pass:</p>
   <ol class="strat"><li><b>Tap HQ</b> (the building marked START) and choose your <b>posture</b> toward the rival: Cooperate, Hedge or Escalate.</li>
-  <li><b>Tap other buildings</b> to spend <b>Political Capital (PC)</b> on actions. Each card shows the threat analyst's read on what it does.</li>
+  <li><b>Tap other buildings</b> to spend <b>Political Capital (PC)</b> on actions. Each card shows the risk analyst's read on what it does.</li>
   <li>Press the red <b>END TURN</b> button. Everyone moves at once and you see the results.</li></ol></div>
   <div class="box"><h2>BUILDINGS</h2><p class="small">Buildings belong to three fronts. Every PC spent on one front is PC not spent on another.</p>${LOCS.map(L=>`<div class="bk"><div class="sw">${sprite(L.id)}</div><div><b>${L.short} · ${L.name} · ${FRONTN[FRONT[L.id]]}</b>${L.purpose}</div></div>`).join('')}</div>
   <div class="box"><h2>MAP SIGNS</h2>
@@ -1390,7 +1423,7 @@ function openLoc(L){
     body.appendChild(box);
     const p=box.querySelector('#post');
     const recP=recommendPlan().posture;P.forEach(k=>{const b=document.createElement('button');b.innerHTML=PL[k]+(k===recP?'<br><span style="font-size:6px;color:#c8893a">BYTE\'S PICK</span>':'');b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();toast('POSTURE SET · NOW SPEND PC');openLoc(L)};p.appendChild(b)});
-    {const last=S.redHist[S.redHist.length-1];const R=RIVALS[S.rival];box.querySelector('#intelHint').innerHTML=anaHTML('THREAT ANALYST',last?`Rival (${R.name}) last chose <b>${PL[last]}</b>. They remember ${R.memory} round${R.memory>1?'s':''} of your moves. ${last==='esc'?'Answering with HEDGE or ESCALATE avoids being farmed; COOPERATE risks the sucker\'s payoff.':last==='coop'?'COOPERATE locks in mutual restraint; ESCALATE exploits them once, and they\'ll remember.':'They\'re probing. Matching with HEDGE is safe; COOPERATE can invite reciprocity.'}`:`Opening move. A ${R.name} starts ${R.coop>.4?'inclined to cooperate':R.esc>.5?'inclined to escalate':'opportunistic'}. Buy INTEL (1 PC) to see their likely move.`)}
+    {const last=S.redHist[S.redHist.length-1];const R=RIVALS[S.rival];box.querySelector('#intelHint').innerHTML=anaHTML('RISK ANALYST',last?`Rival (${R.name}) last chose <b>${PL[last]}</b>. They remember ${R.memory} round${R.memory>1?'s':''} of your moves. ${last==='esc'?'Answering with HEDGE or ESCALATE avoids being farmed; COOPERATE risks the sucker\'s payoff.':last==='coop'?'COOPERATE locks in mutual restraint; ESCALATE exploits them once, and they\'ll remember.':'They\'re probing. Matching with HEDGE is safe; COOPERATE can invite reciprocity.'}`:`Opening move. A ${R.name} starts ${R.coop>.4?'inclined to cooperate':R.esc>.5?'inclined to escalate':'opportunistic'}. Buy INTEL (1 PC) to see their likely move.`)}
     {const ev=postureEV(),rp=recommendPlan().posture;box.querySelector('#intelHint').innerHTML+=dogHTML('THE MATH',`<i style="color:#9b9ac7">${dogLine('math')}</i><br>`+`Rival odds: cooperate ${Math.round(ev.pr.coop*100)}% · hedge ${Math.round(ev.pr.hedge*100)}% · escalate ${Math.round(ev.pr.esc*100)}%`+P.map(k=>`<br>${k===ev.best?'★':'·'} <b style="color:${k===ev.best?'#4bd37b':'#fff'}">${PL[k]}</b>: SEC ${ev.sc[k].sec>=0?'+':''}${ev.sc[k].sec.toFixed(1)}, ESC ${ev.sc[k].esc>=0?'+':''}${ev.sc[k].esc.toFixed(1)}`).join('')+`<br>↳ Why: ${ev.best===rp?`Short-term math and long-term reciprocity agree: ${PL[rp]}.`:`Short-term math favors ${PL[ev.best]}, but the analyst picks ${PL[rp]} because the rival remembers your move next round. Repeated games reward reciprocity over one-round gains.`}`)}
     if(S.flags.intel){box.querySelector('#intelHint').innerHTML+=`<div class="ana"><b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}</div>`}
     body.appendChild(matrixEl(null,null));
@@ -1400,7 +1433,7 @@ function openLoc(L){
     const picked=S.picks.includes(a.id);
     const c=document.createElement('div');c.className='card'+(picked?' sel':'');
     const rec=recommendPlan().picks.find(([id])=>id===a.id);
-    c.innerHTML=`${rec?'<div class="pick">🐾 BYTE\'S PICK</div>':''}<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('THREAT ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}${(s=>`<div class="cardbyte"><span class="doglb">🐾 BYTE</span>${s}</div>`)((ACT_HINT[a.id]?`<span style="color:#4bd37b">✓ Best when:</span> ${ACT_HINT[a.id][0]}<br><span style="color:#ff8f8f">✗ Skip when:</span> ${ACT_HINT[a.id][1]}<br>`:'')+`<b style="color:${rec?'#4bd37b':'#9b9ac7'}">Right now:</b> ${rec?'I would buy it. '+rec[1]:'Lower priority than my picks this round.'}`)}`;
+    c.innerHTML=`${rec?'<div class="pick">🐾 BYTE\'S PICK</div>':''}<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('RISK ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}${(s=>`<div class="cardbyte"><span class="doglb">🐾 BYTE</span>${s}</div>`)((ACT_HINT[a.id]?`<span style="color:#4bd37b">✓ Best when:</span> ${ACT_HINT[a.id][0]}<br><span style="color:#ff8f8f">✗ Skip when:</span> ${ACT_HINT[a.id][1]}<br>`:'')+`<b style="color:${rec?'#4bd37b':'#9b9ac7'}">Right now:</b> ${rec?'I would buy it. '+rec[1]:'Lower priority than my picks this round.'}`)}`;
     c.onclick=()=>toggleAction(a,L);body.appendChild(c);
   });
 }
@@ -1652,7 +1685,7 @@ function roundReview(bp,red,log,acc){const m=S.m,R=[],N=[];
   const left=S.maxRounds-S.round;
   return beatHTML(dogSVG('width="100%" height="100%"'),'BYTE','ROUND REVIEW · WHAT\u2019S NEXT',`<div class="beattxt" style="font-size:19px;margin:0">${R.join(' ')}${R.length?'<br>':''}<b style="color:#fff">Next round:</b>${N.slice(0,3).map(([a,b])=>`<br>• <b style="color:#4bd37b">${a}</b> ${b}`).join('')}<br><b style="color:#fff">On pace?</b> DIVIDEND ${m.good}/60 ${m.good>=60?'✓':'✗'} · HARM ${m.harm}/40 ${m.harm<40?'✓':'✗'} · EQUITY ${m.equity}/45 ${m.equity>=45?'✓':'✗'} · ${left} round${left===1?'':'s'} left</div>`)}
 
-/* ===================== THREAT ANALYST ===================== */
+/* ===================== RISK ANALYST ===================== */
 const LBL={sec:'SEC',econ:'ECON',trust:'TRUST',ally:'ALLY',esc:'ESC',risk:'RISK',rcap:'RIVAL',ccap:'CRIME',chips:'CHIPS',power:'POWER',talent:'TALENT',subs:'SUBS',good:'DIVIDEND',harm:'HARM',equity:'EQUITY',wellbeing:'WELLBEING',botsafe:'ROBOT SAFETY',modelsec:'MODEL SEC'};
 const BAD=['esc','risk','rcap','ccap','harm'];
 function fxLine(fx){return Object.entries(fx||{}).filter(([k,v])=>v&&LBL[k]).map(([k,v])=>{const good=BAD.includes(k)?v<0:v>0;return `<span class="${good?'up':'dn'}">${good?'✓':'✗'} ${LBL[k]} ${v>0?'+':''}${v}</span>`}).join(' · ')||'No direct meter change'}
@@ -1872,7 +1905,7 @@ function finaleStory(){clearInterval(finTimer);const E=ending();const f=document
     <div class="fbtn"><button onclick="finaleCredits()">CREDITS ▶</button><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`;
   const c=document.getElementById('crawl');let i=0;const next=()=>{if(i>=lines.length)return;const [k,t]=lines[i++];const p=document.createElement('p');p.innerHTML=icon(k);const sp=document.createElement('span');p.appendChild(sp);c.appendChild(p);typeInto(sp,t,()=>setTimeout(next,250))};next()}
 function finaleCredits(){const f=document.getElementById('finale');SFX.fanfare();
-  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['DR. VERA SATO','CHIEF SCIENTIST'],['THE BRIEFER','SITUATION ROOM'],['THREAT ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CHIEF MARCUS BRANDT','GRID DEFENSE'],['TESS RIVERA','THREAT HUNTER'],['MINH TRAN','PRINCIPAL ENGINEER'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
+  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['DR. VERA SATO','CHIEF SCIENTIST'],['THE BRIEFER','SITUATION ROOM'],['RISK ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CHIEF MARCUS BRANDT','GRID DEFENSE'],['TESS RIVERA','THREAT HUNTER'],['MINH TRAN','PRINCIPAL ENGINEER'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
   f.style.justifyContent='center';
   f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(24):''}<div class="credits"><div style="font-size:14px;color:#f7c948">SIGNAL / NOISE</div><div>A SUPERINTELLIGENCE WARGAME</div><b>STARRING</b>${cast.map(([a,b])=>`${a}<br><span style="color:#9b9ac7">${b}</span>`).join('<br>')}<b>FINAL SCORE</b>${scoreGame()} / 100<b>SI CLOCK</b>${S.si}%<b>THANK YOU FOR PLAYING</b><br><br></div>
     <div class="fbtn"><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`}

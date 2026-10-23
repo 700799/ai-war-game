@@ -1,6 +1,8 @@
-# SIGNAL / NOISE — Superintelligence Wargame
+# ROAD TO SINGULARITY — Superintelligence Wargame
 
-**Find the signal. Survive the noise.**
+**Reach the future. Don’t break the world.**
+
+The *singularity* is the moment machines become smarter than people and change everything. This game asks: can you get there by 2030 without the world falling apart?
 
 A think-tank-style, game-theoretic superintelligence wargame in a pixel/Nintendo UI. Play 4, 6 or 8 rounds against a fictional rival state, while profit-driven labs, the open-source commons, criminal syndicates and lawmakers play their own games.
 
@@ -33,7 +35,7 @@ Fictional scenario. Actors are archetypes, not real organizations.
 
 ## Disclaimer
 
-SIGNAL / NOISE is a fictional, educational simulation about policy trade-offs around superintelligence, cybersecurity and society. It is not a prediction of real events.
+ROAD TO SINGULARITY is a fictional, educational simulation about policy trade-offs around superintelligence, cybersecurity and society. It is not a prediction of real events.
 
 - **No real countries.** The rival is an invented state and does not represent any real nation, government or people.
 - **No real people or organizations.** All characters, agencies, labs and groups are fictional archetypes. The game is not affiliated with or endorsed by any government, think tank, university or company.

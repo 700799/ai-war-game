@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SIGNAL / NOISE — Find the signal. Survive the noise.</title>
+<title>ROAD TO SINGULARITY — Reach the future. Don’t break the world.</title>
 <meta name="description" content="A think-tank style, game-theoretic superintelligence wargame. Chair a fictional national security cell through rounds of crisis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
@@ -515,6 +515,11 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
 .pgap span{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:11px;letter-spacing:.8px;color:#5ab0ff}
 .pgap b.up{color:#7fe0a0}.pgap b.dn{color:#ff9f9f}.pgap i{font-style:normal;font-size:15px;color:#ffd23f}
 .conbtn{display:block;width:100%;margin:0 0 10px;padding:10px;background:#1b2a5a;color:#cfe3ff;border:2px solid #5ab0ff;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:12px;letter-spacing:.6px;box-shadow:3px 3px 0 #000}
+.gname{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:22px;letter-spacing:1px}
+.gname span{font-size:12px;color:#9fb8e8;letter-spacing:4px;text-shadow:2px 2px 0 #000}
+.slogan span:first-child{color:#39ff14}.slogan span:last-child{color:#ff5c5c}
+.sdef{color:#ffd23f}
+.premise2{font-size:17px;color:#9fb8e8;margin-top:-4px;text-align:center}
 </style>
 </head>
 <body>
@@ -525,9 +530,9 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
   <div class="title">
     <div id="scene" class="scene"></div>
     <div class="kicker">A THINK-TANK WARGAME</div>
-    <h1>SIGNAL / NOISE</h1>
-    <div class="slogan"><span>FIND THE SIGNAL.</span><span>SURVIVE THE NOISE.</span></div>
-    <p class="premise">Superintelligence arrives by 2030.<br>You run national security.</p>
+    <h1 class="gname"><span>ROAD TO</span>SINGULARITY</h1>
+    <div class="slogan"><span>REACH THE FUTURE.</span><span>DON’T BREAK THE WORLD.</span></div>
+    <p class="premise"><b class="sdef">Singularity</b> = when machines outthink people and change everything. It could arrive by 2030.</p><p class="premise2">You run national security. Get there in one piece.</p>
     <div class="chips"><span>GAME THEORY</span><span>CYBER DEFENSE</span><span>2027–2030</span></div>
     <button class="a startbtn" onclick="go('s-setup')">▶ PRESS START</button>
     <button class="howbtn" onclick="go('s-how')">📖 HOW TO PLAY</button>
@@ -565,7 +570,7 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
 <section class="screen" id="s-disc">
   <div class="scroll"><div class="box">
       <h2>DISCLAIMER</h2>
-      <p style="margin-top:8px"><b>SIGNAL / NOISE is a fictional, educational simulation.</b> It is meant to help people think through policy trade-offs around superintelligence, cybersecurity and society. It is not a prediction of real events.</p>
+      <p style="margin-top:8px"><b>ROAD TO SINGULARITY is a fictional, educational simulation.</b> It is meant to help people think through policy trade-offs around superintelligence, cybersecurity and society. It is not a prediction of real events.</p>
       <ul class="threats" style="margin-top:8px">
         <li><span>•</span><b>No real countries.</b> The rival is an invented state. It does not represent any real nation, government or people, and no country is portrayed as an enemy.</li>
         <li><span>•</span><b>No real people or organizations.</b> All characters, agencies, labs, companies and groups are fictional archetypes. Any resemblance is coincidental. The game is not affiliated with or endorsed by any government, think tank, university or company.</li>
@@ -685,7 +690,7 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
     </div>
     <div class="box">
       <h2>DISCLAIMER</h2>
-      <p style="margin-top:8px"><b>SIGNAL / NOISE is a fictional, educational simulation.</b> It is meant to help people think through policy trade-offs around superintelligence, cybersecurity and society. It is not a prediction of real events.</p>
+      <p style="margin-top:8px"><b>ROAD TO SINGULARITY is a fictional, educational simulation.</b> It is meant to help people think through policy trade-offs around superintelligence, cybersecurity and society. It is not a prediction of real events.</p>
       <ul class="threats" style="margin-top:8px">
         <li><span>•</span><b>No real countries.</b> The rival is an invented state. It does not represent any real nation, government or people, and no country is portrayed as an enemy.</li>
         <li><span>•</span><b>No real people or organizations.</b> All characters, agencies, labs, companies and groups are fictional archetypes. Any resemblance is coincidental. The game is not affiliated with or endorsed by any government, think tank, university or company.</li>
@@ -1521,7 +1526,7 @@ function openLearn(key){let h='',title='',sub='';
   else if(kind==='loc'){const L=LEARN_LOC[id],LO=LOCS.find(x=>x.id===id);title=L[0];sub=(LO.who||'')+' · '+LO.name;
     h=learnSec('WHAT IT IS',L[1])+learnSec('WHY IT MATTERS',L[2],'#ff8f8f')+learnSec('THE TRADEOFF',L[3],'#ffd23f')+learnSec('THE LESSON',L[4],'#4bd37b')+learnSec('WHAT YOU CAN DO HERE',ACTIONS.filter(a=>a.loc===id).map(a=>`<b>${a.name}</b> (${a.cost} PC): ${a.desc}`).join('<br><br>')||'Set your posture.');}
   else if(kind==='sci'){title='Science update: SI clock '+id+'%';sub='WHAT THIS STAGE MEANS';
-    h=learnSec('THE BIG PICTURE',LEARN_SCI[id]||'')+learnSec('WHAT IS THE SI CLOCK?','It tracks how close the world is to superintelligence: AI that outperforms people at most tasks. It rises every round whether you act or not, because many labs and countries are racing.','#9fb8e8')+learnSec('WHY IT MATTERS','Higher capability multiplies both sides of the ledger: bigger science DIVIDEND and bigger potential HARM. Your policies decide which one wins.','#ffd23f');}
+    h=learnSec('THE BIG PICTURE',LEARN_SCI[id]||'')+learnSec('WHAT IS THE SI CLOCK?','It tracks how close the world is to superintelligence: AI that outperforms people at most tasks. At 100%, the world reaches the singularity: the point where machines out-think people and change everything faster than anyone can predict. It rises every round whether you act or not, because many labs and countries are racing.','#9fb8e8')+learnSec('WHY IT MATTERS','Higher capability multiplies both sides of the ledger: bigger science DIVIDEND and bigger potential HARM. Your policies decide which one wins.','#ffd23f');}
   else if(kind==='con'&&id){title='Ideas at work this round';sub='STRATEGY & ECONOMICS';h=id.split(',').filter(k=>CONCEPTS[k]).map(k=>{const C=CONCEPTS[k];return `<div class="liss"><b>📘 ${C[0]}</b><p>${C[1]}</p><p style="color:#7fe0a0">Strategy: ${C[2]}</p></div>`}).join('')||'<p>No special dynamics this round.</p>'}
   else if(kind==='out'&&id){title='What these changes mean';sub='THIS ROUND’S METERS';h=id.split(',').filter(k=>LBL[k]).map(meterSec).join('')+learnSec('HOW METERS CONNECT',LEARN_GEN.out[2]+' '+LEARN_GEN.out[3],'#ffd23f')}
   else {const G=LEARN_GEN[kind]||LEARN_GEN.out;title=G[0];sub='HOW THIS WORKS';
@@ -2462,7 +2467,7 @@ function finaleStory(){clearInterval(finTimer);const E=ending();const f=document
 function finaleCredits(){const f=document.getElementById('finale');SFX.fanfare();
   const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['DR. VERA SATO','CHIEF SCIENTIST'],...BRIEFERS.map(b=>[b.n,'BRIEFER · '+b.t]),['RISK ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CHIEF MARCUS BRANDT','GRID DEFENSE'],['TESS RIVERA','THREAT HUNTER'],['MINH TRAN','PRINCIPAL ENGINEER'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
   f.style.justifyContent='center';
-  f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(24):''}<div class="credits"><div style="font-size:14px;color:#f7c948">SIGNAL / NOISE</div><div>A SUPERINTELLIGENCE WARGAME</div><b>STARRING</b>${cast.map(([a,b])=>`${a}<br><span style="color:#9b9ac7">${b}</span>`).join('<br>')}<b>FINAL SCORE</b>${scoreGame()} / 100<b>SI CLOCK</b>${S.si}%<b>THANK YOU FOR PLAYING</b><br><br></div>
+  f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(24):''}<div class="credits"><div style="font-size:14px;color:#f7c948">ROAD TO SINGULARITY</div><div>A SUPERINTELLIGENCE WARGAME</div><b>STARRING</b>${cast.map(([a,b])=>`${a}<br><span style="color:#9b9ac7">${b}</span>`).join('<br>')}<b>FINAL SCORE</b>${scoreGame()} / 100<b>SI CLOCK</b>${S.si}%<b>THANK YOU FOR PLAYING</b><br><br></div>
     <div class="fbtn"><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`}
 function f2debrief(){clearInterval(finTimer);endGame(true)}
 function ending(){const m=S.m;const G=m.good>=60,Hh=m.harm>=40||!!S.dead,E=m.equity>=45;

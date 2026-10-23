@@ -336,6 +336,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .pdet>summary::-webkit-details-marker{display:none}
 .pdet>summary .pdc::after{content:'SHOW ▼';color:#ffe14d;font-size:11px;white-space:nowrap}
 .pdet[open]>summary .pdc::after{content:'HIDE ▲'}
+
+/* NEON pickable frames */
+@property --na{syntax:'<angle>';inherits:false;initial-value:0deg}
+.post button,.optcard,#g-loc .card,.rcard,.ocard{position:relative;border-color:#39ff8a!important;animation:neonPulse 1.6s ease-in-out infinite}
+.post button::before,.optcard::before,#g-loc .card::before,.rcard::before,.ocard::before{content:'';position:absolute;inset:-3px;padding:3px;pointer-events:none;z-index:2;
+  background:conic-gradient(from var(--na),transparent 0 62%,rgba(57,255,138,.5) 72%,#eaffef 80%,#39ff8a 84%,transparent 92%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;
+  animation:neonTrace 2.2s linear infinite}
+@keyframes neonTrace{to{--na:360deg}}
+@keyframes neonPulse{0%,100%{box-shadow:4px 4px 0 #000,0 0 4px #39ff8a,0 0 10px rgba(57,255,138,.35)}50%{box-shadow:4px 4px 0 #000,0 0 9px #39ff8a,0 0 20px rgba(57,255,138,.6)}}
+.post button.sel,.optcard.chosen,#g-loc .card.sel,.rcard.sel,.ocard.sel{border-color:var(--gold)!important;animation:neonGold 1.6s ease-in-out infinite}
+.post button.sel::before,#g-loc .card.sel::before,.rcard.sel::before,.ocard.sel::before{background:conic-gradient(from var(--na),transparent 0 62%,rgba(255,210,63,.5) 72%,#fff8d0 80%,#ffd23f 84%,transparent 92%)}
+@keyframes neonGold{0%,100%{box-shadow:4px 4px 0 #000,0 0 5px #ffd23f,0 0 12px rgba(255,210,63,.4)}50%{box-shadow:4px 4px 0 #000,0 0 10px #ffd23f,0 0 22px rgba(255,210,63,.65)}}
+@media (prefers-reduced-motion:reduce){.post button,.optcard,#g-loc .card,.rcard,.ocard{animation:none}.post button::before,.optcard::before,#g-loc .card::before,.rcard::before,.ocard::before{animation:none}}
 </style>
 </head>
 <body>

@@ -1153,7 +1153,36 @@ const SPR={
  tuft:{pal:{l:'#5fb86a'},rows:["","","...l.l","....l.l","","","","","","","..........l.l","...........l.l"]},
  road:{pal:{s:'#9c8248',d:'#c9b071'},rows:["","","..s.......d.....","","......d.......s.","","","...d.....s......","","","s.......d.......","","....s........d..","","",""]},
 };
-const sprite=k=>spr(SPR[k].rows,SPR[k].pal,16,16);
+
+const OLI='#10121f';
+const ICON_OVR={
+ soc:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  <rect x="30" y="80" width="40" height="8" rx="3" fill="#8a93b0" stroke-width="3.5"/><rect x="44" y="70" width="12" height="12" fill="#6c7591" stroke-width="3.5"/>
+  <rect x="8" y="10" width="84" height="62" rx="7" fill="#3a4466" stroke-width="4"/>
+  <rect x="15" y="17" width="70" height="48" rx="3" fill="#06281a" stroke-width="3"/>
+  <circle cx="50" cy="41" r="20" fill="none" stroke="#39ff8a" stroke-width="2.5"/><circle cx="50" cy="41" r="10" fill="none" stroke="#39ff8a" stroke-width="2" opacity=".7"/>
+  <path d="M30 41 H70 M50 21 V61" stroke="#39ff8a" stroke-width="1.5" opacity=".6"/>
+  <path d="M50 41 L50 21 A20 20 0 0 1 68 33 Z" fill="rgba(57,255,138,.5)" stroke="none"/>
+  <circle cx="61" cy="33" r="4" fill="#ff4d4d" stroke-width="1.5"/><circle cx="38" cy="50" r="2.6" fill="#ffd23f" stroke="none"/>
+  <circle cx="84" cy="66" r="0" /></g></svg>`,
+ cisa:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  <path d="M50 6 L86 19 L82 55 Q76 80 50 94 Q24 80 18 55 L14 19 Z" fill="#1e5fd1" stroke-width="4.5"/>
+  <path d="M50 15 L77 25 L74 54 Q69 73 50 84 Q31 73 26 54 L23 25 Z" fill="#3d84ff" stroke="none"/>
+  <path d="M57 18 L31 55 H48 L41 84 L71 42 H54 L62 18 Z" fill="#ffd23f" stroke-width="3.5"/>
+  <path d="M56 24 L40 48" stroke="#fff6c8" stroke-width="2.5" stroke-linecap="round"/></g></svg>`,
+ ally:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  <path d="M30 34 V6 M50 30 V2 M70 34 V6" stroke="#e8e4d8" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M30 7 L48 12 L30 18 Z" fill="#ff5c5c" stroke-width="2.5"/><path d="M50 3 L68 8 L50 14 Z" fill="#4bd37b" stroke-width="2.5"/><path d="M70 7 L88 12 L70 18 Z" fill="#ffd23f" stroke-width="2.5"/>
+  <circle cx="50" cy="62" r="32" fill="#2a7de1" stroke-width="4.5"/>
+  <path d="M28 52 Q36 44 44 50 Q48 58 40 62 Q32 66 28 60 Z M54 46 Q66 42 72 52 Q70 60 62 58 Q56 56 54 46 Z M46 72 Q56 68 62 76 Q58 86 50 86 Q44 80 46 72 Z" fill="#4bd37b" stroke-width="2.5"/>
+  <ellipse cx="50" cy="62" rx="14" ry="32" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"/><path d="M18 62 H82" stroke="rgba(255,255,255,.55)" stroke-width="2"/></g></svg>`,
+ fab:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  ${[0,1,2,3,4].map(i=>`<rect x="${23+i*12}" y="5" width="6" height="15" fill="#c9ced8" stroke-width="2.5"/><rect x="${23+i*12}" y="80" width="6" height="15" fill="#c9ced8" stroke-width="2.5"/><rect x="5" y="${23+i*12}" width="15" height="6" fill="#c9ced8" stroke-width="2.5"/><rect x="80" y="${23+i*12}" width="15" height="6" fill="#c9ced8" stroke-width="2.5"/>`).join('')}
+  <rect x="17" y="17" width="66" height="66" rx="7" fill="#2b2f45" stroke-width="4.5"/>
+  <rect x="29" y="29" width="42" height="42" rx="4" fill="#f2c14e" stroke-width="3.5"/>
+  <path d="M29 40 H22 M29 60 H22 M71 40 H78 M71 60 H78" stroke="#f2c14e" stroke-width="2.5"/>
+  <path d="M54 33 L40 52 H49 L45 67 L60 47 H51 L56 33 Z" fill="${OLI}" stroke="none"/></g></svg>`};
+const sprite=k=>ICON_OVR[k]||spr(SPR[k].rows,SPR[k].pal,16,16);
 
 /* hero: original pixel character (HQ analyst) */
 const HERO_PAL={h:'#4a2b17',s:'#f1c27d',e:'#1b1b2f',n:'#23305e',w:'#f4f1e6',r:'#d33a3a',b:'#141420',g:'#9aa3b5',k:'#3a3a3a',m:'#b5651d'};

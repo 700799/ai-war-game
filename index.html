@@ -530,6 +530,8 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
 .t.loc.sr .lbl,.t.loc.sr .lbl.done{left:calc(100% - 4px)!important;right:auto!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)!important}
 .t.loc.sl svg,.t.loc.sr svg{inset:8%!important;width:84%!important;height:84%!important}
 .t.loc.sl .tip{right:auto;left:-4px}
+.map{margin-left:0!important;margin-right:0!important;width:100%!important}
+.mapwrap{padding-left:6px!important;padding-right:6px!important}
 </style>
 </head>
 <body>
@@ -862,16 +864,16 @@ const DIFFS = {easy:{pc:9,noise:.1,label:'TABLETOP'},normal:{pc:8,noise:.2,label
 
 const LOCS = [
   {id:'wh',short:'HQ',purpose:'National security headquarters. Set your POSTURE toward the rival. Also: chip controls, cyber ops, intel.', x:3,y:1, icon:'🏛️', name:'HEADQUARTERS', who:'HQ STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
-  {id:'sv',short:'LABS',purpose:'Frontier labs: safety testing, liability rules, talent pipeline.', x:4,y:4, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
-  {id:'cisa',short:'GRID',purpose:'Harden hospitals, water and power against attacks.',x:2,y:3, icon:'🔌', name:'GRID DEFENSE', who:'CHIEF MARCUS BRANDT', title:'GRID DEFENSE CHIEF', intro:'"Hospitals, water, power. Every one runs software older than your interns. Give me the budget and I will make them tough."'},
-  {id:'ally',short:'ALLIES',purpose:'Coordinate with allies; open cyber-norms talks with the rival.',x:2,y:4, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
-  {id:'dark',short:'CRIME',purpose:'Fight ransomware gangs; SI defense bounties.',x:4,y:3, icon:'💀', name:'DARKNET', who:'CYBER POLICE', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
-  {id:'oss',short:'OPEN',purpose:'Open-source commons: bug disclosure, open-weight rules, tamper-resistant safeguards.', x:2,y:5, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
-  {id:'soc',short:'SOC',purpose:'Security operations: insider threats and threat modeling.', x:2,y:2, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'TESS RIVERA', title:'THREAT HUNTER', intro:'"I hunt attackers for a living. Most breaches start with a badge, not a zero-day, and nobody models threats until after the incident."'},
-  {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:4,y:5, icon:'🏭', name:'FABS & POWER', who:'MINH TRAN', title:'PRINCIPAL ENGINEER', intro:'"I spent fifteen years tuning chip fabs. Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
-  {id:'town',short:'TOWN',purpose:'Society: jobs, fairness, privacy, kids online, addictive feeds, public access to SI.', x:2,y:6, icon:'🏛', name:'TOWN HALL', who:'MAYOR', intro:'"My town does not care about chips or treaties. They care about jobs, their kids, and whether the machine treats them fairly."'},
-  {id:'bots',short:'ROBOTS',purpose:'Humanoid robot policy: safety certification, cybersecurity, liability, home privacy, and sharing the gains with displaced workers.', x:4,y:6, icon:'🤖', name:'ROBOTICS BOARD', who:'ROBOTICS SAFETY CHIEF', intro:'"A chatbot that makes a mistake writes a bad sentence. A humanoid that makes a mistake drops a patient. We need rules before there are millions of them."'},
-  {id:'red',short:'RED',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:4,y:2, icon:'🎯', name:'RED TEAM LAB', who:'DR. VERA SATO', title:'CHIEF SCIENTIST', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
+  {id:'sv',short:'LABS',purpose:'Frontier labs: safety testing, liability rules, talent pipeline.', x:6,y:4, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
+  {id:'cisa',short:'GRID',purpose:'Harden hospitals, water and power against attacks.',x:0,y:3, icon:'🔌', name:'GRID DEFENSE', who:'CHIEF MARCUS BRANDT', title:'GRID DEFENSE CHIEF', intro:'"Hospitals, water, power. Every one runs software older than your interns. Give me the budget and I will make them tough."'},
+  {id:'ally',short:'ALLIES',purpose:'Coordinate with allies; open cyber-norms talks with the rival.',x:0,y:4, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
+  {id:'dark',short:'CRIME',purpose:'Fight ransomware gangs; SI defense bounties.',x:6,y:3, icon:'💀', name:'DARKNET', who:'CYBER POLICE', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
+  {id:'oss',short:'OPEN',purpose:'Open-source commons: bug disclosure, open-weight rules, tamper-resistant safeguards.', x:0,y:5, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
+  {id:'soc',short:'SOC',purpose:'Security operations: insider threats and threat modeling.', x:0,y:2, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'TESS RIVERA', title:'THREAT HUNTER', intro:'"I hunt attackers for a living. Most breaches start with a badge, not a zero-day, and nobody models threats until after the incident."'},
+  {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:6,y:5, icon:'🏭', name:'FABS & POWER', who:'MINH TRAN', title:'PRINCIPAL ENGINEER', intro:'"I spent fifteen years tuning chip fabs. Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
+  {id:'town',short:'TOWN',purpose:'Society: jobs, fairness, privacy, kids online, addictive feeds, public access to SI.', x:0,y:6, icon:'🏛', name:'TOWN HALL', who:'MAYOR', intro:'"My town does not care about chips or treaties. They care about jobs, their kids, and whether the machine treats them fairly."'},
+  {id:'bots',short:'ROBOTS',purpose:'Humanoid robot policy: safety certification, cybersecurity, liability, home privacy, and sharing the gains with displaced workers.', x:6,y:6, icon:'🤖', name:'ROBOTICS BOARD', who:'ROBOTICS SAFETY CHIEF', intro:'"A chatbot that makes a mistake writes a bad sentence. A humanoid that makes a mistake drops a patient. We need rules before there are millions of them."'},
+  {id:'red',short:'RED',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:6,y:2, icon:'🎯', name:'RED TEAM LAB', who:'DR. VERA SATO', title:'CHIEF SCIENTIST', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
 ];
 
 // Action cards. fx = direct effects; flags set round modifiers.
@@ -1758,7 +1760,7 @@ function chooseInject(k){
 /* ===================== MAP ===================== */
 const GW=7,TP=100/7;
 const TILE=[
- 'mmmmmmm','m.g.g.m','m.LvL.m','m.LvL.m','m.LvL.m','m.LvL.m','m.LvL.m'];
+ 'mmmmmmm','mm.g.mm','L..v..L','L..v..L','L..v..L','L..v..L','L..v..L'];
 
 /* night-metro tiles */
 function rnd(x,y,k){const v=Math.sin(x*12.9898+y*78.233+k*37.719)*43758.5453;return v-Math.floor(v)}
@@ -1779,14 +1781,14 @@ function renderMap(){
   const map=document.getElementById('map');map.innerHTML='';
   for(let y=0;y<GW;y++)for(let x=0;x<GW;x++){
     const d=document.createElement('div');const ch=TILE[y][x];d.className='t'+(ch==='g'?' g2':ch==='w'?' w':ch==='r'?' r':ch==='v'?' rv':ch==='m'?' m':ch==='L'?' lot':'');
-    if(ch==='m')d.innerHTML=towerSVG(Math.min(x,GW-1-x),y);else if(ch==='v'){if(y===3||y===5)d.innerHTML=`<div class="vcar">${carSVG(y,1)}</div>`}else if(ch==='.'&&(x===1||x===GW-2)&&y%2===0)d.innerHTML=lampSVG(x<3?1:0,0);
+    if(ch==='m')d.innerHTML=towerSVG(Math.min(x,GW-1-x),y);else if(ch==='v'){if(y===3||y===5)d.innerHTML=`<div class="vcar">${carSVG(y,1)}</div>`}else if(ch==='.'&&(x===2||x===GW-3)&&y%2===1)d.innerHTML=lampSVG(x<3?1:0,0);
     const L=LOCS.find(l=>l.x===x&&l.y===y);
     if(L){const n=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id).length+(L.id==='wh'&&S.posture?1:0);
       const mine=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id);
       let lbl=L.short,lst='';
       if(L.id==='wh'&&S.posture){lbl=PLS[S.posture]+(mine.length?' +'+mine.length:'');lst=`style="background:${PCOL[S.posture]};color:#000;border-color:#000"`}
       else if(mine.length){lbl='✔ '+PLATE[mine[0]]+(mine.length>1?' +'+(mine.length-1):'');lst='class="lbl done"'}
-      d.className='t loc'+(n?' picked':'')+(x<3?' sl':x>3?' sr':'');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
+      d.className='t loc'+(n?' picked':'')+(x<3?' sr':x>3?' sl':'');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
     d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
     map.appendChild(d);
   }
@@ -1800,7 +1802,7 @@ function renderMap(){
     fx+=`<rect y="35" width="2.4" height="2.4" fill="#5ab0ff"><animate attributeName="x" from="-4" to="84" dur="4s" repeatCount="indefinite"/></rect>`;
     if(!S.flags.intel)[[0,14],[71,20]].forEach(([y,d],i)=>{fx+=`<g opacity=".35">${icon('fog',`x="-24" y="${y}" width="22" height="13"`)}<animateTransform attributeName="transform" type="translate" from="0 0" to="110 0" dur="${d}s" begin="-${i*7}s" repeatCount="indefinite"/></g>`});
     const ov=document.createElement('div');ov.className='mapfx';ov.innerHTML=`<svg viewBox="0 0 80 80" preserveAspectRatio="none" shape-rendering="crispEdges">${fx}</svg>`;map.appendChild(ov);
-    const ng=Math.max(0,Math.min(3,Math.floor((m.ccap-35)/12)));[[1,6],[5,6],[1,4]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*TP+'%';g.style.top=gy*TP+'%';g.innerHTML=icon('skull');map.appendChild(g)})}
+    const ng=Math.max(0,Math.min(3,Math.floor((m.ccap-35)/12)));[[2,6],[4,6],[2,4]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*TP+'%';g.style.top=gy*TP+'%';g.innerHTML=icon('skull');map.appendChild(g)})}
   document.getElementById('planBox').innerHTML=planHTML();
   if(!guideSeen){guideSeen=true;showGuide()}
   map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);

@@ -112,6 +112,15 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
+.mx{display:grid;grid-template-columns:66px repeat(3,1fr);gap:5px;margin-top:12px}
+.mxh{font-family:'Press Start 2P';font-size:7px;color:var(--gold);text-align:center;padding:4px 0;line-height:1.5;align-self:end}
+.mxtop{color:#9b9ac7}
+.mxr{font-family:'Press Start 2P';font-size:7px;color:var(--gold);display:flex;align-items:center;line-height:1.5;word-break:break-word}
+.mxcell{background:#141633;border:2px solid #4a4c7a;padding:7px 3px;text-align:center;font-size:21px;color:#f4f1e6;line-height:1.15}
+.mxcell .up{color:var(--green)}.mxcell .dn{color:#ff7a7a}
+.mxcell.hit{border:3px solid var(--gold);background:#3b2f08;animation:pulse .6s steps(2) 3}
+.mxcell i{display:block;font-style:normal;font-family:'Press Start 2P';font-size:6px;color:var(--gold);margin-bottom:4px}
+.vs{display:flex;gap:8px}.vs span{flex:1;font-family:'Press Start 2P';font-size:8px;color:#9b9ac7;border:2px solid #4a4c7a;padding:9px 4px;text-align:center;line-height:1.9}.vs b{display:block;color:var(--gold);font-size:10px}
 .kicker{font-family:'Press Start 2P';font-size:9px;color:var(--dim);letter-spacing:2px;white-space:nowrap}
 .slogan{display:flex;flex-direction:column;gap:10px;font-family:'Press Start 2P';font-size:13px;line-height:1.4;white-space:nowrap}
 .slogan span:first-child{color:#39ff14;text-shadow:0 0 10px rgba(57,255,20,.6),2px 2px 0 #000}
@@ -1236,12 +1245,14 @@ function toggleAction(a,L){
   renderHud();openLoc(L);
 }
 
-function matrixEl(b,r){
-  const w=document.createElement('div');w.className='box';
-  let h=`<h3>PAYOFF MATRIX (your Δsec / Δesc)</h3><div class="matrix" style="margin-top:8px"><div class="h"></div>`;
-  P.forEach(k=>h+=`<div class="h">RIVAL<br>${PL[k].slice(0,4)}</div>`);
-  P.forEach(bk=>{h+=`<div class="h">YOU<br>${PL[bk].slice(0,4)}</div>`;P.forEach(rk=>{const c=MATRIX[bk][rk];h+=`<div class="cell ${b===bk&&r===rk?'hit':''}">${c.sec>=0?'+':''}${c.sec} / ${c.esc>=0?'+':''}${c.esc}</div>`})});
-  h+=`</div><p class="small" style="margin-top:6px">Mutual cooperation beats mutual escalation for both. But each side gains by defecting once — unless the other remembers.</p>`;
+function matrixEl(b,r){const w=document.createElement('div');w.className='box';
+  const ab={coop:'COOPERATE',hedge:'HEDGE',esc:'ESCALATE'};
+  const v=(n,bad)=>{const good=bad?n<0:n>0;return `<span class="${n===0?'':good?'up':'dn'}">${n>0?'+':n<0?'−':''}${Math.abs(n)}</span>`};
+  let h=`<h3>WHAT EACH COMBINATION DOES</h3><p class="small" style="margin-top:6px">Each box shows the change to your <b style="color:#fff">SECURITY</b> and to <b style="color:#fff">ESCALATION</b>. Green is good for you, red is bad.</p>
+  <div class="mx"><div></div><div class="mxh mxtop" style="grid-column:2/5">THE RIVAL CHOOSES →</div><div class="mxh mxtop" style="align-self:end">YOU ↓</div>`;
+  P.forEach(k=>h+=`<div class="mxh">${ab[k]}</div>`);
+  P.forEach(bk=>{h+=`<div class="mxr">${ab[bk]}</div>`;P.forEach(rk=>{const c=MATRIX[bk][rk];const hit=b===bk&&r===rk;h+=`<div class="mxcell${hit?' hit':''}">${hit?'<i>THIS ROUND</i>':''}<div>SEC ${v(c.sec,false)}</div><div>ESC ${v(c.esc,true)}</div></div>`})});
+  h+=`</div><p class="small" style="margin-top:10px">Best for both: you both COOPERATE. Worst for both: you both ESCALATE. Escalating alone pays once, but the rival remembers.</p>`;
   w.innerHTML=h;return w;
 }
 
@@ -1636,7 +1647,7 @@ function renderResolve(bp,red,cell,log,acc,fog){
    ${log.some(l=>l.startsWith('ACCIDENT'))?`<div class="dialog" style="margin-bottom:16px"><span class="who">GLITCH · NO ONE ORDERED THIS</span><span class="pt">${portrait('glitch')}</span>I was only trying to help. Nobody told me the substations mattered.</div>`:''}
    <div style="margin-bottom:16px">${roundReview(bp,red,log,acc)}</div>
    <div class="dialog"><span class="who">RIVAL MINISTRY · INTERCEPT</span><span class="pt">${portrait('rival')}</span>${redReason(red)}</div>
-   <div class="box" style="margin-top:14px"><h2>YOU: ${PL[bp]} · RIVAL: ${PL[red]}</h2><p style="margin:6px 0 10px">${cell.note}</p></div>`;
+   <div class="box" style="margin-top:14px"><div class="vs"><span>YOU<b>${PL[bp]}</b></span><span>RIVAL<b>${PL[red]}</b></span></div><p style="margin:12px 0 4px;font-size:22px">${cell.note}</p></div>`;
   b.appendChild(matrixEl(bp,red));
   b.innerHTML+=`<div class="box"><h3>ROUND ${S.round} EVENTS</h3><ul class="log" style="margin-top:6px">${log.map(l=>`<li>${logIcon(l)}${l}</li>`).join('')}</ul></div>
    <div class="box"><h3>NET CHANGE</h3><div class="delta" style="margin-top:8px">${dl||'<span>NO CHANGE</span>'}</div></div>`;

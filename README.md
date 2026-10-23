@@ -19,6 +19,8 @@ A think-tank-style, game-theoretic superintelligence wargame in a pixel/Nintendo
 9. Incentives beat orders
 10. Steer, don't stop
 
+**Strategy and economics in play:** Thucydides Trap · credible commitment and audience costs · costly signals · offense-defense balance · race to the bottom · free riders · Jevons paradox · winner-take-all · moral hazard · decoupling costs · diminishing returns · export controls and retaliation
+
 | Game theory with rivals | The security dilemma |
 |---|---|
 | ![Showdown](how-clash.png) | ![Posture](how-posture.png) |

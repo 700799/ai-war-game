@@ -624,6 +624,15 @@ svg .spark{transform-box:fill-box;transform-origin:center;animation:sparkTooth 6
 .stbtn.sel{background:#3b2f08;border-color:var(--gold)}.stbtn.sel b{color:var(--gold)}
 .bytechip.wide{width:100%;justify-content:center;margin:10px 0}
 .scilearn{margin-top:8px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:800;font-size:11px;padding:7px 10px;background:#0b0c22;color:#ffe14d;border:2px solid #ffe14d;box-shadow:2px 2px 0 #000}
+
+/* ===== font consistency: pixel headings, plain body ===== */
+body,p,li,.beattxt,.beatsmall,.small,.card p,.optcard,.optfx,.wopt,.wlist,.stbtn,.stbtn span,.stbtn i,.ana,.dogbub,.legend,.orders,.hintline,.rdesc,.osub,.pgap,.scib p,.lopt,.bsum,.premise,.premise2,.tchip,.log,.delta,.tip,.pl,.unlk span,.chgl{font-family:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif!important}
+.beattxt{font-size:17px!important;line-height:1.45!important}
+.beatsmall,.small{font-size:14px!important;line-height:1.4!important}
+.optcard,.optfx,.wopt,.wlist,.stbtn span,.lopt,.bsum,.dogbub,.ana,.card p,.tip{font-size:15px!important;line-height:1.4!important}
+.stbtn i,.pcn,.unlk span{font-size:13px!important}
+.premise{font-size:16px!important}.premise2{font-size:15px!important}
+.tchip{font-size:14px!important}
 </style>
 </head>
 <body>
@@ -1258,6 +1267,42 @@ const ICON_OVR={
   <circle cx="50" cy="62" r="32" fill="#2a7de1" stroke-width="4.5"/>
   <path d="M28 52 Q36 44 44 50 Q48 58 40 62 Q32 66 28 60 Z M54 46 Q66 42 72 52 Q70 60 62 58 Q56 56 54 46 Z M46 72 Q56 68 62 76 Q58 86 50 86 Q44 80 46 72 Z" fill="#4bd37b" stroke-width="2.5"/>
   <ellipse cx="50" cy="62" rx="14" ry="32" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"/><path d="M18 62 H82" stroke="rgba(255,255,255,.55)" stroke-width="2"/></g></svg>`,
+ wh:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  <rect x="12" y="84" width="76" height="9" fill="#9aa3b5" stroke-width="3"/><rect x="18" y="76" width="64" height="9" fill="#c9ced8" stroke-width="3"/>
+  ${[22,34,46,58,70].map(x=>`<rect x="${x}" y="46" width="8" height="30" fill="#e8e4d8" stroke-width="2.5"/>`).join('')}
+  <path d="M14 46 L50 22 L86 46 Z" fill="#c9ced8" stroke-width="3.5"/><rect x="14" y="44" width="72" height="4" fill="#9aa3b5" stroke="none"/>
+  <path d="M44 24 Q50 8 56 24 Z" fill="#e8e4d8" stroke-width="2.5"/><rect x="48" y="4" width="3" height="20" fill="#9aa3b5"/><path d="M51 5 L64 8 L51 12 Z" fill="#2a7de1" stroke-width="1.8"/>
+  <rect x="45" y="58" width="10" height="18" fill="#ffd23f" stroke-width="2"/></g></svg>`,
+ red:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  <circle cx="50" cy="50" r="42" fill="#ff5c5c" stroke-width="4"/><circle cx="50" cy="50" r="30" fill="#fff" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="#ff5c5c" stroke-width="3"/><circle cx="50" cy="50" r="7" fill="#fff" stroke-width="2.5"/>
+  <path d="M50 8 V26 M50 74 V92 M8 50 H26 M74 50 H92" stroke-width="4"/>
+  <path d="M60 30 L84 12" stroke="#ffd23f" stroke-width="4.5" stroke-linecap="round"/><path d="M64 32 L58 28 L62 24 Z" fill="#ffd23f" stroke-width="1.5"/></g></svg>`,
+ dark:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  <rect x="14" y="10" width="72" height="80" rx="6" fill="#1a1d2e" stroke-width="4"/><rect x="20" y="16" width="60" height="68" rx="3" fill="#0b0c1a" stroke="#2a2f45" stroke-width="2"/>
+  <path d="M50 24 Q34 24 32 40 Q31 52 36 58 V66 H64 V58 Q69 52 68 40 Q66 24 50 24 Z" fill="#e8e4d8" stroke-width="3"/>
+  <circle cx="42" cy="42" r="5" fill="${OLI}"/><circle cx="58" cy="42" r="5" fill="${OLI}"/><path d="M44 54 Q50 50 56 54" stroke-width="2" fill="none"/>
+  <path d="M40 66 V74 M46 66 V74 M54 66 V74 M60 66 V74" stroke="#e8e4d8" stroke-width="3"/>
+  <path d="M24 20 L28 20 M24 24 L32 24" stroke="#39ff8a" stroke-width="2"/><path d="M60 78 L76 78 M66 74 L76 74" stroke="#ff5c5c" stroke-width="2"/></g></svg>`,
+ sv:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  <path d="M38 8 H62 V20 H58 V44 L82 84 Q86 92 78 92 H22 Q14 92 18 84 L42 44 V20 H38 Z" fill="#dff3ff" stroke-width="4"/>
+  <path d="M30 70 L42 50 H58 L70 70 Z" fill="#39ff8a" stroke="none"/><path d="M22 86 L30 70 H70 L78 86 Z" fill="#2fd674" stroke="none"/>
+  <circle cx="40" cy="78" r="3.5" fill="#dff3ff"/><circle cx="58" cy="82" r="2.6" fill="#dff3ff"/><circle cx="50" cy="64" r="2.2" fill="#dff3ff"/>
+  <path d="M28 26 l3 -6 l3 6 M70 22 l2 -5 l2 5" stroke="#ffd23f" stroke-width="2" fill="none"/></g></svg>`,
+ oss:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  <circle cx="50" cy="50" r="42" fill="#1e5a3a" stroke-width="4"/><circle cx="50" cy="50" r="34" fill="#0c3b2a" stroke="#39ff8a" stroke-width="3"/>
+  <path d="M34 38 L22 50 L34 62" stroke="#39ff8a" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M66 38 L78 50 L66 62" stroke="#39ff8a" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M56 32 L44 68" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+  <path d="M50 8 V2 M50 92 V98 M8 50 H2 M92 50 H98" stroke="#39ff8a" stroke-width="4" stroke-linecap="round"/></g></svg>`,
+ town:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  <rect x="8" y="50" width="30" height="42" fill="#ffb347" stroke-width="3.5"/><path d="M6 52 L23 30 L40 52 Z" fill="#d33a3a" stroke-width="3.5"/><rect x="18" y="70" width="10" height="22" fill="#5a3a1a" stroke-width="2"/><rect x="12" y="56" width="8" height="8" fill="#9fd2ff" stroke-width="2"/>
+  <rect x="62" y="50" width="30" height="42" fill="#7cc6ff" stroke-width="3.5"/><path d="M60 52 L77 30 L94 52 Z" fill="#2a7de1" stroke-width="3.5"/><rect x="72" y="70" width="10" height="22" fill="#2a2f45" stroke-width="2"/><rect x="80" y="56" width="8" height="8" fill="#fff6c8" stroke-width="2"/>
+  <rect x="38" y="36" width="24" height="56" fill="#f4f1e6" stroke-width="3.5"/><path d="M36 38 L50 18 L64 38 Z" fill="#ffd23f" stroke-width="3.5"/><rect x="45" y="72" width="10" height="20" fill="#d33a3a" stroke-width="2"/><circle cx="50" cy="52" r="6" fill="#9fd2ff" stroke-width="2"/>
+  <path d="M48 18 V10 L56 13 L48 16" fill="#ff5c5c" stroke-width="1.5"/><ellipse cx="50" cy="94" rx="46" ry="3" fill="#2fd674" stroke="none"/></g></svg>`,
+ bots:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
+  <rect x="22" y="48" width="56" height="42" rx="8" fill="#c9ced8" stroke-width="4"/><rect x="34" y="56" width="32" height="14" rx="3" fill="#1a2238" stroke-width="2.5"/>
+  ${[40,50,60].map(x=>`<rect x="${x-3}" y="60" width="6" height="6" fill="#39ff8a" stroke="none"/>`).join('')}
+  <rect x="10" y="54" width="12" height="26" rx="6" fill="#9aa3b5" stroke-width="3"/><rect x="78" y="54" width="12" height="26" rx="6" fill="#9aa3b5" stroke-width="3"/>
+  <rect x="28" y="12" width="44" height="34" rx="10" fill="#e8e4d8" stroke-width="4"/><circle cx="41" cy="29" r="6" fill="#2a7de1" stroke-width="2.5"/><circle cx="59" cy="29" r="6" fill="#2a7de1" stroke-width="2.5"/><circle cx="42.5" cy="27.5" r="2" fill="#fff" stroke="none"/><circle cx="60.5" cy="27.5" r="2" fill="#fff" stroke="none"/>
+  <path d="M42 39 Q50 44 58 39" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M50 12 V4" stroke-width="3"/><circle cx="50" cy="3" r="3.5" fill="#ff5c5c" stroke-width="2"/></g></svg>`,
  fab:`<svg viewBox="0 0 100 100"><g shape-rendering="geometricPrecision" stroke="${OLI}" stroke-linejoin="round">
   ${[0,1,2,3,4].map(i=>`<rect x="${23+i*12}" y="5" width="6" height="15" fill="#c9ced8" stroke-width="2.5"/><rect x="${23+i*12}" y="80" width="6" height="15" fill="#c9ced8" stroke-width="2.5"/><rect x="5" y="${23+i*12}" width="15" height="6" fill="#c9ced8" stroke-width="2.5"/><rect x="80" y="${23+i*12}" width="15" height="6" fill="#c9ced8" stroke-width="2.5"/>`).join('')}
   <rect x="17" y="17" width="66" height="66" rx="7" fill="#2b2f45" stroke-width="4.5"/>

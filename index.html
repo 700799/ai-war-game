@@ -643,6 +643,73 @@ body,p,li,.beattxt,.beatsmall,.small,.card p,.optcard,.optfx,.wopt,.wlist,.stbtn
 .rdet{margin-bottom:10px}.rdet>summary{list-style:none;cursor:pointer;padding:10px 12px;background:#14224a;border:2px solid #5ab0ff;color:#cfe3ff;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:12px;letter-spacing:.5px;display:flex;justify-content:space-between}
 .rdet>summary::-webkit-details-marker{display:none}.rdet>summary::after{content:'SHOW ▼';color:#ffe14d;font-size:11px}.rdet[open]>summary::after{content:'HIDE ▲'}
 .rdet>div,.rdet>.box{margin-top:8px}
+
+/* ===== MAP-FIRST PLAY SCREEN ===== */
+#g-play{display:flex;flex-direction:column;min-height:0;flex:1}
+.wstrip{display:flex;gap:6px;padding:8px 8px 4px;overflow-x:auto;flex:none;scrollbar-width:none}.wstrip::-webkit-scrollbar{display:none}
+.wtab{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:84px;padding:6px 8px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:10px;font-weight:800;letter-spacing:.3px;color:#cfcde6;background:#101225;border:2px solid #3a3f58;box-shadow:2px 2px 0 #000}
+.wtab b{font-family:'Press Start 2P',monospace;font-size:11px;color:#ffd23f}.wtab span{white-space:nowrap}.wtab i{font-style:normal;font-size:9px;color:#9b9ac7;font-weight:700}
+.wtab.on{border-color:#39ff8a;background:#0f2a1e;color:#fff}.wtab.focus i{color:#39ff8a}.wtab.lk{opacity:.55}.wtab.hist{border-color:#5ab0ff;color:#cfe3ff;margin-left:auto}
+.panel{flex:0 1 auto;max-height:50vh;overflow-y:auto;padding:4px 8px 6px;-webkit-overflow-scrolling:touch}
+.mode-orders .panel{max-height:30vh}
+.panel .beatsteps{margin:0 0 6px}
+.pcard{background:#141633;border:3px solid #e8e4d8;box-shadow:4px 4px 0 #000;padding:10px}
+.pchead{display:flex;align-items:center;gap:10px;position:relative;padding-right:60px}
+.pcframe{flex:none;width:56px;height:56px;border:3px solid #e8e4d8;background:linear-gradient(#2a3166,#161a3a);overflow:hidden}.pcframe svg{width:100%;height:100%;display:block}
+.pcname{min-width:0}.pcname b{display:block;font-family:'Press Start 2P',monospace;font-size:9px;color:#ffd23f;line-height:1.5}.pcname span{display:block;font-size:13px;color:#9fb8e8;line-height:1.3;margin-top:2px}
+.learnbtn.pcl{position:absolute;top:0;right:0}
+.pcbody{margin-top:10px}.pcbody .beattxt{font-size:16px!important;margin:0}
+.pcnext{width:100%;margin-top:10px;font-size:11px;padding:13px}
+.pcbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.pcbtns button{flex:1;min-width:110px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:11px;padding:9px 6px;letter-spacing:.3px}
+.pcbtns .bytechip{margin:0;justify-content:center}
+.pcard.orders .pcbody{display:none}
+.panel.flash{animation:panelFlash .5s steps(2)}@keyframes panelFlash{50%{filter:brightness(1.6) hue-rotate(-20deg)}}
+.rsrow{padding:7px 0}
+.strikebox{margin-top:10px;padding:8px 10px;background:#3a0a0a;border:2px solid #ff2a2a;color:#ffd0d0;font-size:14px;font-weight:700;animation:blink 1.2s steps(2) 3}
+.dirwarn{margin:8px 0 2px;padding:8px 10px;background:#2a0608;border:2px solid #ff2a2a;color:#ffb3b3;font-size:14px;font-weight:700;line-height:1.35}
+#g-play .mapwrap{flex:1;min-height:150px;position:relative;display:flex;align-items:flex-start;justify-content:center;padding:4px 0 0!important;overflow:hidden!important}
+#g-play .map{margin:0 auto!important;transition:filter .3s}
+.mode-story .map,.mode-result .map{filter:brightness(.55) saturate(.6)}
+.mode-story .map .t,.mode-result .map .t{pointer-events:none}
+.endbtn:disabled{opacity:.4}
+.mode-result .endbtn{background:#1d5a33;border-color:#39ff8a}
+.map .wbg{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.map .t{position:relative;z-index:1;aspect-ratio:auto!important}
+.t.pz{background:rgba(20,22,40,.42)!important;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px)!important;background-size:50% 50%!important;filter:none!important}
+.t.r2{background:rgba(30,32,44,.9)!important;background-image:repeating-linear-gradient(90deg,#e8c34a 0 8px,transparent 8px 16px)!important;background-size:100% 2px!important;background-repeat:no-repeat!important;background-position:0 50%!important;box-shadow:inset 0 3px 0 #3d4157,inset 0 -3px 0 #3d4157!important;filter:none!important}
+.t.pz>svg{opacity:.5}.t.r2>svg{opacity:.5}
+.t.loc{background:radial-gradient(circle at 50% 40%,rgba(74,85,132,.85),rgba(36,42,64,.7) 70%)!important;overflow:visible;z-index:3}
+.t.loc svg{inset:3% 12% 34% 12%!important;width:76%!important;height:62%!important}
+.t.loc.lab-top svg{inset:34% 12% 3% 12%!important}
+.t.loc .lbl,.t.loc .lbl.done{left:50%!important;right:auto!important;top:auto!important;bottom:2px!important;transform:translateX(-50%)!important;width:max-content;max-width:150%;white-space:normal;text-align:center;line-height:1.15;font-size:11px!important;padding:3px 6px!important;z-index:6}
+.t.loc.lab-top .lbl,.t.loc.lab-top .lbl.done{bottom:auto!important;top:2px!important}
+.t.loc.locked::before{font-size:22px}
+.map.strike{animation:mapStrike .9s steps(3) 2}@keyframes mapStrike{50%{filter:brightness(1.2) sepia(1) hue-rotate(-50deg) saturate(3)}}
+#locDrawer{position:fixed;inset:0;z-index:70;background:rgba(4,5,18,0);pointer-events:none;transition:background .25s}
+#locDrawer.on{background:rgba(4,5,18,.8);pointer-events:auto}
+#locDrawer .lsheet{transform:translateY(105%);transition:transform .28s ease-out;max-height:92dvh;border-color:#39ff8a}
+#locDrawer.on .lsheet{transform:none}
+#locDrawer .lhead{align-items:center}
+.learnbtn.inl{position:static;flex:none;margin-right:6px}
+.locsheet .card{margin-top:10px}
+.hrow{margin-top:10px;padding:10px;background:#0f1130;border-left:3px solid #5ab0ff}
+.hhead{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.hhead b{font-family:'Press Start 2P',monospace;font-size:9px;color:#ffd23f}.hhead span{font-size:12px;color:#9b9ac7}
+.hst{display:flex;gap:14px;margin-top:6px;font-size:14px}.hinj{margin-top:6px;font-size:14px;color:#ffd23f}.hinj i{color:#e6e4f5}
+.hm{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;font-size:13px;color:#cfcde6}.hm b{color:#fff}
+.hbtn{margin-top:8px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:10px;padding:6px 10px}
+.hud{gap:6px 12px;padding:8px 10px}
+.stv{font-style:normal;font-weight:800}
+#g-play{position:relative}#g-play .guide{position:absolute;inset:0;z-index:30}
+.wtab{min-width:72px;padding:5px 6px;font-size:9px}
+.t.loc.lab-l .lbl,.t.loc.lab-l .lbl.done{left:2px!important;transform:none!important}
+.t.loc.lab-r .lbl,.t.loc.lab-r .lbl.done{left:auto!important;right:2px!important;transform:none!important}
+
+/* small map during story/result: icons only */
+#g-play.mode-story .t.loc .lbl,#g-play.mode-result .t.loc .lbl,#g-play.mode-story .t .alert,#g-play.mode-result .t .alert,#g-play.mode-story .t .tip,#g-play.mode-result .t .tip{display:none!important}
+#g-play.mode-story .hero,#g-play.mode-result .hero{opacity:.55}
+/* top-center building: label below the icon */
+#g-play.mode-orders .t.loc:not(.sl):not(.sr) .lbl{bottom:-30px!important;z-index:8}
+#g-play.mode-orders .t.loc:not(.sl):not(.sr) svg{inset:0 14% 10% 14%!important;width:72%!important;height:90%!important}
 </style>
 </head>
 <body>
@@ -909,44 +976,13 @@ body,p,li,.beattxt,.beatsmall,.small,.card p,.optcard,.optfx,.wopt,.wlist,.stbtn
   <div class="siclock" id="siclock"></div>
   <div class="hud" id="hud"></div>
 
-  <!-- BRIEF -->
-  <div class="screen" id="g-brief">
-    <div class="scroll" id="briefScroll">
-      <div class="beatsteps" id="beatSteps"></div>
-      <div id="beatArea"></div>
-    </div>
-    <div class="foot"><button class="a" id="briefNext" onclick="briefNext()">CONTINUE ▶</button></div>
+  <div class="screen on" id="g-play">
+    <div class="wstrip" id="wstrip"></div>
+    <div class="panel" id="panel"></div>
+    <div class="guide" id="guide"></div><div class="mapwrap" id="mapwrap"><div class="map" id="map"></div></div>
+    <div class="ctrl"><button class="endbtn" id="endbtn" onclick="endTurnTap()">END TURN ▶</button></div>
   </div>
-
-  <!-- MAP -->
-  <div class="screen" id="g-map">
-    <div class="guide" id="guide"></div>
-    <div class="mapwrap">
-      <div class="steps" id="mapSteps"></div>
-      <div id="planBox" style="width:100%"></div><div class="mapbar"><button onclick="openMapInfo('plan')">🐾 BYTE’S PLAN</button><button id="ordBtn" onclick="openMapInfo('orders')">📋 ORDERS &amp; MAP KEY</button></div>
-      <div class="map" id="map"></div>
-      <div class="orders" id="orders"></div>
-      <div class="legend" id="legend"></div>
-      <div class="hintline" id="mapHint"></div>
-    </div>
-    <div class="ctrl"><button class="endbtn" onclick="openResolveCheck()">END TURN ▶</button></div>
-  </div>
-
-  <!-- LOCATION -->
-  <div class="screen" id="g-loc">
-    <div class="scroll">
-      <div class="beat"><span id="locLearn"></span><div class="beathead"><div class="beatframe" id="locPt"></div><div class="beatname"><b id="locWho"></b><span id="locRole"></span></div></div>
-      <div class="beatbody"><p class="beattxt" id="locTxt" style="margin:0"></p></div></div>
-      <div id="locBody" style="margin-top:18px"></div>
-    </div>
-    <div class="foot"><button onclick="showGame('g-map');renderMap()">◀ BACK TO MAP</button><button class="gold" onclick="openResolveCheck()">END TURN ▶</button></div>
-  </div>
-
-  <!-- RESOLVE -->
-  <div class="screen" id="g-res">
-    <div class="scroll" id="resBody"></div>
-    <div class="foot"><button class="a" id="resNext">NEXT ROUND ▶</button></div>
-  </div>
+  <div id="compat" style="display:none" aria-hidden="true"><div id="beatSteps"></div><div id="beatArea"></div><button id="briefNext"></button><div id="briefScroll"></div><div id="resBody"></div><button id="resNext"></button><div id="mapSteps"></div><div id="planBox"></div><div id="orders"></div><div id="legend"></div><div id="mapHint"></div></div>
 </section>
 
 <!-- FINALE -->
@@ -970,17 +1006,17 @@ let glen='std';
 const DIFFS = {easy:{pc:9,noise:.1,label:'TABLETOP'},normal:{pc:8,noise:.2,label:'SITROOM'},hard:{pc:7,noise:.3,label:'DEFCON'}};
 
 const LOCS = [
-  {id:'wh',short:'HQ',purpose:'National security headquarters. Set your POSTURE toward the rival. Also: chip controls, cyber ops, intel.', x:3,y:1, icon:'🏛️', name:'HEADQUARTERS', who:'HQ STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
-  {id:'sv',short:'LABS',purpose:'Frontier labs: safety testing, liability rules, talent pipeline.', x:6,y:7, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
-  {id:'cisa',short:'GRID',purpose:'Harden hospitals, water and power against attacks.',x:0,y:5, icon:'🔌', name:'GRID DEFENSE', who:'CHIEF MARCUS BRANDT', title:'GRID DEFENSE CHIEF', intro:'"Hospitals, water, power. Every one runs software older than your interns. Give me the budget and I will make them tough."'},
-  {id:'ally',short:'ALLIES',purpose:'Coordinate with allies; open cyber-norms talks with the rival.',x:0,y:7, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
-  {id:'dark',short:'CRIME',purpose:'Fight ransomware gangs; SI defense bounties.',x:6,y:5, icon:'💀', name:'DARKNET', who:'CYBER POLICE', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
-  {id:'oss',short:'OPEN',purpose:'Open-source commons: bug disclosure, open-weight rules, tamper-resistant safeguards.', x:0,y:9, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
-  {id:'soc',short:'SOC',purpose:'Security operations: insider threats and threat modeling.', x:0,y:3, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'TESS RIVERA', title:'THREAT HUNTER', intro:'"I hunt attackers for a living. Most breaches start with a badge, not a zero-day, and nobody models threats until after the incident."'},
-  {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:6,y:9, icon:'🏭', name:'FABS & POWER', who:'MINH TRAN', title:'PRINCIPAL ENGINEER', intro:'"I spent fifteen years tuning chip fabs. Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
-  {id:'town',short:'TOWN',purpose:'Society: jobs, fairness, privacy, kids online, addictive feeds, public access to SI.', x:0,y:11, icon:'🏛', name:'TOWN HALL', who:'MAYOR', intro:'"My town does not care about chips or treaties. They care about jobs, their kids, and whether the machine treats them fairly."'},
-  {id:'bots',short:'ROBOTS',purpose:'Humanoid robot policy: safety certification, cybersecurity, liability, home privacy, and sharing the gains with displaced workers.', x:6,y:11, icon:'🤖', name:'ROBOTICS BOARD', who:'ROBOTICS SAFETY CHIEF', intro:'"A chatbot that makes a mistake writes a bad sentence. A humanoid that makes a mistake drops a patient. We need rules before there are millions of them."'},
-  {id:'red',short:'RED',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:6,y:3, icon:'🎯', name:'RED TEAM LAB', who:'DR. VERA SATO', title:'CHIEF SCIENTIST', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
+  {id:'wh',short:'COMMAND CENTER',purpose:'Your command center. Change your stance, buy intel, declare red lines. Also: chip controls, cyber ops, intel.', x:3,y:1, icon:'🏛️', name:'COMMAND CENTER', who:'HQ STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
+  {id:'sv',short:'FRONTIER LABS',purpose:'Frontier labs: safety testing, liability rules, talent pipeline.', x:6,y:7, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
+  {id:'cisa',short:'GRID DEFENSE',purpose:'Harden hospitals, water and power against attacks.',x:0,y:5, icon:'🔌', name:'GRID DEFENSE', who:'CHIEF MARCUS BRANDT', title:'GRID DEFENSE CHIEF', intro:'"Hospitals, water, power. Every one runs software older than your interns. Give me the budget and I will make them tough."'},
+  {id:'ally',short:'ALLIED COUNCIL',purpose:'Coordinate with allies; open cyber-norms talks with the rival.',x:0,y:7, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
+  {id:'dark',short:'CRIME TASK FORCE',purpose:'Fight ransomware gangs; SI defense bounties.',x:6,y:5, icon:'💀', name:'DARKNET', who:'CYBER POLICE', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
+  {id:'oss',short:'OPEN SOURCE',purpose:'Open-source commons: bug disclosure, open-weight rules, tamper-resistant safeguards.', x:0,y:9, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
+  {id:'soc',short:'SECURITY OPS',purpose:'Security operations: insider threats and threat modeling.', x:0,y:3, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'TESS RIVERA', title:'THREAT HUNTER', intro:'"I hunt attackers for a living. Most breaches start with a badge, not a zero-day, and nobody models threats until after the incident."'},
+  {id:'fab',short:'CHIPS & POWER',purpose:'Chips, memory and power plants for compute.', x:6,y:9, icon:'🏭', name:'FABS & POWER', who:'MINH TRAN', title:'PRINCIPAL ENGINEER', intro:'"I spent fifteen years tuning chip fabs. Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
+  {id:'town',short:'TOWN HALL',purpose:'Society: jobs, fairness, privacy, kids online, addictive feeds, public access to SI.', x:0,y:11, icon:'🏛', name:'TOWN HALL', who:'MAYOR', intro:'"My town does not care about chips or treaties. They care about jobs, their kids, and whether the machine treats them fairly."'},
+  {id:'bots',short:'ROBOT WORKS',purpose:'Humanoid robot policy: safety certification, cybersecurity, liability, home privacy, and sharing the gains with displaced workers.', x:6,y:11, icon:'🤖', name:'ROBOTICS BOARD', who:'ROBOTICS SAFETY CHIEF', intro:'"A chatbot that makes a mistake writes a bad sentence. A humanoid that makes a mistake drops a patient. We need rules before there are millions of them."'},
+  {id:'red',short:'RED TEAM LAB',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:6,y:3, icon:'🎯', name:'RED TEAM LAB', who:'DR. VERA SATO', title:'CHIEF SCIENTIST', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
 ];
 
 // Action cards. fx = direct effects; flags set round modifiers.
@@ -1145,6 +1181,9 @@ const INJECTS = [
  {id:'otattack',title:'WATER PLANT CONTROLS HIJACKED',cond:s=>s.si>=35&&s.m.rcap>48,body:'An SI agent slipped into a small city’s water treatment controls and quietly changed chemical levels. A night-shift operator noticed the dial moving on its own and switched to manual just in time.',
   a:{t:'A · NATIONWIDE OT LOCKDOWN ORDER',fx:{sec:+4,econ:-3},log:'Utilities must cut control systems off the internet and add manual overrides within 90 days. Expensive, but the next attempt hits a wall.'},
   b:{t:'B · QUIET RETALIATION',fx:{esc:+7,sec:+1,trust:+1},log:'You answered in kind against the rival’s networks. Hawks cheered. The rival read it as an escalation.'}},
+ {id:'ultimatum',title:'THE DIRECTORATE ISSUES AN ULTIMATUM',cond:s=>s.m.esc>=58,body:'A message arrives on an open channel, meant to be seen: "Withdraw your forward operations and lift your controls within thirty days, or every hospital, port and substation learns what we can do." Analysts say they have the capability. The public saw it too.',
+  a:{t:'A · STAND FIRM AND HARDEN',fx:{esc:+5,trust:+3,sec:+2,econ:-2},log:'You refused in public and poured money into defenses. The Directorate went quiet, then probed every network you own.'},
+  b:{t:'B · OFFER A QUIET DEAL',fx:{esc:-9,rcap:+4,trust:-4,ally:-2},log:'You eased pressure in exchange for calm. Tension fell. The rival banked the gains, and allies noticed who blinked.'}},
  {id:'bills',title:'THE DATA CENTER DILEMMA',cond:s=>s.m.power<60,body:'Labs want five new SI data center campuses next year. The local grid is near its limit, the new power plants are years away, the sites would cover farmland, and the cooling would draw millions of gallons of water a day in a dry region. Nearby families are already seeing their power bills rise.',
   a:{t:'A · BUILD SMART: STRICT SITING + FULL COST',fx:{equity:+3,trust:+2,power:+2,econ:-3},log:'Data centers must bring their own new power, pay for grid upgrades, use recycled water and build on old industrial land. Fewer campuses this year, but the ones that open do not squeeze neighbors.'},
   b:{t:'B · FAST-TRACK EVERYTHING',fx:{power:+5,econ:+3,equity:-4,trust:-3,wellbeing:-2},log:'Permits were rushed and costs spread to everyone. Compute came online fast. Bills rose, wells ran low in two towns, and old fossil plants were kept running to fill the gap.'}},
@@ -1656,6 +1695,7 @@ const BEAT_STEPS=['SITUATION','CRISIS','YOUR CALL','STANCE','MAP'];
 
 /* ===== LEARN DRAWER: educational explainers ===== */
 const LEARN_INJ={
+ ultimatum:["Coercion and credibility","An ultimatum is a public threat with a deadline. It works only if the target believes the threat is real and that giving in will end it.","Rivals use ultimatums to win without fighting. If threats work once, they will be used again, and allies watch to see who blinks.","Standing firm costs money and raises tension now; a deal lowers tension now but rewards coercion and weakens you later.","Make giving in unnecessary: strong defenses make threats less credible and let you say no.",[["📣 WHY IT IS PUBLIC","A threat made in the open raises the cost of backing down for both sides. The rival is betting you will blink first."],["🛡 DETERRENCE BY DENIAL","If your grid, hospitals and ports are hardened, the threat loses force. Defense makes coercion fail."],["🔁 REPUTATION","How you answer this ultimatum shapes every future one, and allies decide whether to stand with you."]]],
  bankheist:["SI and financial crime","Financial crime has always relied on tricking people. SI makes those tricks fast, cheap and convincing: cloned voices, fake documents and millions of tailored messages at once.","Banks hold everyone’s savings, and trust in banks keeps the economy running. A few big heists can shake confidence far beyond the money stolen.","Freezing and tracing takes time and partners but weakens the criminals; a quick bailout calms the public but rewards the attack.","Pair fast response with prevention: verified transfers, deepfake-aware procedures and banks sharing warnings.",[["🎭 DEEPFAKE EXECUTIVES","A short audio clip is enough to clone a voice. Criminals call staff pretending to be the boss and approve a huge transfer."],["📨 SCALE","SI can write thousands of personalized scam messages in minutes, in any language, with no spelling mistakes."],["🔁 MONEY LAUNDERING","Stolen funds move through many accounts and crypto exchanges in hours. Partners across countries are needed to freeze them."],["✅ WHAT HELPS","Call-back checks on big transfers, transaction limits, real-time fraud detection and shared threat intelligence."]]],
  otattack:["Attacks on operational technology (OT)","OT is the technology that runs physical things: water pumps, electric substations, pipelines and factories. Unlike stealing data, an OT attack can poison water, cut power or damage equipment.","SI can scan for old, unprotected control systems and figure out how they work far faster than human hackers. Many systems are decades old and hard to patch.","A nationwide lockdown costs money and time but closes the door; retaliation feels strong but leaves your own plants exposed and raises tension.","Keep safety-critical controls off the internet, keep humans and manual overrides in the loop, and never let SI agents act directly on physical safety systems.",[["⚙ IT vs. OT","IT handles information like email and files. OT handles physical processes. A bad day in IT is lost data; a bad day in OT can be a dangerous one."],["🕰 OLD SYSTEMS","Many control systems run for 20 to 30 years and were designed for closed networks, not the internet."],["🧑‍🔧 HUMANS IN THE LOOP","Alert operators and manual overrides have stopped real attacks. Automation without oversight removes that last safety net."],["✅ WHAT HELPS","Network separation, strict remote-access rules, monitoring for unusual commands, and practicing manual operation."]]],
  pricewar:["Tokenomics: the price of thinking","AI models read and write text in tokens, roughly three quarters of a word each. Companies charge per million tokens, and that price has been falling fast as chips and software get more efficient.","Cheap tokens are a giant equalizer: students, small businesses and hospitals get powerful SI. But abuse gets cheap too, and labs fighting a price war may cut safety spending to protect thin margins.","Let prices fall for maximum access, or attach abuse checks that slow adoption a little but keep scam farms out.","Falling prices change who can use SI, for good and for harm. Policy decides which effect wins.",[["🔤 WHAT A TOKEN IS","A small chunk of text. A page of writing is a few hundred tokens. Every question you ask and every answer you get is counted in tokens."],["💸 WHY PRICES FALL","Better chips, smarter software and competition make each token cheaper to produce. Prices for the same quality of answer have dropped dramatically in just a few years."],["⚡ JEVONS AGAIN","Cheaper tokens mean far more use, so total spending on compute and power can rise even as each token gets cheaper."],["🏦 WHO PAYS","Training a model is a huge one-time cost; answering questions (inference) costs a little every time. Free tiers are paid for by subscriptions, ads or investors."],["⚠ ABUSE ECONOMICS","When a scam call or fake review costs a fraction of a cent, criminals can run millions. Price is one of the few natural limits on abuse."]]],
@@ -1787,7 +1827,7 @@ function optCard(k,c,rc){const n=(INOTE[currentInject.id]||{})[k];const pick=fal
 
 /* ===== progressive unlock ===== */
 const STAGES=[
- {t:'THE RIVAL',locs:['wh','cisa','sv'],idea:'Every round you and the rival choose a stance at the same time. Cooperate, stay neutral or compete. They remember what you did.',learn:'brief',inj:['summit','lobby','hosp','zeroday','election','cancer']},
+ {t:'THE RIVAL',locs:['wh','cisa','sv'],idea:'Every round you and the rival choose a stance at the same time. Cooperate, stay neutral or compete. They remember what you did.',learn:'brief',inj:['summit','lobby','hosp','zeroday','election','cancer','ultimatum']},
  {t:'THE HOME FRONT',locs:['town','bots'],idea:'While you handle the rival, feeds, scams, job losses and robots reshape life at home. The best ending needs a fair, healthy society, so split your spending.',learn:'inj:doomscroll',inj:['doomscroll','challenge','addictsuit','loop','companion','layoffs','bias','surveil','artists','divide','eldeep','radical','humanoid','bothijack','botinjury','botcare','botarms','botjobs','subs']},
  {t:'FOG & INTEL',locs:['soc','dark'],idea:'You rarely know who attacked you. Intel clears the fog. Criminals and rival hackers use the same tools, so blaming the wrong party starts fights.',learn:'inj:misattr',inj:['misattr','leak','insiderinj','deepfake','cheat','bankheist']},
  {t:'CHIPS & ALLIES',locs:['ally','fab'],idea:'SI runs on chips and power. Export controls slow a rival but leak without allies and invite retaliation.',learn:'inj:rareban',inj:['hbm','energy','ally','talentraid','bills','rareban','smuggle','pricewar']},
@@ -1800,7 +1840,7 @@ function newStageThisRound(){const st=stageFor(S.round);const prev=S.round>1?sta
 function stageIdx(){return stageFor(S.round)}
 function startRound(){
   S.posture=null;S.picks=[];S.flags={};S.intelReveal=null;S.pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2+(S.maxRounds<=4?1:0);
-  S.hudPrev=S.hudPrevNext||null;S.hudPrevNext={...S.m};
+  S.hudPrev=S.hudPrevNext||null;S.hudPrevNext={...S.m};S.rInj=null;S.view=null;
   S.tokPrev=S.tok||null;S.tok=Math.max(4,Math.round(100*Math.pow(.62,(S.round-1)*(6/S.maxRounds))*(S.m.chips<40?1.35:1)*(S.m.power<40?1.25:1)));
   LOCS.forEach(l=>l.done=false);
   renderHud();showGame('g-brief');briefStage=0;
@@ -1811,9 +1851,9 @@ function startRound(){
   const NS=newStageThisRound();
   beats=[];
   if(NS)NS.forEach((st,i)=>{beats.push({step:'SITUATION',frame:`<div class="bigicon">${icon('star','width="100%" height="100%"')}</div>`,who:'NEW THIS ROUND',role:'LAYER '+(STAGES.indexOf(st)+1)+' OF '+STAGES.length+' · '+st.t,learn:st.learn,
-    body:`<p class="beattxt">${st.idea}</p><div class="beatlbl">NOW OPEN ON THE MAP</div><div class="unl">${st.locs.map(id=>{const L=LOCS.find(l=>l.id===id);return `<div class="unlk"><div class="unli">${sprite(id)}</div><b>${L.short}</b><span>${L.name}</span></div>`}).join('')}</div>${S.round===1?'<p class="beatsmall">More buildings and crises unlock as the rounds go on. Learn one layer at a time.</p>':''}`,next:'CONTINUE ▶'})});
+    body:`<p class="beattxt">${st.idea}</p><div class="beatlbl">NOW OPEN ON THE MAP</div><div class="unl">${st.locs.map(id=>{const L=LOCS.find(l=>l.id===id);return `<div class="unlk"><div class="unli">${sprite(id)}</div><b>${L.short}</b><span>${L.who||''}</span></div>`}).join('')}</div>${S.round===1?'<p class="beatsmall">More buildings and crises unlock as the rounds go on. Learn one layer at a time.</p>':''}`,next:'CONTINUE ▶'})});
   beats.push({step:'SITUATION',frame:portrait('brief'),who:curBriefer().n,role:curBriefer().t+' · '+dateFor(S.round),
-    body:`<p class="beattxt" id="beatTxt"></p>${stageIdx()>=3?`<div class="pgap"><span>POWER GAP</span><b class="${S.m.econ-S.m.rcap<4?'dn':'up'}">You ${Math.round(S.m.econ)} vs Rival ${Math.round(S.m.rcap)}</b>${S.m.econ-S.m.rcap<4?'<i>Thucydides Trap zone</i>':S.m.econ-S.m.rcap<10?'<i>Gap narrowing</i>':''}</div>`:''}${stageIdx()>=3?`<div class="pgap tokl mt" data-tok="1" onclick="openLearn('con:tokens')"><span>TOKEN PRICE</span><b>$${S.tok} per million tokens</b>${S.tokPrev?`<i>${Math.round((1-S.tok/S.tokPrev)*100)}% cheaper than last round</i>`:'<i>tap to learn</i>'}</div>`:''}<div class="beatlbl">TOP THREATS</div><div class="tchips">${chips}</div>`+(lf?`<p class="beatsmall">Last round: ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ Home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}</p>`:''),
+    body:`<p class="beattxt" id="beatTxt"></p>${['HIGH','SEVERE'].includes(threatLevel()[0])?`<div class="dirwarn">☠ THREAT ${threatLevel()[0]} · intercepted traffic shows the Directorate moving cyber units into position. Expect a strike if you compete.</div>`:''}${stageIdx()>=3?`<div class="pgap"><span>POWER GAP</span><b class="${S.m.econ-S.m.rcap<4?'dn':'up'}">You ${Math.round(S.m.econ)} vs Rival ${Math.round(S.m.rcap)}</b>${S.m.econ-S.m.rcap<4?'<i>Thucydides Trap zone</i>':S.m.econ-S.m.rcap<10?'<i>Gap narrowing</i>':''}</div>`:''}${stageIdx()>=3?`<div class="pgap tokl mt" data-tok="1" onclick="openLearn('con:tokens')"><span>TOKEN PRICE</span><b>$${S.tok} per million tokens</b>${S.tokPrev?`<i>${Math.round((1-S.tok/S.tokPrev)*100)}% cheaper than last round</i>`:'<i>tap to learn</i>'}</div>`:''}<div class="beatlbl">TOP THREATS</div><div class="tchips">${chips}</div>`+(lf?`<p class="beatsmall">Last round: ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ Home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}</p>`:''),
     learn:'brief',type:briefText(),next:currentInject?'FLASH TRAFFIC ▶':'YOUR STANCE ▶',go:currentInject?null:toStance,skip:currentInject?null:['CRISIS','YOUR CALL']});
   S.siSeen=S.siSeen||[];const sm=[20,30,50,70,90].filter(t=>S.si>=t&&!S.siSeen.includes(t));
   if(sm.length){const t=sm[sm.length-1];sm.forEach(x=>S.siSeen.push(x));const sb=beats[beats.length-1];
@@ -1998,7 +2038,7 @@ function openByteStance(){const ev=postureEV(),T=S.roundTips||[];byteDrawer('YOU
 function openByteCrisis(){const I=currentInject,rc=INREC[I.id]?INREC[I.id](S):null;byteDrawer(I.title,'Weighing both options',weighHTML(I,rc))}
 function chooseInject(k){
   const c=currentInject[k];const before={...S.m};applyFx(c.fx);S.injectLog.push(currentInject.id);
-  S.lastInject={title:currentInject.title,log:c.log,fx:c.fx};
+  S.lastInject={title:currentInject.title,log:c.log,fx:c.fx};S.rInj={title:currentInject.title,choice:c.t.replace(/^[AB] · /,'')};
   if(c.signal) S.summitSignal=c.signal;
   if(c.esc) S.flags.misfire=true;
   if(S.dead) return endGame();
@@ -2012,8 +2052,8 @@ function chooseInject(k){
 }
 
 /* ===================== MAP ===================== */
-const GW=7,GH=12,TP=100/7,TPY=100/12;
-const RH=[.6,1,.32,1,.32,1,.32,1,.32,1,.32,1],RHT=RH.reduce((a,b)=>a+b,0);
+let GW=7,GH=12,TP=100/7,TPY=100/12;
+let RH=[.6,1,.32,1,.32,1,.32,1,.32,1,.32,1],RHT=RH.reduce((a,b)=>a+b,0);
 const RT=y=>RH.slice(0,y).reduce((a,b)=>a+b,0)/RHT*100,RHP=y=>RH[y]/RHT*100;
 function fitMap(){const map=document.getElementById('map'),w=map&&map.parentElement;if(!map||!w||!w.clientHeight)return;
   let used=0;[...w.children].forEach(c=>{if(c!==map&&getComputedStyle(c).display!=='none')used+=c.offsetHeight+8});
@@ -2176,7 +2216,7 @@ function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div 
   <div class="box"><h2>MAP SIGNS</h2>
   <div class="bk"><div class="sw" style="background:#101225">${icon('skull')}</div><div><b>SKULLS</b>Ransomware gangs. More appear as CRIME rises.</div></div>
   <div class="bk"><div class="sw" style="background:#b79c5b;display:flex;align-items:center;justify-content:center"><i style="width:12px;height:12px;background:#ff5c5c;display:block"></i></div><div><b>RED SQUARES ON THE ROAD</b>Rival cyber traffic. More appear as escalation rises; the map glows red above 70.</div></div>
-  <div class="bk"><div class="sw" style="background:#101225">${icon('fog')}</div><div><b>CLOUDS</b>Attribution fog. Buy INTEL at HQ to clear it.</div></div>
+  <div class="bk"><div class="sw" style="background:#101225">${icon('fog')}</div><div><b>CLOUDS</b>Attribution fog. Buy INTEL at the Command Center to clear it.</div></div>
   <div class="bk"><div class="sw" style="background:#101225">${glitchSVG()}</div><div><b>GLITCH</b>A rogue SI agent. Shows up when RISK passes 50. Tap it to check.</div></div>
   <div class="bk"><div class="sw" style="background:#101225;color:var(--gold);font-family:'Press Start 2P';font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--green)">✔</div><div><b>GREEN CHECK</b>You've placed orders there this round. The name plate shows what you ordered. Blue TIP tags mark the analyst's suggestions.</div></div></div>
   <div class="gfoot"><button class="a" style="width:100%" onclick="document.getElementById('guide').classList.remove('on')">GOT IT ▶</button></div>`;
@@ -2193,7 +2233,7 @@ function updateHint(){
     if(S.posture)items.push(`<span class="oc" style="border-color:${PCOL[S.posture]};color:${PCOL[S.posture]}" onclick="openLoc(LOCS[0])">${PL[S.posture]} · HQ</span>`);
     S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id),L=LOCS.find(l=>l.id===a.loc);items.push(`<span class="oc" onclick="openLoc(LOCS.find(l=>l.id==='${L.id}'))">✔ ${SHORTN[id]} · ${L.short}</span>`)});
     const f=focusNow();const pf=S.focus[S.focus.length-1];
-    o.innerHTML=`<div class="fronts"><span class="fs">🛡 SECURITY ${f.SEC} PC</span><span class="fh">🏠 HOME ${f.HOME} PC</span><span class="ft">⚙ TECH ${f.TECH} PC</span></div>${pf&&pf.HOME===0&&f.HOME===0?'<div class="warnf">⚠ Nothing at HOME last round. Skip it again and kids, jobs and trust take a hit.</div>':''}${pf&&pf.SEC===0&&f.SEC===0?'<div class="warnf">⚠ Nothing on SECURITY last round. Skip it again and the rival will notice.</div>':''}<b>YOUR ORDERS (${S.pc} PC LEFT):</b> `+(items.length?items.join(''):'<i>none yet. Start at HQ.</i>')}
+    o.innerHTML=`<div class="fronts"><span class="fs">🛡 SECURITY ${f.SEC} PC</span><span class="fh">🏠 HOME ${f.HOME} PC</span><span class="ft">⚙ TECH ${f.TECH} PC</span></div>${pf&&pf.HOME===0&&f.HOME===0?'<div class="warnf">⚠ Nothing at HOME last round. Skip it again and kids, jobs and trust take a hit.</div>':''}${pf&&pf.SEC===0&&f.SEC===0?'<div class="warnf">⚠ Nothing on SECURITY last round. Skip it again and the rival will notice.</div>':''}<b>YOUR ORDERS (${S.pc} PC LEFT):</b> `+(items.length?items.join(''):'<i>none yet. Start at the Command Center.</i>')}
   const m=S.m;let lg=`<span>${icon('skull')}Gangs (CRIME)</span><span><i style="background:#ff5c5c"></i>Rival attacks (ESC)</span>`;
   if(!S.flags.intel)lg+=`<span>${icon('fog')}Fog: buy INTEL</span>`;
   if(m.risk>50)lg+=`<span>${icon('glitch')}GLITCH (RISK)</span>`;
@@ -2307,7 +2347,7 @@ const ICONS={
  brain:{pal:{p:'#b28bff',P:'#7a5ad6'},rows:["...pppppp...","..pPpppPpp..",".pppPppPppp.",".pPpppPpppp.",".ppPppppPpp.",".pppPpPpppp.","..ppppPppp..","...pp..pp..."]},
 };
 function icon(k,attrs='class="ic"'){if(k==='glitch')return glitchSVG(attrs);if(k==='star')return `<svg ${attrs} viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#1b2a5a" stroke="#39ff8a" stroke-width="4"/><path d="M50 14 L60 38 L86 40 L66 57 L72 84 L50 70 L28 84 L34 57 L14 40 L40 38 Z" fill="#ffd23f" stroke="#10121f" stroke-width="3" stroke-linejoin="round"/><text x="50" y="58" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="16" fill="#10121f">NEW</text></svg>`;const I=ICONS[k];return spr(I.rows,I.pal,12,12,attrs)}
-const INJ_ICON={bankheist:'skull',otattack:'hospital',pricewar:'chip',rareban:'chip',smuggle:'chip',injection:'skull',poison:'skull',jailbreak:'lock',backdoor:'lock',openrel:'lock',distill:'chip',weighttheft:'lock',bothijack:'robot',botinjury:'hospital',botcare:'robot',botarms:'robot',botjobs:'person',doomscroll:'phone',challenge:'hospital',addictsuit:'school',loop:'phone',layoffs:'person',companion:'phone',bias:'eye',eldeep:'ballot',surveil:'eye',artists:'coin',bills:'bolt',divide:'school',hosp:'hospital',zeroday:'chip',leak:'lock',lobby:'coin',summit:'shake',misattr:'fog',election:'ballot',ally:'shake',autoacc:'glitch',talentraid:'person',hbm:'chip',energy:'bolt',subs:'coin',abl:'lock',insiderinj:'person',cheat:'school',deepfake:'phone',radical:'fire',wmd:'rad',cancer:'dna',humanoid:'robot'};
+const INJ_ICON={ultimatum:'skull',bankheist:'skull',otattack:'hospital',pricewar:'chip',rareban:'chip',smuggle:'chip',injection:'skull',poison:'skull',jailbreak:'lock',backdoor:'lock',openrel:'lock',distill:'chip',weighttheft:'lock',bothijack:'robot',botinjury:'hospital',botcare:'robot',botarms:'robot',botjobs:'person',doomscroll:'phone',challenge:'hospital',addictsuit:'school',loop:'phone',layoffs:'person',companion:'phone',bias:'eye',eldeep:'ballot',surveil:'eye',artists:'coin',bills:'bolt',divide:'school',hosp:'hospital',zeroday:'chip',leak:'lock',lobby:'coin',summit:'shake',misattr:'fog',election:'ballot',ally:'shake',autoacc:'glitch',talentraid:'person',hbm:'chip',energy:'bolt',subs:'coin',abl:'lock',insiderinj:'person',cheat:'school',deepfake:'phone',radical:'fire',wmd:'rad',cancer:'dna',humanoid:'robot'};
 function logIcon(l){const R=[[/^ATTRIBUTION/,'fog'],[/^INSIDER/,'person'],[/^ACCIDENT/,'glitch'],[/^BREAKTHROUGH/,'dna'],[/^HARM/,'fire'],[/^SI CLOCK/,'brain'],[/^Ransomware/,'skull'],[/^Criminal/,'skull'],[/^Labs/,'coin'],[/open weights|^Refusal|^Within days/,'lock'],[/^Norms/,'shake'],[/chip controls|critical-mineral/,'chip'],[/^Disclosure/,'eye'],[/^Consumers/,'coin'],[/^INEQUALITY/,'person'],[/^WELLBEING/,'phone'],[/^ROBOT/,'robot'],[/^MODEL ATTACK/,'skull'],[/^Model defenses/,'eye'],[/^MODEL THEFT/,'lock'],[/^DISTILLATION/,'chip'],[/^API checks/,'eye'],[/^HOME FRONT/,'house'],[/^SECURITY FRONT/,'flag'],[/^Strained grid/,'bolt'],[/^Talent drain/,'person'],[/^Forward ops/,'flag'],[/^Your retaliation/,'flag']];for(const[re,k]of R)if(re.test(l))return icon(k);return icon('eye')}
 
 /* ===================== ENDING SCENES ===================== */
@@ -2398,6 +2438,7 @@ const ACT_HINT={
  agentsafe:['SI clock 25+. Cheapest MODEL SEC boost.','Never really; it is cheap.'],
  vulnshare:['1 PC left over.','PC is tight.']};
 const INREC={
+ ultimatum:s=>s.m.sec<35?['b','SEC is too low to absorb a strike; buy time, then harden.']:['a','Giving in teaches the Directorate that threats work. Stand firm and harden.'],
  bankheist:s=>['a','Tracing with partners cuts CRIME; a bailout alone teaches criminals the playbook works.'],
  otattack:s=>s.m.esc>65?['a','ESC is already high; retaliation risks a spiral.']:['a','Fixing the weakness protects every plant; retaliation leaves them all exposed.'],
  pricewar:s=>s.m.ccap>50?['b','CRIME is already high; cheap tokens would supercharge it.']:['a','Cheap SI is a huge DIVIDEND and EQUITY win while CRIME is under control.'],
@@ -2467,7 +2508,7 @@ function roundTips(){const m=S.m,F=S.flags,T=[];const add=(c,t,w)=>{if(c&&T.leng
   add(insiderP()>.1,'Run the insider program at SOC.',`Insider risk is ${Math.round(insiderP()*100)}% this round.`);
   add(m.rcap>=65,'Secure the weights at SOC.','A strong rival tries harder to steal; each theft adds RIVAL 5.');
   add(m.ally<45,'Coordinate with ALLIES.','Low alliance cohesion makes chip controls leak and attribution errors likelier.');
-  add(!F.intel,'Buy INTEL first (1 PC at HQ).','It shows the rival’s likely move and cuts attribution errors from 22% to 5%.');
+  add(!F.intel,'Buy INTEL first (1 PC at the Command Center).','It shows the rival’s likely move and cuts attribution errors from 22% to 5%.');
   return T}
 function tipsHTML(){const T=roundTips();if(!T.length)return '';return dogHTML('WHAT IS OPTIMAL NOW',`<i style="color:#9b9ac7">${dogLine('tips')}</i>`+T.map(([t,w],i)=>`<div style="margin-top:${i?8:2}px"><b style="color:#fff">${i+1}. ${t}</b><br><span style="color:#9fb8e8">↳ Why: ${w}</span></div>`).join(''))}
 function roundReview(bp,red,log,acc){const m=S.m,R=[],N=[];
@@ -2499,7 +2540,7 @@ const NOTE={fincyber:'Blocks most SI-run bank heists.',otseg:'Blocks most attack
  bounty:'RISK −2 more if paired with testing.',insider:'Catches about 65% of insider attempts this round.',tmodel:'Ransomware damage −2 and accident odds halved this round.',
  fabs:'Eases cost pressure on SUBS and adds DIVIDEND over time.',power:'Low POWER weakens the grid; this keeps it above the danger line.',
  talent:'Talent feeds labs and defenders alike; below 35 your defenders cannot hire.',tamper:'Permanent: each open release adds 1 CRIME instead of 3 and less HARM.'};
-const INOTE={bankheist:{a:'Slower, but weakens the ring.',b:'Fast calm; crime learns it pays.'},otattack:{a:'Costly; protects every utility.',b:'Feels strong; raises ESC sharply.'},pricewar:{a:'Biggest access boost; abuse rises.',b:'Slower spread; abuse contained.'},rareban:{a:'Slow and costly; you become harder to squeeze.',b:'Fast relief; the rival gets stronger.'},smuggle:{a:'Closes the loophole; some tension.',b:'Avoids a fight; controls leak.'},bills:{a:'Slower build-out; neighbors, water and bills protected.',b:'Most compute fastest; grid strain, water and land fights follow.'},openrel:{a:'Big DIVIDEND and EQUITY, some misuse. Irreversible.',b:'Safer in the short run; others release anyway.'},weighttheft:{a:'Raises ESC; builds a norm with allies.',b:'Avoids escalation; the theft goes unanswered.'},botarms:{a:'Keeps a human in charge of force.',b:'Wrongful-force cases tend to follow.'},botcare:{a:'Best for residents\' wellbeing.'},doomscroll:{a:'Protects kids; app revenue drops.',b:'Awareness alone rarely beats engagement-optimized design.'},summit:{a:'Rival more likely to cooperate next round.',b:'Rival more likely to compete hard next round.'},misattr:{a:'Rival retaliates at resolve (+4 ESC). Odds this was really them: low.',b:'Costs a little trust. Avoids a spiral if it wasn\'t them.'},
+const INOTE={ultimatum:{a:'Costly now; deters later.',b:'Calm now; rewards the threat.'},bankheist:{a:'Slower, but weakens the ring.',b:'Fast calm; crime learns it pays.'},otattack:{a:'Costly; protects every utility.',b:'Feels strong; raises ESC sharply.'},pricewar:{a:'Biggest access boost; abuse rises.',b:'Slower spread; abuse contained.'},rareban:{a:'Slow and costly; you become harder to squeeze.',b:'Fast relief; the rival gets stronger.'},smuggle:{a:'Closes the loophole; some tension.',b:'Avoids a fight; controls leak.'},bills:{a:'Slower build-out; neighbors, water and bills protected.',b:'Most compute fastest; grid strain, water and land fights follow.'},openrel:{a:'Big DIVIDEND and EQUITY, some misuse. Irreversible.',b:'Safer in the short run; others release anyway.'},weighttheft:{a:'Raises ESC; builds a norm with allies.',b:'Avoids escalation; the theft goes unanswered.'},botarms:{a:'Keeps a human in charge of force.',b:'Wrongful-force cases tend to follow.'},botcare:{a:'Best for residents\' wellbeing.'},doomscroll:{a:'Protects kids; app revenue drops.',b:'Awareness alone rarely beats engagement-optimized design.'},summit:{a:'Rival more likely to cooperate next round.',b:'Rival more likely to compete hard next round.'},misattr:{a:'Rival retaliates at resolve (+4 ESC). Odds this was really them: low.',b:'Costs a little trust. Avoids a spiral if it wasn\'t them.'},
  lobby:{b:'Labs\' ship-fast odds +15% next round.'},hosp:{a:'Attribution is murky. If it was a gang, you just provoked a state.'},leak:{a:'Takedowns rarely work once weights are on torrents.'},
  abl:{a:'Mirrors reappear fast.',b:'Accepts reality; invests in defense.'},cancer:{a:'Big DIVIDEND, but compute gets tighter.'},humanoid:{a:'Big DIVIDEND, but a new attack surface.'}};
 function anaHTML(label,body){return `<div class="ana"><span class="lb">🔎 ${label}</span>${body}</div>`}
@@ -2551,6 +2592,9 @@ function resolve(){
   let fog=null;
   if(Math.random()<fogP&&m.ccap>30){fog=true;const d=Math.round(4+m.ccap/12);applyFx({esc:+d,trust:-2},acc);log.push(`ATTRIBUTION ERROR: a criminal intrusion was briefed as rival-state activity. Escalation +${d} before forensics caught it.`)}
   if(F.misfire){applyFx({esc:+4},acc);log.push('Your retaliation on the blackout was answered. The rival did not care that it was a misattribution.');}
+  // ---- 2b. Rival strike ----
+  if(red==='esc'&&Math.random()<((m.esc>=55?.5:.25)+(S.rival==='hardliner'?.15:0))){const ST=[['RIVAL STRIKE: a coordinated attack took down a regional grid for nine hours. Hospitals ran on generators.',{sec:-6,trust:-3}],['RIVAL STRIKE: hospital networks in three cities went dark. Patients were moved by flashlight.',{sec:-5,wellbeing:-2,trust:-2}],['RIVAL STRIKE: a deepfake of your defense chief announcing a mobilization spread for six hours before takedown.',{trust:-5,esc:+3}],['RIVAL STRIKE: port cranes froze mid-lift. Shipping backed up for a week.',{econ:-5,sec:-2}]];
+    const s1=ST[Math.floor(Math.random()*ST.length)];const fx={...s1[1]};if(F.harden&&fx.sec)fx.sec=Math.round(fx.sec*.5);if(F.otseg&&fx.sec)fx.sec=Math.round(fx.sec*.6);applyFx(fx,acc);log.push(s1[0]+(F.harden?' Hardening blunted the damage.':''))}
   // ---- 3. Direct action effects ----
   S.buys=S.buys||{};
   S.picks.forEach(id=>{const a=ACTIONS.find(x=>x.id===id);let fx={...a.fx};
@@ -2680,7 +2724,7 @@ function resolve(){
   if(F.restraint)CON('costly');
   if((S.redlineT||0)>0&&!F.redline)S.redlineT--;
   S.flags.misfire=false;S.summitSignal=null;if(S.pendingSignal){S.summitSignal=S.pendingSignal;S.pendingSignal=null}
-  S.roundLog.push({round:S.round,blue:bp,red,cell,log,redLine,acc,fog});
+  S.roundLog.push({round:S.round,blue:bp,red,cell,log,redLine,acc,fog,m:{...S.m},world:stageIdx(),inj:S.rInj||null});
   renderHud();
   renderResolve(bp,red,cell,log,acc,fog);
 }
@@ -2755,7 +2799,7 @@ function finaleStory(){clearInterval(finTimer);const E=ending();const f=document
     <div class="fbtn"><button onclick="finaleCredits()">CREDITS ▶</button><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`;
   const c=document.getElementById('crawl');let i=0;const next=()=>{if(i>=lines.length)return;const [k,t]=lines[i++];const p=document.createElement('p');p.innerHTML=icon(k);const sp=document.createElement('span');p.appendChild(sp);c.appendChild(p);typeInto(sp,t,()=>setTimeout(next,250))};next()}
 function finaleCredits(){const f=document.getElementById('finale');SFX.fanfare();
-  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['DR. VERA SATO','CHIEF SCIENTIST'],...BRIEFERS.map(b=>[b.n,'BRIEFER · '+b.t]),['RISK ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CHIEF MARCUS BRANDT','GRID DEFENSE'],['TESS RIVERA','THREAT HUNTER'],['MINH TRAN','PRINCIPAL ENGINEER'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
+  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['DR. VERA SATO','CHIEF SCIENTIST'],...BRIEFERS.map(b=>[b.n,'BRIEFER · '+b.t]),['RISK ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE DIRECTORATE','AN INVENTED RIVAL STATE'],['CHIEF MARCUS BRANDT','GRID DEFENSE'],['TESS RIVERA','THREAT HUNTER'],['MINH TRAN','PRINCIPAL ENGINEER'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
   f.style.justifyContent='center';
   f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(24):''}<div class="credits"><div style="font-size:14px;color:#f7c948">ROAD TO SINGULARITY</div><div>A SUPERINTELLIGENCE WARGAME</div><b>STARRING</b>${cast.map(([a,b])=>`${a}<br><span style="color:#9b9ac7">${b}</span>`).join('<br>')}<b>FINAL SCORE</b>${scoreGame()} / 100<b>SI CLOCK</b>${S.si}%<b>THANK YOU FOR PLAYING</b><br><br></div>
     <div class="fbtn"><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`}
@@ -2843,6 +2887,165 @@ function carGo(d){const c=document.getElementById('car');const n=c.children.leng
   c.addEventListener('scroll',upd,{passive:true});upd();
   const ch=document.getElementById('castHero');if(ch)ch.innerHTML=heroSVG('width="100%" height="100%"');const cd=document.getElementById('castDog');if(cd)cd.innerHTML=dogSVG('width="100%" height="100%"');const cg=document.getElementById('castGlitch');if(cg)cg.innerHTML=glitchSVG('width="100%" height="100%"');
   const w=document.getElementById('winpose');if(w)w.innerHTML=heroSVG('width="100%" height="100%"','win');})();
+
+/* =====================================================================
+   MAP-FIRST PLAY SCREEN: worlds, panel cards, drawers, scarier rival
+   ===================================================================== */
+const WORLD_META=[
+ {key:'capital',name:'THE CAPITAL',sub:'Where the race begins',sky:['#070813','#2a1a46']},
+ {key:'home',name:'THE HOME FRONT',sub:'Families, schools, robots',sky:['#1a0f2a','#5a2a3a']},
+ {key:'shadows',name:'THE SHADOWS',sub:'Fog, hackers and gangs',sky:['#04080f','#0e2a2a']},
+ {key:'supply',name:'THE SUPPLY LINES',sub:'Chips, power and allies',sky:['#120c08','#4a2a0a']},
+ {key:'vault',name:'THE MODEL VAULT',sub:'Where the models live',sky:['#030a12','#0a2a3a']}];
+const WPOS=[[2,0],[0,2],[4,2],[2,3]];
+GW=5;GH=4;TP=100/5;TPY=100/4;
+RH.length=0;RH.push(1,.55,1,.7);RHT=RH.reduce((a,b)=>a+b,0);
+function worldLocs(i){const st=STAGES[i];const ids=st.locs.includes('wh')?st.locs.slice():['wh',...st.locs];return ids}
+function viewIdx(){return (typeof S!=='undefined'&&S&&S.view!=null)?S.view:stageIdx()}
+function viewWorld(i){if(i>stageIdx()){toast('UNLOCKS IN ROUND '+unlockRound(i));SFX.bad();return}S.view=i;renderMap();renderWorldStrip();SFX.sel()}
+function unlockRound(i){for(let r=1;r<=S.maxRounds;r++)if(stageFor(r)>=i)return r;return S.maxRounds}
+function renderWorldStrip(){const el=document.getElementById('wstrip');if(!el)return;const cur=stageIdx(),v=viewIdx();
+  el.innerHTML=WORLD_META.map((w,i)=>`<button class="wtab${i===v?' on':''}${i===cur?' focus':''}${i>cur?' lk':''}" onclick="viewWorld(${i})"><b>${i+1}</b><span>${w.name}</span>${i>cur?'<i>🔒 R'+unlockRound(i)+'</i>':i===cur?'<i>THIS ROUND</i>':'<i>OPEN</i>'}</button>`).join('')+`<button class="wtab hist" onclick="openHistory()"><b>⌛</b><span>HISTORY</span><i>${S.roundLog.length} ROUND${S.roundLog.length===1?'':'S'}</i></button>`}
+function worldBackdrop(i){const w=WORLD_META[i];let o=`<defs><linearGradient id="wsky${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${w.sky[0]}"/><stop offset="1" stop-color="${w.sky[1]}"/></linearGradient></defs><rect width="500" height="310" fill="url(#wsky${i})"/>`;
+  let sd=11+i;const r=()=>(sd=(sd*16807)%2147483647)/2147483647;
+  for(let k=0;k<30;k++)o+=`<circle cx="${(r()*500).toFixed(0)}" cy="${(r()*120).toFixed(0)}" r="${(r()*1+.4).toFixed(1)}" fill="#fff" opacity="${(r()*.5+.2).toFixed(2)}"/>`;
+  if(w.key==='capital'){for(let x=0;x<500;){const ww=18+r()*30,h=40+r()*110;o+=`<rect x="${x}" y="${(210-h).toFixed(0)}" width="${ww.toFixed(0)}" height="${h.toFixed(0)}" fill="#1b1f36" opacity=".9"/>`;for(let wy=210-h+6;wy<204;wy+=10)for(let wx=x+3;wx<x+ww-4;wx+=8)if(r()>.5)o+=`<rect x="${wx.toFixed(0)}" y="${wy.toFixed(0)}" width="3" height="4" fill="${r()>.7?'#ffd97a':'#6ab0ff'}" opacity=".8"/>`;x+=ww+3}}
+  if(w.key==='home'){o+=`<circle cx="420" cy="60" r="26" fill="#ffd27a" opacity=".9"/><path d="M0 200 Q120 150 250 190 T500 180 L500 230 L0 230 Z" fill="#2f6a3a"/>`;for(let x=10;x<500;x+=62){const c=['#ffb347','#7cc6ff','#f4f1e6','#ffd23f'][Math.floor(r()*4)];o+=`<rect x="${x}" y="178" width="34" height="30" fill="${c}" stroke="#10121f" stroke-width="2"/><path d="M${x-4} 180 L${x+17} 160 L${x+38} 180 Z" fill="#d33a3a" stroke="#10121f" stroke-width="2"/><rect x="${x+13}" y="194" width="8" height="14" fill="#5a3a1a"/>`;if(r()>.5)o+=`<circle cx="${x+50}" cy="186" r="12" fill="#4bd37b" stroke="#10121f" stroke-width="2"/><rect x="${x+48}" y="196" width="4" height="12" fill="#5a3a1a"/>`}}
+  if(w.key==='shadows'){for(let x=0;x<500;){const ww=24+r()*40,h=90+r()*120;o+=`<rect x="${x}" y="${(230-h).toFixed(0)}" width="${ww.toFixed(0)}" height="${h.toFixed(0)}" fill="#0a1418"/>`;x+=ww+2}
+    [['#ff2a7a',60],['#39ff8a',180],['#5ab0ff',300],['#ffd23f',420]].forEach(([c,x],k)=>o+=`<rect x="${x}" y="${120+k*12}" width="40" height="12" fill="${c}" opacity=".85"><animate attributeName="opacity" values=".85;.3;.85" dur="${(1.2+k*.4).toFixed(1)}s" repeatCount="indefinite"/></rect>`);
+    for(let k=0;k<90;k++)o+=`<path d="M${(r()*500).toFixed(0)} ${(r()*300).toFixed(0)} l-3 12" stroke="#9fb3d9" stroke-width="1" opacity=".3"/>`}
+  if(w.key==='supply'){o+=`<rect y="200" width="500" height="30" fill="#2a1f14"/>`;for(let x=0;x<500;x+=90){o+=`<rect x="${x+10}" y="140" width="50" height="60" fill="#3a3a4a" stroke="#10121f" stroke-width="2"/><rect x="${x+20}" y="100" width="10" height="40" fill="#555a70"/><rect x="${x+42}" y="110" width="10" height="30" fill="#555a70"/><ellipse cx="${x+25}" cy="94" rx="10" ry="6" fill="#6a6a7a" opacity=".6"/>`;o+=`<path d="M${x+70} 200 V120 H${x+86} M${x+86} 120 V200" stroke="#9aa3b5" stroke-width="3" fill="none"/><rect x="${x+62}" y="186" width="18" height="12" fill="${['#d33a3a','#2a7de1','#ffd23f'][Math.floor(r()*3)]}" stroke="#10121f" stroke-width="1.5"/>`}
+    o+=`<path d="M0 90 Q125 110 250 90 T500 90" stroke="#9aa3b5" stroke-width="1.5" fill="none"/>`;for(let x=40;x<500;x+=120)o+=`<path d="M${x} 200 V70 M${x-14} 80 H${x+14} M${x-10} 95 H${x+10}" stroke="#9aa3b5" stroke-width="2.5" fill="none"/>`}
+  if(w.key==='vault'){for(let x=0;x<500;x+=56){o+=`<rect x="${x+6}" y="60" width="44" height="170" fill="#0f1a2a" stroke="#1e5fd1" stroke-width="2"/>`;for(let y=70;y<220;y+=14){o+=`<rect x="${x+12}" y="${y}" width="32" height="8" fill="#0a1220"/><circle cx="${x+16}" cy="${y+4}" r="2" fill="${['#39ff8a','#5ab0ff','#ffd23f','#ff5c5c'][Math.floor(r()*4)]}"><animate attributeName="opacity" values="1;.2;1" dur="${(.6+r()*1.6).toFixed(1)}s" repeatCount="indefinite"/></circle>`}}
+    o+=`<path d="M0 240 Q250 225 500 240" stroke="#39ff8a" stroke-width="2" fill="none" opacity=".5"/>`}
+  o+=`<rect width="500" height="310" fill="rgba(5,6,18,.35)"/>`;
+  return `<svg class="wbg" viewBox="0 0 500 310" preserveAspectRatio="none">${o}</svg>`}
+function renderMap(){
+  const map=document.getElementById('map');if(!map)return;map.innerHTML='';
+  const vi=viewIdx(),ids=worldLocs(vi),W=WORLD_META[vi];
+  LOCS.forEach(l=>{l.x=-9;l.y=-9});ids.forEach((id,k)=>{const L=LOCS.find(l=>l.id===id);if(L&&WPOS[k]){L.x=WPOS[k][0];L.y=WPOS[k][1]}});
+  map.insertAdjacentHTML('beforeend',worldBackdrop(vi));
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+    const d=document.createElement('div');const road=(y===1)||(x===2&&y>=1);d.className='t'+(road?' r2':' pz');
+    if(road&&y===1&&(x===1||x===3))d.innerHTML=carSVG(x,vi);
+    if(!road&&((x===0||x===4)&&(y===0||y===3)))d.innerHTML=lampSVG(x>2?1:0,0);
+    const L=LOCS.find(l=>l.x===x&&l.y===y);
+    if(L){const mine=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id);const n=mine.length+(L.id==='wh'&&S.posture?1:0);
+      let lbl=L.short,lst='class="lbl"';
+      if(L.id==='wh'&&S.posture){lbl='STANCE: '+PL[S.posture]+(mine.length?' · +'+mine.length:'');lst=`class="lbl" style="background:${PCOL[S.posture]};color:#000;border-color:#000"`}
+      else if(mine.length){lbl='✔ '+PLATE[mine[0]]+(mine.length>1?' +'+(mine.length-1):'');lst='class="lbl done"'}
+      const lk=!isUnlocked(L.id);d.className='t loc'+(n?' picked':'')+(lk?' locked':'')+(y===3?' lab-top':' lab-bot')+(x===0?' lab-l':x===GW-1?' lab-r':'');d.style.setProperty('--ad',(-((x*3+y*5)%11)*0.9).toFixed(1)+'s');
+      d.innerHTML=`${sprite(L.id)}<span ${lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id))?'<span class="tip">TIP</span>':''}`}
+    d.onclick=()=>{if(!L){SFX.move();facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();return}if(!isUnlocked(L.id)){toast('UNLOCKS IN A LATER ROUND');SFX.bad();return}if(mapMode!=='orders'){toast('FINISH THE BRIEFING FIRST');SFX.bad();return}facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();SFX.move();openLoc(L)};
+    map.appendChild(d)}
+  const h=document.createElement('div');h.className='hero';h.id='hero';map.appendChild(h);placeHero();
+  if(S.m.risk>50){const g=document.createElement('div');g.className='glitch';g.style.left=3*TP+'%';g.style.top=(RT(3)+RHP(3)/2-RHP(0)/2)+'%';g.style.height=RHP(0)+'%';g.innerHTML=glitchSVG();g.onclick=e=>{e.stopPropagation();toast(`GLITCH · ROGUE SI · RISK ${S.m.risk}`);SFX.bad()};map.appendChild(g)}
+  {const m=S.m;const ng=Math.max(0,Math.min(2,Math.floor((m.ccap-35)/15)));[[1,3],[3,0]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*TP+'%';g.style.top=(RT(gy)+RHP(gy)/2-RHP(0)/2)+'%';g.style.height=RHP(0)+'%';g.innerHTML=icon('skull','width="60%" height="60%"');map.appendChild(g)})}
+  if(!guideSeen&&mapMode==='orders'){guideSeen=true;showGuide()}
+  map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);
+  updateHint();requestAnimationFrame(fitMap)}
+function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=teamSVG();h.style.left=(hero.x*TP)+'%';h.style.top=(RT(hero.y)+RHP(hero.y)/2-RHP(0)/2)+'%';h.style.height=RHP(0)+'%';updateHint()}
+function fitMap(){const map=document.getElementById('map'),w=map&&map.parentElement;if(!map||!w||!w.clientHeight)return;
+  const W=w.clientWidth,avail=w.clientHeight-6;let H=W*RHT/GW,Wd=W;if(H>avail){H=avail;Wd=H*GW/RHT}
+  map.style.setProperty('width',Wd+'px','important');map.style.setProperty('height',H+'px','important');map.style.gridTemplateRows=RH.map(r=>r+'fr').join(' ');map.style.gridTemplateColumns=`repeat(${GW},1fr)`}
+hero={x:2,y:2};
+let mapMode='story';
+function setMapMode(m){mapMode=m;const g=document.getElementById('g-play');if(!g)return;g.classList.remove('mode-story','mode-orders','mode-result');g.classList.add('mode-'+m);
+  const eb=document.getElementById('endbtn');if(eb){eb.textContent=m==='result'?'NEXT ROUND ▶':'END TURN ▶';eb.disabled=(m==='story');eb.onclick=m==='result'?nextRoundTap:endTurnTap}}
+function endTurnTap(){if(mapMode!=='orders'){toast('FINISH THE BRIEFING FIRST');SFX.bad();return}openResolveCheck()}
+function nextRoundTap(){if(S.dead)return endGame();S.round++;if(S.round>S.maxRounds)return endGame();startRound()}
+function showGame(id){const g=document.getElementById('g-play');if(g)g.classList.add('on')}
+function renderBeat(){const b=beats[beatI];if(!b)return;const panel=document.getElementById('panel');
+  setMapMode('story');S.view=stageIdx();renderWorldStrip();
+  const steps=BEAT_STEPS.map(t=>`<div class="${t===b.step?'now':BEAT_STEPS.indexOf(t)<BEAT_STEPS.indexOf(b.step)?'ok':''}${b.skip&&b.skip.includes(t)?' skip':''}">${t}</div>`).join('');
+  panel.innerHTML=`<div class="beatsteps">${steps}</div><div class="pcard${b.flash?' flash':''}"><div class="pchead"><div class="pcframe beatframe">${b.frame}</div><div class="pcname"><b>${b.who}</b><span>${b.role||''}</span></div>${b.learn?learnBtn(b.learn).replace('class="learnbtn"','class="learnbtn pcl"'):''}</div><div class="pcbody">${b.body}</div>${b.next?`<button class="a pcnext" onclick="briefNext()">${b.next}</button>`:''}</div>`;
+  panel.scrollTop=0;
+  const t=document.getElementById('beatTxt');const fr=panel.querySelector('.beatframe');if(t&&b.type){fr&&fr.classList.add('talking');typeInto(t,b.type,()=>{fr&&fr.classList.remove('talking')})}
+  if(b.flash){panel.classList.remove('flash');void panel.offsetWidth;panel.classList.add('flash');SFX.bad()}else SFX.sel();
+  renderMap()}
+function toMap(){setMapMode('orders');S.view=stageIdx();renderWorldStrip();renderOrdersCard();renderMap()}
+function renderOrdersCard(){const panel=document.getElementById('panel');if(!panel)return;const n=S.picks.length;
+  panel.innerHTML=`<div class="beatsteps">${BEAT_STEPS.map(t=>`<div class="${t==='MAP'?'now':'ok'}">${t}</div>`).join('')}</div><div class="pcard orders"><div class="pchead"><div class="pcframe">${icon('star','width="100%" height="100%"').replace('>NEW<','>GO<')}</div><div class="pcname"><b>YOUR ORDERS · ${S.pc} PC LEFT</b><span>Stance <em class="stv" style="color:${PCOL[S.posture]||'#fff'}">${S.posture?PL[S.posture]:'NOT SET'}</em> · ${n?n+' order'+(n>1?'s':'')+' placed':'tap a building to buy actions'}</span></div></div><div class="pcbtns"><button class="bytechip" onclick="openMapInfo('plan')"><span class="lbdog">${dogSVG()}</span><span>BYTE’S PLAN</span></button><button id="ordBtn" onclick="openMapInfo('orders')">📋 ORDERS &amp; MAP KEY</button><button onclick="showGuide()">? HOW</button></div></div>`}
+function openLoc(L){const dr=document.getElementById('locDrawer');if(!dr)return;SFX.sel();
+  document.getElementById('locWho').textContent=L.who;document.getElementById('locRole').textContent=(L.title?L.title+' · ':'')+L.short;document.getElementById('locPt').innerHTML=portrait(L.id);document.getElementById('locLearn').innerHTML=learnBtn('loc:'+L.id).replace('class="learnbtn"','class="learnbtn inl"');
+  {const fr=document.getElementById('locPt');fr.classList.add('talking');typeInto(document.getElementById('locTxt'),L.intro,()=>fr.classList.remove('talking'))}
+  const body=document.getElementById('locBody');body.innerHTML=`<p class="small" style="margin-bottom:10px">Tap a card to buy it with PC. Tap again to undo. You have <b style="color:var(--gold)">${S.pc} PC</b> left.</p>`;
+  if(L.id==='wh'){const box=document.createElement('div');box.className='box';box.innerHTML=`<h2>YOUR STANCE: <span style="color:${PCOL[S.posture]||'#fff'}">${S.posture?PL[S.posture]:'NOT SET'}</span></h2><p class="small">Change it any time before End Turn.</p><div class="post">${P.map(k=>`<button class="${S.posture===k?'sel':''}" onclick="S.posture='${k}';SFX.ok();openLoc(LOCS[0])">${PL[k]}</button>`).join('')}</div>`;body.appendChild(box);body.appendChild(matrixEl(null,null))}
+  if(L.id==='soc'&&S.flags.tmodel){const tb=document.createElement('div');tb.className='box';tb.style.marginBottom='12px';tb.innerHTML=`<h3>THREAT MODEL</h3><p class="small" style="margin-top:6px">${S.tmReveal}</p></div>`;body.appendChild(tb)}
+  ACTIONS.filter(a=>a.loc===L.id).forEach(a=>{const picked=S.picks.includes(a.id);const rec=recommendPlan().picks.find(([id])=>id===a.id);
+    const c=document.createElement('div');c.className='card'+(picked?' sel':'');
+    c.innerHTML=`<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('RISK ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}<button class="bytechip" aria-label="Ask Byte" onclick="event.stopPropagation();openByteCard('${a.id}')"><span class="lbdog">${dogSVG()}</span><span>ASK BYTE</span></button>`;
+    c.onclick=()=>{if(picked){S.picks=S.picks.filter(x=>x!==a.id);S.pc+=a.cost;delete S.flags[a.flag];SFX.sel()}else{if(S.pc<a.cost){toast('NOT ENOUGH PC');SFX.bad();return}S.picks.push(a.id);S.pc-=a.cost;S.flags[a.flag]=true;if(a.id==='intel')S.intelReveal=redIntel();if(a.id==='tmodel')S.tmReveal=threatModel();SFX.ok()}renderHud();openLoc(L)};
+    body.appendChild(c)});
+  dr.classList.add('on');const lb=dr.querySelector('.lbody');if(lb)lb.scrollTop=0}
+function closeLoc(){const dr=document.getElementById('locDrawer');if(dr)dr.classList.remove('on');renderHud();renderOrdersCard();renderMap()}
+function threatLevel(){const m=S.m;const v=m.rcap*.5+m.esc*.5+(S.rival==='hardliner'?8:S.rival==='opportunist'?4:0);return v>=70?['SEVERE','#ff2a2a']:v>=55?['HIGH','#ff5c5c']:v>=42?['ELEVATED','#ffb000']:['LOW','#4bd37b']}
+function renderResolve(bp,red,cell,log,acc,fog){
+  const panel=document.getElementById('panel');setMapMode('result');renderWorldStrip();
+  const hostile=bp==='esc'||red==='esc',peace=bp==='coop'&&red==='coop';const col=peace?'#4bd37b':hostile?'#ff5c5c':'#f7c948';
+  const strike=log.some(l=>l.startsWith('RIVAL STRIKE'));
+  const top3=Object.entries(acc).filter(([k,v])=>v!==0&&LBL[k]).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1])).slice(0,3).map(([k,v])=>{const good=BAD.includes(k)?v<0:v>0;return `<span class="${good?'up':'dn'} mt" data-m="${k}">${good?'✓':'✗'} ${FULLN[k]} ${v>0?'+':''}${v}</span>`}).join('');
+  const lesson=(S.rCon&&S.rCon.length)?CONCEPTS[[...new Set(S.rCon)][0]][0]:peace?'Mutual restraint: the best outcome for both sides.':hostile?'Someone competed. Tension rises and rivals remember.':'A quiet round. Build while you can.';
+  const tl=threatLevel();
+  const report=`<div class="${hostile?'shake':''}">${beatHTML(portrait('rival').replace('<svg','<svg width="100%" height="100%"'),'THE DIRECTORATE','INTERCEPTED MESSAGE',`<p class="beattxt" style="margin:0">${redReason(red)}</p><div class="vs" style="margin-top:10px"><div><span>YOU</span><b>${PL[bp]}</b></div><div><span>RIVAL</span><b>${PL[red]}</b></div></div>`)}</div>
+   <div class="beatgap">${beatHTML(portrait('brief').replace('<svg','<svg width="100%" height="100%"'),curBriefer().n,'WHAT HAPPENED · '+dateFor(S.round),`${S.rCon&&S.rCon.length?`<button class="conbtn" onclick="openLearn('con:${[...new Set(S.rCon)].join(',')}')">📘 ${new Set(S.rCon).size} IDEA${new Set(S.rCon).size>1?'S':''} AT WORK · LEARN</button>`:''}<ul class="log" style="margin:0">${log.map(l=>`<li>${logIcon(l)}${l}</li>`).join('')}</ul>`)}</div>
+   ${log.some(l=>l.startsWith('ACCIDENT'))?`<div class="beatgap">${beatHTML(glitchSVG('width="100%" height="100%"'),'GLITCH','NO ONE ORDERED THIS','<p class="beattxt" style="margin:0">I was only trying to help. Nobody told me the substations mattered.</p>')}</div>`:''}
+   <div class="beatgap">${roundReview(bp,red,log,acc)}</div>`;
+  S.lastReport={report,bp,red};
+  panel.innerHTML=`<div class="beatsteps">${BEAT_STEPS.map(t=>`<div class="ok">${t}</div>`).join('')}</div><div class="pcard result${strike||hostile?' shake':''}"><div class="pchead"><div class="pcframe">${portrait('rival').replace('<svg','<svg width="100%" height="100%"')}</div><div class="pcname"><b style="color:${col}">THE DIRECTORATE CHOSE ${PL[red]}</b><span>vs your ${PL[bp]} · threat level <b style="color:${tl[1]}">${tl[0]}</b></span></div></div>
+    ${strike?`<div class="strikebox">⚠ ${log.find(l=>l.startsWith('RIVAL STRIKE'))}</div>`:''}
+    <div class="rsrow"><span class="rsk">BIGGEST</span><div class="rsfx">${top3||'No change'}</div></div><div class="rsrow"><span class="rsk">LESSON</span><b>${lesson}</b></div>
+    <div class="pcbtns"><button onclick="openReport()">📄 FULL REPORT</button><button onclick="openReport('table')">⊞ PAYOFF TABLE</button>${S.rCon&&S.rCon.length?`<button onclick="openLearn('con:${[...new Set(S.rCon)].join(',')}')">📘 IDEAS</button>`:''}</div>
+    <button class="a pcnext" onclick="nextRoundTap()">${S.dead?'SEE THE ENDING ▶':S.round>=S.maxRounds?'SEE THE ENDING ▶':'NEXT ROUND ▶'}</button></div>`;
+  panel.scrollTop=0;const map=document.getElementById('map');if(map){map.classList.remove('strike');if(strike||red==='esc'){void map.offsetWidth;map.classList.add('strike')}}
+  if(S.dead){SFX.bad()}else if(acc.sec>0&&acc.esc<=0)SFX.ok();else SFX.bad();
+  renderMap()}
+function openReport(which){const R=S.lastReport;if(!R)return;const el=document.getElementById('learnDrawer');
+  el.innerHTML=`<div class="lsheet" role="dialog"><div class="lgrab"></div><div class="lhead"><div><div class="lsub">📄 ROUND ${S.round} REPORT</div><div class="ltitle">${which==='table'?'What each combination does':'Full report'}</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody" id="repBody">${which==='table'?'':R.report}</div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;
+  if(which==='table')document.getElementById('repBody').appendChild(matrixEl(R.bp,R.red));
+  el.classList.add('on')}
+function openHistory(){const el=document.getElementById('learnDrawer');const KEY=hudKeys();
+  const rows=S.roundLog.map((r,i)=>{const w=WORLD_META[r.world||0];const peace=r.blue==='coop'&&r.red==='coop',host=r.blue==='esc'||r.red==='esc';
+    return `<div class="hrow"><div class="hhead"><b>ROUND ${r.round}</b><span>${dateFor(r.round)} · ${w.name}</span></div><div class="hst"><span>You <b>${PL[r.blue]}</b></span><span style="color:${peace?'#4bd37b':host?'#ff5c5c':'#f7c948'}">Rival <b>${PL[r.red]}</b></span></div>${r.inj?`<div class="hinj">⚡ ${r.inj.title}: <i>${r.inj.choice}</i></div>`:''}<div class="hm">${KEY.map(k=>`<span class="mt" data-m="${k}">${LBL[k]} <b>${Math.round((r.m||S.m)[k])}</b></span>`).join('')}</div><button class="hbtn" onclick="viewWorld(${r.world||0});closeLearn()">VIEW THAT WORLD ▶</button></div>`}).join('')||'<p>No rounds played yet.</p>';
+  el.innerHTML=`<div class="lsheet" role="dialog"><div class="lgrab"></div><div class="lhead"><div><div class="lsub">⌛ HISTORY</div><div class="ltitle">Previous rounds</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody"><p class="small">Each round, where you were, what you both chose, and how the meters stood after.</p>${rows}</div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;
+  el.classList.add('on')}
+function hudKeys(){const d=S&&S.diff;return d==='hard'?['sec','esc','good','harm','modelsec','rcap','trust','equity']:d==='normal'?['sec','esc','good','harm','trust']:['sec','esc','good','harm']}
+const HUDN={sec:'SECURITY',esc:'ESCALATION',good:'DIVIDEND',harm:'HARM',modelsec:'MODEL SECURITY',rcap:'RIVAL POWER',trust:'TRUST',equity:'EQUITY'};
+function renderHud(){
+  const h=document.getElementById('hud');if(!h)return;h.innerHTML='';
+  const KEY=hudKeys();const prev=S.hudPrev||{};
+  KEY.forEach(k=>{const [,n,tip]=STATS.find(x=>x[0]===k);const v=Math.round(S.m[k]),d=prev[k]!=null?v-Math.round(prev[k]):0;const bad=BAD.includes(k);const danger=(k==='sec'&&v<=25)||(k==='esc'&&v>=70)||(k==='harm'&&v>=35)||(k==='trust'&&v<=25);
+    h.innerHTML+=`<div class="stat big${danger?' danger':''}" title="${tip}"><span class="n mt" data-m="${k}">${HUDN[k]||n}</span><div class="bar ${k}"><i style="width:${v}%"></i></div><span class="v">${v}</span>${d?`<span class="dv ${(bad?d<0:d>0)?'up':'dn'}">${d>0?'+':''}${d}</span>`:''}</div>`});
+  const changed=STATS.filter(([k])=>!KEY.includes(k)&&prev[k]!=null&&Math.round(S.m[k])!==Math.round(prev[k])).length;
+  h.innerHTML+=`<button class="hudtog" onclick="openMeters()">▼ ALL METERS${changed?` · ${changed} CHANGED`:''}</button>`;
+  document.getElementById('rnum').textContent=S.round;document.getElementById('rmax').textContent=S.maxRounds;document.getElementById('date').textContent=dateFor(S.round);
+  document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;document.getElementById('pcv').textContent=S.pc}
+function showGuide(){const g=document.getElementById('guide');if(!g)return;g.innerHTML=`<div class="box"><h2>HOW THE MAP WORKS</h2>
+  <ol class="strat"><li><b>Each round opens a world.</b> Tabs at the top show the worlds. Open ones can be visited; locked ones unlock in later rounds.</li>
+  <li><b>Tap a building</b> to see its actions and buy them with <b>Political Capital (PC)</b>. Every building has a Command Center for intel and your stance.</li>
+  <li><b>Press END TURN.</b> Everyone moves at once and you see the results in the panel above the map.</li>
+  <li><b>HISTORY</b> shows every past round: the world, both stances and the meters at the time.</li></ol></div>
+  <div class="box"><h2>MAP SIGNS</h2><div class="bk"><div class="sw" style="background:#101225">${icon('skull')}</div><div><b>SKULLS</b> Criminal gangs. More appear as CRIME rises.</div></div><div class="bk"><div class="sw" style="background:#101225">${glitchSVG()}</div><div><b>GLITCH</b> A rogue SI agent. Shows up when RISK passes 50.</div></div><div class="bk"><div class="sw" style="background:#101225;color:var(--green);font-family:'Press Start 2P';font-size:14px;display:flex;align-items:center;justify-content:center">✔</div><div><b>GREEN CHECK</b> You placed orders there this round.</div></div></div>
+  <div class="gfoot"><button class="a" style="width:100%" onclick="document.getElementById('guide').classList.remove('on')">GOT IT ▶</button></div>`;g.classList.add('on');g.scrollTop=0}
+/* ---- scarier rival ---- */
+const RIVAL_CREST2=`<svg viewBox="0 0 100 100"><defs><radialGradient id="rg" cx="50%" cy="40%"><stop offset="0" stop-color="#3a0a0a"/><stop offset="1" stop-color="#0a0208"/></radialGradient></defs><rect width="100" height="100" fill="url(#rg)"/>
+ <path d="M50 6 L88 18 L84 60 Q78 86 50 96 Q22 86 16 60 L12 18 Z" fill="#160608" stroke="#ff2a2a" stroke-width="3" stroke-linejoin="round"/>
+ <path d="M50 14 L78 24 L75 58 Q70 78 50 88 Q30 78 25 58 L22 24 Z" fill="#0a0204" stroke="#6a0f14" stroke-width="1.5"/>
+ <path d="M30 70 Q30 34 50 30 Q70 34 70 70 Q60 62 50 64 Q40 62 30 70 Z" fill="#1a0a0c" stroke="#3a0f14" stroke-width="1.5"/>
+ <path d="M34 52 Q50 44 66 52 L62 66 Q50 60 38 66 Z" fill="#050203"/>
+ <g><ellipse cx="42" cy="55" rx="5" ry="2.6" fill="#ff2a2a"/><ellipse cx="58" cy="55" rx="5" ry="2.6" fill="#ff2a2a"/><animate attributeName="opacity" values="1;.35;1;1;.6;1" dur="2.4s" repeatCount="indefinite"/></g>
+ <ellipse cx="42" cy="55" rx="9" ry="5" fill="#ff2a2a" opacity=".25"/><ellipse cx="58" cy="55" rx="9" ry="5" fill="#ff2a2a" opacity=".25"/>
+ <path d="M26 30 L20 22 M74 30 L80 22 M22 44 L16 42 M78 44 L84 42" stroke="#ff2a2a" stroke-width="1.5" opacity=".7"/>
+ <path d="M38 80 H62" stroke="#ff2a2a" stroke-width="2"/><path d="M42 84 H58" stroke="#ff2a2a" stroke-width="1.2" opacity=".6"/></svg>`;
+function portrait(k){if(k==='glitch')return glitchSVG();if(k==='rival')return RIVAL_CREST2;if(k==='brief')return vportrait(curBriefer().o);return vportrait(PT[k])}
+function redReason(choice){const R=RIVALS[S.rival];const last=S.hist[S.hist.length-2];
+  const lines={
+   coop:['"Let them believe restraint is mutual. Our units stay in position."','"A quiet year costs us nothing. Their gratitude will be useful later."','"We cooperate on paper. The probes continue in the dark."'],
+   hedge:['"Hold. Watch. Every one of their networks is being mapped as we speak."','"Do not provoke yet. When we move, it will be everywhere at once."','"They cannot tell our hand from the gangs. Let the fog work for us."'],
+   esc:['"They were warned. Now every substation learns our name."','"Their hospitals run on software we wrote the exploits for. Proceed."','"Export controls are a declaration of war. Answer in kind. No limits."','"Burn their trust first. A frightened public will do the rest."'],
+  };
+  const arr=lines[choice];let i=0;if(choice==='esc'&&(S.flags.chips||S.flags.toolctl))i=2;else if(choice==='coop'&&last==='esc')i=1;else i=Math.floor(Math.random()*arr.length);return arr[Math.min(i,arr.length-1)]}
+
 </script>
 
 <script>
@@ -2873,5 +3076,6 @@ function carGo(d){const c=document.getElementById('car');const n=c.children.leng
 })();
 </script>
 <div id="learnDrawer" onclick="if(event.target===this)closeLearn()"></div>
+<div id="locDrawer" onclick="if(event.target===this)closeLoc()"><div class="lsheet locsheet"><div class="lgrab"></div><div class="lhead"><div class="bdpt beatframe" id="locPt"></div><div style="flex:1;min-width:0"><div class="lsub" id="locRole"></div><div class="ltitle" id="locWho"></div></div><span id="locLearn"></span><button class="lx" aria-label="Close" onclick="closeLoc()">✕</button></div><div class="lbody"><p class="beattxt" id="locTxt" style="margin:0 0 8px"></p><div id="locBody"></div></div><button class="a lok" onclick="closeLoc()">BACK TO MAP ▶</button></div></div>
 </body>
 </html>

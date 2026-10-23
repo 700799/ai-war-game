@@ -10,15 +10,15 @@ A think-tank-style, game-theoretic superintelligence wargame in a pixel/Nintendo
 
 ## How a game unfolds
 
-The game teaches one layer at a time. Each round can unlock a new layer of the AI race, with its own buildings and crises:
+The map is the main screen. A console panel above it carries the briefing, crises, your choices and results, two or three buttons at a time; details open in drawers. Each round can unlock a new **world**, a small map of 3–4 buildings, and you can switch between unlocked worlds or look back at earlier rounds in History:
 
-1. **The rival:** stance, reciprocity, the payoff table
-2. **The home front:** feeds, jobs, robots and fairness
-3. **Fog and intel:** attribution, insiders, scams
-4. **Chips and allies:** export controls, retaliation, tokenomics
-5. **Attacks on models:** theft, distillation, poisoning, jailbreaks
+1. **The Capital:** Command Center, Grid Defense, Frontier Labs. Stance and reciprocity.
+2. **The Home Front:** Town Hall and Robotics. Feeds, jobs, robots and fairness.
+3. **The Shadows:** Security Ops and Crime. Attribution, insiders, scams.
+4. **The Supply Lines:** Allies and Fabs & Power. Export controls, retaliation, tokenomics.
+5. **The Model Vault:** Red Team Lab and Open Commons. Theft, distillation, poisoning, jailbreaks.
 
-Four headline meters (Security, Escalation, Dividend, Harm) stay on screen; the other 14 live in a drawer. Byte the advisor dog weighs pros and cons when asked, but never picks for you.
+Beginner shows 4 meters, medium 5, advanced 8; the rest live in a drawer. Your rival, The Directorate, strikes harder as its threat level climbs. Byte the advisor dog weighs pros and cons when asked, but never picks for you.
 
 ## What you'll learn
 

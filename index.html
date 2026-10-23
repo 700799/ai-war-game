@@ -438,6 +438,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .post button::after,.optcard::after,#g-loc .card::after,.rcard::after,.ocard::after{width:5px;height:5px;margin:-2.5px 0 0 -2.5px;box-shadow:0 0 2px 1px rgba(255,255,255,.7),0 0 5px 2px rgba(57,255,138,.45);animation:sparkRun 6s linear infinite,sparkFlick .5s ease-in-out infinite;opacity:.8}
 .post button.sel::after,#g-loc .card.sel::after,.rcard.sel::after,.ocard.sel::after{box-shadow:0 0 2px 1px rgba(255,255,255,.7),0 0 5px 2px rgba(255,210,63,.45)}
 @keyframes sparkFlick{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.oph .opx{margin-left:auto;align-self:flex-start}
+.oph>div{min-width:0}
 </style>
 </head>
 <body>
@@ -1378,7 +1380,7 @@ function optInfo(k){const I=currentInject,c=I[k],o=I[k==='a'?'b':'a'];const ok=k
   if(c.esc)extra+='<li>Acting before the facts are in can trigger a retaliation spiral.</li>';
   const byte=rc?(rc[0]===k?`<b style="color:#4bd37b">I’d pick this one.</b> ${rc[1]}`:`<b style="color:#ff8f8f">I’d pick ${ok.toUpperCase()} instead.</b> ${rc[1]}`):'Both are defensible. Choose by which meters you can afford to lose right now.';
   const el=document.getElementById('optPop');
-  el.innerHTML=`<div class="opbox"><div class="oph"><span class="optk ${k}">${k.toUpperCase()}</span><div><div class="opsup">${I.title}</div><div class="opt1">${c.t.replace(/^[AB] · /,'')}</div></div></div>
+  el.innerHTML=`<div class="opbox"><div class="oph"><span class="optk ${k}">${k.toUpperCase()}</span><div><div class="opsup">${I.title}</div><div class="opt1">${c.t.replace(/^[AB] · /,'')}</div></div><button class="lx opx" aria-label="Close" onclick="closeOpt()">✕</button></div>
   <div class="opsec"><div class="oplbl">THE SITUATION</div><p>${I.body||''}</p></div>
   ${gains?`<div class="opsec"><div class="oplbl" style="color:#4bd37b">✓ WHAT YOU GAIN</div><ul>${gains}</ul></div>`:''}
   ${costs?`<div class="opsec"><div class="oplbl" style="color:#ff8f8f">✗ WHAT IT COSTS</div><ul>${costs}</ul></div>`:''}

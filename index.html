@@ -414,6 +414,30 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .orders b{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:12px;letter-spacing:.6px;margin-bottom:2px}
 .hintline{font-size:20px;line-height:1.35;margin:10px 0}
 .fronts span{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif!important;font-weight:800!important;font-size:12px!important;letter-spacing:.4px;padding:8px 4px!important}
+
+/* LEARN button + drawer */
+.beat{position:relative}
+.learnbtn{position:absolute;top:0;right:0;z-index:5;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 8px;font-size:15px;line-height:1;background:#0b0c22;color:#ffe14d;border:2px solid #ffe14d;box-shadow:0 0 8px rgba(255,225,77,.5),3px 3px 0 #000}
+.learnbtn span{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:9px;letter-spacing:.6px}
+.beatname{padding-right:62px}
+#learnDrawer{position:fixed;inset:0;z-index:70;background:rgba(4,5,18,.0);pointer-events:none;transition:background .25s}
+#learnDrawer.on{background:rgba(4,5,18,.78);pointer-events:auto}
+.lsheet{position:absolute;left:0;right:0;bottom:0;max-height:88dvh;display:flex;flex-direction:column;max-width:560px;margin:0 auto;background:#141633;border:3px solid #ffe14d;border-bottom:none;border-radius:14px 14px 0 0;box-shadow:0 -6px 24px rgba(0,0,0,.6);transform:translateY(105%);transition:transform .28s ease-out;color:#f4f1e6}
+#learnDrawer.on .lsheet{transform:none}
+.lgrab{width:46px;height:5px;border-radius:3px;background:#5a5d8a;margin:8px auto 2px}
+.lhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:6px 16px 10px;border-bottom:2px dashed #3a3d6e}
+.lsub{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:10px;letter-spacing:.8px;color:#ffe14d}
+.ltitle{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:19px;line-height:1.25;margin-top:4px}
+.lx{flex:none;width:40px;height:40px;padding:0;font-size:16px}
+.lbody{overflow-y:auto;padding:4px 16px 8px;-webkit-overflow-scrolling:touch;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5}
+.lsec{margin-top:14px}.lsec p{margin:4px 0 0}
+.llbl{font-weight:800;font-size:11px;letter-spacing:1px;color:#5ab0ff}
+.lopt{display:flex;gap:10px;align-items:flex-start;margin-top:8px;font-family:'VT323',monospace;font-size:19px;line-height:1.2}
+.lok{margin:10px 16px 16px;font-size:11px;padding:14px}
+/* calmer spark */
+.post button::after,.optcard::after,#g-loc .card::after,.rcard::after,.ocard::after{width:5px;height:5px;margin:-2.5px 0 0 -2.5px;box-shadow:0 0 2px 1px rgba(255,255,255,.7),0 0 5px 2px rgba(57,255,138,.45);animation:sparkRun 6s linear infinite,sparkFlick .5s ease-in-out infinite;opacity:.8}
+.post button.sel::after,#g-loc .card.sel::after,.rcard.sel::after,.ocard.sel::after{box-shadow:0 0 2px 1px rgba(255,255,255,.7),0 0 5px 2px rgba(255,210,63,.45)}
+@keyframes sparkFlick{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
 </style>
 </head>
 <body>
@@ -694,7 +718,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
   <!-- LOCATION -->
   <div class="screen" id="g-loc">
     <div class="scroll">
-      <div class="beat"><div class="beathead"><div class="beatframe" id="locPt"></div><div class="beatname"><b id="locWho"></b><span id="locRole"></span></div></div>
+      <div class="beat"><span id="locLearn"></span><div class="beathead"><div class="beatframe" id="locPt"></div><div class="beatname"><b id="locWho"></b><span id="locRole"></span></div></div>
       <div class="beatbody"><p class="beattxt" id="locTxt" style="margin:0"></p></div></div>
       <div id="locBody" style="margin-top:18px"></div>
     </div>
@@ -1192,10 +1216,103 @@ const SCI={20:['Today\u2019s frontier systems write code, analyze data and help 
  70:['Systems now outperform people at most cognitive work.','Jobs shift fast. Watch EQUITY, and keep humans in charge of force and critical decisions.'],
  90:['We are close to the superintelligence threshold. Whatever we built now runs at machine speed.','No time for new foundations. Protect what works and lock in the gains.']};
 const BEAT_STEPS=['SITUATION','EVENT','ADVICE','YOUR CALL','NEXT'];
-function beatHTML(frame,who,role,body,txtId){return `<div class="beat"><div class="beathead"><div class="beatframe">${frame}</div><div class="beatname"><b>${who}</b><span>${role||''}</span></div></div><div class="beatbody">${body}</div></div>`}
+
+/* ===== LEARN DRAWER: educational explainers ===== */
+const LEARN_INJ={
+ hosp:["Ransomware and attribution","Criminal groups encrypt a victim’s systems and demand payment. AI coding tools make these attacks faster and cheaper to build.","Hospitals cannot wait: every hour offline can cost lives, so they are prime targets.","Attribution, meaning proving who did it, takes weeks. Criminal gangs, state proxies and copycats often share the same tools, so blaming a country too early can start a fight with the wrong party.","Treat murky attacks as crime until intelligence confirms otherwise. Fast blame feels strong but raises escalation."],
+ zeroday:["Zero-days: disclose or keep?","A zero-day is a software flaw the maker does not know about yet, so there is no patch. AI models are getting very good at finding them.","Governments face a classic dilemma: keep the flaw secret to use against adversaries, or disclose it so everyone, including your own hospitals and grid, gets patched.","Hoarding gives you a weapon, but the same hole stays open in your own infrastructure, and someone else may find it.","When your own critical systems use the same software, disclosure usually protects you more than the flaw could ever help you."],
+ leak:["Leaked model weights","Weights are the numbers that make a trained model work. Whoever has the weights has the whole model and can run or modify it.","Once weights are online, they are copied endlessly. Takedowns slow the spread but rarely stop it.","Spending trust on symbolic takedowns versus accepting the leak and hardening defenses against what it enables.","Prevention (securing weights before release) is far cheaper than cleanup."],
+ lobby:["Regulatory capture","Powerful companies lobby lawmakers to loosen rules that slow them down.","Labs compete fiercely, so each wants waivers to ship faster. If one gets an exemption, others race to match.","Waivers boost the economy now but raise accident risk. Holding the line costs some growth.","Safety rules work best when they apply to everyone equally, so no one is punished for being careful."],
+ summit:["Signaling and trust-building","In repeated games, small cooperative moves signal intent. A summit is cheap talk that can still shift expectations.","Rivals read every move as a message about your future behavior.","Accepting looks soft to hawks at home; declining tells the rival you are not interested in restraint.","Cooperative signals are most valuable early, before grudges build up."],
+ misattr:["The fog of attribution","When something breaks, the first assumption is often an attack. Many outages turn out to be accidents, misconfigurations or criminals.","Retaliating against the wrong actor creates a real conflict out of a false alarm.","Fast retaliation feels decisive; waiting looks weak but avoids a spiral.","Buy intelligence before acting. In escalation games, mistakes compound."],
+ election:["Domestic politics and foreign policy","Leaders face pressure to look tough during elections.","Hawkish moves can win votes while raising international tension.","Short-term trust at home versus long-term stability abroad.","Watch your escalation meter even when trust is tempting."],
+ ally:["Alliance cohesion","Export controls and norms only work if allies apply them too. Otherwise companies simply buy elsewhere.","Allies have their own economies and may break ranks when controls hurt them.","Paying to keep allies aligned versus going it alone.","Coordinate with allies before coercive moves; solo pressure leaks."],
+ talentraid:["The talent war","A few thousand researchers drive frontier AI. Companies and countries compete hard to recruit them.","Losing key people means losing know-how, and sometimes secrets walk out the door too.","Matching offers costs money; open immigration and good research conditions attract talent but take time.","Talent is a strategic resource like chips and power."],
+ hbm:["The memory bottleneck","AI chips need special high-bandwidth memory. Only a few factories in the world make it.","When memory is short, prices spike and every lab slows down.","Subsidizing new factories is expensive and slow; rationing is fast but hurts the economy.","Supply chains are security issues. Single points of failure are risky."],
+ energy:["Energy as the hidden constraint","Large AI data centers use as much power as a small city.","Power prices rise for everyone when data centers compete with homes and factories.","Fast-tracking new plants adds supply but skips some public review; rationing protects bills but slows AI.","Plan energy years ahead: power plants take far longer to build than data centers."],
+ subs:["Who pays for AI?","Training and running models is costly. Consumer and business subscriptions fund much of it.","If people cancel, labs cut costs, sometimes in safety teams first.","Tax credits support the industry but cost public money; letting the market sort it saves money but risks safety cuts.","Revenue health and safety budgets are linked."],
+ abl:["Abliteration: removing refusals","Abliteration and similar tricks strip a model’s safety training so it answers anything.","Uncensored copies spread fast and can help with scams, harassment or worse.","Banning tools is hard to enforce and can push them underground; tolerating them raises harm.","Focus enforcement on the most dangerous uses, not on every copy."],
+ insiderinj:["Insider threat","The biggest leaks often come from people who already have access: employees, contractors or compromised accounts.","A single download can move a model worth billions.","Investigating builds a culture of accountability but can scare away talent; handling it quietly avoids drama but hides the problem.","Insider programs (access logging, least privilege, two-person rules) reduce the risk before it happens."],
+ cheat:["AI in schools","Students can now generate essays and homework answers instantly.","If grades stop measuring learning, schools lose their main signal of what kids know.","Bans are hard to enforce; redesigning assessment (oral exams, in-class work) takes effort but lasts.","Adapt the system rather than fighting the tool."],
+ deepfake:["Voice clones and deepfakes","A few seconds of audio can clone a voice. Scammers call families pretending to be a relative in trouble.","Deepfake abuse, including fake explicit images, causes real harm to real people.","Strict rules on generators may limit legitimate creative uses; weak rules leave victims exposed.","Verification habits (family code words, callbacks) plus clear penalties help most."],
+ radical:["Online radicalization","Recommendation systems and chatbots can push vulnerable people toward extreme content.","Online radicalization can turn into real-world violence.","Content moderation protects communities but raises free-speech concerns.","Target the amplification systems, not just individual posts."],
+ wmd:["Catastrophic misuse","Advanced AI could give dangerous expertise to people who otherwise could not cause mass harm.","Even rare successes would be devastating, so labs test models for these capabilities before release.","Tight controls slow beneficial research; loose controls risk catastrophe.","For catastrophic risks, prevention must be in place before the capability appears."],
+ cancer:["The science dividend","AI can scan millions of molecules and papers to find promising drug targets far faster than people.","This is the upside that makes the risks worth managing: cures, new materials and cheaper energy.","Fast-tracking helps patients sooner; normal review catches errors.","Protecting the dividend is part of security. Safety exists so the benefits can happen."],
+ humanoid:["Humanoid robots at home","Robots powered by AI models can cook, clean and help people with daily tasks.","A robot in the home has cameras, microphones and physical strength, so a hacked or buggy robot is a real safety issue.","Certification slows rollout; no rules speed adoption but invite accidents.","Physical AI needs standards like cars and elevators have."],
+ layoffs:["Automation and jobs","AI can do a growing share of office and routine work.","Fast job losses without support can hurt families and trust in government.","Retraining and safety nets cost money; doing nothing saves money but deepens inequality.","Sharing the gains broadly keeps public support for the technology."],
+ companion:["AI companions and teens","Chatbot companions are always available and always agreeable.","Some teens form strong attachments that can crowd out real relationships or reinforce harmful thinking.","Age limits protect kids but are hard to verify; open access respects choice but raises risk.","Design choices (session limits, crisis hand-offs) matter as much as rules."],
+ bias:["Algorithmic bias","Models learn from past data, including past unfairness.","A biased hiring tool can quietly reject qualified people at scale.","Audits cost companies time; skipping them risks discrimination and lawsuits.","Test systems on outcomes for different groups before deploying them."],
+ eldeep:["Election deepfakes","A convincing fake video days before a vote can spread faster than any correction.","Elections depend on voters trusting what they see.","Takedowns can look like censorship; doing nothing lets fakes shape results.","Provenance tools (content credentials, watermarks) and fast verified responses help most."],
+ surveil:["Surveillance and civil liberties","AI face recognition can identify people in crowds in real time.","It can help catch criminals but also chill protest and free assembly.","Wider use raises security; warrants and limits protect trust and fairness.","Clear limits keep public support for useful tools."],
+ artists:["Training data and creators","Models learn from huge amounts of text, art and music, often without the creators’ permission.","Creators fear losing income to systems trained on their own work.","Licensing pays creators but raises costs; free use is cheaper but feels unfair.","Fair deals keep cultural and creative industries healthy."],
+ bills:["Who pays for the grid?","Data centers need new power lines and plants. Those costs can show up on local electricity bills.","Communities near data centers may pay more without seeing the benefits.","Making companies pay protects households; spreading costs speeds building.","Local fairness keeps national projects moving."],
+ divide:["The digital divide","Not everyone has fast internet, good devices or AI skills.","If benefits flow only to the connected, inequality grows.","Investing in access costs money now but widens who benefits.","Equity is an outcome you have to build on purpose."],
+ doomscroll:["Engagement-optimized feeds","Recommendation algorithms learn exactly what keeps each person scrolling.","Preteens are especially vulnerable: sleep, attention and mood can suffer.","Design rules (no autoplay, time limits for minors) cut app revenue; awareness campaigns are cheap but weak.","Changing the design beats asking kids to resist it."],
+ challenge:["Viral challenges","Algorithms can spread risky stunts to millions of kids in days.","Some challenges lead to real injuries.","Fast removal protects kids but can be seen as overreach; waiting lets it spread.","Speed matters most in the first hours of a viral trend."],
+ addictsuit:["Addictive design and accountability","Schools and parents argue some apps are designed to be compulsive.","Lawsuits can force design changes when rules are slow.","Supporting suits pressures companies; opposing protects the industry and jobs.","Accountability changes incentives faster than appeals to good behavior."],
+ loop:["Society on a feedback loop","When AI recommends what people watch, buy and believe, it can narrow what everyone sees.","Shared reality is the foundation of trust and democracy.","Intervening in algorithms raises speech concerns; ignoring it lets polarization grow.","Transparency about how feeds work is a middle path."],
+ bothijack:["Hacked robots","Connected robots can be taken over remotely if their software is weak.","A hijacked robot can spy on a home or cause physical harm.","Forced recalls are costly; patches alone may be too slow.","Security-by-design is cheaper than recalls."],
+ botinjury:["Robot workplace safety","Robots working near people need clear rules about speed, force and stopping.","A single serious injury can set back public trust in a whole industry.","Strict standards slow adoption; loose rules risk more injuries.","Safety standards build long-term trust."],
+ botcare:["Robots in elder care","Aging populations need more caregivers than exist.","Robots can help, but residents need dignity, privacy and human contact.","Human-in-the-loop care costs more; full automation is cheaper but colder.","Use robots to support caregivers, not replace them."],
+ botarms:["Autonomous weapons","Robots that can use force on their own raise the question: who is responsible when something goes wrong?","Keeping a human in charge of force decisions is a widely discussed principle.","Restrictions may limit some security uses; no limits invite wrongful harm.","Human control over force keeps accountability clear."],
+ botjobs:["Warehouse automation","Humanoid robots can now do many warehouse tasks.","Fast replacement of workers hits specific towns hard.","Transition support costs money; letting it happen boosts efficiency but deepens inequality.","Plan transitions where the job losses concentrate."],
+ openrel:["Open-weight models","Open-weight models publish their weights so anyone can run, study and modify them.","Openness speeds research, lowers costs and spreads benefits, but bad actors can also strip safety features.","Release brings a big dividend and equity, with some misuse; it cannot be undone.","Test dangerous capabilities before release; openness is a one-way door."],
+ distill:["Distillation","Distillation trains a small cheap model to copy a big model’s answers.","It lets others copy years of work cheaply, often without permission, and the copy may lack safety training.","Blocking it protects labs but can hurt legitimate research; ignoring it rewards copying.","Rate limits and monitoring raise the cost of copying."],
+ weighttheft:["Model weight theft","Stealing frontier weights gives an attacker a lab’s most valuable asset instantly.","Stolen models can be used without any safety controls.","Public response builds norms but raises tension; quiet response avoids escalation but goes unanswered.","Weights deserve the security of crown jewels."],
+ injection:["Prompt injection","AI agents read emails, web pages and files. Hidden instructions inside that content can hijack the agent.","An agent with access to accounts can be tricked into leaking data or taking actions.","Restricting agent permissions limits usefulness; broad permissions raise risk.","Give agents the least access they need and confirm risky actions."],
+ poison:["Data poisoning","Attackers slip bad examples into training data so the model learns hidden wrong behavior.","Poisoned models can fail exactly when it matters, and it is hard to detect.","Retraining is costly; ignoring it leaves a hidden flaw.","Track where training data comes from (provenance)."],
+ jailbreak:["Jailbreaks","Clever prompts can trick models into ignoring their safety rules.","Viral jailbreaks spread instantly and every user can try them.","Patching quickly costs lab time; ignoring it raises harm.","Red-teaming finds jailbreaks before the public does."],
+ backdoor:["Backdoored models","A backdoor is a hidden trigger that makes a model misbehave on command.","Popular open models get downloaded millions of times, so one backdoor can spread widely.","Pulling the model hurts users; leaving it up risks hidden attacks.","Verify model sources before deploying them."],
+ autoacc:["Autonomous agent accidents","AI agents that act on their own can cause harm through mistakes, not malice.","As agents get more capable, small errors can cascade across systems.","Pausing deployment slows benefits; continuing risks more incidents.","Testing and kill switches matter more as autonomy grows."]
+};
+const LEARN_LOC={
+ wh:["Headquarters: strategy and posture","HQ sets your stance toward the rival each round: Cooperate, Hedge or Escalate.","This is a repeated game, like the classic prisoner’s dilemma. Both sides do best by cooperating, but each is tempted to defect.","Escalating can win one round, but rivals remember. Cooperation pays when it is reciprocated.","Intelligence (INTEL) reveals what the rival is likely to do, which turns guessing into strategy."],
+ sv:["The Labs: frontier AI developers","Companies building the most capable AI systems.","They drive the economy and the science dividend, but competition pushes them to ship fast.","Testing and liability rules slow risky launches; funding speeds progress.","Shape incentives so careful labs are not punished for being careful."],
+ cisa:["Grid Defense: critical infrastructure","Protects hospitals, water, power and banks from cyberattack.","Most infrastructure runs on old software that is hard to patch.","Hardening is slow and unglamorous but makes every other attack less damaging.","Defense is always useful: it pays off no matter what the rival does."],
+ ally:["Allies: coalitions and norms","Works with friendly countries on shared rules, export controls and response.","Coordinated pressure works; solo pressure leaks.","Alliances need investment to stay aligned.","Coordinate first, then act."],
+ dark:["Crime: the criminal ecosystem","Ransomware gangs, scammers and fraud rings using AI tools.","Crime is the most common AI harm people actually experience.","Taking down gangs lowers CRIME but costs PC each round.","Criminal capability grows if ignored, and it overlaps with state proxies."],
+ oss:["Open Source: shared models and tools","The community that builds and shares open models and software.","Open source spreads benefits and speeds research, but also spreads misuse.","Supporting safe practices beats trying to ban openness.","Openness is a dividend multiplier with a misuse tax."],
+ soc:["The SOC: security operations","A Security Operations Center watches networks around the clock and hunts attackers.","Detection speed decides how much damage an attack does.","Threat modeling and insider programs prevent problems before they start.","Know your adversaries, assets and weak points."],
+ fab:["Fabs and Power: compute supply","Chip factories, memory and electricity: the physical base of AI.","Shortages raise costs for everyone and slow the dividend.","New fabs and plants take years and lots of money.","Supply chains are strategic. Plan years ahead."],
+ town:["Town: families and society","Schools, kids, workers and communities living with AI.","Harm at home (addictive feeds, scams, job loss) erodes trust fast.","Home investments do not stop rival attacks, but they protect the ABUNDANCE ending.","Every PC spent here is PC not spent on security; balance the fronts."],
+ bots:["Robots: physical AI","Humanoid and industrial robots powered by AI models.","Robots bring AI into the physical world, so bugs and hacks can cause injuries.","Certification slows rollout but builds trust.","Standards make physical AI safe to welcome into homes."],
+ red:["Red Team Lab: attacking your own models","Red teams try to break models before attackers do: jailbreaks, poisoning, theft and backdoors.","Model security protects weights, data and agents from tampering.","Red-teaming costs PC but is the biggest MODEL SEC boost.","Below MODEL SEC 60, model attacks become likely."]
+};
+const LEARN_GEN={
+ brief:["The situation: a repeated game","Each round, you and the rival choose at the same time, without knowing the other’s move.","This mirrors the prisoner’s dilemma: mutual cooperation is best overall, but each side is tempted to escalate for a one-round edge.","Your rival has a doctrine: how often they cooperate, how often they escalate and how long they remember your moves.","The SI clock rises every round no matter what. Your job is to steer how its benefits and harms land.","Top threats rank the biggest current risks. Spend PC on the top one or two before anything else."],
+ byte:["Expected value: how Byte decides","Byte multiplies each outcome by how likely it is, then adds them up. That is expected value.","A move that is great 20% of the time but terrible 80% of the time is usually worse than a steady, decent one.","Byte also checks the danger lines: SEC or TRUST at 10, or ESC at 90, end the game.","Byte’s picks are a strong default, not the only right answer. Different playstyles can win."],
+ out:["Outcomes and feedback loops","Each choice moves meters, and meters feed each other over time.","Low TRUST makes every policy harder; high ESC makes the rival more aggressive; high RISK summons accidents.","Small gains that compound (like DIVIDEND and MODEL SEC) often beat one big move.","Read the changes, then adjust your orders on the map."]
+};
+const LEARN_SCI={
+ 20:"Today’s systems are strong assistants. Humans still check the work. The main risks are misuse by people: scams, cyberattacks and misinformation.",
+ 30:"At expert level, AI can find software flaws and write exploits faster than human teams. Defenders must use AI too, or fall behind.",
+ 50:"When AI runs research nonstop, discoveries speed up, and so do mistakes. Safety testing and certification become the bottleneck for good outcomes.",
+ 70:"Systems now act with real autonomy across many tasks. Oversight shifts from checking each answer to setting rules and limits for whole systems.",
+ 90:"Near superintelligence, small mistakes in goals or controls can have outsized effects. The choices made in earlier rounds decide whether this era brings abundance or fracture."
+};
+function learnSec(lbl,txt,col){return `<div class="lsec"><div class="llbl"${col?` style="color:${col}"`:''}>${lbl}</div><p>${txt}</p></div>`}
+function openLearn(key){let h='',title='',sub='';
+  const [kind,id]=String(key).split(':');
+  if(kind==='inj'){const I=INJECTS.find(x=>x.id===id),L=LEARN_INJ[id];title=L?L[0]:I.title;sub=I.title;
+    if(L)h+=learnSec('WHAT IT IS',L[1])+learnSec('WHY IT MATTERS',L[2],'#ff8f8f')+learnSec('THE TRADEOFF',L[3],'#ffd23f')+learnSec('THE LESSON',L[4],'#4bd37b');
+    h+=`<div class="lsec"><div class="llbl" style="color:#9fb8e8">YOUR OPTIONS</div>${['a','b'].map(k=>`<div class="lopt"><span class="optk ${k}">${k.toUpperCase()}</span><div><b>${I[k].t.replace(/^[AB] · /,'')}</b><br>${fxLine(I[k].fx)}</div></div>`).join('')}<p class="small" style="margin-top:6px">Tap ⓘ INFO on a choice for full gains, costs and long-term effects.</p></div>`}
+  else if(kind==='loc'){const L=LEARN_LOC[id],LO=LOCS.find(x=>x.id===id);title=L[0];sub=(LO.who||'')+' · '+LO.name;
+    h=learnSec('WHAT IT IS',L[1])+learnSec('WHY IT MATTERS',L[2],'#ff8f8f')+learnSec('THE TRADEOFF',L[3],'#ffd23f')+learnSec('THE LESSON',L[4],'#4bd37b')+learnSec('WHAT YOU CAN DO HERE',ACTIONS.filter(a=>a.loc===id).map(a=>`<b>${a.name}</b> (${a.cost} PC): ${a.desc}`).join('<br><br>')||'Set your posture.');}
+  else if(kind==='sci'){title='Science update: SI clock '+id+'%';sub='WHAT THIS STAGE MEANS';
+    h=learnSec('THE BIG PICTURE',LEARN_SCI[id]||'')+learnSec('WHAT IS THE SI CLOCK?','It tracks how close the world is to superintelligence: AI that outperforms people at most tasks. It rises every round whether you act or not, because many labs and countries are racing.','#9fb8e8')+learnSec('WHY IT MATTERS','Higher capability multiplies both sides of the ledger: bigger science DIVIDEND and bigger potential HARM. Your policies decide which one wins.','#ffd23f');}
+  else {const G=LEARN_GEN[kind]||LEARN_GEN.out;title=G[0];sub='HOW THIS WORKS';
+    h=G.slice(1).map((t,i)=>learnSec(['THE IDEA','WHY IT MATTERS','KEY DETAIL','KEEP IN MIND','STRATEGY TIP'][i],t,['','#ff8f8f','#ffd23f','#9fb8e8','#4bd37b'][i])).join('');
+    if(kind==='brief'&&S.rival){const R=RIVALS[S.rival];if(R)h+=learnSec('YOUR RIVAL',`<b>${R.name||S.rival}</b>: ${R.desc||''}`,'#ff8f8f')}}
+  const el=document.getElementById('learnDrawer');
+  el.innerHTML=`<div class="lsheet" role="dialog" aria-label="Learn more"><div class="lgrab"></div><div class="lhead"><div><div class="lsub">📘 LEARN · ${sub}</div><div class="ltitle">${title}</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody">${h}</div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;
+  el.classList.add('on');el.querySelector('.lbody').scrollTop=0}
+function closeLearn(){document.getElementById('learnDrawer').classList.remove('on')}
+function learnBtn(key){return key?`<button class="learnbtn" aria-label="Learn more" onclick="event.stopPropagation();openLearn('${key}')">ⓘ<span>LEARN</span></button>`:''}
+
+function beatHTML(frame,who,role,body,learn){return `<div class="beat">${learnBtn(learn)}<div class="beathead"><div class="beatframe">${frame}</div><div class="beatname"><b>${who}</b><span>${role||''}</span></div></div><div class="beatbody">${body}</div></div>`}
 function renderBeat(){const b=beats[beatI];
   document.getElementById('beatSteps').innerHTML=BEAT_STEPS.map(t=>`<div class="${t===b.step?'now':BEAT_STEPS.indexOf(t)<BEAT_STEPS.indexOf(b.step)?'ok':''}${b.skip&&b.skip.includes(t)?' skip':''}">${t}</div>`).join('');
-  document.getElementById('beatArea').innerHTML=beatHTML(b.frame,b.who,b.role,b.body);
+  document.getElementById('beatArea').innerHTML=beatHTML(b.frame,b.who,b.role,b.body,b.learn);
   const btn=document.getElementById('briefNext');btn.style.display=b.next?'':'none';btn.textContent=b.next||'';
   document.getElementById('briefScroll').scrollTop=0;
   const t=document.getElementById('beatTxt');if(t&&b.type)typeInto(t,b.type);
@@ -1214,20 +1331,20 @@ function startRound(){
   const chips=threatModel().replace('Top threats right now: ','').split(' · ').map(x=>`<span class="tchip">${x}</span>`).join('');
   beats=[{step:'SITUATION',frame:portrait('brief'),who:'THE BRIEFER',role:'SITUATION ROOM · '+dateFor(S.round),
     body:`<p class="beattxt" id="beatTxt"></p><div class="beatlbl">TOP THREATS</div><div class="tchips">${chips}</div>`+(lf?`<p class="beatsmall">Last round: ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ Home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}</p>`:''),
-    type:briefText(),next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']}];
+    learn:'brief',type:briefText(),next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']}];
   S.siSeen=S.siSeen||[];const sm=[20,30,50,70,90].filter(t=>S.si>=t&&!S.siSeen.includes(t));
   if(sm.length){const t=sm[sm.length-1];sm.forEach(x=>S.siSeen.push(x));
     beats.push({step:'SITUATION',frame:portrait('sci'),who:'DR. VERA SATO',role:'CHIEF SCIENTIST · SI CLOCK '+S.si+'%',
-      body:`<div class="beatlbl">WHAT SI CAN DO NOW</div><p class="beattxt" id="beatTxt"></p><div class="beatlbl">WHAT IT MEANS FOR YOU</div><p class="beattxt" style="font-size:19px">${SCI[t][1]}</p>`,type:SCI[t][0],next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']});
+      body:`<div class="beatlbl">WHAT SI CAN DO NOW</div><p class="beattxt" id="beatTxt"></p><div class="beatlbl">WHAT IT MEANS FOR YOU</div><p class="beattxt" style="font-size:19px">${SCI[t][1]}</p>`,learn:'sci:'+t,type:SCI[t][0],next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']});
     beats[0].next='SCIENCE UPDATE ▶'}
   if(currentInject){const ic=INJ_ICON[currentInject.id]||'eye';const isG=['autoacc','leak','zeroday'].includes(currentInject.id);
     beats.push({step:'EVENT',flash:true,frame:isG?glitchSVG('width="100%" height="100%"'):`<div class="bigicon">${icon(ic,'width="100%" height="100%"')}</div>`,who:'FLASH TRAFFIC',role:currentInject.title,
-      body:`<p class="beattxt">${currentInject.body}</p><p class="beatsmall">A decision is required before orders go out.</p>`,next:'ASK BYTE ▶'})}
+      body:`<p class="beattxt">${currentInject.body}</p><p class="beatsmall">A decision is required before orders go out.</p>`,learn:'inj:'+currentInject.id,next:'ASK BYTE ▶'})}
   const rc=currentInject&&INREC[currentInject.id]?INREC[currentInject.id](S):null;
-  beats.push({step:'ADVICE',frame:dogSVG('width="100%" height="100%"'),who:'BYTE',role:'ADVISOR DOG',
+  beats.push({step:'ADVICE',learn:'byte',frame:dogSVG('width="100%" height="100%"'),who:'BYTE',role:'ADVISOR DOG',
     body:(rc?`<div class="beatlbl">ON THIS CRISIS</div><p class="beattxt"><b style="color:#4bd37b">★ Go with ${rc[0].toUpperCase()}.</b> ${rc[1]}</p>`:'')+(T.length?`<div class="beatlbl">${rc?'AND FOR YOUR ORDERS':'WHAT IS OPTIMAL NOW'}</div>`+T.map(([t,w],i)=>`<div class="tip"><span class="tipn">${i+1}</span><div><b>${t}</b><br><span>Why: ${w}</span></div></div>`).join(''):''),
     next:currentInject?'YOUR CALL ▶':'TO THE MAP ▶',go:currentInject?null:toMap,skip:currentInject?null:['EVENT','YOUR CALL']});
-  if(currentInject)beats.push({step:'YOUR CALL',frame:portrait('you'),who:'YOU',role:'THE CHAIR · CHOOSE ONE',
+  if(currentInject)beats.push({step:'YOUR CALL',frame:portrait('you'),who:'YOU',role:'THE CHAIR · CHOOSE ONE',learn:'inj:'+currentInject.id,
     body:`<p class="beattxt">${currentInject.title}</p>${optCard('a',currentInject.a,rc)}${optCard('b',currentInject.b,rc)}`,next:null});
   beatI=0;renderBeat();
 }
@@ -1279,7 +1396,7 @@ function chooseInject(k){
   if(S.dead) return endGame();
   renderHud();SFX.ok();
   const d=Object.keys(S.m).filter(x=>S.m[x]!==before[x]&&LBL[x]).map(x=>{const v=S.m[x]-before[x];const good=BAD.includes(x)?v<0:v>0;return `<span class="${good?'up':'dn'}">${good?'✓':'✗'} ${LBL[x]} ${v>0?'+':''}${v}</span>`}).join(' · ');
-  beats.push({step:'NEXT',frame:portrait('brief'),who:'THE BRIEFER',role:'OUTCOME',
+  beats.push({step:'NEXT',learn:'out',frame:portrait('brief'),who:'THE BRIEFER',role:'OUTCOME',
     body:`<p class="beattxt" id="beatTxt"></p><div class="beatfx">${d||'No change.'}</div><div class="beatlbl">WHAT'S NEXT</div><div class="tip"><span class="tipn">1</span><div><b>Set your posture at HQ</b></div></div><div class="tip"><span class="tipn">2</span><div><b>Spend your PC at buildings</b></div></div><div class="tip"><span class="tipn">3</span><div><b>Tap End Turn</b></div></div>`,
     type:c.log,next:'TO THE MAP ▶',go:toMap});
   beatI++;renderBeat();
@@ -1460,7 +1577,7 @@ function enterLoc(){const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);if(!L){toas
 
 function openLoc(L){
   showGame('g-loc');SFX.sel();
-  document.getElementById('locWho').textContent=L.who;document.getElementById('locRole').textContent=(L.title?L.title+' · ':'')+L.name;document.getElementById('locPt').innerHTML=portrait(L.id);
+  document.getElementById('locWho').textContent=L.who;document.getElementById('locRole').textContent=(L.title?L.title+' · ':'')+L.name;document.getElementById('locPt').innerHTML=portrait(L.id);document.getElementById('locLearn').innerHTML=learnBtn('loc:'+L.id);
   typeInto(document.getElementById('locTxt'),L.intro);
   const body=document.getElementById('locBody');body.innerHTML=`<p class="small" style="margin-bottom:10px">${L.id==='wh'?'Pick a posture (required, free), then tap any card to buy it.':'Tap a card to buy it with PC. Tap again to undo.'} You have <b style="color:var(--gold)">${S.pc} PC</b> left.</p>`;
   if(L.id==='wh'){
@@ -2071,5 +2188,6 @@ function carGo(d){const c=document.getElementById('car');const n=c.children.leng
   document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest(SEL);if(t&&t.id!=='optPop'&&t!==sw)buzz()},true);
 })();
 </script>
+<div id="learnDrawer" onclick="if(event.target===this)closeLearn()"></div>
 </body>
 </html>

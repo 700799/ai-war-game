@@ -350,6 +350,23 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .post button.sel::before,#g-loc .card.sel::before,.rcard.sel::before,.ocard.sel::before{background:conic-gradient(from var(--na),transparent 0 62%,rgba(255,210,63,.5) 72%,#fff8d0 80%,#ffd23f 84%,transparent 92%)}
 @keyframes neonGold{0%,100%{box-shadow:4px 4px 0 #000,0 0 5px #ffd23f,0 0 12px rgba(255,210,63,.4)}50%{box-shadow:4px 4px 0 #000,0 0 10px #ffd23f,0 0 22px rgba(255,210,63,.65)}}
 @media (prefers-reduced-motion:reduce){.post button,.optcard,#g-loc .card,.rcard,.ocard{animation:none}.post button::before,.optcard::before,#g-loc .card::before,.rcard::before,.ocard::before{animation:none}}
+
+.optmore{display:block;margin-top:6px;font-family:'Press Start 2P',monospace;font-size:8px;color:#ffe14d;letter-spacing:.5px}
+#optPop{position:fixed;inset:0;z-index:60;background:rgba(4,5,18,.88);display:none;overflow-y:auto;padding:16px 12px 24px;-webkit-overflow-scrolling:touch}
+#optPop.on{display:block;animation:opIn .18s ease-out}
+@keyframes opIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.opbox{max-width:520px;margin:0 auto;background:#141633;border:3px solid #39ff8a;box-shadow:0 0 14px rgba(57,255,138,.45),6px 6px 0 #000;padding:14px;font-family:'VT323',monospace;font-size:19px;line-height:1.25;color:#f4f1e6}
+.oph{display:flex;gap:12px;align-items:center;border-bottom:2px dashed #3a3d6e;padding-bottom:10px}
+.oph .optk{flex:none}.optk.a{background:var(--green)}.optk.b{background:#ff7a7a}
+.opsup{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--dim);margin-bottom:4px}
+.opt1{font-family:'Press Start 2P',monospace;font-size:12px;color:#fff;line-height:1.5}
+.opsec{margin-top:12px}.opsec p{margin:4px 0 0}
+.oplbl{font-family:'Press Start 2P',monospace;font-size:9px;color:#5ab0ff;margin-bottom:4px}
+.opsec ul{margin:4px 0 0;padding-left:18px}.opsec li{margin:3px 0}
+.opnote{color:#9fb8e8}
+.opbtns{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:14px;position:sticky;bottom:0;background:#141633;padding-top:8px}
+.opbtns button{font-size:10px;padding:14px 6px}
+.opgo{background:#1d5a33;border-color:#39ff8a;color:#fff}
 </style>
 </head>
 <body>
@@ -1139,7 +1156,7 @@ function renderBeat(){const b=beats[beatI];
 function briefNext(){const b=beats[beatI];if(b&&b.go)return b.go();beatI++;renderBeat()}
 function toMap(){showGame('g-map');renderMap()}
 function optCard(k,c,rc){const n=(INOTE[currentInject.id]||{})[k];const pick=rc&&rc[0]===k;
-  return `<button class="optcard ${k}${pick?' pick':''}" onclick="chooseInject('${k}')"><span class="optk">${k.toUpperCase()}</span><span class="optmain"><span class="optt">${c.t.replace(/^[AB] · /,'')}${pick?' <em>★ BYTE’S PICK</em>':''}</span><span class="optfx">${fxLine(c.fx)}${n?'<br>'+n:''}</span></span></button>`}
+  return `<button class="optcard ${k}${pick?' pick':''}" onclick="optInfo('${k}')"><span class="optk">${k.toUpperCase()}</span><span class="optmain"><span class="optt">${c.t.replace(/^[AB] · /,'')}${pick?' <em>★ BYTE’S PICK</em>':''}</span><span class="optfx">${fxLine(c.fx)}${n?'<br>'+n:''}</span><span class="optmore">ⓘ TAP FOR TRADEOFFS &amp; DETAILS</span></span></button>`}
 function startRound(){
   S.posture=null;S.picks=[];S.flags={};S.intelReveal=null;S.pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2;
   LOCS.forEach(l=>l.done=false);
@@ -1167,6 +1184,46 @@ function startRound(){
     body:`<p class="beattxt">${currentInject.title}</p>${optCard('a',currentInject.a,rc)}${optCard('b',currentInject.b,rc)}`,next:null});
   beatI=0;renderBeat();
 }
+
+const MEAN={
+ sec:['Your networks, grid and hospitals get harder to break into.','More attacks get through to grids, hospitals and banks.','If SEC falls to 10, a cascade takes the grid down and you lose.'],
+ econ:['Labs and businesses earn more; you can afford the build-out.','Labs and businesses earn less; investment slows.','A weak economy drags on chips, power and talent later.'],
+ trust:['The public and lawmakers back you.','The public and lawmakers lose faith in you.','If TRUST falls to 10, your cell loses its authority and you lose.'],
+ ally:['Friendly countries line up with you.','Friendly countries distance themselves.','Strong allies make export controls and norms talks work; weak allies make them backfire.'],
+ esc:['Tension with the rival rises toward open conflict.','Tension with the rival cools down.','If ESC reaches 90, it becomes a cyber war and you lose.'],
+ risk:['The chance of a superintelligence accident goes up.','Accidents become less likely.','High RISK summons GLITCH: rogue-AI incidents that hit several meters at once.'],
+ rcap:['The rival’s AI gets stronger, faster.','The rival’s AI progress slows.','A stronger rival makes their attacks and threats hit harder.'],
+ ccap:['Criminal gangs gain stronger AI tools.','Criminal gangs lose tools and capacity.','High CRIME means more ransomware and scams on hospitals and families.'],
+ chips:['More chips and memory are available.','Chips and memory get scarcer and pricier.','Scarce chips slow your labs and the science DIVIDEND.'],
+ power:['More cheap energy for data centers.','Energy gets tighter and more expensive.','Short power caps how much good AI you can run.'],
+ talent:['Top engineers and scientists join or stay.','Top people leave, often to rivals or abroad.','Talent drives both MODEL SEC and the science DIVIDEND.'],
+ subs:['People and businesses pay for AI services.','People cancel AI subscriptions.','Subscription revenue funds safety work at labs.'],
+ good:['More cures, science and helpful robots: the DIVIDEND grows.','Fewer breakthroughs reach people.','DIVIDEND 60+ is required for the ABUNDANCE ending.'],
+ harm:['More misuse and real-world damage from AI.','Less misuse and damage.','HARM must stay under 40 for the ABUNDANCE ending.'],
+ equity:['Benefits are shared more fairly.','Benefits pile up with a few winners.','EQUITY 45+ is required for ABUNDANCE; otherwise you get a GILDED AGE.'],
+ wellbeing:['Families, kids and workers are better off.','Families, kids and workers are worse off.','Low wellbeing feeds HARM and lowers TRUST.'],
+ botsafe:['Humanoid robots are safer and better governed.','Robots operate with fewer guardrails.','Low robot safety leads to accidents in homes and care settings.'],
+ modelsec:['Your AI models are harder to steal, poison or jailbreak.','Your models are easier to steal or tamper with.','Below 60, model theft and poisoning attacks become likely.']};
+function fxBullets(fx,want){return Object.entries(fx||{}).filter(([k,v])=>v&&LBL[k]&&MEAN[k]).filter(([k,v])=>{const good=BAD.includes(k)?v<0:v>0;return good===want}).map(([k,v])=>`<li><b>${LBL[k]} ${v>0?'+':''}${v}</b> · ${MEAN[k][v>0?0:1]}</li>`).join('')}
+function optInfo(k){const I=currentInject,c=I[k],o=I[k==='a'?'b':'a'];const ok=k==='a'?'b':'a';
+  const rc=INREC[I.id]?INREC[I.id](S):null;const n=(INOTE[I.id]||{})[k];
+  const gains=fxBullets(c.fx,true),costs=fxBullets(c.fx,false);
+  const impl=Object.keys(c.fx||{}).filter(x=>c.fx[x]&&MEAN[x]).map(x=>`<li>${MEAN[x][2]}</li>`).join('');
+  let extra='';if(c.signal==='coop')extra='<li>The rival reads this as goodwill: more likely to cooperate next round.</li>';
+  if(c.signal==='esc')extra='<li>The rival reads this as a snub: more likely to escalate next round.</li>';
+  if(c.esc)extra+='<li>Acting before the facts are in can trigger a retaliation spiral.</li>';
+  const byte=rc?(rc[0]===k?`<b style="color:#4bd37b">I’d pick this one.</b> ${rc[1]}`:`<b style="color:#ff8f8f">I’d pick ${ok.toUpperCase()} instead.</b> ${rc[1]}`):'Both are defensible. Choose by which meters you can afford to lose right now.';
+  const el=document.getElementById('optPop');
+  el.innerHTML=`<div class="opbox"><div class="oph"><span class="optk ${k}">${k.toUpperCase()}</span><div><div class="opsup">${I.title}</div><div class="opt1">${c.t.replace(/^[AB] · /,'')}</div></div></div>
+  <div class="opsec"><div class="oplbl">THE SITUATION</div><p>${I.body||''}</p></div>
+  ${gains?`<div class="opsec"><div class="oplbl" style="color:#4bd37b">✓ WHAT YOU GAIN</div><ul>${gains}</ul></div>`:''}
+  ${costs?`<div class="opsec"><div class="oplbl" style="color:#ff8f8f">✗ WHAT IT COSTS</div><ul>${costs}</ul></div>`:''}
+  <div class="opsec"><div class="oplbl" style="color:#ffd23f">⚖ LONGER-TERM IMPLICATIONS</div><ul>${extra}${impl}</ul>${n?`<p class="opnote">🔎 Analyst: ${n}</p>`:''}</div>
+  <div class="opsec"><div class="oplbl" style="color:#9fb8e8">↔ THE OTHER OPTION (${ok.toUpperCase()})</div><p><b>${o.t.replace(/^[AB] · /,'')}</b><br>${fxLine(o.fx)}</p></div>
+  <div class="dog" style="margin:10px 0 4px"><div class="dogpt">${dogSVG()}</div><div class="dogbub">${byte}</div></div>
+  <div class="opbtns"><button onclick="closeOpt()">◀ BACK</button><button class="a opgo" onclick="closeOpt();chooseInject('${k}')">CHOOSE ${k.toUpperCase()} ▶</button></div></div>`;
+  el.classList.add('on');el.scrollTop=0;SFX.sel&&SFX.sel()}
+function closeOpt(){document.getElementById('optPop').classList.remove('on')}
 function chooseInject(k){
   const c=currentInject[k];const before={...S.m};applyFx(c.fx);S.injectLog.push(currentInject.id);
   S.lastInject={title:currentInject.title,log:c.log,fx:c.fx};
@@ -1907,5 +1964,6 @@ function carGo(d){const c=document.getElementById('car');const n=c.children.leng
   new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(a){if(a.nodeType===1)wrap(a);else if(a.nodeType===3&&a.parentNode)wrap(a.parentNode)})})}).observe(document.body,{childList:true,subtree:true,characterData:false});
 })();
 </script>
+<div id="optPop" onclick="if(event.target===this)closeOpt()"></div>
 </body>
 </html>

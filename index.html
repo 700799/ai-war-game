@@ -325,6 +325,17 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 @keyframes shake{25%{transform:translate(-5px,2px)}50%{transform:translate(5px,-2px)}75%{transform:translate(-3px,-3px)}}
 .flash{animation:flash .5s steps(2) 2}
 @keyframes flash{50%{background:#3a0a0a}}
+
+.nx{display:inline-block;margin-left:.35em;color:#ffe14d;text-shadow:0 0 6px #ffe14d,0 0 12px #ffb000;animation:nxb 1s steps(1) infinite,nxs 1s ease-in-out infinite}
+.nx.lead{margin:0 .35em 0 0}
+@keyframes nxb{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes nxs{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+@media (prefers-reduced-motion:reduce){.nx{animation:none}}
+
+.pdet>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;margin-top:8px;padding:9px 10px;border:2px solid #5aa9ff;background:#14224a;color:#cfe3ff;font-size:12px}
+.pdet>summary::-webkit-details-marker{display:none}
+.pdet>summary .pdc::after{content:'SHOW ▼';color:#ffe14d;font-size:11px;white-space:nowrap}
+.pdet[open]>summary .pdc::after{content:'HIDE ▲'}
 </style>
 </head>
 <body>
@@ -1243,7 +1254,7 @@ function applyPlan(){const P=recommendPlan();S.picks.forEach(id=>{const a=ACTION
 function planHTML(){const P=recommendPlan();const byLoc=id=>LOCS.find(l=>l.id===ACTIONS.find(a=>a.id===id).loc).short;
   const SHORT=SHORTN;const _x={intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure'};
   return `<div class="plan"><div class="planrow"><div class="pt1"><span class="lbp">🐾 BYTE'S PLAN</span>${PL[P.posture]} · ${P.picks.map(([id])=>SHORT[id]).join(' · ')}</div><button class="a" onclick="applyPlan()">USE<br>PLAN</button></div>
-  <details${S.round<=2?' open':''}><summary>Why each pick? (tap)</summary><div class="dog" style="margin:6px 0 2px"><div class="dogpt">${dogSVG()}</div><div class="dogbub">I'm Byte, your advisor dog. I rank what matters most this round. You can follow me or go your own way.</div></div><div class="pl"><b>HQ:</b> Posture <b style="color:var(--gold)">${PL[P.posture]}</b>. ${P.why}</div>
+  <details class="pdet"${window.planOpen?' open':''} ontoggle="window.planOpen=this.open"><summary><span class="pdl">🐾 WHY BYTE PICKS THESE</span><span class="pdc"></span></summary><div class="dog" style="margin:6px 0 2px"><div class="dogpt">${dogSVG()}</div><div class="dogbub">I'm Byte, your advisor dog. I rank what matters most this round. You can follow me or go your own way.</div></div><div class="pl"><b>HQ:</b> Posture <b style="color:var(--gold)">${PL[P.posture]}</b>. ${P.why}</div>
   ${P.picks.map(([id,r])=>{const a=ACTIONS.find(x=>x.id===id);return `<div class="pl"><b>${byLoc(id)}:</b> ${a.name} (${a.cost} PC). ${r}</div>`}).join('')}
   <p class="small" style="margin-top:6px">Or tap buildings and choose yourself. Blue TIP tags mark Byte's picks.</p></details></div>`}
 
@@ -1862,6 +1873,25 @@ function carGo(d){const c=document.getElementById('car');const n=c.children.leng
   c.addEventListener('scroll',upd,{passive:true});upd();
   const ch=document.getElementById('castHero');if(ch)ch.innerHTML=heroSVG('width="100%" height="100%"');const cd=document.getElementById('castDog');if(cd)cd.innerHTML=dogSVG('width="100%" height="100%"');const cg=document.getElementById('castGlitch');if(cg)cg.innerHTML=glitchSVG('width="100%" height="100%"');
   const w=document.getElementById('winpose');if(w)w.innerHTML=heroSVG('width="100%" height="100%"','win');})();
+</script>
+
+<script>
+(function(){
+  function wrap(root){
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,list=[];
+    while(n=w.nextNode()){if(n.nodeValue.indexOf('\u25B6')>=0&&n.nodeValue.trim()!=='\u25B6'&&n.parentNode&&!n.parentNode.classList.contains('nx')&&n.parentNode.closest&&n.parentNode.closest('button,.btn,.endbtn,[role=button]'))list.push(n)}
+    list.forEach(function(t){
+      var parts=t.nodeValue.split('\u25B6'),f=document.createDocumentFragment();
+      parts.forEach(function(p,i){
+        if(p)f.appendChild(document.createTextNode(p.replace(/\s+$/,i<parts.length-1?'':' ').replace(/^\s+/,i>0?'':'')));
+        if(i<parts.length-1){var sp=document.createElement('span');sp.className='nx'+(i===0&&!p.trim()?' lead':'');sp.textContent='\u25B6';f.appendChild(sp)}
+      });
+      t.parentNode.replaceChild(f,t);
+    });
+  }
+  wrap(document.body);
+  new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(a){if(a.nodeType===1)wrap(a);else if(a.nodeType===3&&a.parentNode)wrap(a.parentNode)})})}).observe(document.body,{childList:true,subtree:true,characterData:false});
+})();
 </script>
 </body>
 </html>

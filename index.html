@@ -112,6 +112,22 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
+.rcard{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:12px;position:relative;background:#141633;border:3px solid #4a4c7a;box-shadow:4px 4px 0 #000}
+.rcard.sel{border-color:var(--gold);background:#2a2610}
+.rframe{flex-shrink:0;width:72px;height:72px;border:3px solid var(--line);background:linear-gradient(#2a2c55,#1a1c3a);box-shadow:3px 3px 0 #000;padding:6px;box-sizing:border-box}.rframe svg{width:100%;height:100%;display:block}
+.rinfo{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.rname{font-family:'Press Start 2P';font-size:9px;color:var(--gold);line-height:1.5}
+.rdesc{font-family:'VT323',monospace;font-size:18px;color:#cfcde6;line-height:1.15}
+.rbar{display:flex;align-items:center;gap:6px}.rbar span{font-family:'Press Start 2P';font-size:6px;color:#9b9ac7;width:68px}.rbar i{flex:1;height:8px;background:#0b0d1a;border:2px solid #000;display:block}.rbar b{display:block;height:100%}
+.rmem{font-family:'Press Start 2P';font-size:6px;color:#9b9ac7;line-height:1.6}
+.rtick{position:absolute;top:8px;right:10px;color:var(--gold);font-size:16px}
+#rivals{gap:12px}
+.ocard{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;background:#141633;border:3px solid #4a4c7a;box-shadow:4px 4px 0 #000;min-width:0}
+.ocard.sel{border-color:var(--gold);background:#2a2610}
+.oic{width:44px;height:44px;display:block}.oic svg{width:100%;height:100%}
+.olbl{font-family:'Press Start 2P';font-size:8px;color:#fff}
+.osub{font-family:'VT323',monospace;font-size:16px;color:#9b9ac7;line-height:1.1;text-align:center}
+.pips{height:44px;display:flex;flex-wrap:wrap;gap:3px;align-content:center;justify-content:center;width:52px}.pips i{width:10px;height:10px;background:var(--gold);border:2px solid #000;display:block}
 .beatsteps{display:flex;gap:4px;margin-bottom:12px}
 .beatsteps div{flex:1;font-family:'Press Start 2P';font-size:6px;text-align:center;padding:6px 1px;border:2px solid #3a3c6a;color:#6b6a99;line-height:1.4}
 .beatsteps div.now{border-color:var(--gold);color:var(--gold);background:#2a2610}.beatsteps div.ok{border-color:var(--green);color:var(--green)}.beatsteps div.skip{opacity:.35}
@@ -626,15 +642,15 @@ const DIFFS = {easy:{pc:9,noise:.1,label:'TABLETOP'},normal:{pc:8,noise:.2,label
 const LOCS = [
   {id:'wh',short:'HQ',purpose:'National security headquarters. Set your POSTURE toward the rival. Also: chip controls, cyber ops, intel.', x:1,y:1, icon:'🏛️', name:'HEADQUARTERS', who:'HQ STAFF', intro:'Posture toward the rival is set here. This is the game within the game.'},
   {id:'sv',short:'LABS',purpose:'Frontier labs: safety testing, liability rules, talent pipeline.', x:5,y:1, icon:'🏢', name:'FRONTIER LABS', who:'LAB CEO', intro:'"We want to be safe. We also want to be first. Those are not always the same thing."'},
-  {id:'cisa',short:'GRID',purpose:'Harden hospitals, water and power against attacks.',x:2,y:4, icon:'🔌', name:'GRID DEFENSE', who:'GRID DEFENSE CHIEF', intro:'"Hospitals, water, power. Every one running software older than your interns."'},
+  {id:'cisa',short:'GRID',purpose:'Harden hospitals, water and power against attacks.',x:2,y:4, icon:'🔌', name:'GRID DEFENSE', who:'CHIEF MARCUS BRANDT', title:'GRID DEFENSE CHIEF', intro:'"Hospitals, water, power. Every one runs software older than your interns. Give me the budget and I will make them tough."'},
   {id:'ally',short:'ALLIES',purpose:'Coordinate with allies; open cyber-norms talks with the rival.',x:6,y:4, icon:'🤝', name:'ALLIES', who:'FOREIGN MINISTER', intro:'"We will follow your lead — if your lead is consistent."'},
   {id:'dark',short:'CRIME',purpose:'Fight ransomware gangs; SI defense bounties.',x:1,y:6, icon:'💀', name:'DARKNET', who:'CYBER POLICE', intro:'"The gangs do not care about your doctrine. They care about who pays."'},
   {id:'oss',short:'OPEN',purpose:'Open-source commons: bug disclosure, open-weight rules, tamper-resistant safeguards.', x:4,y:6, icon:'🌐', name:'OPEN COMMONS', who:'OSS MAINTAINER', intro:'"We publish so everyone can defend. We know everyone includes them."'},
-  {id:'soc',short:'SOC',purpose:'Security operations: insider threats and threat modeling.', x:3,y:1, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'CISO', intro:'"Most breaches I see start with a badge, not a zero-day. And nobody models threats until after the incident."'},
-  {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:6,y:6, icon:'🏭', name:'FABS & POWER', who:'ENERGY SECRETARY', intro:'"Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
+  {id:'soc',short:'SOC',purpose:'Security operations: insider threats and threat modeling.', x:3,y:1, icon:'🛡️', name:'SOC / COUNTERINTEL', who:'TESS RIVERA', title:'THREAT HUNTER', intro:'"I hunt attackers for a living. Most breaches start with a badge, not a zero-day, and nobody models threats until after the incident."'},
+  {id:'fab',short:'FABS',purpose:'Chips, memory and power plants for compute.', x:6,y:6, icon:'🏭', name:'FABS & POWER', who:'MINH TRAN', title:'PRINCIPAL ENGINEER', intro:'"I spent fifteen years tuning chip fabs. Every model runs on chips, memory and megawatts. All three are short, and all three are getting expensive."'},
   {id:'town',short:'TOWN',purpose:'Society: jobs, fairness, privacy, kids online, addictive feeds, public access to SI.', x:5,y:5, icon:'🏛', name:'TOWN HALL', who:'MAYOR', intro:'"My town does not care about chips or treaties. They care about jobs, their kids, and whether the machine treats them fairly."'},
   {id:'bots',short:'ROBOTS',purpose:'Humanoid robot policy: safety certification, cybersecurity, liability, home privacy, and sharing the gains with displaced workers.', x:6,y:2, icon:'🤖', name:'ROBOTICS BOARD', who:'ROBOTICS SAFETY CHIEF', intro:'"A chatbot that makes a mistake writes a bad sentence. A humanoid that makes a mistake drops a patient. We need rules before there are millions of them."'},
-  {id:'red',short:'RED',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:3,y:5, icon:'🎯', name:'RED TEAM LAB', who:'DR. VERA SATO', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
+  {id:'red',short:'RED',purpose:'Model security: red-team your own models, track data and model provenance, lock down SI agents, and share model-flaw reports.', x:3,y:5, icon:'🎯', name:'RED TEAM LAB', who:'DR. VERA SATO', title:'CHIEF SCIENTIST', intro:'"Every model is now an attack surface. People will trick it, poison it, steal it and copy it. Better we find the holes first."'},
 ];
 
 // Action cards. fx = direct effects; flags set round modifiers.
@@ -925,12 +941,12 @@ const PT={
  you:{hair:'#4a2b17',suit:'#23305e'},
  wh:{hair:'#7a5a3a',suit:'#1e2a4a',tie:'#5ab0ff'},
  sv:{hair:'#e8c860',suit:'#222',notie:1,shirt:'#2a2a2a'},
- cisa:{hair:'#333',suit:'#c96a1a',cap:1,capc:'#f7c948',badge:'#ffffff',notie:1,shirt:'#f7c948',skin:'#8d5524'},
+ cisa:{hair:'#6b4a2a',suit:'#1e3a5f',shirt:'#1e3a5f',notie:1,broad:1,buzz:1,grin:1,skin:'#e0ac69'},
  ally:{hair:'#cfcfcf',suit:'#5a3a7a',tie:'#f7c948'},
  dark:{hair:'#111',suit:'#111',shades:1,tie:'#111',skin:'#e0ac69'},
  oss:{hair:'#a0522d',suit:'#2f7a3a',beard:1,notie:1,shirt:'#2f7a3a',glasses:1},
- soc:{hair:'#3a2a1a',suit:'#2a4fb3',glasses:1,headset:1,notie:1,shirt:'#1b1b2f',skin:'#c68642'},
- fab:{hair:'#888',suit:'#3a3a50',cap:1,capc:'#f7c948',badge:'#3a3a50',tie:'#c96a1a'},
+ soc:{hair:'#8a4a1a',suit:'#2f2f45',shirt:'#5ab0ff',notie:1,pony:1,smirk:1,skin:'#f1c27d'},
+ fab:{hair:'#121212',suit:'#3a4a5a',shirt:'#f4f1e6',tie:'#4bb3a0',skin:'#e8c39e',glasses:1,lanyard:1,sidepart:1},
  sci:{hair:'#2b1a10',suit:'#eef2f5',shirt:'#4bb3a0',notie:1,coat:1,skin:'#f1c27d',bun:1,thick:1},
  red:{hair:'#2b1a10',suit:'#eef2f5',shirt:'#4bb3a0',notie:1,coat:1,skin:'#f1c27d',bun:1,thick:1},
  bots:{hair:'#333',suit:'#6b6b7a',glasses:1,tie:'#5ab0ff',skin:'#c68642'},
@@ -940,19 +956,24 @@ const glitchSVG=(a='')=>{const OL='#10261f',Y='#f8f0a0';let t='',b='';[32,40,48,
   return `<svg ${a} viewBox="0 0 100 120"><ellipse cx="50" cy="116" rx="30" ry="3.5" fill="rgba(0,0,0,.3)"/><g stroke="${OL}" stroke-width="4" stroke-linejoin="round" fill="${Y}"><path d="M22 32 L17 6 L41 20 Z"/><path d="M78 32 L83 6 L59 20 Z"/><path d="M30 100 L30 114 L45 114 L45 100"/><path d="M55 100 L55 114 L70 114 L70 100"/><path d="M14 52 Q14 14 50 14 Q86 14 86 52 L88 96 Q88 106 76 106 L24 106 Q12 106 12 96 Z"/><path d="M15 60 Q3 80 8 98 Q14 101 19 96"/><path d="M85 60 Q97 80 92 98 Q86 101 81 96"/><circle cx="36" cy="38" r="12" fill="#fff"/><circle cx="64" cy="38" r="12" fill="#fff"/></g><circle cx="40" cy="40" r="5.5" fill="${OL}"/><circle cx="68" cy="40" r="5.5" fill="${OL}"/><circle cx="41.5" cy="38.2" r="1.6" fill="#fff"/><circle cx="69.5" cy="38.2" r="1.6" fill="#fff"/><ellipse cx="50" cy="70" rx="22" ry="15" fill="${OL}"/><g fill="#fff">${t}${b}</g></svg>`};
 function vportrait(o){const SK=o.skin||'#f1c27d',HR=o.hair,SU=o.suit,SH=o.shirt||'#f4f1e6',TI=o.tie||'#d33a3a',OL='#10121f';let v='';
   if(o.long)v+=`<path d="M23 40 Q20 82 30 86 L70 86 Q80 82 77 40 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
-  v+=`<path d="M6 100 Q9 74 50 72 Q91 74 94 100 Z" fill="${SU}" stroke="${OL}" stroke-width="2"/><path d="M40 73 L50 90 L60 73 Z" fill="${SH}" stroke="${OL}" stroke-width="1.5"/>`;
+  if(o.pony)v+=`<path d="M68 28 Q92 36 86 74 Q80 66 70 52 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
+  v+=o.broad?`<path d="M0 100 Q3 70 50 67 Q97 70 100 100 Z" fill="${SU}" stroke="${OL}" stroke-width="2"/>`:`<path d="M6 100 Q9 74 50 72 Q91 74 94 100 Z" fill="${SU}" stroke="${OL}" stroke-width="2"/><path d="M40 73 L50 90 L60 73 Z" fill="${SH}" stroke="${OL}" stroke-width="1.5"/>`;
+  if(o.lanyard)v+=`<path d="M41 74 L47 92 M59 74 L53 92" stroke="#2a7de1" stroke-width="2.4" fill="none"/><rect x="44" y="90" width="12" height="9" rx="1.5" fill="#f4f1e6" stroke="${OL}" stroke-width="1.5"/><rect x="46" y="92" width="4" height="4" fill="#2a7de1"/>`;
   if(o.coat)v+=`<path d="M40 73 L46 100 M60 73 L54 100" stroke="${OL}" stroke-width="1.6" fill="none"/><rect x="62" y="84" width="10" height="3" fill="#5ab0ff"/><rect x="64" y="80" width="2" height="7" fill="#d33a3a"/>`;
   if(!o.notie)v+=`<path d="M47.5 76 L52.5 76 L54 92 L50 97 L46 92 Z" fill="${TI}" stroke="${OL}" stroke-width="1.5"/>`;
   if(o.bun)v+=`<circle cx="50" cy="15" r="11" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
-  v+=`<rect x="43" y="60" width="14" height="14" fill="${SK}" stroke="${OL}" stroke-width="2"/><circle cx="26" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/><circle cx="74" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/><ellipse cx="50" cy="44" rx="24" ry="26" fill="${SK}" stroke="${OL}" stroke-width="2"/>`;
+  v+=o.broad?`<rect x="40" y="58" width="20" height="15" fill="${SK}" stroke="${OL}" stroke-width="2"/>`:`<rect x="43" y="60" width="14" height="14" fill="${SK}" stroke="${OL}" stroke-width="2"/>`;
+  v+=`<circle cx="26" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/><circle cx="74" cy="47" r="5" fill="${SK}" stroke="${OL}" stroke-width="2"/><ellipse cx="50" cy="44" rx="24" ry="26" fill="${SK}" stroke="${OL}" stroke-width="2"/>`;
   if(o.beard)v+=`<path d="M27 48 Q28 73 50 73 Q72 73 73 48 Q67 61 50 61 Q33 61 27 48 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   if(o.cap)v+=`<path d="M25 36 Q26 13 50 13 Q74 13 75 36 Z" fill="${o.capc}" stroke="${OL}" stroke-width="2"/><path d="M21 35 L79 35 L82 41 L18 41 Z" fill="#1b1b2f"/><circle cx="50" cy="25" r="4.5" fill="${o.badge||'#f7c948'}" stroke="${OL}" stroke-width="1.5"/>`;
+  else if(o.buzz)v+=`<path d="M27 38 Q27 17 50 17 Q73 17 73 38 Q66 26 50 26 Q34 26 27 38 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
+  else if(o.sidepart)v+=`<path d="M26 44 Q22 14 46 15 Q78 13 75 44 Q73 28 60 24 Q50 22 42 20 Q36 30 26 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/><path d="M42 20 Q44 16 46 15" stroke="#444" stroke-width="1.5" fill="none"/>`;
   else v+=`<path d="M26 44 Q22 15 50 15 Q78 15 74 44 Q71 29 59 26 Q47 31 35 27 Q29 33 26 44 Z" fill="${HR}" stroke="${OL}" stroke-width="2"/>`;
   if(o.shades)v+=`<rect x="33" y="41" width="15" height="9" rx="3" fill="#111"/><rect x="52" y="41" width="15" height="9" rx="3" fill="#111"/><path d="M48 44 L52 44" stroke="#111" stroke-width="2"/><path d="M36 43 L41 43" stroke="#555" stroke-width="1.5"/>`;
   else v+=`<ellipse cx="41" cy="46" rx="2.6" ry="3.3" fill="${OL}"/><ellipse cx="59" cy="46" rx="2.6" ry="3.3" fill="${OL}"/><circle cx="41.8" cy="45" r=".9" fill="#fff"/><circle cx="59.8" cy="45" r=".9" fill="#fff"/><path d="M36 39 Q41 36.5 46 39 M54 39 Q59 36.5 64 39" stroke="${o.cap?OL:HR}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
   if(o.thick)v+=`<rect x="31" y="38.5" width="18" height="15" rx="5" fill="rgba(200,230,255,.22)" stroke="#16161f" stroke-width="4.2"/><rect x="51" y="38.5" width="18" height="15" rx="5" fill="rgba(200,230,255,.22)" stroke="#16161f" stroke-width="4.2"/><path d="M48.5 44 L51.5 44" stroke="#16161f" stroke-width="3.5"/><path d="M31 43 L25 41 M69 43 L75 41" stroke="#16161f" stroke-width="3"/><path d="M34 41.5 L38 41.5" stroke="#fff" stroke-width="1.5" opacity=".7"/>`;
   if(o.glasses)v+=`<circle cx="41" cy="46" r="6.5" fill="rgba(255,255,255,.15)" stroke="#2a2a2a" stroke-width="2"/><circle cx="59" cy="46" r="6.5" fill="rgba(255,255,255,.15)" stroke="#2a2a2a" stroke-width="2"/><path d="M47.5 46 L52.5 46" stroke="#2a2a2a" stroke-width="2"/>`;
-  v+=`<path d="M50 48 L47.5 54 L51 54.5" stroke="${OL}" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M44 59 Q50 63 56 59" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="34" cy="54" r="3" fill="#f2a07b" opacity=".35"/><circle cx="66" cy="54" r="3" fill="#f2a07b" opacity=".35"/>`;
+  v+=`<path d="M50 48 L47.5 54 L51 54.5" stroke="${OL}" stroke-width="1.6" fill="none" stroke-linejoin="round"/>${o.grin?`<path d="M39 56 Q50 69 61 56 Z" fill="#fff" stroke="${OL}" stroke-width="2" stroke-linejoin="round"/><path d="M40 58 L60 58" stroke="${OL}" stroke-width="1"/>`:o.smirk?`<path d="M45 60 Q52 62.5 58 57" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`:`<path d="M44 59 Q50 63 56 59" stroke="${OL}" stroke-width="2" fill="none" stroke-linecap="round"/>`}<circle cx="34" cy="54" r="3" fill="#f2a07b" opacity=".35"/><circle cx="66" cy="54" r="3" fill="#f2a07b" opacity=".35"/>`;
   if(o.headset)v+=`<path d="M24 44 Q24 12 50 12 Q76 12 76 44" stroke="#9aa3b5" stroke-width="3" fill="none"/><rect x="20" y="40" width="7" height="12" rx="3" fill="#9aa3b5" stroke="${OL}" stroke-width="1.5"/><path d="M24 52 Q26 62 38 60" stroke="#9aa3b5" stroke-width="2" fill="none"/>`;
   return `<svg viewBox="0 0 100 100">${v}</svg>`}
 const RIVAL_CREST=`<svg viewBox="0 0 100 100"><path d="M50 8 L86 20 L82 58 Q76 82 50 94 Q24 82 18 58 L14 20 Z" fill="#ff5c5c" stroke="#10121f" stroke-width="3" stroke-linejoin="round"/><path d="M50 18 L76 27 L73 56 Q68 74 50 83 Q32 74 27 56 L24 27 Z" fill="#8a1c1c"/><circle cx="50" cy="50" r="16" fill="none" stroke="#f7c948" stroke-width="6"/><circle cx="50" cy="50" r="6" fill="#f7c948"/></svg>`;
@@ -1010,13 +1031,26 @@ function toast(t){const e=document.getElementById('toast');e.textContent=t;e.sty
 const cl=(v,a=0,b=100)=>Math.max(a,Math.min(b,Math.round(v)));
 
 /* ===================== SETUP ===================== */
+const EMBLEM={
+ realist:`<svg viewBox="0 0 100 100"><path d="M50 8 L86 20 L82 58 Q76 82 50 94 Q24 82 18 58 L14 20 Z" fill="#2a7de1" stroke="#10121f" stroke-width="3" stroke-linejoin="round"/><path d="M50 26 L50 74 M36 74 L64 74 M30 38 L70 38" stroke="#f4f1e6" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 38 L22 56 L38 56 Z M70 38 L62 56 L78 56 Z" fill="#f7c948" stroke="#10121f" stroke-width="2" stroke-linejoin="round"/></svg>`,
+ opportunist:`<svg viewBox="0 0 100 100"><path d="M50 8 L86 20 L82 58 Q76 82 50 94 Q24 82 18 58 L14 20 Z" fill="#f7a23c" stroke="#10121f" stroke-width="3" stroke-linejoin="round"/><path d="M20 50 Q50 22 80 50 Q50 78 20 50 Z" fill="#f4f1e6" stroke="#10121f" stroke-width="3"/><circle cx="50" cy="50" r="12" fill="#10121f"/><circle cx="54" cy="46" r="4" fill="#fff"/></svg>`,
+ hardliner:`<svg viewBox="0 0 100 100"><path d="M50 8 L86 20 L82 58 Q76 82 50 94 Q24 82 18 58 L14 20 Z" fill="#c0392b" stroke="#10121f" stroke-width="3" stroke-linejoin="round"/><path d="M56 18 L30 54 L48 54 L40 84 L70 44 L52 44 Z" fill="#f7c948" stroke="#10121f" stroke-width="3" stroke-linejoin="round"/></svg>`};
+const DIFF_IC={
+ easy:`<svg viewBox="0 0 60 60"><circle cx="30" cy="16" r="9" fill="#4bd37b" stroke="#10121f" stroke-width="3"/><path d="M22 28 L38 28 L42 46 L18 46 Z" fill="#4bd37b" stroke="#10121f" stroke-width="3" stroke-linejoin="round"/><rect x="12" y="46" width="36" height="8" rx="2" fill="#4bd37b" stroke="#10121f" stroke-width="3"/></svg>`,
+ normal:`<svg viewBox="0 0 60 60"><rect x="8" y="10" width="44" height="30" rx="3" fill="#1b1b2f" stroke="#f7c948" stroke-width="3"/><path d="M14 30 L22 22 L30 28 L38 18 L46 24" stroke="#4bd37b" stroke-width="2.5" fill="none"/><rect x="26" y="40" width="8" height="8" fill="#f7c948"/><rect x="18" y="48" width="24" height="5" rx="1" fill="#f7c948"/></svg>`,
+ hard:`<svg viewBox="0 0 60 60"><path d="M16 46 L16 30 Q16 14 30 14 Q44 14 44 30 L44 46 Z" fill="#ff5c5c" stroke="#10121f" stroke-width="3"/><rect x="10" y="46" width="40" height="8" rx="2" fill="#555" stroke="#10121f" stroke-width="3"/><path d="M24 26 Q26 20 32 20" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M6 20 L11 24 M54 20 L49 24 M30 4 L30 9" stroke="#ff5c5c" stroke-width="3" stroke-linecap="round"/></svg>`};
+const DIFF_TXT={easy:'Forgiving',normal:'Balanced',hard:'Brutal'};
+const LEN_TXT={quick:'~10 min',std:'~15 min',full:'~20 min'};
 function renderSetup(){
   const r=document.getElementById('rivals');r.innerHTML='';
-  for(const k in RIVALS){const b=document.createElement('button');b.className=k===rival?'sel':'';b.innerHTML=`<span style="color:var(--gold)">${RIVALS[k].name}</span><br><span style="font-family:VT323;font-size:19px;color:#cfcde6">${RIVALS[k].desc}</span>`;b.onclick=()=>{rival=k;renderSetup();SFX.sel()};r.appendChild(b)}
+  for(const k in RIVALS){const R=RIVALS[k];const b=document.createElement('button');b.className='rcard'+(k===rival?' sel':'');
+    const bar=(lbl,v,col)=>`<div class="rbar"><span>${lbl}</span><i><b style="width:${Math.round(v*100)}%;background:${col}"></b></i></div>`;
+    b.innerHTML=`<span class="rframe">${EMBLEM[k]}</span><span class="rinfo"><span class="rname">${R.name}</span><span class="rdesc">${R.desc}</span>${bar('COOPERATES',R.coop/.6,'#4bd37b')}${bar('ESCALATES',R.esc/.7,'#ff5c5c')}<span class="rmem">REMEMBERS ${R.memory} ROUND${R.memory>1?'S':''} OF YOUR MOVES</span></span>${k===rival?'<span class="rtick">✔</span>':''}`;
+    b.onclick=()=>{rival=k;renderSetup();SFX.sel()};r.appendChild(b)}
   const d=document.getElementById('diffs');d.innerHTML='';
+  for(const k in DIFFS){const b=document.createElement('button');b.className='ocard'+(k===diff?' sel':'');b.innerHTML=`<span class="oic">${DIFF_IC[k]}</span><span class="olbl">${DIFFS[k].label}</span><span class="osub">${DIFF_TXT[k]}<br>${DIFFS[k].pc} PC/round</span>`;b.onclick=()=>{diff=k;renderSetup();SFX.sel()};d.appendChild(b)}
   const ln=document.getElementById('lens');ln.innerHTML='';
-  for(const k in LENGTHS){const b=document.createElement('button');b.className=k===glen?'sel gold':'';b.textContent=LENGTHS[k].label;b.style.fontSize='8px';b.onclick=()=>{glen=k;renderSetup();SFX.sel()};ln.appendChild(b)}
-  for(const k in DIFFS){const b=document.createElement('button');b.className=k===diff?'sel gold':'';b.textContent=DIFFS[k].label;b.onclick=()=>{diff=k;renderSetup();SFX.sel()};d.appendChild(b)}
+  for(const k in LENGTHS){const n=LENGTHS[k].r;const b=document.createElement('button');b.className='ocard'+(k===glen?' sel':'');b.innerHTML=`<span class="pips">${'<i></i>'.repeat(n)}</span><span class="olbl">${LENGTHS[k].label.split(' · ')[0]}</span><span class="osub">${n} rounds<br>${LEN_TXT[k]}</span>`;b.onclick=()=>{glen=k;renderSetup();SFX.sel()};ln.appendChild(b)}
 }
 renderSetup();
 titleScene();
@@ -1249,7 +1283,7 @@ function enterLoc(){const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);if(!L){toas
 
 function openLoc(L){
   showGame('g-loc');SFX.sel();
-  document.getElementById('locWho').textContent=L.who;document.getElementById('locRole').textContent=L.name+' · '+FRONTN[FRONT[L.id]];document.getElementById('locPt').innerHTML=portrait(L.id);
+  document.getElementById('locWho').textContent=L.who;document.getElementById('locRole').textContent=(L.title?L.title+' · ':'')+L.name;document.getElementById('locPt').innerHTML=portrait(L.id);
   typeInto(document.getElementById('locTxt'),L.intro);
   const body=document.getElementById('locBody');body.innerHTML=`<p class="small" style="margin-bottom:10px">${L.id==='wh'?'Pick a posture (required, free), then tap any card to buy it.':'Tap a card to buy it with PC. Tap again to undo.'} You have <b style="color:var(--gold)">${S.pc} PC</b> left.</p>`;
   if(L.id==='wh'){
@@ -1741,7 +1775,7 @@ function finaleStory(){clearInterval(finTimer);const E=ending();const f=document
     <div class="fbtn"><button onclick="finaleCredits()">CREDITS ▶</button><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`;
   const c=document.getElementById('crawl');let i=0;const next=()=>{if(i>=lines.length)return;const [k,t]=lines[i++];const p=document.createElement('p');p.innerHTML=icon(k);const sp=document.createElement('span');p.appendChild(sp);c.appendChild(p);typeInto(sp,t,()=>setTimeout(next,250))};next()}
 function finaleCredits(){const f=document.getElementById('finale');SFX.fanfare();
-  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['DR. VERA SATO','CHIEF SCIENTIST'],['THE BRIEFER','SITUATION ROOM'],['THREAT ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CISO','SOC'],['GRID DEFENSE CHIEF','GRID'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
+  const cast=[['THE CHAIR','YOU'],['BYTE','ADVISOR DOG'],['DR. VERA SATO','CHIEF SCIENTIST'],['THE BRIEFER','SITUATION ROOM'],['THREAT ANALYST','SITROOM'],['GLITCH','A ROGUE SI'],['THE RIVAL MINISTRY','AN INVENTED STATE'],['CHIEF MARCUS BRANDT','GRID DEFENSE'],['TESS RIVERA','THREAT HUNTER'],['MINH TRAN','PRINCIPAL ENGINEER'],['RED TEAM LEAD','RED TEAM LAB'],['ROBOTICS SAFETY CHIEF','ROBOTS'],['THE MAYOR','TOWN HALL'],['LAB CEO','LABS'],['FOREIGN MINISTER','ALLIES']];
   f.style.justifyContent='center';
   f.innerHTML=`${ending().k==='ABUNDANCE'?confetti(24):''}<div class="credits"><div style="font-size:14px;color:#f7c948">SIGNAL / NOISE</div><div>A SUPERINTELLIGENCE WARGAME</div><b>STARRING</b>${cast.map(([a,b])=>`${a}<br><span style="color:#9b9ac7">${b}</span>`).join('<br>')}<b>FINAL SCORE</b>${scoreGame()} / 100<b>SI CLOCK</b>${S.si}%<b>THANK YOU FOR PLAYING</b><br><br></div>
     <div class="fbtn"><button class="a" onclick="f2debrief()">DEBRIEF ▶</button></div>`}

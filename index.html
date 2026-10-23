@@ -343,7 +343,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .post button::before,.optcard::before,#g-loc .card::before,.rcard::before,.ocard::before{content:'';position:absolute;inset:-3px;padding:3px;pointer-events:none;z-index:2;
   background:conic-gradient(from var(--na),transparent 0 62%,rgba(57,255,138,.5) 72%,#eaffef 80%,#39ff8a 84%,transparent 92%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;
-  animation:neonTrace 2.2s linear infinite}
+  animation:neonTrace 2.2s linear infinite;display:none}
 @keyframes neonTrace{to{--na:360deg}}
 @keyframes neonPulse{0%,100%{box-shadow:4px 4px 0 #000,0 0 4px #39ff8a,0 0 10px rgba(57,255,138,.35)}50%{box-shadow:4px 4px 0 #000,0 0 9px #39ff8a,0 0 20px rgba(57,255,138,.6)}}
 .post button.sel,.optcard.chosen,#g-loc .card.sel,.rcard.sel,.ocard.sel{border-color:var(--gold)!important;animation:neonGold 1.6s ease-in-out infinite}
@@ -367,6 +367,21 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .opbtns{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:14px;position:sticky;bottom:0;background:#141633;padding-top:8px}
 .opbtns button{font-size:10px;padding:14px 6px}
 .opgo{background:#1d5a33;border-color:#39ff8a;color:#fff}
+
+/* SPARK riding the neon frame */
+.post button::after,.optcard::after,#g-loc .card::after,.rcard::after,.ocard::after{content:'';position:absolute;width:7px;height:7px;border-radius:50%;background:#fff;pointer-events:none;z-index:3;margin:-3.5px 0 0 -3.5px;left:-1.5px;top:-1.5px;
+  box-shadow:0 0 3px 1px #fff,0 0 8px 3px #39ff8a,0 0 16px 6px rgba(57,255,138,.55);animation:sparkRun 2.2s linear infinite,sparkFlick .12s steps(2) infinite}
+.post button.sel::after,#g-loc .card.sel::after,.rcard.sel::after,.ocard.sel::after{box-shadow:0 0 3px 1px #fff,0 0 8px 3px #ffd23f,0 0 16px 6px rgba(255,210,63,.55)}
+@keyframes sparkRun{0%{left:-1.5px;top:-1.5px}25%{left:calc(100% + 1.5px);top:-1.5px}50%{left:calc(100% + 1.5px);top:calc(100% + 1.5px)}75%{left:-1.5px;top:calc(100% + 1.5px)}100%{left:-1.5px;top:-1.5px}}
+@keyframes sparkFlick{0%{transform:scale(1);opacity:1}50%{transform:scale(1.45);opacity:.75}}
+/* tap shake */
+.tapshake{animation:tapShake .26s ease-out!important}
+@keyframes tapShake{0%{translate:0 0}20%{translate:-3px 1px}40%{translate:3px -1px}60%{translate:-2px 0}80%{translate:2px 0}100%{translate:0 0}}
+/* details icon */
+.optcard{position:relative;padding-right:52px}
+.opti{position:absolute;top:8px;right:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:2px solid #ffe14d;background:#0b0c22;color:#ffe14d;font-family:'Press Start 2P',monospace;font-size:13px;box-shadow:0 0 8px rgba(255,225,77,.6);z-index:4;cursor:pointer}
+.opti small{position:absolute;bottom:-14px;font-size:6px;letter-spacing:.5px;white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.post button::after,.optcard::after,#g-loc .card::after,.rcard::after,.ocard::after{display:none}.tapshake{animation:none!important}}
 </style>
 </head>
 <body>
@@ -1156,7 +1171,7 @@ function renderBeat(){const b=beats[beatI];
 function briefNext(){const b=beats[beatI];if(b&&b.go)return b.go();beatI++;renderBeat()}
 function toMap(){showGame('g-map');renderMap()}
 function optCard(k,c,rc){const n=(INOTE[currentInject.id]||{})[k];const pick=rc&&rc[0]===k;
-  return `<button class="optcard ${k}${pick?' pick':''}" onclick="optInfo('${k}')"><span class="optk">${k.toUpperCase()}</span><span class="optmain"><span class="optt">${c.t.replace(/^[AB] · /,'')}${pick?' <em>★ BYTE’S PICK</em>':''}</span><span class="optfx">${fxLine(c.fx)}${n?'<br>'+n:''}</span><span class="optmore">ⓘ TAP FOR TRADEOFFS &amp; DETAILS</span></span></button>`}
+  return `<button class="optcard ${k}${pick?' pick':''}" onclick="chooseInject('${k}')"><span class="opti" role="button" aria-label="More details" onclick="event.stopPropagation();optInfo('${k}')">ⓘ<small>INFO</small></span><span class="optk">${k.toUpperCase()}</span><span class="optmain"><span class="optt">${c.t.replace(/^[AB] · /,'')}${pick?' <em>★ BYTE’S PICK</em>':''}</span><span class="optfx">${fxLine(c.fx)}${n?'<br>'+n:''}</span></span></button>`}
 function startRound(){
   S.posture=null;S.picks=[];S.flags={};S.intelReveal=null;S.pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2;
   LOCS.forEach(l=>l.done=false);
@@ -1965,5 +1980,16 @@ function carGo(d){const c=document.getElementById('car');const n=c.children.leng
 })();
 </script>
 <div id="optPop" onclick="if(event.target===this)closeOpt()"></div>
+
+<script>
+(function(){
+  var SEL='button,[onclick],.optcard,.card,.rcard,.ocard,summary,[role=button]';
+  var sw=null;try{var lb=document.createElement('label');lb.style.cssText='position:fixed;left:-99px;top:0;opacity:0;pointer-events:none';var ip=document.createElement('input');ip.type='checkbox';ip.setAttribute('switch','');lb.appendChild(ip);document.body.appendChild(lb);sw=lb}catch(e){}
+  function buzz(){try{if(navigator.vibrate){navigator.vibrate(12);return}}catch(e){}try{sw&&sw.click()}catch(e){}}
+  document.addEventListener('pointerdown',function(e){var t=e.target.closest&&e.target.closest(SEL);if(!t||t===document.body||t.id==='optPop')return;
+    t.classList.remove('tapshake');void t.offsetWidth;t.classList.add('tapshake');setTimeout(function(){t.classList.remove('tapshake')},280)},true);
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest(SEL);if(t&&t.id!=='optPop'&&t!==sw)buzz()},true);
+})();
+</script>
 </body>
 </html>

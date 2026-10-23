@@ -339,14 +339,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 
 /* NEON pickable frames */
 @property --na{syntax:'<angle>';inherits:false;initial-value:0deg}
-.post button,.optcard,#g-loc .card,.rcard,.ocard{position:relative;border-color:#39ff8a!important;animation:neonPulse 1.6s ease-in-out infinite}
+.post button,.optcard,#g-loc .card,.rcard,.ocard{position:relative;border-color:#39ff8a!important;animation:neonPulse 3.2s ease-in-out infinite}
 .post button::before,.optcard::before,#g-loc .card::before,.rcard::before,.ocard::before{content:'';position:absolute;inset:-3px;padding:3px;pointer-events:none;z-index:2;
   background:conic-gradient(from var(--na),transparent 0 62%,rgba(57,255,138,.5) 72%,#eaffef 80%,#39ff8a 84%,transparent 92%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;
   animation:neonTrace 2.2s linear infinite;display:none}
 @keyframes neonTrace{to{--na:360deg}}
 @keyframes neonPulse{0%,100%{box-shadow:4px 4px 0 #000,0 0 4px #39ff8a,0 0 10px rgba(57,255,138,.35)}50%{box-shadow:4px 4px 0 #000,0 0 9px #39ff8a,0 0 20px rgba(57,255,138,.6)}}
-.post button.sel,.optcard.chosen,#g-loc .card.sel,.rcard.sel,.ocard.sel{border-color:var(--gold)!important;animation:neonGold 1.6s ease-in-out infinite}
+.post button.sel,.optcard.chosen,#g-loc .card.sel,.rcard.sel,.ocard.sel{border-color:var(--gold)!important;animation:neonGold 3.2s ease-in-out infinite}
 .post button.sel::before,#g-loc .card.sel::before,.rcard.sel::before,.ocard.sel::before{background:conic-gradient(from var(--na),transparent 0 62%,rgba(255,210,63,.5) 72%,#fff8d0 80%,#ffd23f 84%,transparent 92%)}
 @keyframes neonGold{0%,100%{box-shadow:4px 4px 0 #000,0 0 5px #ffd23f,0 0 12px rgba(255,210,63,.4)}50%{box-shadow:4px 4px 0 #000,0 0 10px #ffd23f,0 0 22px rgba(255,210,63,.65)}}
 @media (prefers-reduced-motion:reduce){.post button,.optcard,#g-loc .card,.rcard,.ocard{animation:none}.post button::before,.optcard::before,#g-loc .card::before,.rcard::before,.ocard::before{animation:none}}
@@ -435,7 +435,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .lopt{display:flex;gap:10px;align-items:flex-start;margin-top:8px;font-family:'VT323',monospace;font-size:19px;line-height:1.2}
 .lok{margin:10px 16px 16px;font-size:11px;padding:14px}
 /* calmer spark */
-.post button::after,.optcard::after,#g-loc .card::after,.rcard::after,.ocard::after{width:5px;height:5px;margin:-2.5px 0 0 -2.5px;box-shadow:0 0 2px 1px rgba(255,255,255,.7),0 0 5px 2px rgba(57,255,138,.45);animation:sparkRun 14s linear infinite,sparkFlick .5s ease-in-out infinite;opacity:.8}
+.post button::after,.optcard::after,#g-loc .card::after,.rcard::after,.ocard::after{width:5px;height:5px;margin:-2.5px 0 0 -2.5px;box-shadow:0 0 2px 1px rgba(255,255,255,.7),0 0 5px 2px rgba(57,255,138,.45);animation:sparkRun 26s linear infinite,sparkFlick .5s ease-in-out infinite;opacity:.8}
 .post button.sel::after,#g-loc .card.sel::after,.rcard.sel::after,.ocard.sel::after{box-shadow:0 0 2px 1px rgba(255,255,255,.7),0 0 5px 2px rgba(255,210,63,.45)}
 @keyframes sparkFlick{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
 .oph .opx{margin-left:auto;align-self:flex-start}
@@ -508,6 +508,7 @@ button,.optcard,.card,.rcard,.ocard,summary,[role=button],.t.loc{transition:filt
 .mgrid{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .mchip{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:11px;padding:6px 8px;box-shadow:2px 2px 0 #000}
 .mchip.on{background:#f2c14e;color:#000;border-color:#000}
+.banal{margin:6px 0 0;padding-left:20px}.banal li{margin:8px 0;line-height:1.45}.banal b{color:#f2c48a}
 </style>
 </head>
 <body>
@@ -1600,8 +1601,39 @@ function byteDrawer(sub,title,html){const el=document.getElementById('learnDrawe
   el.innerHTML=`<div class="lsheet bytesheet" role="dialog" aria-label="Byte"><div class="lgrab"></div><div class="lhead"><div class="bdpt">${dogSVG()}</div><div style="flex:1;min-width:0"><div class="lsub" style="color:#f2c48a">🐾 BYTE · ${sub}</div><div class="ltitle">${title}</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody">${html}</div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;
   el.classList.add('on')}
 function openLean(i){byteDrawer('MY LEAN','Here is how I see it',`<div class="lsec"><p style="font-size:18px">${LEANS[i]}</p></div><div class="lsec"><div class="llbl" style="color:#9fb8e8">REMEMBER</div><p>This is one view, not the answer. Weigh the costs you can afford and make your own call.</p></div>`)}
+const SYN={
+ chips:s=>[s.flags.coord?'Allies are coordinated, so these controls will bite harder and allies stay on side.':'Without ALLIED COORDINATION, allies may keep selling and the controls leak.',(!s.flags.cloudkyc||!s.flags.antismug)?'Pair with CLOUD ACCESS CHECKS and STOP CHIP SMUGGLING to close the loopholes.':'Loopholes are closed. These controls will be close to airtight.','A CRITICAL MINERALS RESERVE softens the likely retaliation.'],
+ toolctl:s=>[s.flags.coord?'Allies who build chipmaking machines are on board. This is where tool controls really work.':'Without allies, the rival simply buys the machines elsewhere. Coordinate first.'],
+ cloudkyc:s=>[(s.flags.chips||s.flags.toolctl)?'You are running export controls, so this closes a real loophole.':'Only worth it alongside chip or tool controls.'],
+ antismug:s=>[(s.flags.chips||s.flags.toolctl)?'You are running export controls, so this stops the back door.':'Mostly useful alongside chip or tool controls, though it also weakens gangs.'],
+ minerals:s=>[(s.flags.chips||s.flags.toolctl)?'You are squeezing the rival this round. This cushions the counter-punch.':'Cheap insurance if you plan export controls later.'],
+ offense:s=>[s.posture==='coop'?'Warning: forward ops while you COOPERATE reads as duplicity and adds extra escalation.':'Pairs logically with STAY NEUTRAL or COMPETE.'],
+ intel:s=>['Reveals the rival’s likely move and cuts attribution errors from about 22% to 5%.'],
+ coord:s=>['Cuts escalation from clashes by 20%, reduces attribution errors, and makes export controls stick.'],
+ norms:s=>[s.posture==='esc'?'Warning: norms talks fail if you COMPETE this round.':'Works best paired with COOPERATE or STAY NEUTRAL.'],
+ harden:s=>['Cuts security losses from rival clashes by about 40% and blunts cyber retaliation against labs.'],
+ evals:s=>['Lowers the odds labs ship risky models fast by about 22%. Stacks with LIABILITY + SAFE HARBOR.'],
+ liab:s=>['Lowers ship-fast odds by about 20%. Strongest when stacked with PRE-DEPLOY EVALS.'],
+ bounty:s=>[s.flags.evals?'With evals in place, this also cuts accident RISK.':'Works better once PRE-DEPLOY EVALS are in place.'],
+ weightsec:s=>['Sharply cuts the odds that state hackers steal your frontier models.'],
+ apiguard:s=>['Cuts the odds of rivals distilling cheap copies of your models by about three quarters.'],
+ insider:s=>['Most model leaks start with someone who already has access. Logging, least-privilege and two-person rules shrink that risk.',s.flags.weightsec?'Pairs well with SECURE THE WEIGHTS, which you already bought.':'Pairs well with SECURE THE WEIGHTS for full protection.'],
+ tmodel:s=>['A threat model maps who might attack, what they want and where you are weakest, so your other security spending lands in the right place.'],
+ redteam:s=>['Biggest MODEL SEC boost; once the SI clock passes 25%, model attacks start landing without defenses like this.']};
+function byteAnalysis(a){const m=S.m,B=[],{P,C}=prosCons(a.fx);const pcLeft=S.pc;const fr={SEC:'security',HOME:'home',TECH:'tech'}[FRONT[a.loc]];
+  if(P.length)B.push(`<b>What it buys:</b> ${P.join(', ')}.${NOTE[a.id]?' '+NOTE[a.id]:''}`);
+  B.push(`<b>What it costs:</b> ${a.cost} of your ${pcLeft} PC${C.length?', plus '+C.join(', '):''}. Every PC on the ${fr} front is PC you cannot spend on ${['security','home','tech'].filter(x=>x!==fr).join(' or ')}.`);
+  const fit=Object.entries(a.fx||{}).filter(([k,v])=>v&&LBL[k]&&(BAD.includes(k)?v<0:v>0)).map(([k])=>{const v=Math.round(m[k]),bad=BAD.includes(k);
+    if(!bad&&v<35)return `${LBL[k]} is low at ${v}, so this helps where it is needed most`;if(!bad&&v>75)return `${LBL[k]} is already strong at ${v}, so the extra is worth less`;
+    if(bad&&v>60)return `${LBL[k]} is high at ${v}, so cutting it matters`;if(bad&&v<25)return `${LBL[k]} is already low at ${v}`;return `${LBL[k]} sits at ${v}`});
+  if(fit.length)B.push(`<b>Fit right now:</b> ${fit.join('; ')}.`);
+  if(a.fx&&a.fx.esc>0){const R=RIVALS[S.rival];B.push(`<b>Rival reaction:</b> raises tension (ESC +${a.fx.esc}); ESC is ${Math.round(m.esc)} and 90 means cyber war. A ${R?R.name:'rival'} ${S.rival==='hardliner'?'hits back hard':S.rival==='opportunist'?'probes for weakness after provocations':'answers once, then forgives'}.`)}
+  const syn=SYN[a.id]?SYN[a.id](S):[];syn.forEach(t=>B.push(`<b>Combos:</b> ${t}`));
+  if(B.length<3&&!ACT_HINT[a.id])B.push('<b>Rule of thumb:</b> worth it when the meters it improves are below 50, and you still have PC for the other fronts.');
+  if(B.length<3&&ACT_HINT[a.id])B.push(`<b>Rule of thumb:</b> best when ${ACT_HINT[a.id][0].replace(/\.$/,'').toLowerCase()}.`);
+  return B.slice(0,5)}
 function openByteCard(id){const a=ACTIONS.find(x=>x.id===id),H=ACT_HINT[id],rec=recommendPlan().picks.find(([x])=>x===id);
-  byteDrawer(a.name,'Should you buy this?',(H?`<div class="lsec"><div class="llbl" style="color:#4bd37b">✓ BEST WHEN</div><p>${H[0]}</p></div><div class="lsec"><div class="llbl" style="color:#ff8f8f">✗ SKIP WHEN</div><p>${H[1]}</p></div>`:'')+`<div class="lsec"><div class="llbl" style="color:#ffd23f">WHAT IT DOES</div><p>${fxLine(a.fx)} · ${a.cost} PC</p></div>`+leanHTML(rec?'I lean yes this round. '+rec[1]:'I lean no. Other buys matter more this round.'))}
+  byteDrawer(a.name,'My analysis',`<div class="lsec"><div class="llbl" style="color:#f2c48a">🐾 BYTE’S ANALYSIS</div><ul class="banal">${byteAnalysis(a).map(x=>`<li>${x}</li>`).join('')}</ul></div>`+(H?`<div class="lsec"><div class="llbl" style="color:#4bd37b">✓ BEST WHEN</div><p>${H[0]}</p></div><div class="lsec"><div class="llbl" style="color:#ff8f8f">✗ SKIP WHEN</div><p>${H[1]}</p></div>`:'')+leanHTML(rec?'I lean yes this round. '+rec[1]:'I lean no. Other buys matter more this round.'))}
 function weighHTML(I,rc){return `<div class="beatlbl">WEIGHING IT</div>${optWeigh('a',I.a)}${optWeigh('b',I.b)}<div class="beatlbl">WHAT TO WEIGH RIGHT NOW</div><ul class="wlist">${weighPoints(I).map(x=>`<li>${x}</li>`).join('')}</ul><p class="beatsmall">There is no free option. Pick the cost you can best afford.</p>${rc?leanHTML(`I lean ${rc[0].toUpperCase()}. ${rc[1]}`):''}`}
 function chooseInject(k){
   const c=currentInject[k];const before={...S.m};applyFx(c.fx);S.injectLog.push(currentInject.id);

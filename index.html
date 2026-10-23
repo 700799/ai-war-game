@@ -383,6 +383,19 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 .opti small{position:absolute;bottom:-14px;font-size:6px;letter-spacing:.5px;white-space:nowrap}
 @media (prefers-reduced-motion:reduce){.post button::after,.optcard::after,#g-loc .card::after,.rcard::after,.ocard::after{display:none}.tapshake{animation:none!important}}
 .hero svg.team{width:205%;height:100%;flex:none;overflow:visible}
+
+/* ===== NIGHT METRO THEME ===== */
+:root{--tile1:#1b1e2c;--tile2:#202436;--water:#0c1830}
+.map{background:#14172a;box-shadow:6px 6px 0 #000,0 0 24px rgba(90,120,255,.18)}
+.map::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 50% 0%,rgba(120,90,200,.18),transparent 60%),radial-gradient(ellipse at 50% 100%,rgba(255,190,90,.08),transparent 55%)}
+.t,.t.m,.t.g2{background-color:var(--tile1);background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:50% 50%}
+.t.g2{background-color:var(--tile2)}
+.t.m{background:#0f1120}
+.t.r{background-color:#262833;background-image:repeating-linear-gradient(90deg,#e8c34a 0 7px,transparent 7px 15px);background-size:100% 2px;background-repeat:no-repeat;background-position:0 50%;box-shadow:inset 0 3px 0 #3d4157,inset 0 -3px 0 #3d4157}
+.t.w{background-color:var(--water);background-image:linear-gradient(90deg,transparent 0 20%,rgba(255,217,122,.35) 20% 26%,transparent 26% 60%,rgba(143,211,255,.3) 60% 64%,transparent 64%),repeating-linear-gradient(0deg,transparent 0 6px,rgba(80,120,200,.25) 6px 7px);background-size:100% 100%,100% 100%}
+.t.loc{background:#242a40;box-shadow:inset 0 0 0 2px #343b58}
+.t.loc.picked{box-shadow:inset 0 0 0 3px var(--green);background:#1d3a2c}
+.t svg .blink-red{animation:blink 1.4s steps(2) infinite}
 </style>
 </head>
 <body>
@@ -1257,11 +1270,27 @@ function chooseInject(k){
 /* ===================== MAP ===================== */
 const TILE=[
  'mmmmmmmm','m..g.g.m','m.g...gm','r.rrrr.r','mg.g..gm','m..g.g.m','mg...g.m','wwwwwwww'];
+
+/* night-metro tiles */
+function rnd(x,y,k){const v=Math.sin(x*12.9898+y*78.233+k*37.719)*43758.5453;return v-Math.floor(v)}
+function towerSVG(x,y){const h=34+Math.floor(rnd(x,y,1)*56),w=60+Math.floor(rnd(x,y,2)*28),x0=(100-w)/2,top=100-h;
+  const hue=['#2b2f45','#30283f','#232b3f','#2d3346'][Math.floor(rnd(x,y,3)*4)];
+  let o=`<rect x="${x0}" y="${top}" width="${w}" height="${h}" fill="${hue}" stroke="#0a0b14" stroke-width="3"/>`;
+  o+=`<rect x="${x0}" y="${top}" width="${w*0.28}" height="${h}" fill="rgba(255,255,255,.05)"/>`;
+  if(rnd(x,y,4)>.55)o+=`<rect x="${x0+w*0.15}" y="${top-8}" width="${w*0.7}" height="8" fill="${hue}" stroke="#0a0b14" stroke-width="3"/>`;
+  if(rnd(x,y,5)>.5){o+=`<path d="M50 ${top-(rnd(x,y,4)>.55?8:0)} V${top-22}" stroke="#8a8fa8" stroke-width="2.5"/><circle class="blink-red" cx="50" cy="${top-23}" r="3" fill="#ff4d4d"/>`}
+  for(let wy=top+8;wy<94;wy+=11)for(let wx=x0+7;wx<x0+w-8;wx+=12){const r=rnd(wx,wy,x*8+y);
+    const c=r>.62?'#ffd97a':r>.5?'#8fd3ff':'#151826';o+=`<rect x="${wx}" y="${wy}" width="6" height="6" fill="${c}"${r>.62?' opacity=".9"':''}/>`}
+  return `<svg viewBox="0 0 100 100" preserveAspectRatio="none">${o}</svg>`}
+function lampSVG(x,y){const lx=rnd(x,y,6)>.5?18:82;
+  return `<svg viewBox="0 0 100 100"><ellipse cx="${lx}" cy="88" rx="26" ry="9" fill="rgba(255,214,120,.18)"/><path d="M${lx} 90 V40 h${lx<50?14:-14}" stroke="#555a70" stroke-width="4" fill="none"/><circle cx="${lx+(lx<50?14:-14)}" cy="43" r="5" fill="#ffe7a3"/><circle cx="${lx+(lx<50?14:-14)}" cy="43" r="12" fill="rgba(255,231,163,.25)"/></svg>`}
+function carSVG(x,y){const c=['#d33a3a','#f2c14e','#5ab0ff','#e6e6e6'][Math.floor(rnd(x,y,7)*4)],cx=20+Math.floor(rnd(x,y,8)*40),top=rnd(x,y,9)>.5?24:60;
+  return `<svg viewBox="0 0 100 100"><rect x="${cx}" y="${top}" width="34" height="16" rx="4" fill="${c}" stroke="#0a0b14" stroke-width="3"/><rect x="${cx+9}" y="${top+3}" width="14" height="10" fill="#1a2238"/><circle cx="${cx+35}" cy="${top+4}" r="2.5" fill="#fff6c8"/><circle cx="${cx+35}" cy="${top+12}" r="2.5" fill="#fff6c8"/></svg>`}
 function renderMap(){
   const map=document.getElementById('map');map.innerHTML='';
   for(let y=0;y<8;y++)for(let x=0;x<8;x++){
     const d=document.createElement('div');const ch=TILE[y][x];d.className='t'+(ch==='g'?' g2':ch==='w'?' w':ch==='r'?' r':ch==='m'?' m':'');
-    if(ch==='m')d.innerHTML=sprite('tree');else if(ch==='r')d.innerHTML=sprite('road');else if(ch!=='w'&&(x*7+y*13)%4===0)d.innerHTML=sprite('tuft');
+    if(ch==='m')d.innerHTML=towerSVG(x,y);else if(ch==='r'){if(rnd(x,y,10)>.55)d.innerHTML=carSVG(x,y)}else if(ch!=='w'&&(x*7+y*13)%4===0)d.innerHTML=lampSVG(x,y);
     const L=LOCS.find(l=>l.x===x&&l.y===y);
     if(L){const n=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id).length+(L.id==='wh'&&S.posture?1:0);
       const mine=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id);

@@ -475,6 +475,20 @@ svg .head{transform-box:fill-box;transform-origin:50% 90%;animation:headSway 5.2
 .dcard{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px}
 .dframe{display:block;width:84px;height:84px;border:3px solid #e8e4d8;background:linear-gradient(#2a3166,#161a3a);overflow:hidden}
 .dframe svg{width:100%;height:100%;display:block}
+
+.wopt{margin-top:8px;padding:8px 10px;background:#0f1130;border:2px solid #343b58}
+.wopt .wh{display:flex;gap:8px;align-items:center;font-size:19px;color:#fff}.wopt .optk{width:26px;height:26px;font-size:10px}
+.wp{color:#7fe0a0;margin-top:5px;font-size:18px;line-height:1.25}.wc{color:#ff9f9f;margin-top:3px;font-size:18px;line-height:1.25}
+.pcn{color:#9b9ac7;font-size:15px}
+.wlist{margin:4px 0 0;padding-left:18px;font-size:18px;line-height:1.3;color:#e6e4f5}.wlist li{margin:4px 0}
+.lean{margin-top:10px;border:2px dashed #c8893a;background:#1c1630}
+.lean>summary{list-style:none;cursor:pointer;padding:9px 10px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:12px;color:#f2c48a}
+.lean>summary::-webkit-details-marker{display:none}.lean[open]>summary{border-bottom:1px dashed #c8893a}
+.lean>div{padding:8px 10px;font-size:18px;line-height:1.3}
+.planwrap>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:2px dashed #5ab0ff;background:#14224a;color:#cfe3ff;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:12px;letter-spacing:.4px}
+.planwrap>summary::-webkit-details-marker{display:none}
+.planwrap>summary .pdc::after{content:'SHOW ▼';color:#ffe14d}.planwrap[open]>summary .pdc::after{content:'HIDE ▲'}
+.planwrap[open]>.plan{margin-top:6px}
 </style>
 </head>
 <body>
@@ -1455,7 +1469,7 @@ function renderBeat(){const b=beats[beatI];
   if(b.flash){const g=document.getElementById('g-brief');g.classList.remove('flash');void g.offsetWidth;g.classList.add('flash');SFX.bad()}else SFX.sel()}
 function briefNext(){const b=beats[beatI];if(b&&b.go)return b.go();beatI++;renderBeat()}
 function toMap(){showGame('g-map');renderMap()}
-function optCard(k,c,rc){const n=(INOTE[currentInject.id]||{})[k];const pick=rc&&rc[0]===k;
+function optCard(k,c,rc){const n=(INOTE[currentInject.id]||{})[k];const pick=false;
   return `<button class="optcard ${k}${pick?' pick':''}" onclick="chooseInject('${k}')"><span class="opti" role="button" aria-label="More details" onclick="event.stopPropagation();optInfo('${k}')">ⓘ<small>INFO</small></span><span class="optk">${k.toUpperCase()}</span><span class="optmain"><span class="optt">${c.t.replace(/^[AB] · /,'')}${pick?' <em>★ BYTE’S PICK</em>':''}</span><span class="optfx">${fxLine(c.fx)}${n?'<br>'+n:''}</span></span></button>`}
 function startRound(){
   S.posture=null;S.picks=[];S.flags={};S.intelReveal=null;S.pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2;
@@ -1478,7 +1492,7 @@ function startRound(){
       body:`<p class="beattxt">${currentInject.body}</p><p class="beatsmall">A decision is required before orders go out.</p>`,learn:'inj:'+currentInject.id,next:'ASK BYTE ▶'})}
   const rc=currentInject&&INREC[currentInject.id]?INREC[currentInject.id](S):null;
   beats.push({step:'ADVICE',learn:'byte',frame:dogSVG('width="100%" height="100%"'),who:'BYTE',role:'ADVISOR DOG',
-    body:(rc?`<div class="beatlbl">ON THIS CRISIS</div><p class="beattxt"><b style="color:#4bd37b">★ Go with ${rc[0].toUpperCase()}.</b> ${rc[1]}</p>`:'')+(T.length?`<div class="beatlbl">${rc?'AND FOR YOUR ORDERS':'WHAT IS OPTIMAL NOW'}</div>`+T.map(([t,w],i)=>`<div class="tip"><span class="tipn">${i+1}</span><div><b>${t}</b><br><span>Why: ${w}</span></div></div>`).join(''):''),
+    body:(currentInject?weighHTML(currentInject,rc):'')+(T.length?`<div class="beatlbl">${currentInject?'WATCH-OUTS FOR YOUR ORDERS':'WATCH-OUTS THIS ROUND'}</div>`+T.map(([t,w],i)=>`<div class="tip"><span class="tipn">${i+1}</span><div><b>${t}</b><br><span>Why: ${w}</span></div></div>`).join(''):''),
     next:currentInject?'YOUR CALL ▶':'TO THE MAP ▶',go:currentInject?null:toMap,skip:currentInject?null:['EVENT','YOUR CALL']});
   if(currentInject)beats.push({step:'YOUR CALL',frame:portrait('you'),who:'YOU',role:'THE CHAIR · CHOOSE ONE',learn:'inj:'+currentInject.id,
     body:`<p class="beattxt">${currentInject.title}</p>${optCard('a',currentInject.a,rc)}${optCard('b',currentInject.b,rc)}`,next:null});
@@ -1512,7 +1526,7 @@ function optInfo(k){const I=currentInject,c=I[k],o=I[k==='a'?'b':'a'];const ok=k
   let extra='';if(c.signal==='coop')extra='<li>The rival reads this as goodwill: more likely to cooperate next round.</li>';
   if(c.signal==='esc')extra='<li>The rival reads this as a snub: more likely to escalate next round.</li>';
   if(c.esc)extra+='<li>Acting before the facts are in can trigger a retaliation spiral.</li>';
-  const byte=rc?(rc[0]===k?`<b style="color:#4bd37b">I’d pick this one.</b> ${rc[1]}`:`<b style="color:#ff8f8f">I’d pick ${ok.toUpperCase()} instead.</b> ${rc[1]}`):'Both are defensible. Choose by which meters you can afford to lose right now.';
+  const byte=`<b style="color:#ffd23f">Weigh it:</b> ${prosCons(c.fx).C.length?'This costs you '+prosCons(c.fx).C.join(', ')+'.':'No direct meter cost.'} ${prosCons(o.fx).C.length?'The other option costs '+prosCons(o.fx).C.join(', ')+'.':'The other option has no direct cost.'} Which loss can you better afford right now?`+(rc?leanHTML(`I lean ${rc[0].toUpperCase()}. ${rc[1]}`):'');
   const el=document.getElementById('optPop');
   el.innerHTML=`<div class="opbox"><div class="oph"><span class="optk ${k}">${k.toUpperCase()}</span><div><div class="opsup">${I.title}</div><div class="opt1">${c.t.replace(/^[AB] · /,'')}</div></div><button class="lx opx" aria-label="Close" onclick="closeOpt()">✕</button></div>
   <div class="opsec"><div class="oplbl">THE SITUATION</div><p>${I.body||''}</p></div>
@@ -1524,6 +1538,25 @@ function optInfo(k){const I=currentInject,c=I[k],o=I[k==='a'?'b':'a'];const ok=k
   <div class="opbtns"><button onclick="closeOpt()">◀ BACK</button><button class="a opgo" onclick="closeOpt();chooseInject('${k}')">CHOOSE ${k.toUpperCase()} ▶</button></div></div>`;
   el.classList.add('on');el.scrollTop=0;SFX.sel&&SFX.sel()}
 function closeOpt(){document.getElementById('optPop').classList.remove('on')}
+
+/* ===== Byte weighs pros and cons ===== */
+const PLAIN={sec:['stronger defenses','weaker defenses'],econ:['a stronger economy','a weaker economy'],trust:['more public support','less public support'],ally:['closer allies','strained allies'],esc:['more tension with the rival','less tension with the rival'],risk:['higher accident risk','lower accident risk'],rcap:['a stronger rival','a weaker rival'],ccap:['stronger gangs','weaker gangs'],chips:['more chips','fewer chips'],power:['more power supply','less power supply'],talent:['more talent','less talent'],subs:['more revenue','less revenue'],good:['a bigger science dividend','a smaller dividend'],harm:['more harm','less harm'],equity:['fairer gains','less fair gains'],wellbeing:['better family wellbeing','worse family wellbeing'],botsafe:['safer robots','riskier robots'],modelsec:['safer models','more exposed models']};
+function prosCons(fx){const P=[],C=[];Object.entries(fx||{}).forEach(([k,v])=>{if(!v||!PLAIN[k])return;const good=BAD.includes(k)?v<0:v>0;const t=`${PLAIN[k][v>0?0:1]} <span class="pcn">(${LBL[k]} ${v>0?'+':''}${v})</span>`;(good?P:C).push(t)});return {P,C}}
+function weighPoints(I){const m=S.m,keys=new Set([...Object.keys(I.a.fx||{}),...Object.keys(I.b.fx||{})]),W=[];
+  if(keys.has('trust')&&m.trust<35)W.push(`Your TRUST is ${Math.round(m.trust)}. At 10 you lose authority, so trust losses hurt more than usual.`);
+  if(keys.has('sec')&&m.sec<35)W.push(`Your SEC is ${Math.round(m.sec)}. At 10 the grid collapses.`);
+  if(keys.has('esc')&&m.esc>60)W.push(`ESC is already ${Math.round(m.esc)}. At 90 it becomes cyber war.`);
+  if(keys.has('equity'))W.push(`EQUITY is ${Math.round(m.equity)}. The best ending needs 45 or more.`);
+  if(keys.has('harm'))W.push(`HARM is ${Math.round(m.harm)}. The best ending needs it under 40.`);
+  if(keys.has('good')&&m.good<60)W.push(`DIVIDEND is ${Math.round(m.good)}. The best ending needs 60 or more.`);
+  ['power','chips','talent','modelsec'].forEach(k=>{if(keys.has(k)&&m[k]<35)W.push(`${LBL[k]} is low at ${Math.round(m[k])}.`)});
+  if(I.a.signal||I.b.signal)W.push('The rival is watching. This choice changes how they act next round.');
+  if(I.a.esc||I.b.esc)W.push('Facts are not in yet. Acting fast could hit the wrong target.');
+  W.push('Ask yourself: is the cost a one-time hit, or does it keep growing?');
+  return W.slice(0,4)}
+function optWeigh(k,c){const {P,C}=prosCons(c.fx);return `<div class="wopt"><div class="wh"><span class="optk ${k}">${k.toUpperCase()}</span><b>${c.t.replace(/^[AB] · /,'')}</b></div>${P.length?`<div class="wp">✓ ${P.join(', ')}</div>`:''}${C.length?`<div class="wc">✗ ${C.join(', ')}</div>`:''}</div>`}
+function leanHTML(txt){return `<details class="lean"><summary>🐾 Still stuck? Hear Byte’s lean</summary><div>${txt}</div></details>`}
+function weighHTML(I,rc){return `<div class="beatlbl">WEIGHING IT</div>${optWeigh('a',I.a)}${optWeigh('b',I.b)}<div class="beatlbl">WHAT TO WEIGH RIGHT NOW</div><ul class="wlist">${weighPoints(I).map(x=>`<li>${x}</li>`).join('')}</ul><p class="beatsmall">There is no free option. Pick the cost you can best afford.</p>${rc?leanHTML(`I lean ${rc[0].toUpperCase()}. ${rc[1]}`):''}`}
 function chooseInject(k){
   const c=currentInject[k];const before={...S.m};applyFx(c.fx);S.injectLog.push(currentInject.id);
   S.lastInject={title:currentInject.title,log:c.log,fx:c.fx};
@@ -1568,7 +1601,7 @@ function renderMap(){
       let lbl=L.short,lst='';
       if(L.id==='wh'&&S.posture){lbl=PL[S.posture].slice(0,4)+(mine.length?' +'+mine.length:'');lst=`style="background:${PCOL[S.posture]};color:#000;border-color:#000"`}
       else if(mine.length){lbl='✔ '+PLATE[mine[0]]+(mine.length>1?' +'+(mine.length-1):'');lst='class="lbl done"'}
-      d.className='t loc'+(n?' picked':'');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
+      d.className='t loc'+(n?' picked':'');d.innerHTML=`${sprite(L.id)}<span ${lst&&lst.startsWith('class')?lst:'class="lbl" '+lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${L.id==='wh'&&!S.posture?'<span class="alert">START</span>':(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id)?'<span class="tip">TIP</span>':'')}`}
     d.onclick=()=>{if(ch==='m'||ch==='w'){SFX.bad();return}facing=y<hero.y?'up':'down';step++;hero={x,y};placeHero();SFX.move();if(L)enterLoc()};
     map.appendChild(d);
   }
@@ -1672,10 +1705,10 @@ function applyPlan(){const P=recommendPlan();S.picks.forEach(id=>{const a=ACTION
   SFX.ok();toast('PLAN APPLIED · TAP END TURN');renderHud();renderMap()}
 function planHTML(){const P=recommendPlan();const byLoc=id=>LOCS.find(l=>l.id===ACTIONS.find(a=>a.id===id).loc).short;
   const SHORT=SHORTN;const _x={intel:'Intel',harden:'Harden',tamper:'Safeguards',crime:'Fight gangs',evals:'Testing',tmodel:'Threat model',insider:'Insider prog.',fabs:'Fabs',power:'Power',talent:'Talent',coord:'Allies',norms:'Norms talks',liab:'Liability',cvd:'Disclosure'};
-  return `<div class="plan"><div class="planrow"><div class="pt1"><span class="lbp">🐾 BYTE'S PLAN</span>${PL[P.posture]} · ${P.picks.map(([id])=>SHORT[id]).join(' · ')}</div><button class="a" onclick="applyPlan()">USE<br>PLAN</button></div>
+  return `<details class="planwrap"${window.planShown?' open':''} ontoggle="if(!!window.planShown!==this.open){window.planShown=this.open;renderMap()}"><summary>🐾 STUCK? SEE BYTE’S SUGGESTED PLAN <span class="pdc"></span></summary><div class="plan"><div class="planrow"><div class="pt1"><span class="lbp">🐾 BYTE'S PLAN</span>${PL[P.posture]} · ${P.picks.map(([id])=>SHORT[id]).join(' · ')}</div><button class="a" onclick="applyPlan()">USE<br>PLAN</button></div>
   <details class="pdet"${window.planOpen?' open':''} ontoggle="window.planOpen=this.open"><summary><span class="pdl">🐾 WHY BYTE PICKS THESE</span><span class="pdc"></span></summary><div class="dog" style="margin:6px 0 2px"><div class="dogpt">${dogSVG()}</div><div class="dogbub">I'm Byte, your advisor dog. I rank what matters most this round. You can follow me or go your own way.</div></div><div class="pl"><b>HQ:</b> Posture <b style="color:var(--gold)">${PL[P.posture]}</b>. ${P.why}</div>
   ${P.picks.map(([id,r])=>{const a=ACTIONS.find(x=>x.id===id);return `<div class="pl"><b>${byLoc(id)}:</b> ${a.name} (${a.cost} PC). ${r}</div>`}).join('')}
-  <p class="small" style="margin-top:6px">Or tap buildings and choose yourself. Blue TIP tags mark Byte's picks.</p></details></div>`}
+  <p class="small" style="margin-top:6px">Or tap buildings and choose yourself. Blue TIP tags mark Byte's picks.</p></details></div></details>`}
 
 let guideSeen=false;
 function showGuide(){const g=document.getElementById('guide');g.innerHTML=`<div class="box"><h2>MAP GUIDE</h2>
@@ -1722,9 +1755,9 @@ function openLoc(L){
     <div class="post" id="post"></div><div id="intelHint" class="small" style="margin-top:8px"></div>`;
     body.appendChild(box);
     const p=box.querySelector('#post');
-    const recP=recommendPlan().posture;P.forEach(k=>{const b=document.createElement('button');b.innerHTML=PL[k]+(k===recP?'<br><span style="font-size:6px;color:#c8893a">BYTE\'S PICK</span>':'');b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();toast('POSTURE SET · NOW SPEND PC');openLoc(L)};p.appendChild(b)});
+    const recP=recommendPlan().posture;P.forEach(k=>{const b=document.createElement('button');b.innerHTML=PL[k];b.className=S.posture===k?'sel':'';b.onclick=()=>{S.posture=k;SFX.ok();toast('POSTURE SET · NOW SPEND PC');openLoc(L)};p.appendChild(b)});
     {const last=S.redHist[S.redHist.length-1];const R=RIVALS[S.rival];box.querySelector('#intelHint').innerHTML=anaHTML('RISK ANALYST',last?`Rival (${R.name}) last chose <b>${PL[last]}</b>. They remember ${R.memory} round${R.memory>1?'s':''} of your moves. ${last==='esc'?'Answering with HEDGE or ESCALATE avoids being farmed; COOPERATE risks the sucker\'s payoff.':last==='coop'?'COOPERATE locks in mutual restraint; ESCALATE exploits them once, and they\'ll remember.':'They\'re probing. Matching with HEDGE is safe; COOPERATE can invite reciprocity.'}`:`Opening move. A ${R.name} starts ${R.coop>.4?'inclined to cooperate':R.esc>.5?'inclined to escalate':'opportunistic'}. Buy INTEL (1 PC) to see their likely move.`)}
-    {const ev=postureEV(),rp=recommendPlan().posture;box.querySelector('#intelHint').innerHTML+=dogHTML('THE MATH',`<i style="color:#9b9ac7">${dogLine('math')}</i><br>`+`Rival odds: cooperate ${Math.round(ev.pr.coop*100)}% · hedge ${Math.round(ev.pr.hedge*100)}% · escalate ${Math.round(ev.pr.esc*100)}%`+P.map(k=>`<br>${k===ev.best?'★':'·'} <b style="color:${k===ev.best?'#4bd37b':'#fff'}">${PL[k]}</b>: SEC ${ev.sc[k].sec>=0?'+':''}${ev.sc[k].sec.toFixed(1)}, ESC ${ev.sc[k].esc>=0?'+':''}${ev.sc[k].esc.toFixed(1)}`).join('')+`<br>↳ Why: ${ev.best===rp?`Short-term math and long-term reciprocity agree: ${PL[rp]}.`:`Short-term math favors ${PL[ev.best]}, but the analyst picks ${PL[rp]} because the rival remembers your move next round. Repeated games reward reciprocity over one-round gains.`}`)}
+    {const ev=postureEV(),rp=recommendPlan().posture;box.querySelector('#intelHint').innerHTML+=dogHTML('THE MATH',`<i style="color:#9b9ac7">${dogLine('math')}</i><br>`+`Rival odds: cooperate ${Math.round(ev.pr.coop*100)}% · hedge ${Math.round(ev.pr.hedge*100)}% · escalate ${Math.round(ev.pr.esc*100)}%`+P.map(k=>`<br>· <b style="color:#fff">${PL[k]}</b>: SEC ${ev.sc[k].sec>=0?'+':''}${ev.sc[k].sec.toFixed(1)}, ESC ${ev.sc[k].esc>=0?'+':''}${ev.sc[k].esc.toFixed(1)}`).join('')+`<br><b style="color:#ffd23f">Weigh it:</b> COOPERATE pays off only if they cooperate too, and they may exploit it. ESCALATE can win one round, but they remember. HEDGE is safe but slow.`+leanHTML(ev.best===rp?`I lean ${PL[rp]}. Short-term math and long-term reciprocity agree.`:`Short-term math favors ${PL[ev.best]}, but I lean ${PL[rp]} because the rival remembers your move next round.`))}
     if(S.flags.intel){box.querySelector('#intelHint').innerHTML+=`<div class="ana"><b style="color:var(--blue)">INTEL:</b> ${S.intelReveal}</div>`}
     body.appendChild(matrixEl(null,null));
   }
@@ -1733,7 +1766,7 @@ function openLoc(L){
     const picked=S.picks.includes(a.id);
     const c=document.createElement('div');c.className='card'+(picked?' sel':'');
     const rec=recommendPlan().picks.find(([id])=>id===a.id);
-    c.innerHTML=`${rec?'<div class="pick">🐾 BYTE\'S PICK</div>':''}<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('RISK ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}${(s=>`<div class="cardbyte"><span class="doglb">🐾 BYTE</span>${s}</div>`)((ACT_HINT[a.id]?`<span style="color:#4bd37b">✓ Best when:</span> ${ACT_HINT[a.id][0]}<br><span style="color:#ff8f8f">✗ Skip when:</span> ${ACT_HINT[a.id][1]}<br>`:'')+`<b style="color:${rec?'#4bd37b':'#9b9ac7'}">Right now:</b> ${rec?'I would buy it. '+rec[1]:'Lower priority than my picks this round.'}`)}`;
+    c.innerHTML=`<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('RISK ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}${(s=>`<div class="cardbyte"><span class="doglb">🐾 BYTE</span>${s}</div>`)((ACT_HINT[a.id]?`<span style="color:#4bd37b">✓ Best when:</span> ${ACT_HINT[a.id][0]}<br><span style="color:#ff8f8f">✗ Skip when:</span> ${ACT_HINT[a.id][1]}<br>`:'')+leanHTML(rec?'I lean yes this round. '+rec[1]:'I lean no. Other buys matter more this round.'))}`;
     c.onclick=()=>toggleAction(a,L);body.appendChild(c);
   });
 }

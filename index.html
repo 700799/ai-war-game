@@ -112,6 +112,35 @@ button:disabled{opacity:.4}
 .lesson{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0;font-size:19px}
 .foot{display:flex;gap:8px;padding:8px 10px;background:#070813;border-top:4px solid var(--line)}
 .foot button{flex:1}
+.beatsteps{display:flex;gap:4px;margin-bottom:12px}
+.beatsteps div{flex:1;font-family:'Press Start 2P';font-size:6px;text-align:center;padding:6px 1px;border:2px solid #3a3c6a;color:#6b6a99;line-height:1.4}
+.beatsteps div.now{border-color:var(--gold);color:var(--gold);background:#2a2610}.beatsteps div.ok{border-color:var(--green);color:var(--green)}.beatsteps div.skip{opacity:.35}
+.beat{display:flex;flex-direction:column;gap:12px}
+.beatgap{margin-top:22px}
+.cardbyte{margin-top:8px;padding:8px 10px;border-left:4px solid #c8893a;background:#1f1a12;font-size:17px;color:#f0e2c8;line-height:1.3}.cardbyte .doglb{margin-bottom:3px}
+.beathead{display:flex;align-items:center;gap:14px}
+.beatframe{flex-shrink:0;width:112px;height:112px;box-sizing:border-box;border:4px solid var(--line);background:linear-gradient(#2a2c55,#1a1c3a);box-shadow:5px 5px 0 #000;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.beatframe>svg{width:100%;height:100%;display:block}
+.bigicon{width:76%;height:76%}.bigicon svg{width:100%;height:100%}
+.beatname{display:flex;flex-direction:column;gap:6px;min-width:0}
+.beatname b{font-family:'Press Start 2P';font-size:11px;color:var(--gold);line-height:1.5}
+.beatname span{font-family:'Press Start 2P';font-size:7px;color:#9b9ac7;line-height:1.7}
+.beatbody{background:var(--panel);border:4px solid var(--line);box-shadow:6px 6px 0 #000;padding:14px}
+.beattxt{font-size:21px;line-height:1.3;margin:0 0 6px;color:#f4f1e6}
+.beatsmall{font-size:17px;color:#9b9ac7;margin:10px 0 0}
+.beatlbl{font-family:'Press Start 2P';font-size:7px;color:var(--blue);margin:14px 0 6px}
+.beatlbl:first-child{margin-top:0}
+.beatfx{font-size:19px;margin:8px 0}.beatfx .up{color:var(--green)}.beatfx .dn{color:#ff7a7a}
+.tchips{display:flex;flex-direction:column;gap:5px}.tchip{font-size:18px;border-left:4px solid #ff5c5c;padding:3px 8px;background:#141633}.tchip b{color:#fff}
+.tip{display:flex;gap:10px;align-items:flex-start;margin:8px 0;font-size:18px;line-height:1.25}.tip b{color:#fff}.tip span{color:#9fb8e8}
+.tipn{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;background:#c8893a;color:#000;font-family:'Press Start 2P';font-size:9px;border:2px solid #000}
+.optcard{display:flex;width:100%;gap:12px;align-items:flex-start;text-align:left;margin-top:10px;padding:12px;font-family:'VT323',monospace;font-size:20px;line-height:1.2;background:#141633;border:3px solid #4a4c7a;box-shadow:4px 4px 0 #000;color:#f4f1e6}
+.optcard.pick{border-color:var(--green);background:#12301e}
+.optk{flex-shrink:0;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P';font-size:13px;color:#000;border:2px solid #000}
+.optcard.a .optk{background:var(--green)}.optcard.b .optk{background:#ff7a7a}
+.optmain{display:flex;flex-direction:column;gap:6px;min-width:0}
+.optt{font-size:22px;color:#fff}.optt em{font-style:normal;font-family:'Press Start 2P';font-size:7px;color:var(--green);margin-left:6px;white-space:nowrap}
+.optfx{font-size:17px;color:#cfcde6}.optfx .up{color:var(--green)}.optfx .dn{color:#ff7a7a}
 .mx{display:grid;grid-template-columns:66px repeat(3,1fr);gap:5px;margin-top:12px}
 .mxh{font-family:'Press Start 2P';font-size:7px;color:var(--gold);text-align:center;padding:4px 0;line-height:1.5;align-self:end}
 .mxtop{color:#9b9ac7}
@@ -536,20 +565,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
 
   <!-- BRIEF -->
   <div class="screen" id="g-brief">
-    <div class="scroll">
-      <div class="dialog" id="brief"><span class="who" id="briefWho">SITROOM</span><span class="pt" id="briefPt"></span><span id="briefTxt"></span><span class="more" id="briefMore">▼</span></div>
-      <div id="anaRound" style="margin-top:14px"></div>
-      <div id="anaTips" style="margin-top:10px"></div>
-      <div id="injectBox" style="margin-top:14px;display:none">
-        <div class="box">
-          <div class="injart"><div class="art" id="injArt"></div><h3 id="injTitle"></h3></div>
-          <p id="injBody" style="margin:8px 0"></p>
-          <div class="row"><button class="a" id="injA"></button><button class="b" id="injB"></button></div>
-          <div id="injAna"></div>
-        </div>
-      </div>
+    <div class="scroll" id="briefScroll">
+      <div class="beatsteps" id="beatSteps"></div>
+      <div id="beatArea"></div>
     </div>
-    <div class="foot"><button class="a" id="briefNext" onclick="briefNext()">A · CONTINUE</button></div>
+    <div class="foot"><button class="a" id="briefNext" onclick="briefNext()">CONTINUE ▶</button></div>
   </div>
 
   <!-- MAP -->
@@ -569,8 +589,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
   <!-- LOCATION -->
   <div class="screen" id="g-loc">
     <div class="scroll">
-      <div class="dialog" id="locDlg"><span class="who" id="locWho"></span><span class="pt" id="locPt"></span><span id="locTxt"></span></div>
-      <div id="locBody" style="margin-top:14px"></div>
+      <div class="beat"><div class="beathead"><div class="beatframe" id="locPt"></div><div class="beatname"><b id="locWho"></b><span id="locRole"></span></div></div>
+      <div class="beatbody"><p class="beattxt" id="locTxt" style="margin:0"></p></div></div>
+      <div id="locBody" style="margin-top:18px"></div>
     </div>
     <div class="foot"><button onclick="showGame('g-map');renderMap()">◀ BACK TO MAP</button><button class="gold" onclick="openResolveCheck()">END TURN ▶</button></div>
   </div>
@@ -578,7 +599,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:20;bac
   <!-- RESOLVE -->
   <div class="screen" id="g-res">
     <div class="scroll" id="resBody"></div>
-    <div class="foot"><button class="a" id="resNext">A · CONTINUE</button></div>
+    <div class="foot"><button class="a" id="resNext">NEXT ROUND ▶</button></div>
   </div>
 </section>
 
@@ -899,6 +920,7 @@ function face(o){
   if(o.notie)r.forEach((row,i)=>r[i]=row.replace(/T/g,'C'));
   return r}
 const PT={
+ brief:{hair:'#6b6b6b',suit:'#3a3f55',glasses:1,headset:1,tie:'#5ab0ff',skin:'#e0ac69'},
  sit:{hair:'#2b1a10',suit:'#4a4f6b',glasses:1,long:1,skin:'#c68642',headset:1},
  you:{hair:'#4a2b17',suit:'#23305e'},
  wh:{hair:'#7a5a3a',suit:'#1e2a4a',tie:'#5ab0ff'},
@@ -1036,52 +1058,54 @@ function briefText(){
   return `${dateFor(r)}. SI clock at ${S.si}%. ${last.redLine||''} ${bits.join(' ')} You have ${S.pc} PC.`;
 }
 
-let currentInject=null, briefStage=0;
+let currentInject=null, briefStage=0, beats=[], beatI=0;
+const BEAT_STEPS=['SITUATION','EVENT','ADVICE','YOUR CALL','NEXT'];
+function beatHTML(frame,who,role,body,txtId){return `<div class="beat"><div class="beathead"><div class="beatframe">${frame}</div><div class="beatname"><b>${who}</b><span>${role||''}</span></div></div><div class="beatbody">${body}</div></div>`}
+function renderBeat(){const b=beats[beatI];
+  document.getElementById('beatSteps').innerHTML=BEAT_STEPS.map(t=>`<div class="${t===b.step?'now':BEAT_STEPS.indexOf(t)<BEAT_STEPS.indexOf(b.step)?'ok':''}${b.skip&&b.skip.includes(t)?' skip':''}">${t}</div>`).join('');
+  document.getElementById('beatArea').innerHTML=beatHTML(b.frame,b.who,b.role,b.body);
+  const btn=document.getElementById('briefNext');btn.style.display=b.next?'':'none';btn.textContent=b.next||'';
+  document.getElementById('briefScroll').scrollTop=0;
+  const t=document.getElementById('beatTxt');if(t&&b.type)typeInto(t,b.type);
+  if(b.flash){const g=document.getElementById('g-brief');g.classList.remove('flash');void g.offsetWidth;g.classList.add('flash');SFX.bad()}else SFX.sel()}
+function briefNext(){const b=beats[beatI];if(b&&b.go)return b.go();beatI++;renderBeat()}
+function toMap(){showGame('g-map');renderMap()}
+function optCard(k,c,rc){const n=(INOTE[currentInject.id]||{})[k];const pick=rc&&rc[0]===k;
+  return `<button class="optcard ${k}${pick?' pick':''}" onclick="chooseInject('${k}')"><span class="optk">${k.toUpperCase()}</span><span class="optmain"><span class="optt">${c.t.replace(/^[AB] · /,'')}${pick?' <em>★ BYTE’S PICK</em>':''}</span><span class="optfx">${fxLine(c.fx)}${n?'<br>'+n:''}</span></span></button>`}
 function startRound(){
   S.posture=null;S.picks=[];S.flags={};S.intelReveal=null;S.pc=DIFFS[S.diff].pc+(8-S.maxRounds)/2;
   LOCS.forEach(l=>l.done=false);
   renderHud();showGame('g-brief');briefStage=0;
-  document.getElementById('injectBox').style.display='none';
-  document.getElementById('briefNext').style.display='';
-  document.getElementById('briefWho').textContent='SITROOM';document.getElementById('briefPt').innerHTML=portrait('sit');
-  document.getElementById('anaTips').innerHTML=tipsHTML();
-  const lf=S.focus[S.focus.length-1];
-  document.getElementById('anaRound').innerHTML=anaHTML('THREAT ANALYST · '+dateFor(S.round),threatModel()+(lf?`<br>Last round you spent ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ The home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}`:'')+`<br>Insider risk: ${Math.round(insiderP()*100)}% · Goal check: DIVIDEND ${S.m.good} (60+) · HARM ${S.m.harm} (under 40) · EQUITY ${S.m.equity} (45+) · Kids' WELLBEING ${S.m.wellbeing}${S.m.wellbeing<40?' ⚠ adding HARM':''}`);
-  typeInto(document.getElementById('briefTxt'),briefText());
-}
-function briefNext(){
-  if(briefStage===0){
-    // pick inject
-    const pool=INJECTS.filter(i=>i.cond(S)&&!S.injectLog.includes(i.id));
-    currentInject=pool.length?pool[Math.floor(Math.random()*pool.length)]:null;
-    if(!currentInject){showGame('g-map');renderMap();return}
-    briefStage=1;
-    document.getElementById('briefWho').textContent='FLASH TRAFFIC';document.getElementById('g-brief').classList.remove('flash');void document.getElementById('g-brief').offsetWidth;document.getElementById('g-brief').classList.add('flash');SFX.bad();
-    typeInto(document.getElementById('briefTxt'),'Incoming. Decision required before orders go out.');
-    const ib=document.getElementById('injectBox');ib.style.display='';
-    if(['autoacc','leak','zeroday'].includes(currentInject.id)){document.getElementById('briefPt').innerHTML=portrait('glitch');document.getElementById('briefWho').textContent='GLITCH · ROGUE SI'}
-    document.getElementById('injTitle').textContent=currentInject.title;document.getElementById('injArt').innerHTML=icon(INJ_ICON[currentInject.id]||'eye');
-    document.getElementById('injBody').textContent=currentInject.body;
-    const A=document.getElementById('injA'),B=document.getElementById('injB');
-    A.textContent=currentInject.a.t;B.textContent=currentInject.b.t;
-    A.onclick=()=>chooseInject('a');B.onclick=()=>chooseInject('b');
-    const n=INOTE[currentInject.id]||{};const rc=INREC[currentInject.id]?INREC[currentInject.id](S):null;
-    if(rc){(rc[0]==='a'?A:B).textContent='★ '+(rc[0]==='a'?A:B).textContent}
-    document.getElementById('injAna').innerHTML=anaHTML('THREAT ANALYST','<b>A:</b> '+fxLine(currentInject.a.fx)+(n.a?' · '+n.a:'')+'<br><b>B:</b> '+fxLine(currentInject.b.fx)+(n.b?' · '+n.b:''));
-    if(rc)document.getElementById('injAna').innerHTML+=dogHTML('MY PICK',`<i style="color:#9b9ac7">${dogLine('crisis')}</i><br><b style="color:#4bd37b">★ Go with ${rc[0].toUpperCase()}.</b><br>↳ Why: ${rc[1]}`);
-    document.getElementById('briefNext').style.display='none';
-  }
+  const pool=INJECTS.filter(i=>i.cond(S)&&!S.injectLog.includes(i.id));
+  currentInject=pool.length?pool[Math.floor(Math.random()*pool.length)]:null;
+  const lf=S.focus[S.focus.length-1];const T=roundTips();
+  const chips=threatModel().replace('Top threats right now: ','').split(' · ').map(x=>`<span class="tchip">${x}</span>`).join('');
+  beats=[{step:'SITUATION',frame:portrait('brief'),who:'THE BRIEFER',role:'SITUATION ROOM · '+dateFor(S.round),
+    body:`<p class="beattxt" id="beatTxt"></p><div class="beatlbl">TOP THREATS</div><div class="tchips">${chips}</div>`+(lf?`<p class="beatsmall">Last round: ${lf.SEC} PC on security, ${lf.HOME} at home, ${lf.TECH} on tech.${lf.HOME===0?' ⚠ Home front got nothing.':''}${lf.SEC===0?' ⚠ Security got nothing.':''}</p>`:''),
+    type:briefText(),next:currentInject?'FLASH TRAFFIC ▶':'ASK BYTE ▶',skip:currentInject?null:['EVENT','YOUR CALL']}];
+  if(currentInject){const ic=INJ_ICON[currentInject.id]||'eye';const isG=['autoacc','leak','zeroday'].includes(currentInject.id);
+    beats.push({step:'EVENT',flash:true,frame:isG?glitchSVG('width="100%" height="100%"'):`<div class="bigicon">${icon(ic,'width="100%" height="100%"')}</div>`,who:'FLASH TRAFFIC',role:currentInject.title,
+      body:`<p class="beattxt">${currentInject.body}</p><p class="beatsmall">A decision is required before orders go out.</p>`,next:'ASK BYTE ▶'})}
+  const rc=currentInject&&INREC[currentInject.id]?INREC[currentInject.id](S):null;
+  beats.push({step:'ADVICE',frame:dogSVG('width="100%" height="100%"'),who:'BYTE',role:'ADVISOR DOG',
+    body:(rc?`<div class="beatlbl">ON THIS CRISIS</div><p class="beattxt"><b style="color:#4bd37b">★ Go with ${rc[0].toUpperCase()}.</b> ${rc[1]}</p>`:'')+(T.length?`<div class="beatlbl">${rc?'AND FOR YOUR ORDERS':'WHAT IS OPTIMAL NOW'}</div>`+T.map(([t,w],i)=>`<div class="tip"><span class="tipn">${i+1}</span><div><b>${t}</b><br><span>Why: ${w}</span></div></div>`).join(''):''),
+    next:currentInject?'YOUR CALL ▶':'TO THE MAP ▶',go:currentInject?null:toMap,skip:currentInject?null:['EVENT','YOUR CALL']});
+  if(currentInject)beats.push({step:'YOUR CALL',frame:portrait('you'),who:'YOU',role:'THE CHAIR · CHOOSE ONE',
+    body:`<p class="beattxt">${currentInject.title}</p>${optCard('a',currentInject.a,rc)}${optCard('b',currentInject.b,rc)}`,next:null});
+  beatI=0;renderBeat();
 }
 function chooseInject(k){
-  const c=currentInject[k];applyFx(c.fx);S.injectLog.push(currentInject.id);
+  const c=currentInject[k];const before={...S.m};applyFx(c.fx);S.injectLog.push(currentInject.id);
   S.lastInject={title:currentInject.title,log:c.log,fx:c.fx};
   if(c.signal) S.summitSignal=c.signal;
   if(c.esc) S.flags.misfire=true;
   if(S.dead) return endGame();
   renderHud();SFX.ok();
-  document.getElementById('injectBox').style.display='none';
-  document.getElementById('briefWho').textContent='OUTCOME';
-  typeInto(document.getElementById('briefTxt'),c.log,()=>{const b=document.getElementById('briefNext');b.style.display='';b.onclick=()=>{showGame('g-map');renderMap();b.onclick=briefNext}});
+  const d=Object.keys(S.m).filter(x=>S.m[x]!==before[x]&&LBL[x]).map(x=>{const v=S.m[x]-before[x];const good=BAD.includes(x)?v<0:v>0;return `<span class="${good?'up':'dn'}">${good?'✓':'✗'} ${LBL[x]} ${v>0?'+':''}${v}</span>`}).join(' · ');
+  beats.push({step:'NEXT',frame:portrait('brief'),who:'THE BRIEFER',role:'OUTCOME',
+    body:`<p class="beattxt" id="beatTxt"></p><div class="beatfx">${d||'No change.'}</div><div class="beatlbl">WHAT'S NEXT</div><div class="tip"><span class="tipn">1</span><div><b>Set your posture at HQ</b></div></div><div class="tip"><span class="tipn">2</span><div><b>Spend your PC at buildings</b></div></div><div class="tip"><span class="tipn">3</span><div><b>Tap End Turn</b></div></div>`,
+    type:c.log,next:'TO THE MAP ▶',go:toMap});
+  beatI++;renderBeat();
 }
 
 /* ===================== MAP ===================== */
@@ -1211,7 +1235,7 @@ function enterLoc(){const L=LOCS.find(l=>l.x===hero.x&&l.y===hero.y);if(!L){toas
 
 function openLoc(L){
   showGame('g-loc');SFX.sel();
-  document.getElementById('locWho').textContent=L.who;document.getElementById('locPt').innerHTML=portrait(L.id);
+  document.getElementById('locWho').textContent=L.who;document.getElementById('locRole').textContent=L.name+' · '+FRONTN[FRONT[L.id]];document.getElementById('locPt').innerHTML=portrait(L.id);
   typeInto(document.getElementById('locTxt'),L.intro);
   const body=document.getElementById('locBody');body.innerHTML=`<p class="small" style="margin-bottom:10px">${L.id==='wh'?'Pick a posture (required, free), then tap any card to buy it.':'Tap a card to buy it with PC. Tap again to undo.'} You have <b style="color:var(--gold)">${S.pc} PC</b> left.</p>`;
   if(L.id==='wh'){
@@ -1231,7 +1255,7 @@ function openLoc(L){
     const picked=S.picks.includes(a.id);
     const c=document.createElement('div');c.className='card'+(picked?' sel':'');
     const rec=recommendPlan().picks.find(([id])=>id===a.id);
-    c.innerHTML=`${rec?'<div class="pick">🐾 BYTE\'S PICK</div>':''}<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('THREAT ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}${dogHTML('',(ACT_HINT[a.id]?`<span style="color:#4bd37b">✓ Best when:</span> ${ACT_HINT[a.id][0]}<br><span style="color:#ff8f8f">✗ Skip when:</span> ${ACT_HINT[a.id][1]}<br>`:'')+`<b style="color:${rec?'#4bd37b':'#9b9ac7'}">Right now:</b> ${rec?'I would buy it. '+rec[1]:'Lower priority than my picks this round.'}`)}`;
+    c.innerHTML=`${rec?'<div class="pick">🐾 BYTE\'S PICK</div>':''}<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('THREAT ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}${(s=>`<div class="cardbyte"><span class="doglb">🐾 BYTE</span>${s}</div>`)((ACT_HINT[a.id]?`<span style="color:#4bd37b">✓ Best when:</span> ${ACT_HINT[a.id][0]}<br><span style="color:#ff8f8f">✗ Skip when:</span> ${ACT_HINT[a.id][1]}<br>`:'')+`<b style="color:${rec?'#4bd37b':'#9b9ac7'}">Right now:</b> ${rec?'I would buy it. '+rec[1]:'Lower priority than my picks this round.'}`)}`;
     c.onclick=()=>toggleAction(a,L);body.appendChild(c);
   });
 }
@@ -1481,7 +1505,7 @@ function roundReview(bp,red,log,acc){const m=S.m,R=[],N=[];
   if(log.some(l=>l.startsWith('ROBOT INCIDENT')))N.push(['Certify robots','because incidents scale with low ROBOT SAFETY.']);
   if(!N.length)N.push(['Stay the course','; nothing went badly this round.']);
   const left=S.maxRounds-S.round;
-  return dogHTML('ROUND REVIEW',`<i style="color:#9b9ac7">${dogLine('review')}</i><br>${R.join(' ')}${R.length?'<br>':''}<b style="color:#fff">Next round:</b>${N.slice(0,3).map(([a,b])=>`<br>• <b style="color:#4bd37b">${a}</b> ${b}`).join('')}<br><b style="color:#fff">On pace?</b> DIVIDEND ${m.good}/60 ${m.good>=60?'✓':'✗'} · HARM ${m.harm}/40 ${m.harm<40?'✓':'✗'} · EQUITY ${m.equity}/45 ${m.equity>=45?'✓':'✗'} · ${left} round${left===1?'':'s'} left`)}
+  return beatHTML(dogSVG('width="100%" height="100%"'),'BYTE','ROUND REVIEW · WHAT\u2019S NEXT',`<div class="beattxt" style="font-size:19px;margin:0">${R.join(' ')}${R.length?'<br>':''}<b style="color:#fff">Next round:</b>${N.slice(0,3).map(([a,b])=>`<br>• <b style="color:#4bd37b">${a}</b> ${b}`).join('')}<br><b style="color:#fff">On pace?</b> DIVIDEND ${m.good}/60 ${m.good>=60?'✓':'✗'} · HARM ${m.harm}/40 ${m.harm<40?'✓':'✗'} · EQUITY ${m.equity}/45 ${m.equity>=45?'✓':'✗'} · ${left} round${left===1?'':'s'} left</div>`)}
 
 /* ===================== THREAT ANALYST ===================== */
 const LBL={sec:'SEC',econ:'ECON',trust:'TRUST',ally:'ALLY',esc:'ESC',risk:'RISK',rcap:'RIVAL',ccap:'CRIME',chips:'CHIPS',power:'POWER',talent:'TALENT',subs:'SUBS',good:'DIVIDEND',harm:'HARM',equity:'EQUITY',wellbeing:'WELLBEING',botsafe:'ROBOT SAFETY',modelsec:'MODEL SEC'};
@@ -1643,14 +1667,12 @@ function renderResolve(bp,red,cell,log,acc,fog){
   const link=peace?`<path d="M4 22 H76" stroke="${col}" stroke-width="3" stroke-dasharray="6 4"><animate attributeName="stroke-dashoffset" from="0" to="-20" dur=".6s" repeatCount="indefinite"/></path><rect x="36" y="16" width="8" height="12" fill="${col}"/>`
    :hostile?`<path d="M4 22 L20 10 L32 30 L46 8 L58 32 L76 22" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="miter"><animate attributeName="opacity" values="1;.15;1" dur=".25s" repeatCount="indefinite"/></path>`
    :`<path d="M4 22 H76" stroke="${col}" stroke-width="2" stroke-dasharray="2 6"><animate attributeName="stroke-dashoffset" from="0" to="-16" dur="1s" repeatCount="indefinite"/></path><text x="40" y="16" text-anchor="middle" font-family="Press Start 2P" font-size="7" fill="${col}">?</text>`;
-  b.innerHTML=`<div class="clash ${hostile?'shake':''}"><div class="side"><div class="pt big">${portrait('you')}</div><span>YOU</span><b>${PL[bp]}</b></div><svg viewBox="0 0 80 44" class="link" shape-rendering="crispEdges">${link}</svg><div class="side"><div class="pt big">${portrait('rival')}</div><span>RIVAL</span><b>${PL[red]}</b></div></div>
-   ${log.some(l=>l.startsWith('ACCIDENT'))?`<div class="dialog" style="margin-bottom:16px"><span class="who">GLITCH · NO ONE ORDERED THIS</span><span class="pt">${portrait('glitch')}</span>I was only trying to help. Nobody told me the substations mattered.</div>`:''}
-   <div style="margin-bottom:16px">${roundReview(bp,red,log,acc)}</div>
-   <div class="dialog"><span class="who">RIVAL MINISTRY · INTERCEPT</span><span class="pt">${portrait('rival')}</span>${redReason(red)}</div>
-   <div class="box" style="margin-top:14px"><div class="vs"><span>YOU<b>${PL[bp]}</b></span><span>RIVAL<b>${PL[red]}</b></span></div><p style="margin:12px 0 4px;font-size:22px">${cell.note}</p></div>`;
+  b.innerHTML=`   <div class="${hostile?'shake':''}">${beatHTML(portrait('rival').replace('<svg','<svg width="100%" height="100%"'),'RIVAL MINISTRY','INTERCEPTED MESSAGE',`<p class="beattxt" style="margin:0">${redReason(red)}</p><div class="vs" style="margin-top:12px"><span>YOU<b>${PL[bp]}</b></span><span>RIVAL<b>${PL[red]}</b></span></div><p class="beatsmall">${cell.note}</p>`)}</div>
+   <div class="beatgap">${beatHTML(portrait('brief').replace('<svg','<svg width="100%" height="100%"'),'THE BRIEFER','WHAT HAPPENED · '+dateFor(S.round),`<ul class="log" style="margin:0">${log.map(l=>`<li>${logIcon(l)}${l}</li>`).join('')}</ul><div class="beatlbl">NET CHANGE</div><div class="delta">${dl||'<span>NO CHANGE</span>'}</div>`)}</div>
+   ${log.some(l=>l.startsWith('ACCIDENT'))?`<div class="beatgap">${beatHTML(glitchSVG('width="100%" height="100%"'),'GLITCH','NO ONE ORDERED THIS','<p class="beattxt" style="margin:0">I was only trying to help. Nobody told me the substations mattered.</p>')}</div>`:''}
+   <div class="beatgap">${roundReview(bp,red,log,acc)}</div>
+   <div class="beatgap"></div>`;
   b.appendChild(matrixEl(bp,red));
-  b.innerHTML+=`<div class="box"><h3>ROUND ${S.round} EVENTS</h3><ul class="log" style="margin-top:6px">${log.map(l=>`<li>${logIcon(l)}${l}</li>`).join('')}</ul></div>
-   <div class="box"><h3>NET CHANGE</h3><div class="delta" style="margin-top:8px">${dl||'<span>NO CHANGE</span>'}</div></div>`;
   if(S.dead){SFX.bad()}else if(acc.sec>0&&acc.esc<=0)SFX.ok();else SFX.bad();
   document.getElementById('resNext').onclick=()=>{if(S.dead)return endGame();S.round++;if(S.round>S.maxRounds)return endGame();startRound()};
 }

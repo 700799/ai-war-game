@@ -710,6 +710,77 @@ body,p,li,.beattxt,.beatsmall,.small,.card p,.optcard,.optfx,.wopt,.wlist,.stbtn
 /* top-center building: label below the icon */
 #g-play.mode-orders .t.loc:not(.sl):not(.sr) .lbl{bottom:-30px!important;z-index:8}
 #g-play.mode-orders .t.loc:not(.sl):not(.sr) svg{inset:0 14% 10% 14%!important;width:72%!important;height:90%!important}
+
+/* ===== ZELDA LAYOUT: one screen ===== */
+#s-game{display:flex;flex-direction:column;height:100dvh;overflow:hidden;position:relative}
+.top{padding:4px 10px;font-size:9px}.siclock{display:none!important}
+.sipill{color:#b28bff}
+.hud,.hud.hud{display:flex!important;flex-wrap:nowrap;gap:4px 10px!important;padding:4px 8px!important;border-bottom:3px solid var(--line);overflow-x:auto;scrollbar-width:none;align-items:center}.hud::-webkit-scrollbar{display:none}
+.hud .stat,.hud .stat.big{flex:none;gap:4px;font-size:12px}
+.hud .stat.big .n{width:auto;font-size:9px;letter-spacing:.3px}.hud .stat.big .bar{width:46px;height:8px}.hud .stat.big .v{width:22px;font-size:10px}.hud .stat .dv{min-width:0;font-size:9px}
+.hud .hudtog{display:none}
+button.hist{position:absolute;right:6px;top:4px;z-index:12;padding:3px 6px;font-size:11px;box-shadow:2px 2px 0 #000;background:#101225}
+#wstrip,.wstrip{display:none!important}
+#g-play{flex:1;min-height:0;display:flex;flex-direction:column}
+#g-play .mapwrap{flex:1;min-height:0;position:relative;overflow:hidden;padding:0!important;display:block}
+#map{position:absolute!important;inset:0;margin:0!important;border:none!important;box-shadow:none!important;max-width:none!important}
+#g-play.mode-story .hero,#g-play.mode-result .hero{opacity:1}
+#g-play.mode-story .t.loc .lbl,#g-play.mode-result .t.loc .lbl{display:block!important}
+.panel{position:absolute!important;left:8px;right:8px;bottom:8px;max-height:52%!important;overflow-y:auto;padding:0!important;z-index:20;background:rgba(6,7,20,.94);border:3px solid #f4f1e6;border-radius:6px;box-shadow:0 0 0 3px #000,0 8px 24px rgba(0,0,0,.6)}
+.mode-orders .panel{max-height:34%!important}
+.panel .beatsteps{display:none!important}
+.panel .pcard{background:transparent;border:none;box-shadow:none;padding:10px 12px}
+.panel .pchead{gap:10px}.panel .pcframe{width:46px!important;height:46px!important}
+.panel .pcname b{font-size:9px}.panel .pcname span{font-size:12px}
+.panel .beattxt{font-size:15px!important;line-height:1.4!important}
+.panel .optcard{padding:8px 44px 8px 8px;margin-top:6px}.panel .optt{font-size:14px}.panel .optfx{font-size:12px!important}
+.panel .stbtn{padding:8px 10px}.panel .stbtn b{font-size:9px}.panel .stbtn span{font-size:13px!important}.panel .stbtn i{font-size:12px!important}
+.panel .bytechip.wide{margin:6px 0;padding:5px 8px;font-size:11px}.panel .bytechip .lbdog{width:26px;height:26px}
+.panel .learnbtn{padding:4px 6px;font-size:12px}.panel .learnbtn span{font-size:8px}
+#ctrl{position:absolute;right:8px;bottom:8px;z-index:21;padding:0;background:transparent}
+#g-play.mode-story #ctrl{display:none}
+#ctrl .endbtn{width:auto;font-size:9px;padding:10px 12px;box-shadow:3px 3px 0 #000}
+#g-play.mode-orders .panel,#g-play.mode-result .panel{bottom:58px}
+.wnav{position:absolute;top:44%;z-index:15;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 6px;background:rgba(6,7,20,.8);border:2px solid #39ff8a;color:#39ff8a;box-shadow:0 0 10px rgba(57,255,138,.5);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:8px;letter-spacing:.3px;max-width:62px;text-align:center;line-height:1.1}
+.wnav b{font-size:16px;animation:wnavBlink 1.2s steps(2) infinite}.wnav.left{left:0;border-left:none}.wnav.right{right:0;border-right:none}
+.wnav.lk{border-color:#5a5d8a;color:#8a8db0;box-shadow:none}.wnav.lk b{animation:none}
+@keyframes wnavBlink{50%{opacity:.35}}
+.wname{position:absolute;left:50%;top:6px;transform:translateX(-50%);z-index:15;text-align:center;font-family:'Press Start 2P',monospace;font-size:8px;color:#ffd23f;text-shadow:2px 2px 0 #000;pointer-events:none;white-space:nowrap}
+.wname span{display:block;font-family:system-ui,sans-serif;font-size:11px;color:#cfe3ff;font-weight:700;margin-top:3px}
+.seek{position:absolute;z-index:16;transform:translate(-50%,-110%);pointer-events:none;color:#ffd23f;font-size:26px;text-shadow:0 0 6px #ffd23f,2px 2px 0 #000;animation:seekBob .7s ease-in-out infinite alternate}
+.seek i{font-style:normal}
+@keyframes seekBob{from{transform:translate(-50%,-120%)}to{transform:translate(-50%,-85%)}}
+.t.loc .lbl,.t.loc .lbl.done{font-size:11px!important;padding:3px 5px!important}
+.guide{position:absolute;inset:0;z-index:30}
+
+/* ===== Zelda layout, pass 2 ===== */
+button.hist{position:static;flex:none;padding:3px 6px;font-size:11px;box-shadow:2px 2px 0 #000;background:#101225;margin-left:4px}
+#g-play .t.loc svg,#g-play .t.loc.lab-top svg,#g-play .t.loc.sl svg,#g-play .t.loc.sr svg{inset:4% 8% 26% 8%!important;width:84%!important;height:70%!important}
+#g-play .t.loc .lbl,#g-play .t.loc .lbl.done,#g-play .t.loc.lab-top .lbl,#g-play .t.loc.lab-l .lbl,#g-play .t.loc.lab-r .lbl{top:auto!important;bottom:4%!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;white-space:normal!important;max-width:96%;text-align:center;line-height:1.1}
+#g-play .t.loc .tip{top:2px;right:2px}
+.wname{top:4px}.wname span{display:none}
+.pcard.orders .pchead{margin-bottom:6px}
+.pcbtns{display:grid!important;grid-template-columns:1.2fr 1.4fr .6fr;gap:6px}
+.pcbtns button{font-size:10px!important;padding:8px 6px!important;margin:0!important}
+.pcbtns .bytechip{justify-content:center}.pcbtns .bytechip .lbdog{width:22px;height:22px}
+.mode-orders .panel{max-height:30%!important}
+
+/* ===== Zelda layout, pass 3 ===== */
+.hud,.hud.hud{flex-wrap:wrap!important;gap:3px 6px!important;padding:4px 6px!important;overflow:visible}
+.hud .stat,.hud .stat.big{flex:1 1 44%;min-width:0;gap:4px}
+.hud .stat.big .n{width:52px;font-size:8px}.hud .stat.big .bar{flex:1;width:auto;min-width:30px}.hud .stat.big .v{width:20px}
+.hud .stat.danger .n{font-size:8px}
+button.hist{margin-left:auto}
+.hud button.hist+button.hist{margin-left:0}
+.wnav{top:34%}
+#g-play .hero{z-index:9}
+
+/* ===== Zelda layout, pass 4 ===== */
+.hud .stat,.hud .stat.big{flex:1 1 23%!important;gap:3px}
+.hud .stat.big .n{width:auto;min-width:0;font-size:7px;letter-spacing:0;line-height:1}.hud .stat.big .bar{min-width:18px;height:7px}.hud .stat.big .v{width:16px;font-size:9px;text-align:right}
+.hud .stat .dv{display:none}
+.top .hist{margin-left:4px;padding:2px 5px;font-size:10px;vertical-align:middle}
+#g-play.mode-result #ctrl{display:none}
 </style>
 </head>
 <body>
@@ -980,7 +1051,7 @@ body,p,li,.beattxt,.beatsmall,.small,.card p,.optcard,.optfx,.wopt,.wlist,.stbtn
     <div class="wstrip" id="wstrip"></div>
     <div class="panel" id="panel"></div>
     <div class="guide" id="guide"></div><div class="mapwrap" id="mapwrap"><div class="map" id="map"></div></div>
-    <div class="ctrl"><button class="endbtn" id="endbtn" onclick="endTurnTap()">END TURN ▶</button></div>
+    <div class="ctrl" id="ctrl"><button class="endbtn" id="endbtn" onclick="endTurnTap()">END TURN ▶</button></div>
   </div>
   <div id="compat" style="display:none" aria-hidden="true"><div id="beatSteps"></div><div id="beatArea"></div><button id="briefNext"></button><div id="briefScroll"></div><div id="resBody"></div><button id="resNext"></button><div id="mapSteps"></div><div id="planBox"></div><div id="orders"></div><div id="legend"></div><div id="mapHint"></div></div>
 </section>
@@ -1645,12 +1716,14 @@ let hudOpen=false;
 function renderHud(){
   const h=document.getElementById('hud');h.innerHTML='';
   const KEY=['sec','esc','good','harm'];const prev=S.hudPrev||{};
-  KEY.forEach(k=>{const [,n,tip]=STATS.find(x=>x[0]===k);const v=Math.round(S.m[k]),d=prev[k]!=null?v-Math.round(prev[k]):0;const bad=BAD.includes(k);const danger=(k==='sec'&&v<=25)||(k==='esc'&&v>=70)||(k==='harm'&&v>=35);
+  const HSH={sec:'SEC',esc:'ESC',good:'DIVIDEND',harm:'HARM',trust:'TRUST',modelsec:'MODELS',rcap:'RIVAL',equity:'EQUITY'};
+  KEY.forEach(k=>{let [,n,tip]=STATS.find(x=>x[0]===k);n=HSH[k]||n;const v=Math.round(S.m[k]),d=prev[k]!=null?v-Math.round(prev[k]):0;const bad=BAD.includes(k);const danger=(k==='sec'&&v<=25)||(k==='esc'&&v>=70)||(k==='harm'&&v>=35);
     h.innerHTML+=`<div class="stat big${danger?' danger':''}" title="${tip}"><span class="n mt" data-m="${k}">${n}</span><div class="bar ${k}"><i style="width:${v}%"></i></div><span class="v">${v}</span>${d?`<span class="dv ${(bad?d<0:d>0)?'up':'dn'}">${d>0?'+':''}${d}</span>`:''}</div>`});
   const changed=STATS.filter(([k])=>!KEY.includes(k)&&prev[k]!=null&&Math.round(S.m[k])!==Math.round(prev[k])).length;
+
   h.innerHTML+=`<button class="hudtog" onclick="openMeters()">▼ ALL METERS${changed?` · ${changed} CHANGED`:''}</button>`;
   document.getElementById('rnum').textContent=S.round;document.getElementById('rmax').textContent=S.maxRounds;document.getElementById('date').textContent=dateFor(S.round);
-  document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;document.getElementById('pcv').textContent=S.pc;
+  document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;{const ph=document.getElementById('phase');if(ph)ph.innerHTML=`<span class="sipill">SI ${S.si}%</span> <button class="hist" title="All meters" onclick="openMeters()">▦</button><button class="hist" title="History" onclick="openHistory()">⌛</button>`;}document.getElementById('pcv').textContent=S.pc;
 }
 function openMeters(){const prev=S.hudPrev||{};const el=document.getElementById('learnDrawer');
   const row=([k,n,tip])=>{const v=Math.round(S.m[k]),d=prev[k]!=null?v-Math.round(prev[k]):0,bad=BAD.includes(k);return `<div class="mrow${d?' chg':''}"><span class="mn mt" data-m="${k}">${n}</span><div class="bar ${k}"><i style="width:${v}%"></i></div><span class="mv">${v}</span><span class="dv ${d?((bad?d<0:d>0)?'up':'dn'):''}">${d?(d>0?'+':'')+d:''}</span><span class="mtip">${tip}</span></div>`};
@@ -2897,9 +2970,9 @@ const WORLD_META=[
  {key:'shadows',name:'THE SHADOWS',sub:'Fog, hackers and gangs',sky:['#04080f','#0e2a2a']},
  {key:'supply',name:'THE SUPPLY LINES',sub:'Chips, power and allies',sky:['#120c08','#4a2a0a']},
  {key:'vault',name:'THE MODEL VAULT',sub:'Where the models live',sky:['#030a12','#0a2a3a']}];
-const WPOS=[[2,0],[0,2],[4,2],[2,3]];
+const WPOS=[[2,0],[0,0],[4,0],[2,2]];
 GW=5;GH=4;TP=100/5;TPY=100/4;
-RH.length=0;RH.push(1,.55,1,.7);RHT=RH.reduce((a,b)=>a+b,0);
+RH.length=0;RH.push(1.15,.55,1,1.1);RHT=RH.reduce((a,b)=>a+b,0);
 function worldLocs(i){const st=STAGES[i];const ids=st.locs.includes('wh')?st.locs.slice():['wh',...st.locs];return ids}
 function viewIdx(){return (typeof S!=='undefined'&&S&&S.view!=null)?S.view:stageIdx()}
 function viewWorld(i){if(i>stageIdx()){toast('UNLOCKS IN ROUND '+unlockRound(i));SFX.bad();return}S.view=i;renderMap();renderWorldStrip();SFX.sel()}
@@ -2928,11 +3001,11 @@ function renderMap(){
   for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
     const d=document.createElement('div');const road=(y===1)||(x===2&&y>=1);d.className='t'+(road?' r2':' pz');
     if(road&&y===1&&(x===1||x===3))d.innerHTML=carSVG(x,vi);
-    if(!road&&((x===0||x===4)&&(y===0||y===3)))d.innerHTML=lampSVG(x>2?1:0,0);
+    if(!road&&((x===0||x===4)&&(y===2||y===3)))d.innerHTML=lampSVG(x>2?1:0,0);
     const L=LOCS.find(l=>l.x===x&&l.y===y);
     if(L){const mine=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id);const n=mine.length+(L.id==='wh'&&S.posture?1:0);
       let lbl=L.short,lst='class="lbl"';
-      if(L.id==='wh'&&S.posture){lbl='STANCE: '+PL[S.posture]+(mine.length?' · +'+mine.length:'');lst=`class="lbl" style="background:${PCOL[S.posture]};color:#000;border-color:#000"`}
+      if(L.id==='wh'&&S.posture){lbl=PL[S.posture]+(mine.length?' +'+mine.length:'');lst=`class="lbl" style="background:${PCOL[S.posture]};color:#000;border-color:#000"`}
       else if(mine.length){lbl='✔ '+PLATE[mine[0]]+(mine.length>1?' +'+(mine.length-1):'');lst='class="lbl done"'}
       const lk=!isUnlocked(L.id);d.className='t loc'+(n?' picked':'')+(lk?' locked':'')+(y===3?' lab-top':' lab-bot')+(x===0?' lab-l':x===GW-1?' lab-r':'');d.style.setProperty('--ad',(-((x*3+y*5)%11)*0.9).toFixed(1)+'s');
       d.innerHTML=`${sprite(L.id)}<span ${lst}>${lbl}</span>${n?`<span class="badge">✔</span>`:''}${(!n&&window.planShown&&recommendPlan().picks.some(([id])=>ACTIONS.find(a=>a.id===id).loc===L.id))?'<span class="tip">TIP</span>':''}`}
@@ -2941,13 +3014,18 @@ function renderMap(){
   const h=document.createElement('div');h.className='hero';h.id='hero';map.appendChild(h);placeHero();
   if(S.m.risk>50){const g=document.createElement('div');g.className='glitch';g.style.left=3*TP+'%';g.style.top=(RT(3)+RHP(3)/2-RHP(0)/2)+'%';g.style.height=RHP(0)+'%';g.innerHTML=glitchSVG();g.onclick=e=>{e.stopPropagation();toast(`GLITCH · ROGUE SI · RISK ${S.m.risk}`);SFX.bad()};map.appendChild(g)}
   {const m=S.m;const ng=Math.max(0,Math.min(2,Math.floor((m.ccap-35)/15)));[[1,3],[3,0]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*TP+'%';g.style.top=(RT(gy)+RHP(gy)/2-RHP(0)/2)+'%';g.style.height=RHP(0)+'%';g.innerHTML=icon('skull','width="60%" height="60%"');map.appendChild(g)})}
+  {let tgt=null;if(mapMode==='story')tgt='wh';else if(mapMode==='orders'){if(!S.posture)tgt='wh';else{const P=recommendPlan().picks.map(([id])=>ACTIONS.find(a=>a.id===id).loc).filter(l=>ids.includes(l)&&!S.picks.some(id=>ACTIONS.find(a=>a.id===id).loc===l));tgt=P[0]||ids.find(l=>l!=='wh'&&isUnlocked(l)&&!S.picks.some(id=>ACTIONS.find(a=>a.id===id).loc===l))||null}}
+    const TL=tgt&&LOCS.find(l=>l.id===tgt);if(TL&&TL.x>=0){const sk=document.createElement('div');sk.className='seek';sk.style.left=(TL.x*TP+TP/2)+'%';sk.style.top=(RT(TL.y))+'%';sk.innerHTML='<i>▼</i>';map.appendChild(sk)}}
+  {const cur=stageIdx();const mk=(dir,i)=>{const e=document.createElement('button');e.className='wnav '+dir;const ok=i>=0&&i<WORLD_META.length;if(!ok){e.style.display='none';return e}const lk=i>cur;e.classList.toggle('lk',lk);e.innerHTML=`<b>${dir==='left'?'◀':'▶'}</b><span>${lk?'🔒 R'+unlockRound(i):WORLD_META[i].name}</span>`;e.onclick=ev=>{ev.stopPropagation();viewWorld(i)};return e};
+    map.appendChild(mk('left',vi-1));map.appendChild(mk('right',vi+1));
+    const nm=document.createElement('div');nm.className='wname';nm.innerHTML=`<b>${WORLD_META[vi].name}</b><span>${WORLD_META[vi].sub}</span>`;map.appendChild(nm)}
   if(!guideSeen&&mapMode==='orders'){guideSeen=true;showGuide()}
   map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);
   updateHint();requestAnimationFrame(fitMap)}
-function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=teamSVG();h.style.left=(hero.x*TP)+'%';h.style.top=(RT(hero.y)+RHP(hero.y)/2-RHP(0)/2)+'%';h.style.height=RHP(0)+'%';updateHint()}
+function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=teamSVG();const hh=RHP(1)*1.45;h.style.left=(hero.x*TP)+'%';h.style.top=(RT(hero.y)+RHP(hero.y)/2-hh/2)+'%';h.style.height=hh+'%';updateHint()}
 function fitMap(){const map=document.getElementById('map'),w=map&&map.parentElement;if(!map||!w||!w.clientHeight)return;
-  const W=w.clientWidth,avail=w.clientHeight-6;let H=W*RHT/GW,Wd=W;if(H>avail){H=avail;Wd=H*GW/RHT}
-  map.style.setProperty('width',Wd+'px','important');map.style.setProperty('height',H+'px','important');map.style.gridTemplateRows=RH.map(r=>r+'fr').join(' ');map.style.gridTemplateColumns=`repeat(${GW},1fr)`}
+  const W=w.clientWidth,avail=w.clientHeight;
+  map.style.setProperty('width',W+'px','important');map.style.setProperty('height',avail+'px','important');map.style.gridTemplateRows=RH.map(r=>r+'fr').join(' ');map.style.gridTemplateColumns=`repeat(${GW},1fr)`}
 hero={x:2,y:2};
 let mapMode='story';
 function setMapMode(m){mapMode=m;const g=document.getElementById('g-play');if(!g)return;g.classList.remove('mode-story','mode-orders','mode-result');g.classList.add('mode-'+m);
@@ -2956,7 +3034,7 @@ function endTurnTap(){if(mapMode!=='orders'){toast('FINISH THE BRIEFING FIRST');
 function nextRoundTap(){if(S.dead)return endGame();S.round++;if(S.round>S.maxRounds)return endGame();startRound()}
 function showGame(id){const g=document.getElementById('g-play');if(g)g.classList.add('on')}
 function renderBeat(){const b=beats[beatI];if(!b)return;const panel=document.getElementById('panel');
-  setMapMode('story');S.view=stageIdx();renderWorldStrip();
+  setMapMode('story');S.view=stageIdx();renderWorldStrip();if(beatI===0){hero={x:1,y:1};facing='up'}
   const steps=BEAT_STEPS.map(t=>`<div class="${t===b.step?'now':BEAT_STEPS.indexOf(t)<BEAT_STEPS.indexOf(b.step)?'ok':''}${b.skip&&b.skip.includes(t)?' skip':''}">${t}</div>`).join('');
   panel.innerHTML=`<div class="beatsteps">${steps}</div><div class="pcard${b.flash?' flash':''}"><div class="pchead"><div class="pcframe beatframe">${b.frame}</div><div class="pcname"><b>${b.who}</b><span>${b.role||''}</span></div>${b.learn?learnBtn(b.learn).replace('class="learnbtn"','class="learnbtn pcl"'):''}</div><div class="pcbody">${b.body}</div>${b.next?`<button class="a pcnext" onclick="briefNext()">${b.next}</button>`:''}</div>`;
   panel.scrollTop=0;
@@ -3014,12 +3092,14 @@ const HUDN={sec:'SECURITY',esc:'ESCALATION',good:'DIVIDEND',harm:'HARM',modelsec
 function renderHud(){
   const h=document.getElementById('hud');if(!h)return;h.innerHTML='';
   const KEY=hudKeys();const prev=S.hudPrev||{};
-  KEY.forEach(k=>{const [,n,tip]=STATS.find(x=>x[0]===k);const v=Math.round(S.m[k]),d=prev[k]!=null?v-Math.round(prev[k]):0;const bad=BAD.includes(k);const danger=(k==='sec'&&v<=25)||(k==='esc'&&v>=70)||(k==='harm'&&v>=35)||(k==='trust'&&v<=25);
+  const HSH={sec:'SEC',esc:'ESC',good:'DIVIDEND',harm:'HARM',trust:'TRUST',modelsec:'MODELS',rcap:'RIVAL',equity:'EQUITY'};
+  KEY.forEach(k=>{let [,n,tip]=STATS.find(x=>x[0]===k);n=HSH[k]||n;const v=Math.round(S.m[k]),d=prev[k]!=null?v-Math.round(prev[k]):0;const bad=BAD.includes(k);const danger=(k==='sec'&&v<=25)||(k==='esc'&&v>=70)||(k==='harm'&&v>=35)||(k==='trust'&&v<=25);
     h.innerHTML+=`<div class="stat big${danger?' danger':''}" title="${tip}"><span class="n mt" data-m="${k}">${HUDN[k]||n}</span><div class="bar ${k}"><i style="width:${v}%"></i></div><span class="v">${v}</span>${d?`<span class="dv ${(bad?d<0:d>0)?'up':'dn'}">${d>0?'+':''}${d}</span>`:''}</div>`});
   const changed=STATS.filter(([k])=>!KEY.includes(k)&&prev[k]!=null&&Math.round(S.m[k])!==Math.round(prev[k])).length;
+
   h.innerHTML+=`<button class="hudtog" onclick="openMeters()">▼ ALL METERS${changed?` · ${changed} CHANGED`:''}</button>`;
   document.getElementById('rnum').textContent=S.round;document.getElementById('rmax').textContent=S.maxRounds;document.getElementById('date').textContent=dateFor(S.round);
-  document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;document.getElementById('pcv').textContent=S.pc}
+  document.getElementById('siclock').innerHTML=`<span>SI CLOCK</span><div class="bar"><i style="width:${S.si}%"></i></div><span>${S.si}%</span>`;{const ph=document.getElementById('phase');if(ph)ph.innerHTML=`<span class="sipill">SI ${S.si}%</span> <button class="hist" title="All meters" onclick="openMeters()">▦</button><button class="hist" title="History" onclick="openHistory()">⌛</button>`;}document.getElementById('pcv').textContent=S.pc}
 function showGuide(){const g=document.getElementById('guide');if(!g)return;g.innerHTML=`<div class="box"><h2>HOW THE MAP WORKS</h2>
   <ol class="strat"><li><b>Each round opens a world.</b> Tabs at the top show the worlds. Open ones can be visited; locked ones unlock in later rounds.</li>
   <li><b>Tap a building</b> to see its actions and buy them with <b>Political Capital (PC)</b>. Every building has a Command Center for intel and your stance.</li>
@@ -3077,5 +3157,7 @@ function redReason(choice){const R=RIVALS[S.rival];const last=S.hist[S.hist.leng
 </script>
 <div id="learnDrawer" onclick="if(event.target===this)closeLearn()"></div>
 <div id="locDrawer" onclick="if(event.target===this)closeLoc()"><div class="lsheet locsheet"><div class="lgrab"></div><div class="lhead"><div class="bdpt beatframe" id="locPt"></div><div style="flex:1;min-width:0"><div class="lsub" id="locRole"></div><div class="ltitle" id="locWho"></div></div><span id="locLearn"></span><button class="lx" aria-label="Close" onclick="closeLoc()">✕</button></div><div class="lbody"><p class="beattxt" id="locTxt" style="margin:0 0 8px"></p><div id="locBody"></div></div><button class="a lok" onclick="closeLoc()">BACK TO MAP ▶</button></div></div>
+<script>(function(){const mw=document.getElementById('mapwrap'),pn=document.getElementById('panel'),ct=document.getElementById('ctrl'),gd=document.getElementById('guide');if(mw&&pn)mw.appendChild(pn);if(mw&&ct)mw.appendChild(ct);if(mw&&gd)mw.appendChild(gd);
+})();</script>
 </body>
 </html>

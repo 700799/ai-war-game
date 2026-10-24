@@ -818,6 +818,15 @@ body.story #briefDrawer.on~.reopen{display:none}
 .dpad button:nth-child(1){grid-column:2;grid-row:1}.dpad button:nth-child(2){grid-column:1;grid-row:2}.dpad button:nth-child(3){grid-column:3;grid-row:2}.dpad button:nth-child(4){grid-column:2;grid-row:3}
 #g-play.mode-story .dpad,#g-play.mode-result .dpad{display:none}
 #g-play .t.loc .lbl,#g-play .t.loc .lbl.done{bottom:2%!important}
+
+/* ===== 7x7 world: small buildings, places ===== */
+#g-play .t.loc svg,#g-play .t.loc.lab-top svg,#g-play .t.loc.sl svg,#g-play .t.loc.sr svg{inset:6% 10% 30% 10%!important;width:80%!important;height:64%!important}
+#g-play .t.loc .lbl,#g-play .t.loc .lbl.done{font-size:8px!important;padding:2px 4px!important;bottom:3%!important;line-height:1.05;max-width:110%}
+.t.place{position:relative;cursor:pointer;overflow:visible;z-index:3}
+.t.place svg{position:absolute;inset:8% 12% 32% 12%;width:76%;height:60%;filter:drop-shadow(0 0 1px #fff) drop-shadow(0 0 4px rgba(255,220,120,.4))}
+.t.place .lbl{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);font-family:system-ui,sans-serif;font-weight:800;font-size:7px;letter-spacing:.3px;padding:2px 4px;background:#05060d;color:#ffd23f;border:1px solid #c8893a;border-radius:3px;white-space:nowrap;z-index:6}
+.phome{display:grid;gap:8px}.phome button{font-size:10px;padding:12px 8px;text-align:left}
+#g-play .hero svg.team{width:170%!important}
 </style>
 </head>
 <body>
@@ -3007,9 +3016,10 @@ const WORLD_META=[
  {key:'shadows',name:'THE SHADOWS',sub:'Fog, hackers and gangs',sky:['#04080f','#0e2a2a']},
  {key:'supply',name:'THE SUPPLY LINES',sub:'Chips, power and allies',sky:['#120c08','#4a2a0a']},
  {key:'vault',name:'THE MODEL VAULT',sub:'Where the models live',sky:['#030a12','#0a2a3a']}];
-const WPOS=[[2,0],[0,2],[4,2],[2,4]];
-GW=5;GH=5;TP=100/5;TPY=100/5;
-RH.length=0;RH.push(1,.7,1,.7,1);RHT=RH.reduce((a,b)=>a+b,0);
+const WPOS=[[3,0],[0,3],[6,3],[3,6]];
+const PLACES=[{id:'byte',x:1,y:1},{id:'lib',x:5,y:1},{id:'park',x:1,y:5},{id:'arch',x:5,y:5}];
+GW=7;GH=7;TP=100/7;TPY=100/7;
+RH.length=0;RH.push(1,.8,.8,1,.8,.8,1);RHT=RH.reduce((a,b)=>a+b,0);
 function worldLocs(i){const st=STAGES[i];const ids=st.locs.includes('wh')?st.locs.slice():['wh',...st.locs];return ids}
 function viewIdx(){return (typeof S!=='undefined'&&S&&S.view!=null)?S.view:stageIdx()}
 function viewWorld(i){if(i>stageIdx()){toast('UNLOCKS IN ROUND '+unlockRound(i));SFX.bad();return}S.view=i;renderMap();renderWorldStrip();SFX.sel()}
@@ -3036,9 +3046,10 @@ function renderMap(){
   LOCS.forEach(l=>{l.x=-9;l.y=-9});ids.forEach((id,k)=>{const L=LOCS.find(l=>l.id===id);if(L&&WPOS[k]){L.x=WPOS[k][0];L.y=WPOS[k][1]}});
   map.insertAdjacentHTML('beforeend',worldBackdrop(vi));
   for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
-    const d=document.createElement('div');const road=(y===2)||(x===2);d.className='t'+(road?' r2':' pz');
-    if(road&&y===2&&(x===1||x===3))d.innerHTML=carSVG(x,vi);
-    if(!road&&((x===0||x===4)&&(y===1||y===3)))d.innerHTML=lampSVG(x>2?1:0,0);
+    const d=document.createElement('div');const road=(y===3)||(x===3);d.className='t'+(road?' r2':' pz');
+    if(road&&y===3&&(x===1||x===5))d.innerHTML=carSVG(x,vi);
+    if(!road&&((x===2||x===4)&&(y===2||y===4)))d.innerHTML=lampSVG(x>3?1:0,0);
+    const PLc=PLACES.find(q=>q.x===x&&q.y===y);if(PLc){d.className='t place';d.innerHTML=placeSVG(PLc.id)+`<span class="lbl">${PLACE_META[PLc.id].name}</span>`;d.onclick=()=>walkTo(x,y);map.appendChild(d);continue}
     const L=LOCS.find(l=>l.x===x&&l.y===y);
     if(L){const mine=S.picks.filter(id=>ACTIONS.find(a=>a.id===id).loc===L.id);const n=mine.length+(L.id==='wh'&&S.posture?1:0);
       let lbl=L.short,lst='class="lbl"';
@@ -3049,8 +3060,8 @@ function renderMap(){
     d.onclick=()=>{walkTo(x,y)};
     map.appendChild(d)}
   const h=document.createElement('div');h.className='hero';h.id='hero';map.appendChild(h);placeHero();
-  if(S.m.risk>50){const g=document.createElement('div');g.className='glitch';g.style.left=3*TP+'%';g.style.top=(RT(3)+RHP(3)/2-RHP(0)/2)+'%';g.style.height=RHP(0)+'%';g.innerHTML=glitchSVG();g.onclick=e=>{e.stopPropagation();toast(`GLITCH · ROGUE SI · RISK ${S.m.risk}`);SFX.bad()};map.appendChild(g)}
-  {const m=S.m;const ng=Math.max(0,Math.min(2,Math.floor((m.ccap-35)/15)));[[1,3],[3,0]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*TP+'%';g.style.top=(RT(gy)+RHP(gy)/2-RHP(0)/2)+'%';g.style.height=RHP(0)+'%';g.innerHTML=icon('skull','width="60%" height="60%"');map.appendChild(g)})}
+  if(S.m.risk>50){const g=document.createElement('div');g.className='glitch';g.style.left=5*TP+'%';g.style.top=(RT(2)+RHP(2)/2-RHP(0)/2)+'%';g.style.height=RHP(0)+'%';g.innerHTML=glitchSVG();g.onclick=e=>{e.stopPropagation();toast(`GLITCH · ROGUE SI · RISK ${S.m.risk}`);SFX.bad()};map.appendChild(g)}
+  {const m=S.m;const ng=Math.max(0,Math.min(2,Math.floor((m.ccap-35)/15)));[[1,2],[5,4]].slice(0,ng).forEach(([gx,gy])=>{const g=document.createElement('div');g.className='gang';g.style.left=gx*TP+'%';g.style.top=(RT(gy)+RHP(gy)/2-RHP(0)/2)+'%';g.style.height=RHP(0)+'%';g.innerHTML=icon('skull','width="60%" height="60%"');map.appendChild(g)})}
   {let tgt=null;if(mapMode==='story')tgt='wh';else if(mapMode==='orders'){if(!S.posture)tgt='wh';else{const P=recommendPlan().picks.map(([id])=>ACTIONS.find(a=>a.id===id).loc).filter(l=>ids.includes(l)&&!S.picks.some(id=>ACTIONS.find(a=>a.id===id).loc===l));tgt=P[0]||ids.find(l=>l!=='wh'&&isUnlocked(l)&&!S.picks.some(id=>ACTIONS.find(a=>a.id===id).loc===l))||null}}
     const TL=tgt&&LOCS.find(l=>l.id===tgt);if(TL&&TL.x>=0){const sk=document.createElement('div');sk.className='seek';sk.style.left=(TL.x*TP+TP/2)+'%';sk.style.top=(RT(TL.y))+'%';sk.innerHTML='<i>▼</i>';map.appendChild(sk)}}
   {const cur=stageIdx();const mk=(dir,i)=>{const e=document.createElement('button');e.className='wnav '+dir;const ok=i>=0&&i<WORLD_META.length;if(!ok){e.style.display='none';return e}const lk=i>cur;e.classList.toggle('lk',lk);e.innerHTML=`<b>${dir==='left'?'◀':'▶'}</b><span>${lk?'🔒 R'+unlockRound(i):WORLD_META[i].name}</span>`;e.onclick=ev=>{ev.stopPropagation();viewWorld(i)};return e};
@@ -3059,33 +3070,46 @@ function renderMap(){
   if(!guideSeen&&mapMode==='orders'){guideSeen=true;showGuide()}
   map.style.setProperty('--heat',Math.max(0,(S.m.esc-30)/90).toFixed(2));map.classList.toggle('hot',S.m.esc>70);
   updateHint();requestAnimationFrame(fitMap)}
+
+const PLACE_META={byte:{name:'BYTE’S HOUSE',sub:'Your advisor dog'},lib:{name:'LIBRARY',sub:'Learn the ideas'},park:{name:'TOWN SQUARE',sub:'How things stand'},arch:{name:'ARCHIVE',sub:'Past rounds'}};
+function placeSVG(id){const OL='#10121f';
+  if(id==='byte')return `<svg viewBox="0 0 100 100"><g stroke="${OL}" stroke-width="3" stroke-linejoin="round"><path d="M14 52 L50 20 L86 52 Z" fill="#c0392b"/><rect x="22" y="52" width="56" height="36" fill="#d9a05b"/><path d="M50 88 Q36 88 36 72 Q36 60 50 60 Q64 60 64 72 Q64 88 50 88 Z" fill="#2a1a10"/><rect x="26" y="40" width="48" height="10" fill="#f7c948"/></g><text x="50" y="48.5" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="8" fill="${OL}">BYTE</text><g transform="translate(36,62) scale(.28)">${dogSVG().replace(/<svg[^>]*>/,'').replace('</svg>','')}</g></svg>`;
+  if(id==='lib')return `<svg viewBox="0 0 100 100"><g stroke="${OL}" stroke-width="3" stroke-linejoin="round"><rect x="18" y="30" width="64" height="58" fill="#e8e4d8"/><path d="M12 30 L50 12 L88 30 Z" fill="#8a6a3a"/><rect x="24" y="40" width="10" height="40" fill="#2a7de1"/><rect x="38" y="40" width="10" height="40" fill="#d33a3a"/><rect x="52" y="40" width="10" height="40" fill="#4bd37b"/><rect x="66" y="40" width="10" height="40" fill="#ffd23f"/></g></svg>`;
+  if(id==='park')return `<svg viewBox="0 0 100 100"><g stroke="${OL}" stroke-width="3" stroke-linejoin="round"><circle cx="50" cy="60" r="30" fill="#2f6a3a"/><rect x="44" y="22" width="12" height="40" fill="#9aa3b5"/><circle cx="50" cy="22" r="10" fill="#5ab0ff"/><path d="M30 86 H70" stroke="#9aa3b5" stroke-width="6"/></g><text x="50" y="26" text-anchor="middle" font-size="10" fill="#fff">▦</text></svg>`;
+  if(id==='arch')return `<svg viewBox="0 0 100 100"><g stroke="${OL}" stroke-width="3" stroke-linejoin="round"><rect x="20" y="26" width="60" height="62" rx="4" fill="#3a3f55"/><rect x="28" y="34" width="44" height="14" fill="#9aa3b5"/><rect x="28" y="52" width="44" height="14" fill="#9aa3b5"/><rect x="28" y="70" width="44" height="12" fill="#9aa3b5"/><circle cx="50" cy="41" r="2.5" fill="${OL}"/><circle cx="50" cy="59" r="2.5" fill="${OL}"/></g><text x="50" y="22" text-anchor="middle" font-size="14">⌛</text></svg>`;
+  return ''}
+function openPlace(id){SFX.sel();if(id==='byte'){const el=document.getElementById('learnDrawer');const T=S.roundTips||[];
+    byteDrawer('MY HOUSE','Hi! What do you need?',`<div class="lsec"><p>Welcome to my place. Pick what you want help with.</p></div><div class="lsec"><div class="phome"><button class="a" onclick="openMapInfo('plan')">🐾 SUGGEST A PLAN</button><button onclick="openLearn('byte')">📘 HOW I THINK</button><button onclick="openMapInfo('orders')">📋 MY ORDERS SO FAR</button>${mapMode==='story'?'<button onclick="reopenBrief();closeLearn()">▼ BACK TO THE BRIEFING</button>':''}</div></div>${T.length?`<div class="lsec"><div class="llbl" style="color:#ff8f8f">WATCH-OUTS THIS ROUND</div><ul class="banal">${T.map(([t,w])=>`<li><b>${t}</b> ${w}</li>`).join('')}</ul></div>`:''}`)}
+  else if(id==='lib'){const el=document.getElementById('learnDrawer');const keys=Object.keys(CONCEPTS);
+    el.innerHTML=`<div class="lsheet" role="dialog"><div class="lgrab"></div><div class="lhead"><div><div class="lsub">📚 LIBRARY</div><div class="ltitle">The ideas behind the game</div></div><button class="lx" aria-label="Close" onclick="closeLearn()">✕</button></div><div class="lbody"><p class="small">Tap any idea to read it.</p><div class="mgrid">${keys.map(k=>`<button class="mchip" onclick="openLearn('con:${k}')">${CONCEPTS[k][0]}</button>`).join('')}</div><div class="lsec"><div class="llbl">THE WORLDS</div>${STAGES.map((st,i)=>`<button class="mchip" style="margin:3px" onclick="openLearn('${st.learn}')">${i+1}. ${st.t}</button>`).join('')}</div><div class="lsec"><div class="llbl">HOW TO PLAY</div><button class="mchip" onclick="closeLearn();showGuide()">? MAP GUIDE</button> <button class="mchip" onclick="closeLearn();go('s-how')">📖 FULL GUIDE</button></div></div><button class="a lok" onclick="closeLearn()">GOT IT ▶</button></div>`;el.classList.add('on')}
+  else if(id==='park')openMeters();
+  else if(id==='arch')openHistory()}
 function placeHero(){const h=document.getElementById('hero');if(!h)return;h.innerHTML=teamSVG();const hh=RHP(1)*1.45;h.style.left=(hero.x*TP)+'%';h.style.top=(RT(hero.y)+RHP(hero.y)/2-hh/2)+'%';h.style.height=hh+'%';updateHint()}
 function fitMap(){const map=document.getElementById('map'),w=map&&map.parentElement;if(!map||!w||!w.clientHeight)return;
   const W=w.clientWidth,avail=w.clientHeight;
   map.style.setProperty('width',W+'px','important');map.style.setProperty('height',avail+'px','important');map.style.gridTemplateRows=RH.map(r=>r+'fr').join(' ');map.style.gridTemplateColumns=`repeat(${GW},1fr)`}
-hero={x:2,y:2};
+hero={x:3,y:3};
 let mapMode='story';
 let walkT=null;
-function walkTo(tx,ty){clearInterval(walkT);const L=LOCS.find(l=>l.x===tx&&l.y===ty);const road=(ty===2)||(tx===2);if(!L&&!road){SFX.bad();return}
+function walkTo(tx,ty){clearInterval(walkT);const L=LOCS.find(l=>l.x===tx&&l.y===ty);const PLc=PLACES.find(q=>q.x===tx&&q.y===ty);const road=(ty===3)||(tx===3);if(!L&&!PLc&&!road){SFX.bad();return}
   const path=[];let x=hero.x,y=hero.y;
   const push=(nx,ny)=>{path.push([nx,ny]);x=nx;y=ny};
-  // leave a building onto the road first
-  if(!(y===2||x===2)){if(y<2)push(x,y+1);else push(x,y-1)}
-  // walk along the cross: go to column 2 or row 2 as needed
-  if(ty===2||(tx===2&&y!==2&&x!==2)){while(y!==2)push(x,y+(y<2?1:-1))}
-  if(tx===2&&ty!==2){while(x!==2)push(x+(x<2?1:-1),y);while(y!==ty)push(x,y+(y<ty?1:-1))}
-  else{while(y!==2)push(x,y+(y<2?1:-1));while(x!==tx)push(x+(x<tx?1:-1),y);while(y!==ty)push(x,y+(y<ty?1:-1))}
-  if(!path.length){if(L)arrive(L);return}
-  walkT=setInterval(()=>{const n=path.shift();if(!n){clearInterval(walkT);if(L)arrive(L);return}facing=n[1]<hero.y?'up':'down';step++;hero={x:n[0],y:n[1]};placeHero();SFX.move()},110)}
+  const C=3;
+  if(!(y===C||x===C)){if(Math.abs(y-C)<=Math.abs(x-C)){while(y!==C)push(x,y+(y<C?1:-1))}else{while(x!==C)push(x+(x<C?1:-1),y)}}
+  if(tx===C){while(x!==C)push(x+(x<C?1:-1),y);while(y!==ty)push(x,y+(y<ty?1:-1))}
+  else if(ty===C){while(y!==C)push(x,y+(y<C?1:-1));while(x!==tx)push(x+(x<tx?1:-1),y)}
+  else{const viaRow=Math.abs(ty-C)<=Math.abs(tx-C);if(viaRow){while(y!==C)push(x,y+(y<C?1:-1));while(x!==tx)push(x+(x<tx?1:-1),y);while(y!==ty)push(x,y+(y<ty?1:-1))}else{while(x!==C)push(x+(x<C?1:-1),y);while(y!==ty)push(x,y+(y<ty?1:-1));while(x!==tx)push(x+(x<tx?1:-1),y)}}
+  if(!path.length){if(L)arrive(L);if(PLc)openPlace(PLc.id);return}
+  walkT=setInterval(()=>{const n=path.shift();if(!n){clearInterval(walkT);if(L)arrive(L);if(PLc)openPlace(PLc.id);return}facing=n[1]<hero.y?'up':'down';step++;hero={x:n[0],y:n[1]};placeHero();SFX.move()},110)}
 function arrive(L){if(!isUnlocked(L.id)){toast('UNLOCKS IN A LATER ROUND');SFX.bad();return}if(mapMode!=='orders'){toast('FINISH THE BRIEFING FIRST');return}openLoc(L)}
-function heroStep(dx,dy){const nx=hero.x+dx,ny=hero.y+dy;if(nx<0||ny<0||nx>=GW||ny>=GH)return;const L=LOCS.find(l=>l.x===nx&&l.y===ny);const road=(ny===2)||(nx===2);if(!L&&!road){SFX.bad();return}facing=dy<0?'up':'down';step++;hero={x:nx,y:ny};placeHero();SFX.move();if(L){if(!isUnlocked(L.id)){toast('UNLOCKS IN A LATER ROUND');SFX.bad();return}if(mapMode!=='orders'){toast('FINISH THE BRIEFING FIRST');return}openLoc(L)}}
+function heroStep(dx,dy){const nx=hero.x+dx,ny=hero.y+dy;if(nx<0||ny<0||nx>=GW||ny>=GH)return;const L=LOCS.find(l=>l.x===nx&&l.y===ny);const PLc=PLACES.find(q=>q.x===nx&&q.y===ny);const road=(ny===3)||(nx===3)||!!PLc||(Math.abs(nx-3)<=1&&Math.abs(ny-3)<=1)||(hero.x!==3&&hero.y!==3);if(!L&&!road){SFX.bad();return}facing=dy<0?'up':'down';step++;hero={x:nx,y:ny};placeHero();SFX.move();if(PLc){openPlace(PLc.id);return}if(L){if(!isUnlocked(L.id)){toast('UNLOCKS IN A LATER ROUND');SFX.bad();return}if(mapMode!=='orders'){toast('FINISH THE BRIEFING FIRST');return}openLoc(L)}}
 document.addEventListener('keydown',e=>{if(!document.getElementById('s-game').classList.contains('on'))return;const k={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key];if(k){e.preventDefault();heroStep(...k)}});
 function setMapMode(m){mapMode=m;const g=document.getElementById('g-play');if(!g)return;g.classList.remove('mode-story','mode-orders','mode-result');g.classList.add('mode-'+m);document.body.classList.toggle('story',m==='story');
   const eb=document.getElementById('endbtn');if(eb){eb.textContent=m==='result'?'NEXT ROUND ▶':'END TURN ▶';eb.disabled=(m==='story');eb.onclick=m==='result'?nextRoundTap:endTurnTap}}
 function endTurnTap(){if(mapMode!=='orders'){toast('FINISH THE BRIEFING FIRST');SFX.bad();return}openResolveCheck()}
 function nextRoundTap(){if(S.dead)return endGame();S.round++;if(S.round>S.maxRounds)return endGame();startRound()}
 function showGame(id){const g=document.getElementById('g-play');if(g)g.classList.add('on')}
-function renderBeat(){if(!beats.length)return;setMapMode('story');S.view=stageIdx();if(beatI===0){hero={x:2,y:2};facing='up'}
+function renderBeat(){if(!beats.length)return;setMapMode('story');S.view=stageIdx();if(beatI===0){hero={x:3,y:3};facing='up'}
   const el=document.getElementById('briefDrawer');const n=beats.length;
   el.innerHTML=`<div class="lsheet briefsheet"><div class="lgrab"></div><div class="bdots">${beats.map((x,i)=>`<i class="${i===beatI?'on':i<beatI?'ok':''}" onclick="gotoBeat(${i})"></i>`).join('')}<button class="lx" aria-label="Close" onclick="closeBrief()">✕</button></div><div class="bcar" id="bcar">${beats.map((b,i)=>`<section class="bslide" data-i="${i}"><div class="pcard${b.flash?' flash':''}"><div class="pchead"><div class="pcframe beatframe">${b.frame}</div><div class="pcname"><b>${b.who}</b><span>${b.role||''}</span></div>${b.learn?learnBtn(b.learn):''}</div><div class="pcbody">${b.body}</div></div></section>`).join('')}</div><div class="bnav"><button onclick="beatBack()" ${beatI===0?'disabled':''}>◀ BACK</button><button class="a" id="bnext" onclick="briefNext()">${beats[beatI].next||'…'}</button></div></div>`;
   el.classList.add('on');const car=document.getElementById('bcar');car.scrollLeft=beatI*car.clientWidth;

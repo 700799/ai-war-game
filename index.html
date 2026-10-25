@@ -827,6 +827,26 @@ body.story #briefDrawer.on~.reopen{display:none}
 #g-play .hero svg.team{width:170%!important}
 html,body,button,input,select,textarea{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}body{font-size:17px;line-height:1.35}
 button{font-weight:800;letter-spacing:.3px}
+
+#learnDrawer{z-index:90!important}
+.card{padding:10px 12px!important;margin-bottom:8px!important}
+.card .chead{display:flex;align-items:center;gap:8px}
+.card .cname{flex:1;font-weight:800;font-size:14px;line-height:1.25;color:#fff;min-width:0}
+.card.sel .cname{color:var(--gold)}
+.card .cost{position:static!important;font-size:12px!important;color:var(--gold);white-space:nowrap}
+.card .tag{font-size:10px!important;margin:2px 0 4px!important}
+.card p{font-size:14px!important;line-height:1.35!important;margin:0 0 6px!important}
+.card .cfx{font-size:12px;font-weight:700;line-height:1.5}
+.cinfo{flex:none;width:28px;height:28px;border-radius:50%;padding:0!important;display:flex;align-items:center;justify-content:center;font:italic 900 15px Georgia,serif!important;background:#0b0c22;color:#ffe14d;border:2px solid #ffe14d!important;box-shadow:0 0 8px rgba(255,225,77,.5)!important}
+.ltab .small{margin-bottom:8px!important;font-size:13px}
+
+.acar{display:flex;align-items:stretch;gap:6px}
+.aview{flex:1;min-width:0}.aview .card{margin:0!important;min-height:210px}
+.anav{flex:none;width:38px;padding:0!important;font-size:18px!important;color:#39ff8a;background:#06140d!important;border:2px solid #39ff8a!important;box-shadow:0 0 10px rgba(57,255,138,.45)!important;animation:navpulse 1.4s ease-in-out infinite}
+@keyframes navpulse{50%{box-shadow:0 0 18px rgba(57,255,138,.9)}}
+.adots{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:10px}
+.adots i{width:9px;height:9px;background:#3a3c6a;border:1px solid #000;display:block}.adots i.on{background:#ffd23f}
+.adots span{margin-left:8px;font-weight:800;font-size:12px;color:#9b9ac7}
 </style>
 </head>
 <body>
@@ -2141,7 +2161,7 @@ const LEARN_ACT={
 };
 function openByteCard(id){const a=ACTIONS.find(x=>x.id===id),H=ACT_HINT[id];const L=LOCS.find(l=>l.id===a.loc);
   byteDrawer(a.name,'What you should know',
-   `<div class="lsec"><div class="llbl" style="color:#5ab0ff">📋 SUMMARY</div><p>${a.desc}</p><p class="bsum">${fxLine(a.fx)} · <b>${a.cost} PC</b> · ${L?L.short:''} · ${a.tag||''}</p></div>`+
+   `<div class="lsec"><div class="llbl" style="color:#5ab0ff">📋 SUMMARY</div><p>${a.desc}</p><p class="bsum">${fxLine(a.fx)} · <b>${a.cost} PC</b> · ${L?L.short:''} · ${a.tag||''}</p>${NOTE[id]?`<p>${NOTE[id]}</p>`:''}</div>`+
    (LEARN_ACT[id]?`<div class="lsec"><div class="llbl" style="color:#9fb8e8">📘 THE IDEA IN THE REAL WORLD</div><p>${LEARN_ACT[id]}</p></div>`:'')+
    `<div class="lsec"><div class="llbl" style="color:#f2c48a">🐾 BYTE’S ANALYSIS</div><ul class="banal">${byteAnalysis(a).map(x=>`<li>${x}</li>`).join('')}</ul></div>`+
    (H?`<div class="lsec"><div class="llbl" style="color:#4bd37b">✓ MAKES SENSE WHEN</div><p>${H[0]}</p></div><div class="lsec"><div class="llbl" style="color:#ff8f8f">✗ THINK TWICE WHEN</div><p>${H[1]}</p></div>`:'')+
@@ -2375,7 +2395,7 @@ function openLoc(L){
     const picked=S.picks.includes(a.id);
     const c=document.createElement('div');c.className='card'+(picked?' sel':'');
     const rec=recommendPlan().picks.find(([id])=>id===a.id);
-    c.innerHTML=`<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('RISK ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}<button class="bytechip" aria-label="Ask Byte" onclick="event.stopPropagation();openByteCard('${a.id}')"><span class="lbdog">${dogSVG()}</span><span>ASK BYTE</span></button>`;
+    c.innerHTML=`<div class="chead"><div class="cname">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><button class="cinfo" aria-label="Learn more" onclick="event.stopPropagation();openByteCard('${a.id}')">i</button></div><div class="tag">${a.tag}</div><p>${a.desc}</p><div class="cfx">${fxLine(a.fx)}</div>`;
     c.onclick=()=>toggleAction(a,L);body.appendChild(c);
   });
 }
@@ -3134,11 +3154,19 @@ function openLoc(L){const dr=document.getElementById('locDrawer');if(!dr)return;
   const act=document.getElementById('locAct');act.innerHTML=`<p class="small" style="margin-bottom:10px">Tap a card to buy it. Tap again to undo. <b style="color:var(--gold)">${S.pc} PC</b> left.</p>`;
   if(L.id==='wh'){const box=document.createElement('div');box.className='box';box.innerHTML=`<h2>YOUR STANCE: <span style="color:${PCOL[S.posture]||'#fff'}">${S.posture?PL[S.posture]:'NOT SET'}</span></h2><p class="small">Change it any time before End Turn.</p><div class="post">${P.map(k=>`<button class="${S.posture===k?'sel':''}" onclick="S.posture='${k}';SFX.ok();openLoc(LOCS[0])">${PL[k]}</button>`).join('')}</div>`;act.appendChild(box);act.appendChild(matrixEl(null,null))}
   if(L.id==='soc'&&S.flags.tmodel){const tb=document.createElement('div');tb.className='box';tb.style.marginBottom='12px';tb.innerHTML=`<h3>THREAT MODEL</h3><p class="small" style="margin-top:6px">${S.tmReveal}</p></div>`;act.appendChild(tb)}
-  ACTIONS.filter(a=>a.loc===L.id).forEach(a=>{const picked=S.picks.includes(a.id);
+  const cardsArr=[];ACTIONS.filter(a=>a.loc===L.id).forEach(a=>{const picked=S.picks.includes(a.id);
     const c=document.createElement('div');c.className='card'+(picked?' sel':'');
-    c.innerHTML=`<div class="px" style="font-size:9px;color:${picked?'var(--gold)':'#fff'}">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><div class="tag">${a.tag}</div><p>${a.desc}</p>${anaHTML('RISK ANALYST',fxLine(a.fx)+(NOTE[a.id]?'<br>'+NOTE[a.id]:''))}<button class="bytechip" aria-label="Ask Byte" onclick="event.stopPropagation();openByteCard('${a.id}')"><span class="lbdog">${dogSVG()}</span><span>ASK BYTE</span></button>`;
-    c.onclick=()=>{if(picked){S.picks=S.picks.filter(x=>x!==a.id);S.pc+=a.cost;delete S.flags[a.flag];SFX.sel()}else{if(S.pc<a.cost){toast('NOT ENOUGH PC');SFX.bad();return}S.picks.push(a.id);S.pc-=a.cost;S.flags[a.flag]=true;if(a.id==='intel')S.intelReveal=redIntel();if(a.id==='tmodel')S.tmReveal=threatModel();SFX.ok()}renderHud();openLoc(L)};
-    act.appendChild(c)});
+    c.innerHTML=`<div class="chead"><div class="cname">${picked?'✔ ':''}${a.name}</div><div class="cost">${a.cost} PC</div><button class="cinfo" aria-label="Learn more" onclick="event.stopPropagation();openByteCard('${a.id}')">i</button></div><div class="tag">${a.tag}</div><p>${a.desc}</p><div class="cfx">${fxLine(a.fx)}</div>`;
+    c.onclick=()=>{if(picked){S.picks=S.picks.filter(x=>x!==a.id);S.pc+=a.cost;delete S.flags[a.flag];SFX.sel()}else{if(S.pc<a.cost){toast('NOT ENOUGH PC');SFX.bad();return}S.picks.push(a.id);S.pc-=a.cost;S.flags[a.flag]=true;if(a.id==='intel')S.intelReveal=redIntel();if(a.id==='tmodel')S.tmReveal=threatModel();SFX.ok()}renderHud();S.cardIdx=S.cardIdx||{};openLoc(L)};
+    cardsArr.push(c)});
+  if(cardsArr.length){S.cardIdx=S.cardIdx||{};let ci=Math.min(S.cardIdx[L.id]||0,cardsArr.length-1);
+    const car=document.createElement('div');car.className='acar';car.innerHTML=`<button class="anav l" aria-label="Previous">◀</button><div class="aview"></div><button class="anav r" aria-label="Next">▶</button>`;
+    const dots=document.createElement('div');dots.className='adots';
+    const view=car.querySelector('.aview');
+    const show=i=>{ci=(i+cardsArr.length)%cardsArr.length;S.cardIdx[L.id]=ci;view.innerHTML='';view.appendChild(cardsArr[ci]);dots.innerHTML=cardsArr.map((_,k)=>`<i class="${k===ci?'on':''}"></i>`).join('')+`<span>${ci+1} / ${cardsArr.length}</span>`};
+    car.querySelector('.l').onclick=()=>{SFX.sel();show(ci-1)};car.querySelector('.r').onclick=()=>{SFX.sel();show(ci+1)};
+    let x0=null;view.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});view.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>50){SFX.sel();show(ci+(dx<0?1:-1))}});
+    show(ci);act.appendChild(car);act.appendChild(dots)}
   {const fr=document.getElementById('locPt');fr.classList.add('talking');const tx=document.getElementById('locTxt');if(tx)typeInto(tx,L.intro,()=>fr.classList.remove('talking'))}
   dr.classList.add('on');const lb=dr.querySelector('.lbody');if(lb)lb.scrollTop=0}
 function locTab(t){S.locTab=t;document.querySelectorAll('#locBody .ltabs button').forEach((b,i)=>b.classList.toggle('on',(i===0)===(t==='info')));document.getElementById('locInfo').classList.toggle('on',t==='info');document.getElementById('locAct').classList.toggle('on',t==='act');SFX.sel()}
